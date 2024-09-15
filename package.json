@@ -1,0 +1,16 @@
+{
+  "name": "rms",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "4.21.0",
+    "morgan": "1.10.0",
+    "pug": "3.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.4"
+  }
+}
