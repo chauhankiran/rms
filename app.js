@@ -1,6 +1,8 @@
+const path = require("path");
 const createError = require("http-errors");
 const express = require("express");
 const morgan = require("morgan");
+const favicon = require("serve-favicon");
 
 const app = express();
 
@@ -9,6 +11,8 @@ app.set("view engine", "pug");
 
 // Middleware
 app.use(morgan("dev"));
+app.use(express.static(path.join(__dirname, "public")));
+app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 
 app.get("/", (req, res, next) => {
   res.render("index");
