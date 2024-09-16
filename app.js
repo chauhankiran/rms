@@ -7,6 +7,7 @@ const createError = require("http-errors");
 const express = require("express");
 const morgan = require("morgan");
 const favicon = require("serve-favicon");
+const postgres = require("postgres");
 
 const app = express();
 
@@ -35,6 +36,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// SQL
+const sql = postgres({
+  host: process.env.DB_HOST,
+  port: +process.env.DB_PORT,
+  database: process.env.DB_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+});
+
 // FIXME: Added for flash testing. Once done, remove.
 app.post("/submit", (req, res) => {
   req.flash("info", "Your submission was successful.");
@@ -42,7 +52,9 @@ app.post("/submit", (req, res) => {
   res.redirect("/");
 });
 
-app.get("/", (req, res, next) => {
+app.get("/", async (req, res, next) => {
+  const result = await sql`SELECT 1 + 1`;
+  console.log("result: ", result);
   res.render("index", { title: "Home" });
 });
 
