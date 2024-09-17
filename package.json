@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "migrate": "node ./scripts/migration.js",
+    "seed": "node ./scripts/seeder.js"
   },
   "dependencies": {
     "connect-flash": "0.1.1",
