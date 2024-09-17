@@ -9,7 +9,7 @@ const seed = async ({ sql, path, before = null }) => {
   for await (const seeder of seeders) {
     before && before(seeder);
 
-    await sql.file(join(path, seeder));
+    await require(join(path, seeder))(sql);
   }
 };
 
