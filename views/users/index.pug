@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+  .row 
+    .col-12 
+      h1= title
+
+      table
+        thead 
+          tr 
+            th Id 
+            th Email
+        tbody 
+          if users.length > 0
+            each user in users 
+              tr 
+                td #{user.id}
+                td #{user.email}
+          else 
+            tr 
+              td(colspan=2).text-center No users found.
