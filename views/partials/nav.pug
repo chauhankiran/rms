@@ -2,5 +2,8 @@ nav.nav
   .nav-start
     a(href="/").nav-brand Home
   .nav-end
-    a(href="#").nav-item Login
-    a(href="#").nav-item Register
+    if currentUser
+      a(href="/auth/logout").nav-item Logout
+    else
+      a(href="/auth/login").nav-item Login
+      a(href="/auth/register").nav-item Register

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "connect-flash": "0.1.1",
+    "connect-redis": "7.1.1",
     "cookie-parser": "1.4.6",
     "dotenv": "16.4.5",
     "express": "4.21.0",
@@ -17,6 +18,7 @@
     "morgan": "1.10.0",
     "postgres": "3.4.4",
     "pug": "3.0.3",
+    "redis": "4.7.0",
     "serve-favicon": "2.5.0"
   },
   "devDependencies": {

@@ -7,20 +7,34 @@ const createError = require("http-errors");
 const express = require("express");
 const morgan = require("morgan");
 const favicon = require("serve-favicon");
-const postgres = require("postgres");
+const RedisStore = require("connect-redis").default;
+const redis = require("redis");
+
+const homeRoutes = require("./routes/home");
+const authRoutes = require("./routes/auth");
 
 const app = express();
 
 // Setup
 app.set("view engine", "pug");
 
+// Redis
+const redisClient = redis.createClient({
+  host: process.env.REDIS_HOST,
+  port: +process.env.REDIS_PORT,
+});
+redisClient.connect().catch(console.error);
+
 // Middleware
 app.use(morgan("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 app.use(cookieParser());
 app.use(
   session({
+    store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
@@ -33,16 +47,8 @@ app.use(flash());
 app.use((req, res, next) => {
   res.locals.info = req.flash("info");
   res.locals.error = req.flash("error");
+  res.locals.currentUser = req.session.currentUser;
   next();
-});
-
-// SQL
-const sql = postgres({
-  host: process.env.DB_HOST,
-  port: +process.env.DB_PORT,
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
 });
 
 // FIXME: Added for flash testing. Once done, remove.
@@ -52,11 +58,8 @@ app.post("/submit", (req, res) => {
   res.redirect("/");
 });
 
-app.get("/", async (req, res, next) => {
-  const result = await sql`SELECT 1 + 1`;
-  console.log("result: ", result);
-  res.render("index", { title: "Home" });
-});
+app.use("/", homeRoutes);
+app.use("/auth", authRoutes);
 
 // 404 Error
 app.use((req, res, next) => {
