@@ -2,10 +2,55 @@ const usersService = require("../services/usersService");
 
 module.exports = {
   index: async (req, res, next) => {
-    try {
-      const users = await usersService.find();
+    const search = req.query.search || null;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
-      return res.render("users/index", { title: "Users", users });
+    try {
+      const optionsObj = { search, limit, skip };
+      const users = await usersService.find(optionsObj);
+      const { count } = await usersService.count(optionsObj);
+
+      const pages = Math.ceil(count / limit);
+
+      const pagination = {
+        first:
+          page > 1
+            ? search
+              ? `/users?search=${search}&page=1&limit=${limit}`
+              : `/users?page=1&limit=${limit}`
+            : null,
+
+        prev:
+          page > 1
+            ? search
+              ? `/users?search=${search}&page=${page - 1}&limit=${limit}`
+              : `/users?page=${page - 1}&limit=${limit}`
+            : null,
+
+        next:
+          page < pages
+            ? search
+              ? `/users?search=${search}&page=${page + 1}&limit=${limit}`
+              : `/users?page=${page + 1}&limit=${limit}`
+            : null,
+
+        last:
+          page < pages
+            ? search
+              ? `/users?search=${search}&page=${pages}&limit=${limit}`
+              : `/users?page=${pages}&limit=${limit}`
+            : null,
+      };
+
+      return res.render("users/index", {
+        title: "Users",
+        users,
+        pagination,
+        search,
+        count,
+      });
     } catch (err) {
       next(err);
     }

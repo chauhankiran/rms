@@ -1,14 +1,41 @@
 const sql = require("../sql");
 
 module.exports = {
-  find: async () => {
+  find: async (optionsObj) => {
+    const { skip, limit, search } = optionsObj;
+
+    const whereClause = search
+      ? sql` WHERE email iLIKE ${"%" + search + "%"}`
+      : sql``;
+
     return await sql`
       SELECT
         id,
         email
       FROM
         users
+      ${whereClause}
+      LIMIT
+        ${limit}
+      OFFSET
+        ${skip}
     `;
+  },
+
+  count: async (optionsObj) => {
+    const { search } = optionsObj;
+
+    const whereClause = search
+      ? sql` WHERE email iLIKE ${"%" + search + "%"}`
+      : sql``;
+
+    return await sql`
+      SELECT
+        COUNT(id)
+      FROM
+        users
+      ${whereClause}
+    `.then(([x]) => x);
   },
 
   create: async (userObj) => {

@@ -266,6 +266,14 @@ input[type="button"]:hover,
 button:hover {
   background-color: #dbdbdb;
 }
+input[type="submit"]:disabled,
+input[type="button"]:disabled,
+.btn:disabled,
+button:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.5;
+}
 
 input[type="submit"].is-muted,
 input[type="button"].is-muted,
@@ -372,4 +380,12 @@ td {
 }
 .flash-error {
   color: red;
+}
+
+/*
+ * Temp.
+ * ============================================================================
+ */
+.mr-4 {
+  margin-right: 4px;
 }

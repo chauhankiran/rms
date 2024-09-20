@@ -3,11 +3,15 @@ extends ../layout
 block content
   .row.align-items-center 
     .col-8 
-      h1= title
+      h1 #{title} (#{count})
     .col-4.text-end 
       a(href="/users/new").btn New user
 
     .col-12
+      form(action="/users", method="get") 
+        .form-group 
+          input(type="text", name="search", value=search, placeholder="Type email and press Enter")
+
       include ../partials/flash
 
       table
@@ -25,3 +29,24 @@ block content
           else 
             tr 
               td(colspan=2).text-center No users found.
+    
+    .col-12 
+      if pagination.first
+        a(href=pagination.first).btn.mr-4 First
+      else 
+        button(disabled).btn.mr-4 First
+
+      if pagination.prev
+        a(href=pagination.prev).btn.mr-4 Prev 
+      else 
+        button(disabled).btn.mr-4 Prev
+
+      if pagination.next
+        a(href=pagination.next).btn.mr-4 Next 
+      else 
+        button(disabled).btn.mr-4 Next
+
+      if pagination.last 
+        a(href=pagination.last).btn.mr-4 Last
+      else 
+        button(disabled).btn.mr-4 Last
