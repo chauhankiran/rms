@@ -19,7 +19,8 @@ block content
           if users.length > 0
             each user in users 
               tr 
-                td #{user.id}
+                td
+                  a(href=`/users/${user.id}`) #{user.id}
                 td #{user.email}
           else 
             tr 

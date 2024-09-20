@@ -17,5 +17,9 @@ block content
           input(type="text", name="password", placeholder="******")#password
         
         .form-group 
-          button(type="submit") Create user
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Create user
+            .col-6.text-end
+              a(href="/users").btn.is-muted Cancel
         

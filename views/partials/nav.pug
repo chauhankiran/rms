@@ -3,6 +3,7 @@ nav.nav
     a(href="/").nav-brand Home
   .nav-end
     if currentUser
+      a(href="/users").nav-item Users
       a(href="/auth/logout").nav-item Logout
     else
       a(href="/auth/login").nav-item Login
