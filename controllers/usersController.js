@@ -56,7 +56,53 @@ module.exports = {
 
       return res.render("users/show", { title: user.email, user });
     } catch (err) {
-      next();
+      next(err);
+    }
+  },
+
+  edit: async (req, res, next) => {
+    const id = req.params.id;
+
+    try {
+      const user = await usersService.findOne(id);
+
+      return res.render("users/edit", { title: "Edit user", user });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  update: async (req, res, next) => {
+    const id = req.params.id;
+    const { email, password } = req.body;
+
+    if (!email) {
+      req.flash("error", "Email is required.");
+      res.redirect(`/users/${id}/edit`);
+      return;
+    }
+
+    if (!password) {
+      req.flash("error", "Password is required.");
+      res.redirect(`/users/${id}/edit`);
+      return;
+    }
+
+    try {
+      const userObj = { id, email, password };
+      const user = await usersService.update(userObj);
+
+      if (!user) {
+        req.flash("error", "Problem while updating user.");
+        res.redirect(`/users/${id}`);
+        return;
+      }
+
+      req.flash("info", "User is update.");
+      res.redirect(`/users/${id}`);
+      return;
+    } catch (err) {
+      next(err);
     }
   },
 };

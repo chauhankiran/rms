@@ -36,4 +36,19 @@ module.exports = {
         id = ${id}
     `.then(([x]) => x);
   },
+
+  update: async (userObj) => {
+    const { id, email, password } = userObj;
+
+    return await sql`
+      UPDATE
+        users
+      SET
+        email = ${email},
+        password = ${password}
+      WHERE
+        id = ${id}
+      returning id
+    `.then(([x]) => x);
+  },
 };

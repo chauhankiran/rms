@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+  .row 
+    .col-4 
+      h1= title
+
+      include ../partials/flash
+
+      form(action=`/users/${user.id}?_method=PUT`, method="post") 
+        .form-group 
+          label(for="email") Email
+          input(type="text", name="email", value=user.email placeholder="kai@doe.com")#email
+        
+        .form-group 
+          label(for="password") Password
+          input(type="text", name="password", placeholder="******")#password
+        
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Update user
+            .col-6.text-end
+              a(href=`/users/${user.id}`).btn.is-muted Cancel
+        

@@ -9,6 +9,7 @@ const morgan = require("morgan");
 const favicon = require("serve-favicon");
 const RedisStore = require("connect-redis").default;
 const redis = require("redis");
+const methodOverride = require("method-override");
 
 const checkAuth = require("./middleware/checkAuth");
 
@@ -34,6 +35,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
+app.use(methodOverride("_method"));
 app.use(cookieParser());
 app.use(
   session({
