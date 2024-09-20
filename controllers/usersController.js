@@ -47,4 +47,16 @@ module.exports = {
       next(err);
     }
   },
+
+  show: async (req, res, next) => {
+    const id = req.params.id;
+
+    try {
+      const user = await usersService.findOne(id);
+
+      return res.render("users/show", { title: user.email, user });
+    } catch (err) {
+      next();
+    }
+  },
 };

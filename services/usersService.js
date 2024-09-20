@@ -24,4 +24,16 @@ module.exports = {
       ) returning id
     `;
   },
+
+  findOne: async (id) => {
+    return await sql`
+      SELECT
+        id,
+        email
+      FROM
+        users
+      WHERE
+        id = ${id}
+    `.then(([x]) => x);
+  },
 };
