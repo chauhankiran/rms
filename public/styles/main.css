@@ -362,3 +362,14 @@ td {
 .align-content-center {
   align-content: center !important;
 }
+
+/*
+ * Flash.
+ * ============================================================================
+ */
+.flash-info {
+  color: green;
+}
+.flash-error {
+  color: red;
+}
