@@ -1,9 +1,14 @@
 extends ../layout
 
 block content
-  .row 
-    .col-12 
+  .row.align-items-center 
+    .col-8 
       h1= title
+    .col-4.text-end 
+      a(href="/users/new").btn New user
+
+    .col-12
+      include ../partials/flash
 
       table
         thead 

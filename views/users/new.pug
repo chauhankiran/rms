@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+  .row 
+    .col-4 
+      h1= title
+
+      include ../partials/flash
+
+      form(action="/users", method="post") 
+        .form-group 
+          label(for="email") Email
+          input(type="text", name="email", placeholder="kai@doe.com")#email
+        
+        .form-group 
+          label(for="password") Password
+          input(type="text", name="password", placeholder="******")#password
+        
+        .form-group 
+          button(type="submit") Create user
+        

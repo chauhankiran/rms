@@ -10,4 +10,18 @@ module.exports = {
         users
     `;
   },
+
+  create: async (userObj) => {
+    const { email, password } = userObj;
+
+    return await sql`
+      INSERT INTO users (
+        email,
+        password
+      ) VALUES (
+        ${email},
+        ${password}
+      ) returning id
+    `;
+  },
 };
