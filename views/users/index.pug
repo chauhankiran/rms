@@ -36,6 +36,10 @@ block content
               
               if orderBy === 'email'
                 span.order-wrapper= orderDir
+
+            th Created at
+            
+            th Updated at
         tbody 
           if users.length > 0
             each user in users 
@@ -43,6 +47,8 @@ block content
                 td
                   a(href=`/users/${user.id}`) #{user.id}
                 td #{user.email}
+                td #{user.createdAt}
+                td #{user.updatedAt || "-"} 
           else 
             tr 
               td(colspan=2).text-center No users found.

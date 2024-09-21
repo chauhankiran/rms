@@ -11,7 +11,9 @@ module.exports = {
     return await sql`
       SELECT
         id,
-        email
+        email,
+        "createdAt",
+        "updatedAt"
       FROM
         users
       ${whereClause}
@@ -75,7 +77,8 @@ module.exports = {
         users
       SET
         email = ${email},
-        password = ${password}
+        password = ${password},
+        "updatedAt" = ${sql`now()`}
       WHERE
         id = ${id}
       returning id
