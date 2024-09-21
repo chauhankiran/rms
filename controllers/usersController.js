@@ -6,9 +6,11 @@ module.exports = {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
+    const orderBy = req.query.orderBy || "id";
+    const orderDir = req.query.orderDir || "DESC";
 
     try {
-      const optionsObj = { search, limit, skip };
+      const optionsObj = { search, limit, skip, orderBy, orderDir };
       const users = await usersService.find(optionsObj);
       const { count } = await usersService.count(optionsObj);
 
@@ -18,29 +20,45 @@ module.exports = {
         first:
           page > 1
             ? search
-              ? `/users?search=${search}&page=1&limit=${limit}`
-              : `/users?page=1&limit=${limit}`
+              ? `/users?search=${search}&page=1&limit=${limit}${
+                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
+                }`
+              : `/users?page=1&limit=${limit}${
+                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
+                }`
             : null,
 
         prev:
           page > 1
             ? search
-              ? `/users?search=${search}&page=${page - 1}&limit=${limit}`
-              : `/users?page=${page - 1}&limit=${limit}`
+              ? `/users?search=${search}&page=${page - 1}&limit=${limit}${
+                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
+                }`
+              : `/users?page=${page - 1}&limit=${limit}${
+                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
+                }`
             : null,
 
         next:
           page < pages
             ? search
-              ? `/users?search=${search}&page=${page + 1}&limit=${limit}`
-              : `/users?page=${page + 1}&limit=${limit}`
+              ? `/users?search=${search}&page=${page + 1}&limit=${limit}${
+                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
+                }`
+              : `/users?page=${page + 1}&limit=${limit}${
+                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
+                }`
             : null,
 
         last:
           page < pages
             ? search
-              ? `/users?search=${search}&page=${pages}&limit=${limit}`
-              : `/users?page=${pages}&limit=${limit}`
+              ? `/users?search=${search}&page=${pages}&limit=${limit}${
+                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
+                }`
+              : `/users?page=${pages}&limit=${limit}${
+                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
+                }`
             : null,
       };
 
@@ -50,6 +68,8 @@ module.exports = {
         pagination,
         search,
         count,
+        orderBy,
+        orderDir,
       });
     } catch (err) {
       next(err);

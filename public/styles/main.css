@@ -414,3 +414,7 @@ td {
 .mr-4 {
   margin-right: 4px;
 }
+.order-wrapper {
+  padding-left: 4px;
+  padding-right: 4px;
+}

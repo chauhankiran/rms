@@ -2,7 +2,7 @@ const sql = require("../sql");
 
 module.exports = {
   find: async (optionsObj) => {
-    const { skip, limit, search } = optionsObj;
+    const { skip, limit, search, orderBy, orderDir } = optionsObj;
 
     const whereClause = search
       ? sql` WHERE email iLIKE ${"%" + search + "%"}`
@@ -15,6 +15,9 @@ module.exports = {
       FROM
         users
       ${whereClause}
+      ORDER BY
+        ${sql(orderBy)}
+        ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
       LIMIT
         ${limit}
       OFFSET

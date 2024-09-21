@@ -10,6 +10,8 @@ block content
     .col-12
       form(action="/users", method="get") 
         .form-group 
+          input(type="hidden", name="orderBy", value=orderBy)
+          input(type="hidden", name="orderDir", value=orderDir)
           input(type="text", name="search", value=search, placeholder="Type email and press Enter")
 
       include ../partials/flash
@@ -17,8 +19,23 @@ block content
       table
         thead 
           tr 
-            th Id 
-            th Email
+            th
+              if orderDir === 'ASC'
+                a(href=`/users?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) Id
+              else 
+                a(href=`/users?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) Id
+              
+              if orderBy === 'id'
+                span.order-wrapper= orderDir
+
+            th
+              if orderDir === 'ASC'
+                a(href=`/users?orderBy=email&orderDir=DESC${search ? `&search=${search}` : ''}`) Email
+              else 
+                a(href=`/users?orderBy=email&orderDir=ASC${search ? `&search=${search}` : ''}`) Email
+              
+              if orderBy === 'email'
+                span.order-wrapper= orderDir
         tbody 
           if users.length > 0
             each user in users 
