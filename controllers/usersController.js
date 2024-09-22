@@ -163,9 +163,28 @@ module.exports = {
         return;
       }
 
-      req.flash("info", "User is update.");
+      req.flash("info", "User is updated.");
       res.redirect(`/users/${id}`);
       return;
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  destroy: async (req, res, next) => {
+    const id = req.params.id;
+
+    try {
+      const user = await usersService.destroy(id);
+
+      if (!user) {
+        req.flash("error", "Problem while deleting user.");
+        res.redirect(`/users/${id}`);
+        return;
+      }
+
+      req.flash("info", "User is deleted.");
+      res.redirect("/users");
     } catch (err) {
       next(err);
     }

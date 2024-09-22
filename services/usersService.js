@@ -84,4 +84,14 @@ module.exports = {
       returning id
     `.then(([x]) => x);
   },
+
+  destroy: async (id) => {
+    return await sql`
+      DELETE FROM
+        users
+      WHERE
+        id = ${id}
+      returning id
+    `.then(([x]) => x);
+  },
 };
