@@ -10,12 +10,20 @@ module.exports = {
 
     return await sql`
       SELECT
-        id,
-        email,
-        "createdAt",
-        "updatedAt"
+        u.id,
+        u.email,
+        u."createdAt",
+        u."updatedAt",
+        creator.id AS "createdById",
+        creator.email AS "createdByEmail",
+        updater.id AS "updatedById",
+        updater.email AS "updatedByEmail"
       FROM
-        users
+        users u
+      LEFT JOIN
+        users creator ON u."createdBy" = creator.id
+      LEFT JOIN
+        users updater ON u."updatedBy" = updater.id
       ${whereClause}
       ORDER BY
         ${sql(orderBy)}
@@ -44,15 +52,17 @@ module.exports = {
   },
 
   create: async (userObj) => {
-    const { email, password } = userObj;
+    const { email, password, createdBy } = userObj;
 
     return await sql`
       INSERT INTO users (
         email,
-        password
+        password,
+        "createdBy"
       ) VALUES (
         ${email},
-        ${password}
+        ${password},
+        ${createdBy}
       ) returning id
     `;
   },
@@ -71,7 +81,7 @@ module.exports = {
   },
 
   update: async (userObj) => {
-    const { id, email, password } = userObj;
+    const { id, email, password, updatedBy } = userObj;
 
     return await sql`
       UPDATE
@@ -79,6 +89,7 @@ module.exports = {
       SET
         email = ${email},
         password = ${password},
+        "updatedBy" = ${updatedBy},
         "updatedAt" = ${sql`now()`}
       WHERE
         id = ${id}

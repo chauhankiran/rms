@@ -96,7 +96,11 @@ module.exports = {
     }
 
     try {
-      const userObj = { email, password };
+      const userObj = {
+        email,
+        password,
+        createdBy: req.session.currentUser.id,
+      };
       const user = await usersService.create(userObj);
 
       if (!user) {
@@ -154,7 +158,12 @@ module.exports = {
     }
 
     try {
-      const userObj = { id, email, password };
+      const userObj = {
+        id,
+        email,
+        password,
+        updatedBy: req.session.currentUser.id,
+      };
       const user = await usersService.update(userObj);
 
       if (!user) {
