@@ -6,7 +6,8 @@ const login = async (authOptions) => {
   return await sql`
     SELECT
       id,
-      email
+      email,
+      "isActive"
     FROM
       users
     WHERE

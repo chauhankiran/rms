@@ -61,7 +61,8 @@ module.exports = {
     return await sql`
       SELECT
         id,
-        email
+        email,
+        "isActive"
       FROM
         users
       WHERE
@@ -92,6 +93,19 @@ module.exports = {
       WHERE
         id = ${id}
       returning id
+    `.then(([x]) => x);
+  },
+
+  archive: async (userObj) => {
+    const { id, newUserStatus } = userObj;
+
+    return await sql`
+      UPDATE
+        users
+      SET
+        "isActive" = ${newUserStatus}
+      WHERE
+        id = ${id}
     `.then(([x]) => x);
   },
 };

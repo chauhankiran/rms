@@ -30,6 +30,17 @@ module.exports = {
         return;
       }
 
+      console.log("user: ", user);
+
+      if (!user.isActive) {
+        req.flash(
+          "error",
+          "User is de-activated. Please contact administrator."
+        );
+        res.redirect("/auth/login");
+        return;
+      }
+
       req.session.currentUser = user;
       res.redirect("/");
       return;

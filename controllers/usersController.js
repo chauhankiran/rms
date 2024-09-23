@@ -189,4 +189,27 @@ module.exports = {
       next(err);
     }
   },
+
+  archive: async (req, res, next) => {
+    const id = req.params.id;
+
+    try {
+      const user = await usersService.findOne(id);
+
+      if (!user) {
+        req.flash("error", "User not found.");
+        res.redirect(`/users`);
+        return;
+      }
+
+      const userObj = { id, newUserStatus: !user.isActive };
+      await usersService.archive(userObj);
+
+      req.flash("info", "User status is updated.");
+      res.redirect(`/users/${id}`);
+      return;
+    } catch (err) {
+      next(err);
+    }
+  },
 };

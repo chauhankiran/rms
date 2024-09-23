@@ -9,3 +9,11 @@ block content
       button(type="button", onClick="deleteUser()") Delete user
 
       form(action=`/users/${user.id}?_method=DELETE`, name="deleteUserForm", method="post") 
+
+    .col-12
+      include ../partials/flash
+
+      p User is #{user.isActive ? 'active' : 'de-active' }. Click the button to #{user.isActive ? 'de-active' : 'active' }. 
+        button(type="button", onClick="archiveUser()") #{user.isActive ? 'De-active' : 'Active' } user
+
+      form(action=`/users/${user.id}/archive?_method=PUT`, name="archiveUserForm", method="post") 
