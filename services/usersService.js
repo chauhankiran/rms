@@ -14,6 +14,7 @@ module.exports = {
         u.email,
         u."createdAt",
         u."updatedAt",
+        u."isActive",
         creator.id AS "createdById",
         creator.email AS "createdByEmail",
         updater.id AS "updatedById",

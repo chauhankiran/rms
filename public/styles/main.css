@@ -249,7 +249,7 @@ input[type="password"] {
   display: block;
   width: 100%;
 
-  border: 1px solid #767676;
+  border: 2px solid #767676;
   padding: 8px 12px;
 }
 
@@ -260,7 +260,7 @@ input[type="password"]:hover,
 input[type="password"]:active,
 input[type="password"]:focus-visible {
   outline: unset;
-  border: 1px solid #333;
+  border: 2px solid #000;
 }
 
 /*
@@ -282,7 +282,7 @@ button {
   color: inherit;
   display: inline-block;
 
-  border: 1px solid #767676;
+  border: 2px solid #767676;
   background-color: #efefef;
 }
 input[type="submit"]:hover,
@@ -330,7 +330,7 @@ tbody tr:hover {
 }
 th,
 td {
-  border: 1px solid #333;
+  border: 2px solid #333;
   padding: 8px;
 }
 th {
@@ -417,4 +417,9 @@ td {
 .order-wrapper {
   padding-left: 4px;
   padding-right: 4px;
+}
+.user-archive-status {
+  padding-left: 4px;
+  padding-right: 4px;
+  color: #767676;
 }
