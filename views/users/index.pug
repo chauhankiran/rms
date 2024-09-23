@@ -39,8 +39,25 @@ block content
 
             th Created by
             th Updated by
-            th Created at
-            th Updated at
+
+            th
+              if orderDir === 'ASC'
+                a(href=`/users?orderBy=createdAt&orderDir=DESC${search ? `&search=${search}` : ''}`) Created at
+              else 
+                a(href=`/users?orderBy=createdAt&orderDir=ASC${search ? `&search=${search}` : ''}`) Created at
+              
+              if orderBy === 'createdAt'
+                span.order-wrapper= orderDir
+
+            th
+              if orderDir === 'ASC'
+                a(href=`/users?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) Updated at
+              else 
+                a(href=`/users?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) Updated at
+              
+              if orderBy === 'updatedAt'
+                span.order-wrapper= orderDir
+            
         tbody 
           if users.length > 0
             each user in users 
