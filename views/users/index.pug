@@ -5,6 +5,14 @@ block content
     .col-8 
       h1 #{title} (#{count})
     .col-4.text-end 
+      .dropdown.mr-4 
+        button.dropdown-trigger Actions &#9058;
+        .dropdown-menu
+          .dropdown-content 
+            button.dropdown-item(onclick="activeMultipleUsers()") Active Multiple Users
+            button.dropdown-item(onclick="deActiveMultipleUsers()") De-active Multiple Users
+            a(href="").dropdown-item Delete Multiple Users
+
       a(href="/users/new").btn New user
 
     .col-12
@@ -18,7 +26,8 @@ block content
 
       table
         thead 
-          tr 
+          tr
+            th  
             th
               if orderDir === 'ASC'
                 a(href=`/users?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) Id
@@ -61,7 +70,9 @@ block content
         tbody 
           if users.length > 0
             each user in users 
-              tr 
+              tr
+                td 
+                  input(type="checkbox", name="userId", value= user.id)
                 td
                   a(href=`/users/${user.id}`) #{user.id}
                 td #{user.email}

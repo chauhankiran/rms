@@ -408,6 +408,54 @@ td {
 }
 
 /*
+ * Dropdown.
+ * ============================================================================
+ */
+.dropdown {
+  display: inline-flex;
+  position: relative;
+  vertical-align: top;
+  text-align: left;
+}
+.dropdown-menu {
+  display: none;
+  left: 0;
+  min-width: 10rem;
+  padding-top: 4px;
+  position: absolute;
+  top: 100%;
+  z-index: 20;
+}
+.dropdown-content {
+  background-color: #efefef;
+  border: 2px solid #767676;
+}
+.dropdown-item {
+  display: block;
+  padding-inline-end: 1rem;
+  text-align: inherit;
+  white-space: nowrap;
+  width: 100%;
+  padding: 4px 8px;
+
+  color: inherit;
+  text-decoration: none;
+
+  line-height: 1.5;
+  padding: 4px 1rem;
+  padding-left: 8px;
+}
+button.dropdown-item {
+  border: 0;
+}
+.dropdown-item:hover {
+  background-color: #dbdbdb;
+}
+.dropdown.is-active .dropdown-menu {
+  display: block;
+}
+
+/*
  * Temp.
  * ============================================================================
  */
