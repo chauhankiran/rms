@@ -120,4 +120,18 @@ module.exports = {
         id = ${id}
     `.then(([x]) => x);
   },
+
+  massActive: async (userObj) => {
+    const { userIds, updatedBy } = userObj;
+
+    return await sql`
+      UPDATE
+        users
+      SET
+        "isActive" = true,
+        "updatedBy" = ${updatedBy}
+      WHERE
+        id IN ${sql(userIds)}
+    `;
+  },
 };

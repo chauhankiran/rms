@@ -36,6 +36,8 @@ function activeMultipleUsers() {
   }
 
   if (confirm(`Are you sure you want to active ${count} selected user(s)?`)) {
+    document.querySelector("#userIds").value = selectedUserIds;
+    document.massUserActiveForm.submit();
   } else {
     return false;
   }

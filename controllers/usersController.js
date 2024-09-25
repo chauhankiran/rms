@@ -221,4 +221,19 @@ module.exports = {
       next(err);
     }
   },
+
+  massActionsActive: async (req, res, next) => {
+    const userIds = req.body.userIds;
+    const users = userIds.split(",").map(Number);
+
+    const userObj = { userIds: users, updatedBy: req.session.currentUser.id };
+    try {
+      await usersService.massActive(userObj);
+
+      req.flash("info", "Users are activated.");
+      res.redirect(`/users`);
+    } catch (err) {
+      next(err);
+    }
+  },
 };

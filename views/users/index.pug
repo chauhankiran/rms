@@ -86,6 +86,9 @@ block content
             tr 
               td(colspan=2).text-center No users found.
     
+      form(action="/users/mass-actions/active?_method=PUT", name="massUserActiveForm" method="post") 
+        input(type="hidden", name="userIds", id="userIds" value="")
+
     .col-12 
       if pagination.first
         a(href=pagination.first).btn.mr-4 First

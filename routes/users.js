@@ -10,5 +10,6 @@ router.get("/:id/edit", usersController.edit);
 router.put("/:id", usersController.update);
 router.delete("/:id", usersController.destroy);
 router.put("/:id/archive", usersController.archive);
+router.put("/mass-actions/active", usersController.massActionsActive);
 
 module.exports = router;
