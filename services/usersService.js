@@ -134,4 +134,30 @@ module.exports = {
         id IN ${sql(userIds)}
     `;
   },
+
+  massDeActive: async (userObj) => {
+    const { userIds, updatedBy } = userObj;
+
+    return await sql`
+      UPDATE
+        users
+      SET
+        "isActive" = false,
+        "updatedBy" = ${updatedBy}
+      WHERE
+        id IN ${sql(userIds)}
+    `;
+  },
+
+  massDelete: async (userObj) => {
+    const { userIds } = userObj;
+
+    return await sql`
+      DELETE FROM
+        users
+      WHERE
+        id IN ${sql(userIds)}
+      returning id
+    `.then(([x]) => x);
+  },
 };

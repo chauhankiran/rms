@@ -223,14 +223,44 @@ module.exports = {
   },
 
   massActionsActive: async (req, res, next) => {
-    const userIds = req.body.userIds;
-    const users = userIds.split(",").map(Number);
+    const toActiveUserIds = req.body.toActiveUserIds;
+    const userIds = toActiveUserIds.split(",").map(Number);
 
-    const userObj = { userIds: users, updatedBy: req.session.currentUser.id };
+    const userObj = { userIds, updatedBy: req.session.currentUser.id };
     try {
       await usersService.massActive(userObj);
 
       req.flash("info", "Users are activated.");
+      res.redirect(`/users`);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  massActionsDeActive: async (req, res, next) => {
+    const toDeActiveUserIds = req.body.toDeActiveUserIds;
+    const userIds = toDeActiveUserIds.split(",").map(Number);
+
+    const userObj = { userIds, updatedBy: req.session.currentUser.id };
+    try {
+      await usersService.massDeActive(userObj);
+
+      req.flash("info", "Users are de-activated.");
+      res.redirect(`/users`);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  massActionsDelete: async (req, res, next) => {
+    const deleteUserIds = req.body.deleteUserIds;
+    const userIds = deleteUserIds.split(",").map(Number);
+
+    const userObj = { userIds };
+    try {
+      await usersService.massDelete(userObj);
+
+      req.flash("info", "Users are deleted.");
       res.redirect(`/users`);
     } catch (err) {
       next(err);

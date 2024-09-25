@@ -36,8 +36,56 @@ function activeMultipleUsers() {
   }
 
   if (confirm(`Are you sure you want to active ${count} selected user(s)?`)) {
-    document.querySelector("#userIds").value = selectedUserIds;
+    document.querySelector("#toActiveUserIds").value = selectedUserIds;
     document.massUserActiveForm.submit();
+  } else {
+    return false;
+  }
+}
+
+function deActiveMultipleUsers() {
+  const checkboxes = document.querySelectorAll("input[name='userId']:checked");
+  const selectedUserIds = [];
+
+  checkboxes.forEach((checkbox) => {
+    selectedUserIds.push(checkbox.value);
+  });
+
+  const count = selectedUserIds.length;
+
+  if (count === 0) {
+    alert("Please select user(s) first.");
+    return;
+  }
+
+  if (
+    confirm(`Are you sure you want to de-active ${count} selected user(s)?`)
+  ) {
+    document.querySelector("#toDeActiveUserIds").value = selectedUserIds;
+    document.massUserDeActiveForm.submit();
+  } else {
+    return false;
+  }
+}
+
+function deleteMultipleUsers() {
+  const checkboxes = document.querySelectorAll("input[name='userId']:checked");
+  const selectedUserIds = [];
+
+  checkboxes.forEach((checkbox) => {
+    selectedUserIds.push(checkbox.value);
+  });
+
+  const count = selectedUserIds.length;
+
+  if (count === 0) {
+    alert("Please select user(s) first.");
+    return;
+  }
+
+  if (confirm(`Are you sure you want to delete ${count} selected user(s)?`)) {
+    document.querySelector("#deleteUserIds").value = selectedUserIds;
+    document.massDeleteUsersForm.submit();
   } else {
     return false;
   }

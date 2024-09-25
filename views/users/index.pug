@@ -11,7 +11,7 @@ block content
           .dropdown-content 
             button.dropdown-item(onclick="activeMultipleUsers()") Active Multiple Users
             button.dropdown-item(onclick="deActiveMultipleUsers()") De-active Multiple Users
-            a(href="").dropdown-item Delete Multiple Users
+            button.dropdown-item(onclick="deleteMultipleUsers()") Delete Multiple Users
 
       a(href="/users/new").btn New user
 
@@ -87,7 +87,13 @@ block content
               td(colspan=2).text-center No users found.
     
       form(action="/users/mass-actions/active?_method=PUT", name="massUserActiveForm" method="post") 
-        input(type="hidden", name="userIds", id="userIds" value="")
+        input(type="hidden", name="toActiveUserIds", id="toActiveUserIds" value="")
+      
+      form(action="/users/mass-actions/deactive?_method=PUT", name="massUserDeActiveForm" method="post") 
+        input(type="hidden", name="toDeActiveUserIds", id="toDeActiveUserIds" value="")
+      
+      form(action="/users/mass-actions/delete?_method=DELETE", name="massDeleteUsersForm" method="post") 
+        input(type="hidden", name="deleteUserIds", id="deleteUserIds" value="")
 
     .col-12 
       if pagination.first
