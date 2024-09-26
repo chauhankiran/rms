@@ -4,12 +4,17 @@ const join = require("path").join;
 const postgres = require("postgres");
 
 const seed = async ({ sql, path, before = null }) => {
-  const seeders = fs.readdirSync(path);
+  if (fs.lstatSync(path).isDirectory()) {
+    const seeders = fs.readdirSync(path);
 
-  for await (const seeder of seeders) {
-    before && before(seeder);
+    for await (const seeder of seeders) {
+      before && before(seeder);
 
-    await require(join(path, seeder))(sql);
+      await require(join(path, seeder))(sql);
+    }
+  } else {
+    before && before(path);
+    await require(join(path))(sql);
   }
 };
 
@@ -22,9 +27,16 @@ const sql = postgres({
   password: process.env.DB_PASS,
 });
 
+// Check if we are interested to run only given seeder.
+let path = join(__dirname, "..", "seeders");
+const args = process.argv;
+if (args.length === 3) {
+  path = join(__dirname, "..", "seeders", args[2]);
+}
+
 seed({
   sql,
-  path: join(__dirname, "..", "seeders"),
+  path,
   before: (name) => {
     console.log("Seeding: ", name);
   },
