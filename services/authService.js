@@ -7,6 +7,7 @@ const login = async (authOptions) => {
     SELECT
       id,
       email,
+      "isRequiredToChangePassword",
       "isActive"
     FROM
       users
@@ -30,7 +31,25 @@ const register = async (authOptions) => {
   `.then(([x]) => x);
 };
 
+const reset = async (authObj) => {
+  const { password, updatedBy, id } = authObj;
+
+  return await sql`
+      UPDATE
+        users
+      SET
+        password = ${password},
+        "isRequiredToChangePassword" = false,
+        "updatedBy" = ${updatedBy},
+        "updatedAt" = ${sql`now()`}
+      WHERE
+        id = ${id}
+      returning id
+    `.then(([x]) => x);
+};
+
 module.exports = {
   login,
   register,
+  reset,
 };

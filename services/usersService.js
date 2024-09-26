@@ -60,10 +60,12 @@ module.exports = {
         email,
         password,
         "createdBy"
+        "isRequiredToChangePassword"
       ) VALUES (
         ${email},
         ${password},
-        ${createdBy}
+        ${createdBy},
+        true
       ) returning id
     `;
   },
@@ -90,6 +92,7 @@ module.exports = {
       SET
         email = ${email},
         password = ${password},
+        "isRequiredToChangePassword" = true,
         "updatedBy" = ${updatedBy},
         "updatedAt" = ${sql`now()`}
       WHERE

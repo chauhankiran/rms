@@ -30,8 +30,6 @@ module.exports = {
         return;
       }
 
-      console.log("user: ", user);
-
       if (!user.isActive) {
         req.flash(
           "error",
@@ -42,6 +40,13 @@ module.exports = {
       }
 
       req.session.currentUser = user;
+
+      if (user.isRequiredToChangePassword) {
+        req.flash("info", "Please change the password.");
+        res.redirect("/auth/reset");
+        return;
+      }
+
       res.redirect("/");
       return;
     } catch (err) {
@@ -94,5 +99,36 @@ module.exports = {
       res.redirect("/");
       return;
     });
+  },
+
+  showReset: (req, res, next) => {
+    res.render("auth/reset", { title: "Reset password" });
+  },
+
+  reset: async (req, res, next) => {
+    const { password } = req.body;
+
+    if (!password) {
+      req.flash("error", "Password is required.");
+      res.redirect("/auth/reset");
+      return;
+    }
+
+    console.log("req.session.currentUser: ", req.session.currentUser);
+
+    try {
+      const resetObj = {
+        password,
+        id: req.session.currentUser.id,
+        updatedBy: req.session.currentUser.id,
+      };
+      await authService.reset(resetObj);
+
+      req.flash("info", "Password is updated.");
+      res.redirect("/auth/login");
+      return;
+    } catch (err) {
+      next(err);
+    }
   },
 };
