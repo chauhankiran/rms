@@ -82,7 +82,32 @@ module.exports = {
   new: async (req, res, next) => {
     res.render("admin/companySources/new", { title: "New company sources" });
   },
-  create: async (req, res, next) => {},
+  create: async (req, res, next) => {
+    const { name } = req.body;
+
+    if (!name) {
+      req.flash("error", "Name is required.");
+      res.redirect("/admin/company-sources/new");
+      return;
+    }
+
+    try {
+      const companySourceObj = { name, createdBy: req.session.currentUser.id };
+      const companySource = await companySourceService.create(companySourceObj);
+
+      if (!companySource) {
+        req.flash("error", "Problem while creating a company source.");
+        res.redirect("/admin/company-sources/new");
+        return;
+      }
+
+      req.flash("info", "Company source is created.");
+      res.redirect("/admin/company-sources");
+      return;
+    } catch (err) {
+      next(err);
+    }
+  },
   show: async (req, res, next) => {
     res.render("admin/companySources/show", { title: "Show company sources" });
   },

@@ -50,7 +50,19 @@ module.exports = {
       ${whereClause}
     `.then(([x]) => x);
   },
-  create: async () => {},
+  create: async (companySourceObj) => {
+    const { name, createdBy } = companySourceObj;
+
+    return await sql`
+        INSERT INTO "companySources" (
+          name,
+          "createdBy"
+        ) VALUES (
+          ${name},
+          ${createdBy}
+        ) returning id
+      `;
+  },
   findOne: async () => {},
   update: async () => {},
   destroy: async () => {},
