@@ -77,7 +77,7 @@ block content
                   a(href=`/users/${user.id}`) #{user.id}
                 td #{user.email}
                   if (!user.isActive)
-                    span.user-archive-status (de-active)
+                    span.archive-status (de-active)
                 td #{user.createdByEmail || "-" }
                 td #{user.updatedByEmail || "-" }
                 td #{user.createdAt || "-" }

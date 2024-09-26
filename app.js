@@ -16,6 +16,7 @@ const checkAuth = require("./middleware/checkAuth");
 const homeRoutes = require("./routes/home");
 const authRoutes = require("./routes/auth");
 const usersRoutes = require("./routes/users");
+const adminRoutes = require("./routes/admin");
 
 const app = express();
 
@@ -66,6 +67,7 @@ app.post("/submit", (req, res) => {
 app.use("/", homeRoutes);
 app.use("/auth", authRoutes);
 app.use("/users", checkAuth, usersRoutes);
+app.use("/admin", checkAuth, adminRoutes);
 
 // 404 Error
 app.use((req, res, next) => {
