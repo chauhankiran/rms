@@ -35,6 +35,7 @@ module.exports = {
         ${skip}
     `;
   },
+
   count: async (optionsObj) => {
     const { search } = optionsObj;
 
@@ -94,5 +95,26 @@ module.exports = {
     `.then(([x]) => x);
   },
 
-  destroy: async () => {},
+  destroy: async (id) => {
+    return await sql`
+      DELETE FROM
+        "companySources"
+      WHERE
+        id = ${id}
+      returning id
+    `.then(([x]) => x);
+  },
+
+  archive: async (companySourceObj) => {
+    const { id, newCompanySourceStatus } = companySourceObj;
+
+    return await sql`
+      UPDATE
+        "companySources"
+      SET
+        "isActive" = ${newCompanySourceStatus}
+      WHERE
+        id = ${id}
+    `.then(([x]) => x);
+  },
 };

@@ -79,9 +79,11 @@ module.exports = {
       next(err);
     }
   },
+
   new: async (req, res, next) => {
     res.render("admin/companySources/new", { title: "New company sources" });
   },
+
   create: async (req, res, next) => {
     const { name } = req.body;
 
@@ -108,6 +110,7 @@ module.exports = {
       next(err);
     }
   },
+
   show: async (req, res, next) => {
     const id = req.params.id;
 
@@ -123,6 +126,7 @@ module.exports = {
       next(err);
     }
   },
+
   edit: async (req, res, next) => {
     const id = req.params.id;
 
@@ -138,6 +142,7 @@ module.exports = {
       next(err);
     }
   },
+
   update: async (req, res, next) => {
     const id = req.params.id;
     const { name } = req.body;
@@ -169,5 +174,49 @@ module.exports = {
       next(err);
     }
   },
-  destroy: async (req, res, next) => {},
+
+  destroy: async (req, res, next) => {
+    const id = req.params.id;
+
+    try {
+      const companySource = await companySourceService.destroy(id);
+
+      if (!companySource) {
+        req.flash("error", "Problem while deleting company source.");
+        res.redirect(`/admin/company-sources/${id}`);
+        return;
+      }
+
+      req.flash("info", "Company sources is deleted.");
+      res.redirect("/admin/company-sources");
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  archive: async (req, res, next) => {
+    const id = req.params.id;
+
+    try {
+      const companySource = await companySourceService.findOne(id);
+
+      if (!companySource) {
+        req.flash("error", "Company source not found.");
+        res.redirect(`/admin/company-sources`);
+        return;
+      }
+
+      const companySourceObj = {
+        id,
+        newCompanySourceStatus: !companySource.isActive,
+      };
+      await companySourceService.archive(companySourceObj);
+
+      req.flash("info", "Company source status is updated.");
+      res.redirect(`/admin/company-sources/${id}`);
+      return;
+    } catch (err) {
+      next(err);
+    }
+  },
 };

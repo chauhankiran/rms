@@ -14,6 +14,6 @@ block content
       include ../../partials/flash
 
       p Company source is #{companySource.isActive ? 'active' : 'de-active' }. Click the button to #{companySource.isActive ? 'de-active' : 'active' }. 
-        button(type="button", onClick="archiveUser()") #{companySource.isActive ? 'De-active' : 'Active' } company source
+        button(type="button", onClick="archiveCompanySource()") #{companySource.isActive ? 'De-active' : 'Active' } company source
 
       form(action=`/admin/company-sources/${companySource.id}/archive?_method=PUT`, name="archiveCompanySourceForm", method="post") 
