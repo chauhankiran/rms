@@ -1,5 +1,5 @@
 const express = require("express");
-const companySourcesController = require("../controllers/admin/companySourcesController");
+const companySourcesController = require("../controllers/admin/company-sources-controller");
 
 const router = express.Router();
 

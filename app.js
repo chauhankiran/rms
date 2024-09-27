@@ -11,7 +11,7 @@ const RedisStore = require("connect-redis").default;
 const redis = require("redis");
 const methodOverride = require("method-override");
 
-const checkAuth = require("./middleware/checkAuth");
+const checkAuth = require("./middleware/check-auth");
 
 const homeRoutes = require("./routes/home");
 const authRoutes = require("./routes/auth");

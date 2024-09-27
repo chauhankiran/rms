@@ -1,4 +1,4 @@
-const companySourceService = require("../../services/admin/companySourceService");
+const companySourceService = require("../../services/admin/company-source-service");
 
 module.exports = {
   index: async (req, res, next) => {
