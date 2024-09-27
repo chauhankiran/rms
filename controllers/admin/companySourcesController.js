@@ -109,11 +109,65 @@ module.exports = {
     }
   },
   show: async (req, res, next) => {
-    res.render("admin/companySources/show", { title: "Show company sources" });
+    const id = req.params.id;
+
+    try {
+      const companySource = await companySourceService.findOne(id);
+
+      res.render("admin/companySources/show", {
+        title: companySource.name,
+        companySource,
+      });
+      return;
+    } catch (err) {
+      next(err);
+    }
   },
   edit: async (req, res, next) => {
-    res.render("admin/companySources/edit", { title: "Edit company sources" });
+    const id = req.params.id;
+
+    try {
+      const companySource = await companySourceService.findOne(id);
+
+      res.render("admin/companySources/edit", {
+        title: "Edit company source",
+        companySource,
+      });
+      return;
+    } catch (err) {
+      next(err);
+    }
   },
-  update: async (req, res, next) => {},
+  update: async (req, res, next) => {
+    const id = req.params.id;
+    const { name } = req.body;
+
+    if (!name) {
+      req.flash("error", "Name is required.");
+      res.redirect(`/admin/company-sources/${id}/edit`);
+      return;
+    }
+
+    try {
+      const companySourceObj = {
+        id,
+        name,
+        updatedBy: req.session.currentUser.id,
+      };
+      const companySource = await companySourceService.update(companySourceObj);
+
+      if (!companySource) {
+        req.flash("error", "Problem while updating user.");
+        res.redirect(`/admin/company-sources/${id}`);
+        return;
+      }
+
+      req.flash("info", "Company source is updated.");
+      res.redirect(`/admin/company-sources/${id}`);
+      return;
+    } catch (err) {
+      next(err);
+    }
+  },
   destroy: async (req, res, next) => {},
 };

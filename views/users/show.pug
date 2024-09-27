@@ -2,9 +2,9 @@ extends ../layout
 
 block content
   .row.align-items-center 
-    .col-8 
+    .col-6 
       h1= user.email
-    .col-4.text-end 
+    .col-6.text-end 
       a(href=`/users/${user.id}/edit`).btn.mr-4 Edit user
       button(type="button", onClick="deleteUser()") Delete user
 

@@ -1,8 +1,9 @@
 const dropdown = document.querySelector(".dropdown");
-dropdown.addEventListener("click", function (event) {
-  event.stopPropagation();
-  dropdown.classList.toggle("is-active");
-});
+dropdown &&
+  dropdown.addEventListener("click", function (event) {
+    event.stopPropagation();
+    dropdown.classList.toggle("is-active");
+  });
 
 function deleteUser() {
   if (confirm("Are you sure you want to delete this user?")) {
@@ -11,10 +12,24 @@ function deleteUser() {
     return false;
   }
 }
+function deleteCompanySource() {
+  if (confirm("Are you sure you want to delete this company source?")) {
+    document.deleteCompanySourceForm.submit();
+  } else {
+    return false;
+  }
+}
 
 function archiveUser() {
   if (confirm("Are you sure you want to change the user status?")) {
     document.archiveUserForm.submit();
+  } else {
+    return false;
+  }
+}
+function archiveCompanySource() {
+  if (confirm("Are you sure you want to change the company source status?")) {
+    document.archiveCompanySourceForm.submit();
   } else {
     return false;
   }

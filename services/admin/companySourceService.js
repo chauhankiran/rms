@@ -50,6 +50,7 @@ module.exports = {
       ${whereClause}
     `.then(([x]) => x);
   },
+
   create: async (companySourceObj) => {
     const { name, createdBy } = companySourceObj;
 
@@ -63,7 +64,35 @@ module.exports = {
         ) returning id
       `;
   },
-  findOne: async () => {},
-  update: async () => {},
+
+  findOne: async (id) => {
+    return await sql`
+      SELECT
+        id,
+        name,
+        "isActive"
+      FROM
+        "companySources"
+      WHERE
+        id = ${id}
+    `.then(([x]) => x);
+  },
+
+  update: async (userObj) => {
+    const { id, name, updatedBy } = userObj;
+
+    return await sql`
+      UPDATE
+        "companySources"
+      SET
+        name = ${name},
+        "updatedBy" = ${updatedBy},
+        "updatedAt" = ${sql`now()`}
+      WHERE
+        id = ${id}
+      returning id
+    `.then(([x]) => x);
+  },
+
   destroy: async () => {},
 };
