@@ -8,7 +8,7 @@ const express = require("express");
 const morgan = require("morgan");
 const favicon = require("serve-favicon");
 const RedisStore = require("connect-redis").default;
-const redis = require("redis");
+const redisClient = require("./redis-client");
 const methodOverride = require("method-override");
 
 const checkAuth = require("./middleware/check-auth");
@@ -22,13 +22,6 @@ const app = express();
 
 // Setup
 app.set("view engine", "pug");
-
-// Redis
-const redisClient = redis.createClient({
-  host: process.env.REDIS_HOST,
-  port: +process.env.REDIS_PORT,
-});
-redisClient.connect().catch(console.error);
 
 // Middleware
 app.use(morgan("dev"));
@@ -86,6 +79,18 @@ app.use((err, req, res, next) => {
   res.render("error");
 });
 
-app.listen(3000, () => {
-  console.log(`Application is up and running at http://localhost:3000`);
-});
+// Main
+const main = async () => {
+  await redisClient.connect().catch(console.error);
+
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Application is up and running at http://localhost:3000`);
+  });
+};
+
+if (require.main === module) {
+  main();
+}
+
+module.exports = app;
