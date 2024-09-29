@@ -1,4 +1,4 @@
-const companySourceService = require("../../services/admin/company-source-service");
+const companySourcesService = require("../../services/admin/company-sources-service");
 
 module.exports = {
   index: async (req, res, next) => {
@@ -11,8 +11,8 @@ module.exports = {
 
     try {
       const optionsObj = { search, limit, skip, orderBy, orderDir };
-      const companySources = await companySourceService.find(optionsObj);
-      const { count } = await companySourceService.count(optionsObj);
+      const companySources = await companySourcesService.find(optionsObj);
+      const { count } = await companySourcesService.count(optionsObj);
 
       const pages = Math.ceil(count / limit);
 
@@ -95,7 +95,9 @@ module.exports = {
 
     try {
       const companySourceObj = { name, createdBy: req.session.currentUser.id };
-      const companySource = await companySourceService.create(companySourceObj);
+      const companySource = await companySourcesService.create(
+        companySourceObj
+      );
 
       if (!companySource) {
         req.flash("error", "Problem while creating a company source.");
@@ -115,7 +117,7 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const companySource = await companySourceService.findOne(id);
+      const companySource = await companySourcesService.findOne(id);
 
       res.render("admin/companySources/show", {
         title: companySource.name,
@@ -131,7 +133,7 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const companySource = await companySourceService.findOne(id);
+      const companySource = await companySourcesService.findOne(id);
 
       res.render("admin/companySources/edit", {
         title: "Edit company source",
@@ -159,7 +161,9 @@ module.exports = {
         name,
         updatedBy: req.session.currentUser.id,
       };
-      const companySource = await companySourceService.update(companySourceObj);
+      const companySource = await companySourcesService.update(
+        companySourceObj
+      );
 
       if (!companySource) {
         req.flash("error", "Problem while updating user.");
@@ -179,7 +183,7 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const companySource = await companySourceService.destroy(id);
+      const companySource = await companySourcesService.destroy(id);
 
       if (!companySource) {
         req.flash("error", "Problem while deleting company source.");
@@ -198,7 +202,7 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const companySource = await companySourceService.findOne(id);
+      const companySource = await companySourcesService.findOne(id);
 
       if (!companySource) {
         req.flash("error", "Company source not found.");
@@ -210,7 +214,7 @@ module.exports = {
         id,
         newCompanySourceStatus: !companySource.isActive,
       };
-      await companySourceService.archive(companySourceObj);
+      await companySourcesService.archive(companySourceObj);
 
       req.flash("info", "Company source status is updated.");
       res.redirect(`/admin/company-sources/${id}`);
