@@ -1,6 +1,8 @@
 nav.nav
   .nav-start
     a(href="/").nav-brand Home
+    if currentUser
+      a(href="/companies").nav-item Companies
   .nav-end
     if currentUser
       a(href="/users").nav-item Users

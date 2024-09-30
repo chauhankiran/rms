@@ -15,6 +15,7 @@ const checkAuth = require("./middleware/check-auth");
 
 const homeRoutes = require("./routes/home");
 const authRoutes = require("./routes/auth");
+const companiesRoutes = require("./routes/companies");
 const usersRoutes = require("./routes/users");
 const adminRoutes = require("./routes/admin");
 
@@ -61,6 +62,7 @@ app.use("/", homeRoutes);
 app.use("/auth", authRoutes);
 app.use("/users", checkAuth, usersRoutes);
 app.use("/admin", checkAuth, adminRoutes);
+app.use("/companies", checkAuth, companiesRoutes);
 
 // 404 Error
 app.use((req, res, next) => {

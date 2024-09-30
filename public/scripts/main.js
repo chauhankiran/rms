@@ -20,6 +20,14 @@ function deleteCompanySource() {
   }
 }
 
+function deleteCompany() {
+  if (confirm("Are you sure you want to delete this company?")) {
+    document.deleteCompanyForm.submit();
+  } else {
+    return false;
+  }
+}
+
 function archiveUser() {
   if (confirm("Are you sure you want to change the user status?")) {
     document.archiveUserForm.submit();

@@ -1,0 +1,91 @@
+extends ../layout
+
+block content
+  .row.align-items-center 
+    .col-8 
+      h1 #{title} (#{count})
+    .col-4.text-end 
+      a(href="/companies/new").btn New company
+    
+    .col-12
+      form(action="/companies", method="get") 
+        .form-group 
+          input(type="hidden", name="orderBy", value=orderBy)
+          input(type="hidden", name="orderDir", value=orderDir)
+          input(type="text", name="search", value=search, autofocus=true, placeholder="Type name and press Enter")
+
+      include ../partials/flash
+    
+      table
+        thead 
+          tr
+            th  
+            th
+              if orderDir === 'ASC'
+                a(href=`/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) Id
+              else 
+                a(href=`/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) Id
+              
+              if orderBy === 'id'
+                span.order-wrapper= orderDir
+
+            th
+              if orderDir === 'ASC'
+                a(href=`/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) Name
+              else 
+                a(href=`/companies?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) Name
+              
+              if orderBy === 'name'
+                span.order-wrapper= orderDir
+
+
+            th Company source
+            th Updated by
+
+            th
+              if orderDir === 'ASC'
+                a(href=`/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) Updated at
+              else 
+                a(href=`/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) Updated at
+              
+              if orderBy === 'updatedAt'
+                span.order-wrapper= orderDir
+            
+        tbody 
+          if companies.length > 0
+            each company in companies 
+              tr
+                td 
+                  input(type="checkbox", name="companyId", value= company.id)
+                td
+                  a(href=`/companies/${company.id}`) #{company.id}
+                td #{company.name}
+                  if (!company.isActive)
+                    span.archive-status (de-active)
+                td #{company.companySource || "-" }
+                td #{company.updatedByEmail || "-" }
+                td #{company.updatedAt || "-" } 
+          else 
+            tr 
+              td(colspan=2).text-center No companies found.
+
+    .col-12 
+      if pagination.first
+        a(href=pagination.first).btn.mr-4 First
+      else 
+        button(disabled).btn.mr-4 First
+
+      if pagination.prev
+        a(href=pagination.prev).btn.mr-4 Prev 
+      else 
+        button(disabled).btn.mr-4 Prev
+
+      if pagination.next
+        a(href=pagination.next).btn.mr-4 Next 
+      else 
+        button(disabled).btn.mr-4 Next
+
+      if pagination.last 
+        a(href=pagination.last).btn.mr-4 Last
+      else 
+        button(disabled).btn.mr-4 Last

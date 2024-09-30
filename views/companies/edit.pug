@@ -1,0 +1,39 @@
+extends ../layout
+
+block content
+  .row 
+    .col-6 
+      h1= title
+
+      include ../partials/flash
+
+      form(action=`/companies/${company.id}?_method=PUT`, method="post") 
+        .form-group 
+          label(for="name") Name
+          input(type="text", name="name", value=company.name, placeholder="Google, Inc.", autofocus=true)#name
+      
+        .form-group 
+          label(for="employeeSize") Employee size
+          input(type="text", name="employeeSize", value=company.employeeSize, placeholder="1200", autofocus=true)#employeeSize
+        
+        .form-group 
+          label(for="companySourceId") Company source
+          select(name="companySourceId")#companySourceId
+            for companySource in companySources
+              if companySource.id == company.companySourceId
+                option(value=companySource.id, selected="true") #{companySource.name}
+              else
+                option(value=companySource.id) #{companySource.name}
+
+        .form-group 
+          label(for="description") Description
+          textarea(name="description", cols="30", rows="10", placeholder="Add informative optional description")#description #{company.description}
+
+        
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Update company
+            .col-6.text-end
+              a(href="/companies").btn.is-muted Cancel
+        

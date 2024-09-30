@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href=`/companies/${company.id}/edit`).btn.mr-4 Edit company
+      button(type="button", onClick="deleteCompany()") Delete company
+
+      form(action=`/companies/${company.id}?_method=DELETE`, name="deleteCompanyForm", method="post") 
+
+    .col-12
+      include ../partials/flash
