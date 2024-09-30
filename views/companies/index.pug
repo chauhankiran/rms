@@ -1,4 +1,5 @@
 extends ../layout
+include ../mixins/pagination
 
 block content
   .row.align-items-center 
@@ -70,22 +71,4 @@ block content
               td(colspan=2).text-center No companies found.
 
     .col-12 
-      if pagination.first
-        a(href=pagination.first).btn.mr-4 First
-      else 
-        button(disabled).btn.mr-4 First
-
-      if pagination.prev
-        a(href=pagination.prev).btn.mr-4 Prev 
-      else 
-        button(disabled).btn.mr-4 Prev
-
-      if pagination.next
-        a(href=pagination.next).btn.mr-4 Next 
-      else 
-        button(disabled).btn.mr-4 Next
-
-      if pagination.last 
-        a(href=pagination.last).btn.mr-4 Last
-      else 
-        button(disabled).btn.mr-4 Last
+      +pagination(pagination.first, pagination.prev, pagination.next, pagination.last)

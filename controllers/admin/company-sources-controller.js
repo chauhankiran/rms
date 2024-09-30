@@ -66,7 +66,7 @@ module.exports = {
             : null,
       };
 
-      return res.render("admin/companySources/index", {
+      return res.render("admin/company-sources/index", {
         title: "Company sources",
         companySources,
         pagination,
@@ -81,7 +81,7 @@ module.exports = {
   },
 
   new: async (req, res, next) => {
-    res.render("admin/companySources/new", { title: "New company sources" });
+    res.render("admin/company-sources/new", { title: "New company sources" });
   },
 
   create: async (req, res, next) => {
@@ -119,7 +119,7 @@ module.exports = {
     try {
       const companySource = await companySourcesService.findOne(id);
 
-      res.render("admin/companySources/show", {
+      res.render("admin/company-sources/show", {
         title: companySource.name,
         companySource,
       });
@@ -135,7 +135,7 @@ module.exports = {
     try {
       const companySource = await companySourcesService.findOne(id);
 
-      res.render("admin/companySources/edit", {
+      res.render("admin/company-sources/edit", {
         title: "Edit company source",
         companySource,
       });
