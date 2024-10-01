@@ -1,9 +1,10 @@
 const sql = require("../db/sql");
 
-const login = async (authOptions) => {
-  const { email, password } = authOptions;
+module.exports = {
+  login: async (authOptions) => {
+    const { email, password } = authOptions;
 
-  return await sql`
+    return await sql`
     SELECT
       id,
       email,
@@ -15,12 +16,12 @@ const login = async (authOptions) => {
       email = ${email} and
       password = ${password}
   `.then(([x]) => x);
-};
+  },
 
-const register = async (authOptions) => {
-  const { email, password } = authOptions;
+  register: async (authOptions) => {
+    const { email, password } = authOptions;
 
-  return await sql`
+    return await sql`
     INSERT INTO users (
       email,
       password
@@ -29,12 +30,12 @@ const register = async (authOptions) => {
       ${password}
     ) returning id
   `.then(([x]) => x);
-};
+  },
 
-const reset = async (authObj) => {
-  const { password, updatedBy, id } = authObj;
+  reset: async (authObj) => {
+    const { password, updatedBy, id } = authObj;
 
-  return await sql`
+    return await sql`
       UPDATE
         users
       SET
@@ -46,10 +47,5 @@ const reset = async (authObj) => {
         id = ${id}
       returning id
     `.then(([x]) => x);
-};
-
-module.exports = {
-  login,
-  register,
-  reset,
+  },
 };
