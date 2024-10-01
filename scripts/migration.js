@@ -95,7 +95,7 @@ const sql = postgres({
 
 shift({
   sql,
-  path: join(__dirname, "..", "migrations"),
+  path: join(__dirname, "..", "db", "migrations"),
   before: ({ migrationId, name }) => {
     console.log("Migrating ", migrationId, name);
   },

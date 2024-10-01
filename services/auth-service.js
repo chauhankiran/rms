@@ -1,4 +1,4 @@
-const sql = require("../sql");
+const sql = require("../db/sql");
 
 const login = async (authOptions) => {
   const { email, password } = authOptions;

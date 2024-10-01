@@ -8,7 +8,7 @@ const express = require("express");
 const morgan = require("morgan");
 const favicon = require("serve-favicon");
 const RedisStore = require("connect-redis").default;
-const redisClient = require("./redis-client");
+const redisClient = require("./db/redis-client");
 const methodOverride = require("method-override");
 
 const checkAuth = require("./middleware/check-auth");

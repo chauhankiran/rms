@@ -28,10 +28,10 @@ const sql = postgres({
 });
 
 // Check if we are interested to run only given seeder.
-let path = join(__dirname, "..", "seeders");
+let path = join(__dirname, "..", "db", "seeders");
 const args = process.argv;
 if (args.length === 3) {
-  path = join(__dirname, "..", "seeders", args[2]);
+  path = join(__dirname, "..", "db", "seeders", args[2]);
 }
 
 seed({
