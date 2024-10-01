@@ -1,4 +1,5 @@
 const companySourcesService = require("../../services/admin/company-sources-service");
+const getPagination = require("../../helpers/get-pagination");
 
 module.exports = {
   index: async (req, res, next) => {
@@ -16,55 +17,15 @@ module.exports = {
 
       const pages = Math.ceil(count / limit);
 
-      const pagination = {
-        first:
-          page > 1
-            ? search
-              ? `/admin/company-sources?search=${search}&page=1&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-              : `/admin/company-sources?page=1&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-            : null,
-
-        prev:
-          page > 1
-            ? search
-              ? `/admin/company-sources?search=${search}&page=${
-                  page - 1
-                }&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-              : `/admin/company-sources?page=${page - 1}&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-            : null,
-
-        next:
-          page < pages
-            ? search
-              ? `/admin/company-sources?search=${search}&page=${
-                  page + 1
-                }&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-              : `/admin/company-sources?page=${page + 1}&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-            : null,
-
-        last:
-          page < pages
-            ? search
-              ? `/admin/company-sources?search=${search}&page=${pages}&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-              : `/admin/company-sources?page=${pages}&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-            : null,
-      };
+      const pagination = getPagination({
+        link: "/admin/company-sources",
+        page,
+        pages,
+        search,
+        limit,
+        orderBy,
+        orderDir,
+      });
 
       return res.render("admin/company-sources/index", {
         title: "Company sources",

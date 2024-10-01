@@ -1,4 +1,5 @@
 const usersService = require("../services/users-service");
+const getPagination = require("../helpers/get-pagination");
 
 module.exports = {
   index: async (req, res, next) => {
@@ -16,51 +17,15 @@ module.exports = {
 
       const pages = Math.ceil(count / limit);
 
-      const pagination = {
-        first:
-          page > 1
-            ? search
-              ? `/users?search=${search}&page=1&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-              : `/users?page=1&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-            : null,
-
-        prev:
-          page > 1
-            ? search
-              ? `/users?search=${search}&page=${page - 1}&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-              : `/users?page=${page - 1}&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-            : null,
-
-        next:
-          page < pages
-            ? search
-              ? `/users?search=${search}&page=${page + 1}&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-              : `/users?page=${page + 1}&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-            : null,
-
-        last:
-          page < pages
-            ? search
-              ? `/users?search=${search}&page=${pages}&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-              : `/users?page=${pages}&limit=${limit}${
-                  orderBy ? `&orderBy=${orderBy}&orderDir=${orderDir}` : ""
-                }`
-            : null,
-      };
+      const pagination = getPagination({
+        link: "/users",
+        page,
+        pages,
+        search,
+        limit,
+        orderBy,
+        orderDir,
+      });
 
       return res.render("users/index", {
         title: "Users",
@@ -123,6 +88,12 @@ module.exports = {
     try {
       const user = await usersService.findOne(id);
 
+      if (!user) {
+        req.flash("error", "User not found.");
+        res.redirect("/users");
+        return;
+      }
+
       return res.render("users/show", { title: user.email, user });
     } catch (err) {
       next(err);
@@ -134,6 +105,12 @@ module.exports = {
 
     try {
       const user = await usersService.findOne(id);
+
+      if (!user) {
+        req.flash("error", "User not found.");
+        res.redirect("/users");
+        return;
+      }
 
       return res.render("users/edit", { title: "Edit user", user });
     } catch (err) {
@@ -158,19 +135,21 @@ module.exports = {
     }
 
     try {
+      const user = await usersService.findOne(id);
+
+      if (!user) {
+        req.flash("error", "User not found.");
+        res.redirect("/users");
+        return;
+      }
+
       const userObj = {
         id,
         email,
         password,
         updatedBy: req.session.currentUser.id,
       };
-      const user = await usersService.update(userObj);
-
-      if (!user) {
-        req.flash("error", "Problem while updating user.");
-        res.redirect(`/users/${id}`);
-        return;
-      }
+      await usersService.update(userObj);
 
       req.flash("info", "User is updated.");
       res.redirect(`/users/${id}`);
@@ -184,7 +163,15 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const user = await usersService.destroy(id);
+      const user = await usersService.findOne(id);
+
+      if (!user) {
+        req.flash("error", "User not found.");
+        res.redirect("/users");
+        return;
+      }
+
+      await usersService.destroy(id);
 
       if (!user) {
         req.flash("error", "Problem while deleting user.");
