@@ -36,7 +36,7 @@ describe("Company sources controller", () => {
 
       await controller.index(req, res, next);
 
-      expect(res.render).toHaveBeenCalledWith("admin/companySources/index", {
+      expect(res.render).toHaveBeenCalledWith("admin/company-sources/index", {
         title: "Company sources",
         companySources: mockCompanySources,
         pagination: expect.any(Object),
@@ -51,6 +51,50 @@ describe("Company sources controller", () => {
       companySourcesService.find.mockRejectedValue(new Error("Test error"));
 
       await controller.index(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
+    });
+  });
+
+  describe("create", () => {
+    it("should redirect to new if name is not provided", async () => {
+      await controller.create(req, res, next);
+
+      expect(req.flash).toHaveBeenCalledWith("error", "Name is required.");
+      expect(res.redirect).toHaveBeenCalledWith("/admin/company-sources/new");
+    });
+
+    it("should create a company source and redirect", async () => {
+      req.body.name = "New Source";
+      companySourcesService.create.mockResolvedValue(true);
+
+      await controller.create(req, res, next);
+
+      expect(req.flash).toHaveBeenCalledWith(
+        "info",
+        "Company source is created."
+      );
+      expect(res.redirect).toHaveBeenCalledWith("/admin/company-sources");
+    });
+
+    it("should handle errors during creation", async () => {
+      req.body.name = "New Source";
+      companySourcesService.create.mockResolvedValue(null);
+
+      await controller.create(req, res, next);
+
+      expect(req.flash).toHaveBeenCalledWith(
+        "error",
+        "Problem while creating a company source."
+      );
+      expect(res.redirect).toHaveBeenCalledWith("/admin/company-sources/new");
+    });
+
+    it("should handle errors", async () => {
+      req.body.name = "New Source";
+      companySourcesService.create.mockRejectedValue(new Error("Test error"));
+
+      await controller.create(req, res, next);
 
       expect(next).toHaveBeenCalledWith(expect.any(Error));
     });

@@ -1,7 +1,7 @@
-const sql = require("../../../sql");
+const sql = require("../../../db/sql");
 const companySourcesService = require("../../../services/admin/company-sources-service");
 
-jest.mock("../../../sql");
+jest.mock("../../../db/sql");
 
 describe("Company sources service", () => {
   beforeEach(() => {
@@ -91,6 +91,72 @@ describe("Company sources service", () => {
 
       expect(sql).toHaveBeenCalledWith(expect.not.stringContaining("WHERE"));
       expect(result).toEqual({ count: 0 });
+    });
+  });
+
+  describe("create", () => {
+    it("should create a company source and return its id", async () => {
+      const companySourceObj = { name: "New Source", createdBy: 1 };
+      sql.mockResolvedValue([{ id: 1 }]);
+
+      const result = await companySourcesService.create(companySourceObj);
+
+      expect(sql).toHaveBeenCalled();
+      expect(sql.mock.calls[0][0][0]).toEqual(
+        expect.stringContaining("INSERT INTO")
+      );
+
+      expect(result).toEqual([{ id: 1 }]);
+    });
+  });
+
+  describe("findOne", () => {
+    it("should return a single company source by id", async () => {
+      const id = 1;
+      sql.mockResolvedValue([{ id: 1, name: "Test Source", isActive: true }]);
+
+      const result = await companySourcesService.findOne(id);
+      expect(result).toEqual({ id: 1, name: "Test Source", isActive: true });
+    });
+  });
+
+  describe("update", () => {
+    it("should update a company source", async () => {
+      const userObj = { id: 1, name: "Updated Company", updatedBy: 2 };
+      sql.mockResolvedValue([{ id: 1 }]);
+
+      const result = await companySourcesService.update(userObj);
+      expect(result).toEqual({ id: 1 });
+    });
+  });
+
+  describe("destroy", () => {
+    it("should delete a company source by id", async () => {
+      const id = 1;
+      sql.mockResolvedValue([{ id: 1 }]);
+
+      const result = await companySourcesService.destroy(id);
+      expect(result).toEqual({ id: 1 });
+    });
+  });
+
+  describe("archive", () => {
+    it("should archive a company source", async () => {
+      const companySourceObj = { id: 1, newCompanySourceStatus: false };
+      sql.mockResolvedValue([{ id: 1 }]);
+
+      const result = await companySourcesService.archive(companySourceObj);
+      expect(result).toEqual({ id: 1 });
+    });
+  });
+
+  describe("pluck", () => {
+    it("should return specific columns from company sources", async () => {
+      const columns = ["id", "name"];
+      sql.mockResolvedValue([{ id: 1, name: "Test Source" }]);
+
+      const result = await companySourcesService.pluck(columns);
+      expect(result).toEqual([{ id: 1, name: "Test Source" }]);
     });
   });
 });

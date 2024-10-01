@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("../app");
-const redisClient = require("../redis-client");
+const redisClient = require("../db/redis-client");
 
 beforeAll(async () => {
   server = app.listen(3001);
