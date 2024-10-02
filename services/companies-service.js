@@ -82,16 +82,29 @@ module.exports = {
   findOne: async (id) => {
     return await sql`
       SELECT
-        id,
-        name,
-        "employeeSize",
-        description,
-        "companySourceId",
-        "isActive"
+        c.id,
+        c.name,
+        c."employeeSize",
+        c.description,
+        c."isActive",
+        c."companySourceId",
+        cs."name" AS "companySource",
+        c."createdAt",
+        c."updatedAt",
+        creator.id AS "createdById",
+        creator.email AS "createdByEmail",
+        updater.id AS "updatedById",
+        updater.email AS "updatedByEmail"
       FROM
-        companies
+        companies c
+      LEFT JOIN
+        users creator ON c."createdBy" = creator.id
+      LEFT JOIN
+        users updater ON c."updatedBy" = updater.id
+      LEFT JOIN
+        "companySources" cs ON c."companySourceId" = cs.id
       WHERE
-        id = ${id}
+        c.id = ${id}
     `.then(([x]) => x);
   },
 

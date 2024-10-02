@@ -5,10 +5,50 @@ block content
     .col-6 
       h1= title
     .col-6.text-end 
-      a(href=`/companies/${company.id}/edit`).btn.mr-4 Edit company
-      button(type="button", onClick="deleteCompany()") Delete company
-
-      form(action=`/companies/${company.id}?_method=DELETE`, name="deleteCompanyForm", method="post") 
+      a(href="/companies").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu
+          .dropdown-content 
+            a(href=`/companies/${company.id}/edit`).dropdown-item Edit company
+            button.dropdown-item(onclick="deleteCompany()") Delete company 
 
     .col-12
       include ../partials/flash
+
+    .col-12 
+      .row 
+        .col-12.mb-4
+          label(for="name").field-name Name 
+          span.field-value #{company.name}
+
+        .col-12.mb-4
+          label(for="companySourceId").field-name Company source
+          span.field-value #{company.companySource}
+
+        .col-12.mb-4
+          label(for="employeeSize").field-name Employee size
+          span.field-value #{company.employeeSize}
+
+        .col-12.mb-4
+          label(for="description").field-name Description
+          span.field-value #{company.description || "-"}
+        
+        .col-6.mb-4
+          label(for="createdAt").field-name Created at
+          span.field-value #{company.createdAt || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedAt").field-name Updated at
+          span.field-value #{company.updatedAt || "-"}
+
+        .col-6.mb-4
+          label(for="createdBy").field-name Created by
+          span.field-value #{company.createdByEmail || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedBy").field-name Updated by
+          span.field-value #{company.updatedByEmail || "-"}
+
+
+      form(action=`/companies/${company.id}?_method=DELETE`, name="deleteCompanyForm", method="post")

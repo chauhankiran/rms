@@ -93,7 +93,7 @@ module.exports = {
         return;
       }
 
-      return res.render("companies/show", { title: company.name, company });
+      return res.render("companies/show", { title: "Show company", company });
     } catch (err) {
       next(err);
     }
