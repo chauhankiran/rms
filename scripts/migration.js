@@ -13,7 +13,7 @@ const shift = async ({
   const migrations = fs
     .readdirSync(path)
     .filter(
-      (x) => fs.statSync(join(path, x)).isDirectory() && x.match(/^[0-9]{5}_/)
+      (x) => fs.statSync(join(path, x)).isDirectory() && x.match(/^[0-9]{5}_/),
     )
     .sort()
     .map((x) => ({
@@ -79,7 +79,7 @@ const shift = async ({
         "createdAt" timestamp with time zone not null default now(),
         name text
       )
-    `
+    `,
     );
   }
 };

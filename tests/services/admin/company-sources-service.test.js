@@ -34,7 +34,7 @@ describe("Company sources service", () => {
 
       expect(sql).toHaveBeenCalled();
       expect(sql.mock.calls[0][0][0]).toEqual(
-        expect.stringContaining("WHERE name iLIKE")
+        expect.stringContaining("WHERE name iLIKE"),
       );
 
       expect(result).toEqual(mockResults);
@@ -77,7 +77,7 @@ describe("Company sources service", () => {
 
       expect(sql).toHaveBeenCalled();
       expect(sql.mock.calls[0][0][0]).toEqual(
-        expect.stringContaining("WHERE name iLIKE")
+        expect.stringContaining("WHERE name iLIKE"),
       );
 
       expect(result).toEqual({ count: 1 });
@@ -103,7 +103,7 @@ describe("Company sources service", () => {
 
       expect(sql).toHaveBeenCalled();
       expect(sql.mock.calls[0][0][0]).toEqual(
-        expect.stringContaining("INSERT INTO")
+        expect.stringContaining("INSERT INTO"),
       );
 
       expect(result).toEqual([{ id: 1 }]);

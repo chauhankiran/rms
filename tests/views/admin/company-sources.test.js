@@ -5,7 +5,7 @@ describe("Render company sources listing template", () => {
 
   beforeAll(() => {
     compiledTemplate = pug.compileFile(
-      "./views/admin/company-sources/index.pug"
+      "./views/admin/company-sources/index.pug",
     );
   });
 

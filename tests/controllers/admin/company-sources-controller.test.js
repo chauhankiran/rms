@@ -72,7 +72,7 @@ describe("Company sources controller", () => {
 
       expect(req.flash).toHaveBeenCalledWith(
         "info",
-        "Company source is created."
+        "Company source is created.",
       );
       expect(res.redirect).toHaveBeenCalledWith("/admin/company-sources");
     });
@@ -85,7 +85,7 @@ describe("Company sources controller", () => {
 
       expect(req.flash).toHaveBeenCalledWith(
         "error",
-        "Problem while creating a company source."
+        "Problem while creating a company source.",
       );
       expect(res.redirect).toHaveBeenCalledWith("/admin/company-sources/new");
     });

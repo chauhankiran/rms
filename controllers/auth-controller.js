@@ -33,7 +33,7 @@ module.exports = {
       if (!user.isActive) {
         req.flash(
           "error",
-          "User is de-activated. Please contact administrator."
+          "User is de-activated. Please contact administrator.",
         );
         res.redirect("/auth/login");
         return;

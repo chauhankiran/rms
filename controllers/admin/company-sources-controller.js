@@ -56,9 +56,8 @@ module.exports = {
 
     try {
       const companySourceObj = { name, createdBy: req.session.currentUser.id };
-      const companySource = await companySourcesService.create(
-        companySourceObj
-      );
+      const companySource =
+        await companySourcesService.create(companySourceObj);
 
       if (!companySource) {
         req.flash("error", "Problem while creating a company source.");
@@ -122,9 +121,8 @@ module.exports = {
         name,
         updatedBy: req.session.currentUser.id,
       };
-      const companySource = await companySourcesService.update(
-        companySourceObj
-      );
+      const companySource =
+        await companySourcesService.update(companySourceObj);
 
       if (!companySource) {
         req.flash("error", "Problem while updating user.");

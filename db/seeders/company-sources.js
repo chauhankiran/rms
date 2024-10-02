@@ -1,5 +1,4 @@
 const companySources = async (sql) => {
-
   // None.
   const result1 = await sql`
     INSERT INTO "companySources" (
