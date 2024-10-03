@@ -56,14 +56,7 @@ module.exports = {
 
     try {
       const companySourceObj = { name, createdBy: req.session.currentUser.id };
-      const companySource =
-        await companySourcesService.create(companySourceObj);
-
-      if (!companySource) {
-        req.flash("error", "Problem while creating a company source.");
-        res.redirect("/admin/company-sources/new");
-        return;
-      }
+      await companySourcesService.create(companySourceObj);
 
       req.flash("info", "Company source is created.");
       res.redirect("/admin/company-sources");
@@ -79,8 +72,14 @@ module.exports = {
     try {
       const companySource = await companySourcesService.findOne(id);
 
+      if (!companySource) {
+        req.flash("error", "Company source not found.");
+        res.redirect("/admin/company-sources");
+        return;
+      }
+
       res.render("admin/company-sources/show", {
-        title: companySource.name,
+        title: "Show company source",
         companySource,
       });
       return;

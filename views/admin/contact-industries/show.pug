@@ -16,9 +16,31 @@ block content
     .col-12
       include ../../partials/flash
 
-      p Contact industry is #{contactIndustry.isActive ? 'active' : 'de-active' }. Click the button to #{contactIndustry.isActive ? 'de-active' : 'active' }. 
-        button(type="button", onClick="archiveContactIndustry()") #{contactIndustry.isActive ? 'De-active' : 'Active' } contact industry
+    .col-12 
+      .row 
+        .col-12.mb-4
+          label(for="name").field-name Name 
+          span.field-value #{contactIndustry.name}
 
-      form(action=`/admin/contact-industries/${contactIndustry.id}/archive?_method=PUT`, name="archiveContactIndustryForm", method="post") 
+        .col-12.mb-4
+          label(for="contactIndustryId").field-name Is active
+          span.field-value #{contactIndustry.isActive ? 'Yes' : 'No'}
+
+        .col-6.mb-4
+          label(for="createdAt").field-name Created at
+          span.field-value #{contactIndustry.createdAt || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedAt").field-name Updated at
+          span.field-value #{contactIndustry.updatedAt || "-"}
+
+        .col-6.mb-4
+          label(for="createdBy").field-name Created by
+          span.field-value #{contactIndustry.createdByEmail || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedBy").field-name Updated by
+          span.field-value #{contactIndustry.updatedByEmail || "-"}
+
 
       form(action=`/admin/contact-industries/${contactIndustry.id}?_method=DELETE`, name="deleteContactIndustryForm", method="post") 

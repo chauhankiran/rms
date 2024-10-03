@@ -16,9 +16,31 @@ block content
     .col-12
       include ../../partials/flash
 
-      p Company source is #{companySource.isActive ? 'active' : 'de-active' }. Click the button to #{companySource.isActive ? 'de-active' : 'active' }. 
-        button(type="button", onClick="archiveCompanySource()") #{companySource.isActive ? 'De-active' : 'Active' } company source
+    .col-12 
+      .row 
+        .col-12.mb-4
+          label(for="name").field-name Name 
+          span.field-value #{companySource.name}
 
-      form(action=`/admin/company-sources/${companySource.id}/archive?_method=PUT`, name="archiveCompanySourceForm", method="post") 
+        .col-12.mb-4
+          label(for="companySourceId").field-name Is active
+          span.field-value #{companySource.isActive ? 'Yes' : 'No'}
+
+        .col-6.mb-4
+          label(for="createdAt").field-name Created at
+          span.field-value #{companySource.createdAt || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedAt").field-name Updated at
+          span.field-value #{companySource.updatedAt || "-"}
+
+        .col-6.mb-4
+          label(for="createdBy").field-name Created by
+          span.field-value #{companySource.createdByEmail || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedBy").field-name Updated by
+          span.field-value #{companySource.updatedByEmail || "-"}
+
 
       form(action=`/admin/company-sources/${companySource.id}?_method=DELETE`, name="deleteCompanySourceForm", method="post") 
