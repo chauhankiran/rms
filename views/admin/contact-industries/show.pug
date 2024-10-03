@@ -11,6 +11,8 @@ block content
         .dropdown-menu 
           .dropdown-content 
             a(href=`/admin/contact-industries/${contactIndustry.id}/edit`).dropdown-item Edit contact industry
+            button(type="button", onClick="activeContactIndustry()").dropdown-item Active contact industry
+            button(type="button", onClick="archiveContactIndustry()").dropdown-item Archive contact industry
             button(type="button", onClick="deleteContactIndustry()").dropdown-item Delete contact industry
 
     .col-12
@@ -20,11 +22,9 @@ block content
       .row 
         .col-12.mb-4
           label(for="name").field-name Name 
-          span.field-value #{contactIndustry.name}
-
-        .col-12.mb-4
-          label(for="contactIndustryId").field-name Is active
-          span.field-value #{contactIndustry.isActive ? 'Yes' : 'No'}
+          span.field-value #{contactIndustry.name} 
+            if !contactIndustry.isActive 
+              span.archive-status (de-active)
 
         .col-6.mb-4
           label(for="createdAt").field-name Created at
@@ -44,3 +44,7 @@ block content
 
 
       form(action=`/admin/contact-industries/${contactIndustry.id}?_method=DELETE`, name="deleteContactIndustryForm", method="post") 
+
+      form(action=`/admin/contact-industries/${contactIndustry.id}/active?_method=PUT`, name="activeContactIndustryForm", method="post") 
+
+      form(action=`/admin/contact-industries/${contactIndustry.id}/archive?_method=PUT`, name="archiveContactIndustryForm", method="post") 

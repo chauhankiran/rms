@@ -164,19 +164,37 @@ module.exports = {
 
       if (!companySource) {
         req.flash("error", "Company source not found.");
-        res.redirect(`/admin/company-sources`);
+        res.redirect("/admin/company-sources");
         return;
       }
 
-      const companySourceObj = {
-        id,
-        newCompanySourceStatus: !companySource.isActive,
-      };
+      const companySourceObj = { id, updatedBy: req.session.currentUser.id };
       await companySourcesService.archive(companySourceObj);
 
-      req.flash("info", "Company source status is updated.");
+      req.flash("info", "Company source is archived.");
       res.redirect(`/admin/company-sources/${id}`);
-      return;
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  active: async (req, res, next) => {
+    const id = req.params.id;
+
+    try {
+      const companySource = await companySourcesService.findOne(id);
+
+      if (!companySource) {
+        req.flash("error", "Company source not found.");
+        res.redirect("/admin/company-sources");
+        return;
+      }
+
+      const companySourceObj = { id, updatedBy: req.session.currentUser.id };
+      await companySourcesService.active(companySourceObj);
+
+      req.flash("info", "Company source is activated.");
+      res.redirect(`/admin/company-sources/${id}`);
     } catch (err) {
       next(err);
     }

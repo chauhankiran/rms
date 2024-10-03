@@ -12,6 +12,7 @@ router.get("/company-sources/:id/edit", companySourcesController.edit);
 router.put("/company-sources/:id", companySourcesController.update);
 router.delete("/company-sources/:id", companySourcesController.destroy);
 router.put("/company-sources/:id/archive", companySourcesController.archive);
+router.put("/company-sources/:id/active", companySourcesController.active);
 
 router.get("/contact-industries", contactIndustriesController.index);
 router.get("/contact-industries/new", contactIndustriesController.new);
@@ -22,11 +23,11 @@ router.put("/contact-industries/:id", contactIndustriesController.update);
 router.delete("/contact-industries/:id", contactIndustriesController.destroy);
 router.put(
   "/contact-industries/:id/archive",
-  contactIndustriesController.archive,
+  contactIndustriesController.archive
 );
 router.put(
   "/contact-industries/:id/active",
-  contactIndustriesController.active,
+  contactIndustriesController.active
 );
 
 module.exports = router;

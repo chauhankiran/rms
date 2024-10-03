@@ -89,8 +89,8 @@ module.exports = {
     `.then(([x]) => x);
   },
 
-  update: async (userObj) => {
-    const { id, name, updatedBy } = userObj;
+  update: async (companySourceObj) => {
+    const { id, name, updatedBy } = companySourceObj;
 
     return await sql`
       UPDATE
@@ -116,15 +116,34 @@ module.exports = {
   },
 
   archive: async (companySourceObj) => {
-    const { id, newCompanySourceStatus } = companySourceObj;
+    const { id, updatedBy } = companySourceObj;
 
     return await sql`
       UPDATE
         "companySources"
       SET
-        "isActive" = ${newCompanySourceStatus}
+        "isActive" = false,
+        "updatedBy" = ${updatedBy},
+        "updatedAt" = ${sql`now()`}
       WHERE
         id = ${id}
+      returning id
+    `.then(([x]) => x);
+  },
+
+  active: async (companySourceObj) => {
+    const { id, updatedBy } = companySourceObj;
+
+    return await sql`
+      UPDATE
+        "companySources"
+      SET
+        "isActive" = true,
+        "updatedBy" = ${updatedBy},
+        "updatedAt" = ${sql`now()`}
+      WHERE
+        id = ${id}
+      returning id
     `.then(([x]) => x);
   },
 

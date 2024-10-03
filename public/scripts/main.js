@@ -12,23 +12,10 @@ function deleteUser() {
     return false;
   }
 }
-function deleteCompanySource() {
-  if (confirm("Are you sure you want to delete this company source?")) {
-    document.deleteCompanySourceForm.submit();
-  } else {
-    return false;
-  }
-}
+
 function deleteCompany() {
   if (confirm("Are you sure you want to delete this company?")) {
     document.deleteCompanyForm.submit();
-  } else {
-    return false;
-  }
-}
-function deleteContactIndustry() {
-  if (confirm("Are you sure you want to delete this contact industry?")) {
-    document.deleteContactIndustryForm.submit();
   } else {
     return false;
   }
@@ -41,16 +28,52 @@ function archiveUser() {
     return false;
   }
 }
+
+/**
+ * Company source
+ */
+function activeCompanySource() {
+  if (confirm("Are you sure you want to active company source?")) {
+    document.activeCompanySourceForm.submit();
+  } else {
+    return false;
+  }
+}
 function archiveCompanySource() {
-  if (confirm("Are you sure you want to change the company source status?")) {
+  if (confirm("Are you sure you want to archive company source?")) {
     document.archiveCompanySourceForm.submit();
   } else {
     return false;
   }
 }
+function deleteCompanySource() {
+  if (confirm("Are you sure you want to delete company source?")) {
+    document.deleteCompanySourceForm.submit();
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Contact industry
+ */
+function activeContactIndustry() {
+  if (confirm("Are you sure you want to active contact industry?")) {
+    document.activeContactIndustryForm.submit();
+  } else {
+    return false;
+  }
+}
 function archiveContactIndustry() {
-  if (confirm("Are you sure you want to change the company source status?")) {
+  if (confirm("Are you sure you want to archive contact industry?")) {
     document.archiveContactIndustryForm.submit();
+  } else {
+    return false;
+  }
+}
+function deleteContactIndustry() {
+  if (confirm("Are you sure you want to delete contact industry?")) {
+    document.deleteContactIndustryForm.submit();
   } else {
     return false;
   }

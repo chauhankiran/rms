@@ -11,6 +11,8 @@ block content
         .dropdown-menu 
           .dropdown-content 
             a(href=`/admin/company-sources/${companySource.id}/edit`).dropdown-item Edit company source
+            button(type="button", onClick="activeCompanySource()").dropdown-item Active company source
+            button(type="button", onClick="archiveCompanySource()").dropdown-item Archive company source
             button(type="button", onClick="deleteCompanySource()").dropdown-item Delete company source
 
     .col-12
@@ -21,10 +23,8 @@ block content
         .col-12.mb-4
           label(for="name").field-name Name 
           span.field-value #{companySource.name}
-
-        .col-12.mb-4
-          label(for="companySourceId").field-name Is active
-          span.field-value #{companySource.isActive ? 'Yes' : 'No'}
+            if !companySource.isActive 
+              span.archive-status (de-active)
 
         .col-6.mb-4
           label(for="createdAt").field-name Created at
@@ -44,3 +44,7 @@ block content
 
 
       form(action=`/admin/company-sources/${companySource.id}?_method=DELETE`, name="deleteCompanySourceForm", method="post") 
+
+      form(action=`/admin/company-sources/${companySource.id}/active?_method=PUT`, name="activeCompanySourceForm", method="post") 
+
+      form(action=`/admin/company-sources/${companySource.id}/archive?_method=PUT`, name="archiveCompanySourceForm", method="post") 
