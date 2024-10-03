@@ -19,10 +19,16 @@ function deleteCompanySource() {
     return false;
   }
 }
-
 function deleteCompany() {
   if (confirm("Are you sure you want to delete this company?")) {
     document.deleteCompanyForm.submit();
+  } else {
+    return false;
+  }
+}
+function deleteContactIndustry() {
+  if (confirm("Are you sure you want to delete this contact industry?")) {
+    document.deleteContactIndustryForm.submit();
   } else {
     return false;
   }
@@ -38,6 +44,13 @@ function archiveUser() {
 function archiveCompanySource() {
   if (confirm("Are you sure you want to change the company source status?")) {
     document.archiveCompanySourceForm.submit();
+  } else {
+    return false;
+  }
+}
+function archiveContactIndustry() {
+  if (confirm("Are you sure you want to change the company source status?")) {
+    document.archiveContactIndustryForm.submit();
   } else {
     return false;
   }

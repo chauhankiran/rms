@@ -74,7 +74,7 @@ module.exports = {
         return;
       }
 
-      req.flash("info", "Account is created.");
+      req.flash("info", "User is created.");
       res.redirect("/users");
       return;
     } catch (err) {

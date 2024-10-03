@@ -1,0 +1,24 @@
+extends ../../layout
+
+block content 
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/admin/contact-industries").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu 
+          .dropdown-content 
+            a(href=`/admin/contact-industries/${contactIndustry.id}/edit`).dropdown-item Edit contact industry
+            button(type="button", onClick="deleteContactIndustry()").dropdown-item Delete contact industry
+
+    .col-12
+      include ../../partials/flash
+
+      p Contact industry is #{contactIndustry.isActive ? 'active' : 'de-active' }. Click the button to #{contactIndustry.isActive ? 'de-active' : 'active' }. 
+        button(type="button", onClick="archiveContactIndustry()") #{contactIndustry.isActive ? 'De-active' : 'Active' } contact industry
+
+      form(action=`/admin/contact-industries/${contactIndustry.id}/archive?_method=PUT`, name="archiveContactIndustryForm", method="post") 
+
+      form(action=`/admin/contact-industries/${contactIndustry.id}?_method=DELETE`, name="deleteContactIndustryForm", method="post") 

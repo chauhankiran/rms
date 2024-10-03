@@ -76,6 +76,7 @@ module.exports = {
 
       req.flash("info", "Company is created.");
       res.redirect("/companies");
+      return;
     } catch (err) {
       next(err);
     }

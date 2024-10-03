@@ -6,14 +6,14 @@ const postgres = require("postgres");
 // Copied from https://github.com/porsager/postgres-shift.
 const shift = async ({
   sql,
-  path = join(process.cwd(), "migrations"),
+  path = join(process.cwd(), "db", "migrations"),
   before = null,
   after = null,
 }) => {
   const migrations = fs
     .readdirSync(path)
     .filter(
-      (x) => fs.statSync(join(path, x)).isDirectory() && x.match(/^[0-9]{5}_/),
+      (x) => fs.statSync(join(path, x)).isDirectory() && x.match(/^[0-9]{5}-/)
     )
     .sort()
     .map((x) => ({
@@ -79,7 +79,7 @@ const shift = async ({
         "createdAt" timestamp with time zone not null default now(),
         name text
       )
-    `,
+    `
     );
   }
 };
