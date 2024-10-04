@@ -1,0 +1,47 @@
+extends ../layout
+
+block content
+  .row 
+    .col-6 
+      h1= title
+
+      include ../partials/flash
+
+      form(action=`/contacts/${contact.id}?_method=PUT`, method="post") 
+        .form-group 
+          label(for="prefix") Prefix
+          input(type="text", name="prefix", value=contact.prefix, placeholder="Mr.", autofocus=true)#prefix
+      
+        .form-group 
+          label(for="firstName") First name
+          input(type="text", name="firstName", value=contact.firstName, placeholder="Kai", autofocus=true)#firstName
+
+        .form-group 
+          label(for="lastName") Last name
+          input(type="text", name="lastName", value=contact.lastName, placeholder="Kai", autofocus=true)#lastName
+
+        .form-group 
+          label(for="annualRevenue") Annual revenue
+          input(type="text", name="annualRevenue", value=contact.annualRevenue, placeholder="600000", autofocus=true)#annualRevenue
+        
+        .form-group 
+          label(for="contactIndustryId") Contact industry
+          select(name="contactIndustryId")#contactIndustryId
+            for contactIndustry in contactIndustries
+              if contactIndustry.id == contact.contactIndustryId
+                option(value=contactIndustry.id, selected="true") #{contactIndustry.name}
+              else
+                option(value=contactIndustry.id) #{contactIndustry.name}
+
+        .form-group 
+          label(for="description") Description
+          textarea(name="description", cols="30", rows="10", placeholder="Add informative optional description")#description #{contact.description}
+
+        
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Update contact
+            .col-6.text-end
+              a(href="/contacts").btn.is-muted Cancel
+        

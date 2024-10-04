@@ -1,0 +1,72 @@
+extends ../layout
+include ../mixins/pagination
+
+block content
+  .row.align-items-center 
+    .col-8 
+      h1 #{title} (#{count})
+    .col-4.text-end 
+      a(href="/contacts/new").btn New contact
+    
+    .col-12
+      form(action="/contacts", method="get") 
+        .form-group 
+          input(type="hidden", name="orderBy", value=orderBy)
+          input(type="hidden", name="orderDir", value=orderDir)
+          input(type="text", name="search", value=search, autofocus=true, placeholder="Type last name and press Enter")
+
+      include ../partials/flash
+    
+      table
+        thead 
+          tr
+            th  
+            th
+              if orderDir === 'ASC'
+                a(href=`/contacts?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) Id
+              else 
+                a(href=`/contacts?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) Id
+              
+              if orderBy === 'id'
+                span.order-wrapper= orderDir
+
+            th
+              if orderDir === 'ASC'
+                a(href=`/contacts?orderBy=lastName&orderDir=DESC${search ? `&search=${search}` : ''}`) Name
+              else 
+                a(href=`/contacts?orderBy=lastName&orderDir=ASC${search ? `&search=${search}` : ''}`) Name
+              
+              if orderBy === 'lastName'
+                span.order-wrapper= orderDir
+
+
+            th Contact industry
+            th Updated by
+
+            th
+              if orderDir === 'ASC'
+                a(href=`/contacts?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) Updated at
+              else 
+                a(href=`/contacts?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) Updated at
+              
+              if orderBy === 'updatedAt'
+                span.order-wrapper= orderDir
+            
+        tbody 
+          if contacts.length > 0
+            each contact in contacts 
+              tr
+                td 
+                  input(type="checkbox", name="contactId", value= contact.id)
+                td
+                  a(href=`/contacts/${contact.id}`) #{contact.id}
+                td #{contact.prefix + " " + contact.firstName + " " + contact.lastName}
+                td #{contact.contactIndustry || "-" }
+                td #{contact.updatedByEmail || "-" }
+                td #{contact.updatedAt || "-" } 
+          else 
+            tr 
+              td(colspan=6).text-center No contacts found.
+
+    .col-12 
+      +pagination(pagination.first, pagination.prev, pagination.next, pagination.last)

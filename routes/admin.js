@@ -23,11 +23,11 @@ router.put("/contact-industries/:id", contactIndustriesController.update);
 router.delete("/contact-industries/:id", contactIndustriesController.destroy);
 router.put(
   "/contact-industries/:id/archive",
-  contactIndustriesController.archive
+  contactIndustriesController.archive,
 );
 router.put(
   "/contact-industries/:id/active",
-  contactIndustriesController.active
+  contactIndustriesController.active,
 );
 
 module.exports = router;

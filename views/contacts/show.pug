@@ -1,0 +1,62 @@
+extends ../layout
+
+block content
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/contacts").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu
+          .dropdown-content 
+            a(href=`/contacts/${contact.id}/edit`).dropdown-item Edit contact
+            button.dropdown-item(onclick="deleteContact()") Delete contact
+
+    .col-12
+      include ../partials/flash
+
+    .col-12 
+      .row 
+        .col-12.mb-4
+          label(for="prefix").field-name Prefix 
+          span.field-value #{contact.prefix}
+
+        .col-12.mb-4
+          label(for="firstName").field-name First name 
+          span.field-value #{contact.firstName}
+        
+        .col-12.mb-4
+          label(for="lastName").field-name Last name 
+          span.field-value #{contact.lastName}
+
+        .col-12.mb-4
+          label(for="annualRevenue").field-name Annual revenue
+          span.field-value #{contact.annualRevenue}
+
+        .col-12.mb-4
+          label(for="contactIndustry").field-name Contact industry
+          span.field-value #{contact.contactIndustry}
+
+        .col-12.mb-4
+          label(for="description").field-name Description
+          span.field-value #{contact.description || "-"}
+        
+        .col-6.mb-4
+          label(for="createdAt").field-name Created at
+          span.field-value #{contact.createdAt || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedAt").field-name Updated at
+          span.field-value #{contact.updatedAt || "-"}
+
+        .col-6.mb-4
+          label(for="createdBy").field-name Created by
+          span.field-value #{contact.createdByEmail || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedBy").field-name Updated by
+          span.field-value #{contact.updatedByEmail || "-"}
+
+
+      form(action=`/contacts/${contact.id}?_method=DELETE`, name="deleteContactForm", method="post")

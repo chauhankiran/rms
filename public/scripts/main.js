@@ -21,6 +21,14 @@ function deleteCompany() {
   }
 }
 
+function deleteContact() {
+  if (confirm("Are you sure you want to delete this contact?")) {
+    document.deleteContactForm.submit();
+  } else {
+    return false;
+  }
+}
+
 function archiveUser() {
   if (confirm("Are you sure you want to change the user status?")) {
     document.archiveUserForm.submit();
