@@ -1,6 +1,6 @@
 const pug = require("pug");
 
-describe("Render company sources listing template", () => {
+describe("Render company source index template", () => {
   let compiledTemplate;
 
   beforeAll(() => {
@@ -11,7 +11,7 @@ describe("Render company sources listing template", () => {
 
   it("should renders the title and count correctly", () => {
     const html = compiledTemplate({
-      title: "Company Sources",
+      title: "Company sources",
       count: 5,
       orderBy: "id",
       orderDir: "ASC",
@@ -22,7 +22,7 @@ describe("Render company sources listing template", () => {
       error: [],
     });
 
-    expect(html).toContain("<h1>Company Sources (5)</h1>");
+    expect(html).toContain("<h1>Company sources (5)</h1>");
   });
 
   it('should renders "No company sources found" when companySources is empty', () => {
