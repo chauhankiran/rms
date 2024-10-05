@@ -60,3 +60,30 @@ block content
       form(action=`/companies/${company.id}/active?_method=PUT`, name="activeCompanyForm", method="post")
 
       form(action=`/companies/${company.id}/archive?_method=PUT`, name="archiveCompanyForm", method="post")
+    
+  hr
+  
+  .row.mb-4.mt-4.align-items-center
+    .col-6 
+      h3 Contacts 
+    .col-6.text-end
+      a(href=`/contacts/new?companyId=${company.id}`).btn New contact
+
+  .row
+    .col-12 
+      table 
+        thead 
+          tr 
+            th Id 
+            th Name 
+            th Updated at 
+            th Updated by 
+        tbody 
+          if contacts.length > 0
+            for contact in contacts  
+              tr 
+                td 
+                  a(href=`/contacts/${contact.id}`) #{contact.id}
+                td #{contact.firstName + " " + contact.lastName}
+                td #{contact.updatedAt || "-"}
+                td #{contact.updatedByEmail || "-"}

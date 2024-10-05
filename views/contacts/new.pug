@@ -8,6 +8,8 @@ block content
       include ../partials/flash
 
       form(action="/contacts", method="post") 
+        input(type="hidden", name="companyId" value=companyId)
+
         .form-group 
           label(for="prefix") Prefix
           input(type="text", name="prefix", placeholder="Mr.", autofocus=true)#prefix

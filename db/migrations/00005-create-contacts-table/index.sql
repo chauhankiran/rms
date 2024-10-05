@@ -9,6 +9,8 @@ CREATE TABLE contacts (
   description TEXT,
   "contactIndustryId" INT,
 
+  "companyId" INT,
+
   "isActive" BOOLEAN NOT NULL DEFAULT true,
   "createdBy" INT,
   "updatedBy" INT,

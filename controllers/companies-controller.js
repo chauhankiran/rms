@@ -1,6 +1,7 @@
 const companiesService = require("../services/companies-service");
 const companySourcesService = require("../services/admin/company-sources-service");
 const getPagination = require("../helpers/get-pagination");
+const contactsService = require("../services/contacts-service");
 
 module.exports = {
   index: async (req, res, next) => {
@@ -94,7 +95,20 @@ module.exports = {
         return;
       }
 
-      return res.render("companies/show", { title: "Show company", company });
+      const optionsObj = {
+        skip: 0,
+        limit: 100,
+        orderBy: "id",
+        orderDir: "DESC",
+        companyId: company.id,
+      };
+      const contacts = await contactsService.find(optionsObj);
+
+      return res.render("companies/show", {
+        title: "Show company",
+        company,
+        contacts,
+      });
     } catch (err) {
       next(err);
     }

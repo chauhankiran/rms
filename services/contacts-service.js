@@ -2,10 +2,14 @@ const sql = require("../db/sql");
 
 module.exports = {
   find: async (optionsObj) => {
-    const { skip, limit, search, orderBy, orderDir } = optionsObj;
+    const { skip, limit, search, orderBy, orderDir, companyId } = optionsObj;
 
     const whereClause = search
       ? sql` WHERE "lastName" iLIKE ${"%" + search + "%"}`
+      : sql``;
+
+    const whereClause2 = companyId
+      ? sql` WHERE "companyId" = ${companyId}`
       : sql``;
 
     return await sql`
@@ -34,6 +38,7 @@ module.exports = {
       LEFT JOIN
         "contactIndustries" ci ON c."contactIndustryId" = ci.id
       ${whereClause}
+      ${whereClause2}
       ORDER BY
         ${sql(orderBy)}
         ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
@@ -68,6 +73,7 @@ module.exports = {
       annualRevenue,
       description,
       contactIndustryId,
+      companyId,
       createdBy,
     } = contactObj;
 
@@ -79,6 +85,7 @@ module.exports = {
         "annualRevenue",
         description,
         "contactIndustryId",
+        "companyId",
         "createdBy"
       ) VALUES (
         ${prefix},
@@ -87,6 +94,7 @@ module.exports = {
         ${annualRevenue},
         ${description},
         ${contactIndustryId},
+        ${companyId},
         ${createdBy}
       ) returning id
     `;

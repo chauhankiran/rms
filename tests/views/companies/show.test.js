@@ -21,6 +21,7 @@ describe("Render company show template", () => {
     const html = compiledTemplate({
       title: "Show company",
       company,
+      contacts: [],
       info: [],
       error: [],
     });

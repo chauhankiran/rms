@@ -43,6 +43,8 @@ module.exports = {
   },
 
   new: async (req, res, next) => {
+    const companyId = req.query.companyId;
+
     try {
       const contactIndustries = await contactIndustriesService.pluck([
         "id",
@@ -52,6 +54,7 @@ module.exports = {
       return res.render("contacts/new", {
         title: "New contact",
         contactIndustries,
+        companyId,
       });
     } catch (err) {
       next(err);
@@ -66,6 +69,7 @@ module.exports = {
       annualRevenue,
       description,
       contactIndustryId,
+      companyId,
     } = req.body;
 
     if (!firstName) {
@@ -88,6 +92,7 @@ module.exports = {
         annualRevenue,
         description,
         contactIndustryId,
+        companyId: companyId || null,
         createdBy: req.session.currentUser.id,
       };
       await contactsService.create(contactObj);
