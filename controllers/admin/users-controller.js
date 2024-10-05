@@ -1,5 +1,5 @@
-const usersService = require("../services/users-service");
-const getPagination = require("../helpers/get-pagination");
+const usersService = require("../../services/admin/users-service");
+const getPagination = require("../../helpers/get-pagination");
 
 module.exports = {
   index: async (req, res, next) => {
@@ -18,7 +18,7 @@ module.exports = {
       const pages = Math.ceil(count / limit);
 
       const pagination = getPagination({
-        link: "/users",
+        link: "/admin/users",
         page,
         pages,
         search,
@@ -27,7 +27,7 @@ module.exports = {
         orderDir,
       });
 
-      return res.render("users/index", {
+      return res.render("admin/users/index", {
         title: "Users",
         users,
         pagination,
@@ -42,7 +42,7 @@ module.exports = {
   },
 
   new: async (req, res, next) => {
-    return res.render("users/new", { title: "New user" });
+    return res.render("admin/users/new", { title: "New user" });
   },
 
   create: async (req, res, next) => {
@@ -50,13 +50,13 @@ module.exports = {
 
     if (!email) {
       req.flash("error", "Email is required.");
-      res.redirect("/users/new");
+      res.redirect("/admin/users/new");
       return;
     }
 
     if (!password) {
       req.flash("error", "Password is required.");
-      res.redirect("/users/new");
+      res.redirect("/admin/users/new");
       return;
     }
 
@@ -69,13 +69,13 @@ module.exports = {
       const user = await usersService.create(userObj);
 
       if (!user) {
-        req.flash("error", "Problem while creating an account.");
-        res.redirect("/users/new");
+        req.flash("error", "Problem while creating an user.");
+        res.redirect("/admin/users/new");
         return;
       }
 
       req.flash("info", "User is created.");
-      res.redirect("/users");
+      res.redirect("/admin/users");
       return;
     } catch (err) {
       next(err);
@@ -90,11 +90,11 @@ module.exports = {
 
       if (!user) {
         req.flash("error", "User not found.");
-        res.redirect("/users");
+        res.redirect("/admin/users");
         return;
       }
 
-      return res.render("users/show", { title: user.email, user });
+      return res.render("admin/users/show", { title: user.email, user });
     } catch (err) {
       next(err);
     }
@@ -108,11 +108,11 @@ module.exports = {
 
       if (!user) {
         req.flash("error", "User not found.");
-        res.redirect("/users");
+        res.redirect("/admin/users");
         return;
       }
 
-      return res.render("users/edit", { title: "Edit user", user });
+      return res.render("admin/users/edit", { title: "Edit user", user });
     } catch (err) {
       next(err);
     }
@@ -124,13 +124,13 @@ module.exports = {
 
     if (!email) {
       req.flash("error", "Email is required.");
-      res.redirect(`/users/${id}/edit`);
+      res.redirect(`/admin/users/${id}/edit`);
       return;
     }
 
     if (!password) {
       req.flash("error", "Password is required.");
-      res.redirect(`/users/${id}/edit`);
+      res.redirect(`/admin/users/${id}/edit`);
       return;
     }
 
@@ -139,7 +139,7 @@ module.exports = {
 
       if (!user) {
         req.flash("error", "User not found.");
-        res.redirect("/users");
+        res.redirect("/admin/users");
         return;
       }
 
@@ -152,7 +152,7 @@ module.exports = {
       await usersService.update(userObj);
 
       req.flash("info", "User is updated.");
-      res.redirect(`/users/${id}`);
+      res.redirect(`/admin/users/${id}`);
       return;
     } catch (err) {
       next(err);
@@ -167,7 +167,7 @@ module.exports = {
 
       if (!user) {
         req.flash("error", "User not found.");
-        res.redirect("/users");
+        res.redirect("/admin/users");
         return;
       }
 
@@ -175,12 +175,12 @@ module.exports = {
 
       if (!user) {
         req.flash("error", "Problem while deleting user.");
-        res.redirect(`/users/${id}`);
+        res.redirect(`/admin/users/${id}`);
         return;
       }
 
       req.flash("info", "User is deleted.");
-      res.redirect("/users");
+      res.redirect("/admin/users");
     } catch (err) {
       next(err);
     }
@@ -194,7 +194,7 @@ module.exports = {
 
       if (!user) {
         req.flash("error", "User not found.");
-        res.redirect(`/users`);
+        res.redirect(`/admin/users`);
         return;
       }
 
@@ -202,7 +202,7 @@ module.exports = {
       await usersService.archive(userObj);
 
       req.flash("info", "User status is updated.");
-      res.redirect(`/users/${id}`);
+      res.redirect(`/admin/users/${id}`);
       return;
     } catch (err) {
       next(err);
@@ -218,7 +218,7 @@ module.exports = {
       await usersService.massActive(userObj);
 
       req.flash("info", "Users are activated.");
-      res.redirect(`/users`);
+      res.redirect("/admin/users");
     } catch (err) {
       next(err);
     }
@@ -233,7 +233,7 @@ module.exports = {
       await usersService.massDeActive(userObj);
 
       req.flash("info", "Users are de-activated.");
-      res.redirect(`/users`);
+      res.redirect("/admin/users");
     } catch (err) {
       next(err);
     }
@@ -248,7 +248,7 @@ module.exports = {
       await usersService.massDelete(userObj);
 
       req.flash("info", "Users are deleted.");
-      res.redirect(`/users`);
+      res.redirect("/admin/users");
     } catch (err) {
       next(err);
     }

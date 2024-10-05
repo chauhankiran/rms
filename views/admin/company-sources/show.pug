@@ -24,7 +24,7 @@ block content
           label(for="name").field-name Name 
           span.field-value #{companySource.name}
             if !companySource.isActive 
-              span.archive-status (de-active)
+              span.archive-status (archived)
 
         .col-6.mb-4
           label(for="createdAt").field-name Created at

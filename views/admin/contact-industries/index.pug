@@ -70,7 +70,7 @@ block content
                   a(href=`/admin/contact-industries/${contactIndustry.id}`) #{contactIndustry.id}
                 td #{contactIndustry.name}
                   if (!contactIndustry.isActive)
-                    span.archive-status (de-active)
+                    span.archive-status (archived)
                 td #{contactIndustry.createdByEmail || "-" }
                 td #{contactIndustry.updatedByEmail || "-" }
                 td #{contactIndustry.createdAt || "-" }

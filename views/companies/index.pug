@@ -62,13 +62,13 @@ block content
                   a(href=`/companies/${company.id}`) #{company.id}
                 td #{company.name}
                   if (!company.isActive)
-                    span.archive-status (de-active)
+                    span.archive-status (archived)
                 td #{company.companySource || "-" }
                 td #{company.updatedByEmail || "-" }
                 td #{company.updatedAt || "-" } 
           else 
             tr 
-              td(colspan=2).text-center No companies found.
+              td(colspan=7).text-center No companies found.
 
     .col-12 
       +pagination(pagination.first, pagination.prev, pagination.next, pagination.last)

@@ -45,6 +45,10 @@ body {
   font-size: 20px;
   line-height: 1.42857143;
 }
+h1 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
 
 /*
  * Grid.

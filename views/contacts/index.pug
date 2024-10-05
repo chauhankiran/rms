@@ -61,6 +61,8 @@ block content
                 td
                   a(href=`/contacts/${contact.id}`) #{contact.id}
                 td #{contact.prefix + " " + contact.firstName + " " + contact.lastName}
+                  if (!contact.isActive)
+                    span.archive-status (archived)
                 td #{contact.contactIndustry || "-" }
                 td #{contact.updatedByEmail || "-" }
                 td #{contact.updatedAt || "-" } 

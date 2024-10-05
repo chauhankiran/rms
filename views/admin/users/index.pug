@@ -1,5 +1,5 @@
-extends ../layout
-include ../mixins/pagination
+extends ../../layout
+include ../../mixins/pagination
 
 block content
   .row.align-items-center 
@@ -11,7 +11,7 @@ block content
         .dropdown-menu
           .dropdown-content 
             button.dropdown-item(onclick="activeMultipleUsers()") Active Multiple Users
-            button.dropdown-item(onclick="deActiveMultipleUsers()") De-active Multiple Users
+            button.dropdown-item(onclick="deActiveMultipleUsers()") archived Multiple Users
             button.dropdown-item(onclick="deleteMultipleUsers()") Delete Multiple Users
 
       a(href="/users/new").btn New user
@@ -23,7 +23,7 @@ block content
           input(type="hidden", name="orderDir", value=orderDir)
           input(type="text", name="search", value=search, autofocus=true, placeholder="Type email and press Enter")
 
-      include ../partials/flash
+      include ../../partials/flash
 
       table
         thead 
@@ -78,7 +78,7 @@ block content
                   a(href=`/users/${user.id}`) #{user.id}
                 td #{user.email}
                   if (!user.isActive)
-                    span.archive-status (de-active)
+                    span.archive-status (archived)
                 td #{user.createdByEmail || "-" }
                 td #{user.updatedByEmail || "-" }
                 td #{user.createdAt || "-" }

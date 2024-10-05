@@ -77,7 +77,7 @@ describe("Render company sources listing template", () => {
 
     expect(html).toContain("Source A");
     expect(html).toContain("Source B");
-    expect(html).toContain("(de-active)");
+    expect(html).toContain("(archived)");
   });
 
   it("should renders pagination buttons correctly", () => {

@@ -17,7 +17,6 @@ const homeRoutes = require("./routes/home");
 const authRoutes = require("./routes/auth");
 const companiesRoutes = require("./routes/companies");
 const contactsRoutes = require("./routes/contacts");
-const usersRoutes = require("./routes/users");
 const adminRoutes = require("./routes/admin");
 
 const app = express();
@@ -61,7 +60,6 @@ app.post("/submit", (req, res) => {
 
 app.use("/", homeRoutes);
 app.use("/auth", authRoutes);
-app.use("/users", checkAuth, usersRoutes);
 app.use("/companies", checkAuth, companiesRoutes);
 app.use("/contacts", checkAuth, contactsRoutes);
 app.use("/admin", checkAuth, adminRoutes);

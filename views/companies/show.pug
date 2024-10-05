@@ -11,6 +11,8 @@ block content
         .dropdown-menu
           .dropdown-content 
             a(href=`/companies/${company.id}/edit`).dropdown-item Edit company
+            button.dropdown-item(onclick="activeCompany()") Active company 
+            button.dropdown-item(onclick="archiveCompany()") Archive company 
             button.dropdown-item(onclick="deleteCompany()") Delete company 
 
     .col-12
@@ -21,6 +23,8 @@ block content
         .col-12.mb-4
           label(for="name").field-name Name 
           span.field-value #{company.name}
+            if !company.isActive 
+              span.archive-status (archived)
 
         .col-12.mb-4
           label(for="companySourceId").field-name Company source
@@ -52,3 +56,7 @@ block content
 
 
       form(action=`/companies/${company.id}?_method=DELETE`, name="deleteCompanyForm", method="post")
+
+      form(action=`/companies/${company.id}/active?_method=PUT`, name="activeCompanyForm", method="post")
+
+      form(action=`/companies/${company.id}/archive?_method=PUT`, name="archiveCompanyForm", method="post")

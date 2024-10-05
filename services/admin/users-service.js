@@ -1,4 +1,4 @@
-const sql = require("../db/sql");
+const sql = require("../../db/sql");
 
 module.exports = {
   find: async (optionsObj) => {

@@ -9,7 +9,8 @@ module.exports = {
       id,
       email,
       "isRequiredToChangePassword",
-      "isActive"
+      "isActive",
+      type
     FROM
       users
     WHERE

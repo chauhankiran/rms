@@ -6,7 +6,8 @@ nav.nav
       a(href="/contacts").nav-item Contacts
   .nav-end
     if currentUser
-      a(href="/users").nav-item Users
+      if currentUser.type == 'admin'
+        a(href="/admin").nav-item Admin
       a(href="/auth/logout").nav-item Logout
     else
       a(href="/auth/login").nav-item Login

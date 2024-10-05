@@ -13,6 +13,23 @@ function deleteUser() {
   }
 }
 
+/**
+ * Company
+ */
+function activeCompany() {
+  if (confirm("Are you sure you want to active this company?")) {
+    document.activeCompanyForm.submit();
+  } else {
+    return false;
+  }
+}
+function archiveCompany() {
+  if (confirm("Are you sure you want to archive this company?")) {
+    document.archiveCompanyForm.submit();
+  } else {
+    return false;
+  }
+}
 function deleteCompany() {
   if (confirm("Are you sure you want to delete this company?")) {
     document.deleteCompanyForm.submit();
@@ -21,6 +38,23 @@ function deleteCompany() {
   }
 }
 
+/**
+ * Contact
+ */
+function activeContact() {
+  if (confirm("Are you sure you want to active this contact?")) {
+    document.activeContactForm.submit();
+  } else {
+    return false;
+  }
+}
+function archiveContact() {
+  if (confirm("Are you sure you want to archive this contact?")) {
+    document.archiveContactForm.submit();
+  } else {
+    return false;
+  }
+}
 function deleteContact() {
   if (confirm("Are you sure you want to delete this contact?")) {
     document.deleteContactForm.submit();
@@ -125,9 +159,7 @@ function deActiveMultipleUsers() {
     return;
   }
 
-  if (
-    confirm(`Are you sure you want to de-active ${count} selected user(s)?`)
-  ) {
+  if (confirm(`Are you sure you want to archived ${count} selected user(s)?`)) {
     document.querySelector("#toDeActiveUserIds").value = selectedUserIds;
     document.massUserDeActiveForm.submit();
   } else {

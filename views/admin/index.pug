@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+  .row 
+    .col-6 
+      h1= title
+
+      include ../partials/flash
+
+      ul 
+        li Click here to manage 
+          a(href="/admin/users") Users
+        li Click here to manage 
+          a(href="/admin/company-sources") Company sources fields
+        li Click here to manage 
+          a(href="/admin/contact-industries") Contact industries fields
+          

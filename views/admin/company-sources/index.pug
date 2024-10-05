@@ -70,7 +70,7 @@ block content
                   a(href=`/admin/company-sources/${companySource.id}`) #{companySource.id}
                 td #{companySource.name}
                   if (!companySource.isActive)
-                    span.archive-status (de-active)
+                    span.archive-status (archived)
                 td #{companySource.createdByEmail || "-" }
                 td #{companySource.updatedByEmail || "-" }
                 td #{companySource.createdAt || "-" }

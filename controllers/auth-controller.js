@@ -78,12 +78,12 @@ module.exports = {
       const user = await authService.register(registerObj);
 
       if (!user) {
-        req.flash("error", "Problem while creating an account.");
+        req.flash("error", "Problem while creating an user.");
         res.redirect("/auth/register");
         return;
       }
 
-      req.flash("info", "Account is created.");
+      req.flash("info", "User is created.");
       res.redirect("/auth/login");
       return;
     } catch (err) {

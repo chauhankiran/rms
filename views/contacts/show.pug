@@ -11,6 +11,8 @@ block content
         .dropdown-menu
           .dropdown-content 
             a(href=`/contacts/${contact.id}/edit`).dropdown-item Edit contact
+            button.dropdown-item(onclick="activeContact()") Active contact
+            button.dropdown-item(onclick="archiveContact()") Archive contact
             button.dropdown-item(onclick="deleteContact()") Delete contact
 
     .col-12
@@ -25,6 +27,8 @@ block content
         .col-12.mb-4
           label(for="firstName").field-name First name 
           span.field-value #{contact.firstName}
+            if !contact.isActive 
+              span.archive-status (archived)
         
         .col-12.mb-4
           label(for="lastName").field-name Last name 
@@ -60,3 +64,7 @@ block content
 
 
       form(action=`/contacts/${contact.id}?_method=DELETE`, name="deleteContactForm", method="post")
+
+      form(action=`/contacts/${contact.id}/active?_method=PUT`, name="activeContactForm", method="post")
+
+      form(action=`/contacts/${contact.id}/archive?_method=PUT`, name="archiveContactForm", method="post")

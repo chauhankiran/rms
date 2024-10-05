@@ -1,4 +1,4 @@
-extends ../layout
+extends ../../layout
 
 block content
   .row.align-items-center 
@@ -14,10 +14,10 @@ block content
             button(type="button", onClick="deleteUser()").dropdown-item Delete user
 
     .col-12
-      include ../partials/flash
+      include ../../partials/flash
 
-      p User is #{user.isActive ? 'active' : 'de-active' }. Click the button to #{user.isActive ? 'de-active' : 'active' }. 
-        button(type="button", onClick="archiveUser()") #{user.isActive ? 'De-active' : 'Active' } user
+      p User is #{user.isActive ? 'active' : 'archived' }. Click the button to #{user.isActive ? 'archived' : 'active' }. 
+        button(type="button", onClick="archiveUser()") #{user.isActive ? 'archived' : 'Active' } user
 
       form(action=`/users/${user.id}/archive?_method=PUT`, name="archiveUserForm", method="post") 
 
