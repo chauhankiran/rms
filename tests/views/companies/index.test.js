@@ -18,6 +18,9 @@ describe("Render company index template", () => {
       pagination: {},
       info: [],
       error: [],
+      companyFields: {
+        id: "Id",
+      },
     });
 
     expect(html).toContain("<h1>Companies (5)</h1>");

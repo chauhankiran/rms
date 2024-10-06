@@ -18,6 +18,9 @@ describe("Render contact index template", () => {
       pagination: {},
       info: [],
       error: [],
+      contactFields: {
+        id: "Id",
+      },
     });
 
     expect(html).toContain("<h1>Contacts (5)</h1>");

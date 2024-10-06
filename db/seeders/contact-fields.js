@@ -43,6 +43,17 @@ const contactFields = async (sql) => {
     ) returning "displayName"`.then(([x]) => x);
   console.log("lastName:", result4);
 
+  // virtual field: name
+  const resultV1 = await sql`
+    INSERT INTO "contactFields" (
+      name, 
+      "displayName"
+    ) VALUES (
+      'name',
+      'Name'
+    ) returning "displayName"`.then(([x]) => x);
+  console.log("name:", resultV1);
+
   // annualRevenue
   const result5 = await sql`
     INSERT INTO "contactFields" (

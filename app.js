@@ -48,6 +48,8 @@ app.use((req, res, next) => {
   res.locals.info = req.flash("info");
   res.locals.error = req.flash("error");
   res.locals.currentUser = req.session.currentUser;
+  res.locals.companyFields = req.session.companyFields;
+  res.locals.contactFields = req.session.contactFields;
   next();
 });
 

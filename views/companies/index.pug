@@ -23,31 +23,31 @@ block content
             th  
             th
               if orderDir === 'ASC'
-                a(href=`/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) Id
+                a(href=`/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields.id}
               else 
-                a(href=`/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) Id
+                a(href=`/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{companyFields.id}
               
               if orderBy === 'id'
                 span.order-wrapper= orderDir
 
             th
               if orderDir === 'ASC'
-                a(href=`/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) Name
+                a(href=`/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields.name}
               else 
-                a(href=`/companies?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) Name
+                a(href=`/companies?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{companyFields.name}
               
               if orderBy === 'name'
                 span.order-wrapper= orderDir
 
 
-            th Company source
-            th Updated by
+            th #{companyFields.companySourceId}
+            th #{companyFields.updatedBy}
 
             th
               if orderDir === 'ASC'
-                a(href=`/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) Updated at
+                a(href=`/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields.updatedAt}
               else 
-                a(href=`/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) Updated at
+                a(href=`/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{companyFields.updatedAt}
               
               if orderBy === 'updatedAt'
                 span.order-wrapper= orderDir
