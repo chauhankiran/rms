@@ -23,6 +23,9 @@ describe("Render company new template", () => {
           updatedAt: "2023-01-02",
         },
       ],
+      companyFields: {
+        name: "Name",
+      },
     });
 
     expect(html).toContain("<h1>New company</h1>");

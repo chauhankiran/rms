@@ -23,6 +23,9 @@ describe("Render contact new template", () => {
           updatedAt: "2023-01-02",
         },
       ],
+      contactFields: {
+        name: "Name",
+      },
     });
 
     expect(html).toContain("<h1>New contact</h1>");
