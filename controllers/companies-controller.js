@@ -2,6 +2,7 @@ const companiesService = require("../services/companies-service");
 const companySourcesService = require("../services/admin/company-sources-service");
 const getPagination = require("../helpers/get-pagination");
 const contactsService = require("../services/contacts-service");
+const sql = require("../db/sql");
 
 module.exports = {
   index: async (req, res, next) => {
@@ -13,7 +14,54 @@ module.exports = {
     const orderDir = req.query.orderDir || "DESC";
 
     try {
-      const optionsObj = { search, limit, skip, orderBy, orderDir };
+      const companyViews = await sql`
+        SELECT
+          name
+        FROM
+          "companyViews"
+      `;
+
+      let columns = 'c."isActive",';
+      let headers = [];
+      for (const companyView of companyViews) {
+        // id
+        if (companyView.name === "id") {
+          columns += "c.id,";
+          headers.push("id");
+        }
+
+        // name
+        if (companyView.name === "name") {
+          columns += "c.name,";
+          headers.push("name");
+        }
+
+        // companySourceId
+        if (companyView.name === "companySourceId") {
+          columns += 'cs.name AS "companySource",';
+          headers.push("companySourceId");
+        }
+
+        // updatedBy
+        if (companyView.name === "updatedBy") {
+          columns += 'creator."updatedBy" AS "updatedByEmail",';
+          headers.push("updatedBy");
+        }
+
+        // updatedAt
+        if (companyView.name === "updatedAt") {
+          columns += 'c."updatedAt",';
+          headers.push("updatedAt");
+        }
+      }
+
+      // TEMP: Track the issue
+      // https://github.com/porsager/postgres/issues/894
+      if (columns.length > 0 && columns.slice(-1) === ",") {
+        columns = columns.slice(0, -1);
+      }
+
+      const optionsObj = { search, limit, skip, orderBy, orderDir, columns };
       const companies = await companiesService.find(optionsObj);
       const { count } = await companiesService.count(optionsObj);
 
@@ -37,6 +85,7 @@ module.exports = {
         count,
         orderBy,
         orderDir,
+        headers,
       });
     } catch (err) {
       next(err);

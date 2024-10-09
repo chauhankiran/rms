@@ -21,6 +21,7 @@ describe("Render company index template", () => {
       companyFields: {
         id: "Id",
       },
+      headers: ["id"],
     });
 
     expect(html).toContain("<h1>Companies (5)</h1>");

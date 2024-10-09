@@ -19,38 +19,44 @@ block content
     
       table
         thead 
-          tr
-            th  
-            th
-              if orderDir === 'ASC'
-                a(href=`/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields.id}
-              else 
-                a(href=`/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{companyFields.id}
-              
-              if orderBy === 'id'
-                span.order-wrapper= orderDir
+            tr
+              th
+              each header in headers
+                if header === "id"
+                  th
+                    if orderDir === 'ASC'
+                      a(href=`/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
+                    else 
+                      a(href=`/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
+                    
+                    if orderBy === 'id'
+                      span.order-wrapper= orderDir
+                
+                if header === "name"
+                  th
+                    if orderDir === 'ASC'
+                      a(href=`/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
+                    else 
+                      a(href=`/companies?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
+                    
+                    if orderBy === 'name'
+                      span.order-wrapper= orderDir
 
-            th
-              if orderDir === 'ASC'
-                a(href=`/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields.name}
-              else 
-                a(href=`/companies?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{companyFields.name}
-              
-              if orderBy === 'name'
-                span.order-wrapper= orderDir
+                if header === "companySourceId"
+                  th #{companyFields[header]}
+                
+                if header === "updatedBy"
+                  th #{companyFields[header]}
 
-
-            th #{companyFields.companySourceId}
-            th #{companyFields.updatedBy}
-
-            th
-              if orderDir === 'ASC'
-                a(href=`/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields.updatedAt}
-              else 
-                a(href=`/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{companyFields.updatedAt}
-              
-              if orderBy === 'updatedAt'
-                span.order-wrapper= orderDir
+                if header === "updatedAt"
+                  th
+                    if orderDir === 'ASC'
+                      a(href=`/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
+                    else 
+                      a(href=`/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
+                    
+                    if orderBy === 'updatedAt'
+                      span.order-wrapper= orderDir
             
         tbody 
           if companies.length > 0
