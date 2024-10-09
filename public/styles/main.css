@@ -50,6 +50,9 @@ h3 {
   margin-top: 0;
   margin-bottom: 0.5rem;
 }
+a {
+  color: darkred;
+}
 hr {
   margin: 1rem 0;
   color: inherit;
@@ -240,7 +243,7 @@ hr {
   align-items: center;
 }
 .nav-brand {
-  color: orange;
+  color: darkred;
 }
 
 /*
