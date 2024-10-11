@@ -1,6 +1,7 @@
 const contactsService = require("../services/contacts-service");
 const contactIndustriesService = require("../services/admin/contact-industries-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
+const sql = require("../db/sql");
 
 module.exports = {
   index: async (req, res, next) => {
@@ -12,7 +13,54 @@ module.exports = {
     const orderDir = req.query.orderDir || "DESC";
 
     try {
-      const optionsObj = { search, limit, skip, orderBy, orderDir };
+      const contactViews = await sql`
+        SELECT
+          name
+        FROM
+          "contactViews"
+      `;
+
+      let columns = 'c."isActive",';
+      let headers = [];
+      for (const contactView of contactViews) {
+        // id
+        if (contactView.name === "id") {
+          columns += "c.id,";
+          headers.push("id");
+        }
+
+        // name
+        if (contactView.name === "name") {
+          columns += "c.name,";
+          headers.push("name");
+        }
+
+        // contactIndustryId
+        if (contactView.name === "contactIndustryId") {
+          columns += 'cs.name AS "contactIndustry",';
+          headers.push("contactIndustryId");
+        }
+
+        // updatedBy
+        if (contactView.name === "updatedBy") {
+          columns += 'creator."updatedBy" AS "updatedByEmail",';
+          headers.push("updatedBy");
+        }
+
+        // updatedAt
+        if (contactView.name === "updatedAt") {
+          columns += 'c."updatedAt",';
+          headers.push("updatedAt");
+        }
+      }
+
+      // TEMP: Track the issue
+      // https://github.com/porsager/postgres/issues/894
+      if (columns.length > 0 && columns.slice(-1) === ",") {
+        columns = columns.slice(0, -1);
+      }
+
+      const optionsObj = { search, limit, skip, orderBy, orderDir, columns };
       const contacts = await contactsService.find(optionsObj);
       const { count } = await contactsService.count(optionsObj);
 
@@ -36,6 +84,7 @@ module.exports = {
         count,
         orderBy,
         orderDir,
+        headers,
       });
     } catch (err) {
       next(err);

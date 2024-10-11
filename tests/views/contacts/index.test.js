@@ -21,6 +21,7 @@ describe("Render contact index template", () => {
       contactFields: {
         id: "Id",
       },
+      headers: [],
     });
 
     expect(html).toContain("<h1>Contacts (5)</h1>");

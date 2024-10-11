@@ -20,37 +20,43 @@ block content
       table
         thead 
           tr
-            th  
             th
-              if orderDir === 'ASC'
-                a(href=`/contacts?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{contactFields.id}
-              else 
-                a(href=`/contacts?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{contactFields.id}
+            each header in headers
+              if header === "id"
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/contacts?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
+                  else 
+                    a(href=`/contacts?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
+                  
+                  if orderBy === 'id'
+                    span.order-wrapper= orderDir
               
-              if orderBy === 'id'
-                span.order-wrapper= orderDir
+              if header === "name"
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/contacts?orderBy=lastName&orderDir=DESC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
+                  else 
+                    a(href=`/contacts?orderBy=lastName&orderDir=ASC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
+                  
+                  if orderBy === 'lastName'
+                    span.order-wrapper= orderDir
 
-            th
-              if orderDir === 'ASC'
-                a(href=`/contacts?orderBy=lastName&orderDir=DESC${search ? `&search=${search}` : ''}`) #{contactFields.name}
-              else 
-                a(href=`/contacts?orderBy=lastName&orderDir=ASC${search ? `&search=${search}` : ''}`) #{contactFields.name}
+              if header === "contactIndustryId"
+                th #{contactFields[header]}
+
+              if header === "updatedBy"
+                th #{contactFields[header]}
               
-              if orderBy === 'lastName'
-                span.order-wrapper= orderDir
-
-
-            th #{contactFields.contactIndustryId}
-            th #{contactFields.updatedBy}
-
-            th
-              if orderDir === 'ASC'
-                a(href=`/contacts?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{contactFields.updatedAt}
-              else 
-                a(href=`/contacts?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{contactFields.updatedAt}
-              
-              if orderBy === 'updatedAt'
-                span.order-wrapper= orderDir
+              if header === "updatedAt"
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/contacts?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
+                  else 
+                    a(href=`/contacts?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
+                  
+                  if orderBy === 'updatedAt'
+                    span.order-wrapper= orderDir
             
         tbody 
           if contacts.length > 0
