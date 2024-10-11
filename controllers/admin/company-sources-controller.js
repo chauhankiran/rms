@@ -1,5 +1,5 @@
 const companySourcesService = require("../../services/admin/company-sources-service");
-const getPagination = require("../../helpers/get-pagination");
+const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 
 module.exports = {
   index: async (req, res, next) => {
@@ -17,7 +17,7 @@ module.exports = {
 
       const pages = Math.ceil(count / limit);
 
-      const pagination = getPagination({
+      const paginationLinks = generatePaginationLinks({
         link: "/admin/company-sources",
         page,
         pages,
@@ -30,7 +30,7 @@ module.exports = {
       return res.render("admin/company-sources/index", {
         title: "Company sources",
         companySources,
-        pagination,
+        paginationLinks,
         search,
         count,
         orderBy,

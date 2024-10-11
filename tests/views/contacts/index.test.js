@@ -15,7 +15,7 @@ describe("Render contact index template", () => {
       orderDir: "ASC",
       search: "",
       contacts: [],
-      pagination: {},
+      paginationLinks: {},
       info: [],
       error: [],
       contactFields: {

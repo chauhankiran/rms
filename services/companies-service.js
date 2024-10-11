@@ -5,7 +5,7 @@ module.exports = {
     const { skip, limit, search, orderBy, orderDir, columns } = optionsObj;
 
     const whereClause = search
-      ? sql` WHERE email iLIKE ${"%" + search + "%"}`
+      ? sql` WHERE c.name iLIKE ${"%" + search + "%"}`
       : sql``;
 
     return await sql`

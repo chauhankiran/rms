@@ -39,7 +39,7 @@ describe("Company sources controller", () => {
       expect(res.render).toHaveBeenCalledWith("admin/company-sources/index", {
         title: "Company sources",
         companySources: mockCompanySources,
-        pagination: expect.any(Object),
+        paginationLinks: expect.any(Object),
         search: "test",
         count: 1,
         orderBy: "id",

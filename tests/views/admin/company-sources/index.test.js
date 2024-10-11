@@ -17,7 +17,7 @@ describe("Render company source index template", () => {
       orderDir: "ASC",
       search: "",
       companySources: [],
-      pagination: {},
+      paginationLinks: {},
       info: [],
       error: [],
     });
@@ -33,7 +33,7 @@ describe("Render company source index template", () => {
       orderDir: "ASC",
       search: "",
       companySources: [],
-      pagination: {},
+      paginationLinks: {},
       info: [],
       error: [],
     });
@@ -70,7 +70,7 @@ describe("Render company source index template", () => {
       orderDir: "ASC",
       search: "",
       companySources,
-      pagination: {},
+      paginationLinks: {},
       info: [],
       error: [],
     });
@@ -81,7 +81,7 @@ describe("Render company source index template", () => {
   });
 
   it("should renders pagination buttons correctly", () => {
-    const pagination = {
+    const paginationLinks = {
       first: "/admin/company-sources?page=1",
       prev: "/admin/company-sources?page=0",
       next: "/admin/company-sources?page=2",
@@ -95,7 +95,7 @@ describe("Render company source index template", () => {
       orderDir: "ASC",
       search: "",
       companySources: [],
-      pagination,
+      paginationLinks,
       info: [],
       error: [],
     });

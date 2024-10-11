@@ -1,6 +1,6 @@
 const companiesService = require("../services/companies-service");
 const companySourcesService = require("../services/admin/company-sources-service");
-const getPagination = require("../helpers/get-pagination");
+const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const contactsService = require("../services/contacts-service");
 const sql = require("../db/sql");
 
@@ -67,7 +67,7 @@ module.exports = {
 
       const pages = Math.ceil(count / limit);
 
-      const pagination = getPagination({
+      const paginationLinks = generatePaginationLinks({
         link: "/companies",
         page,
         pages,
@@ -80,7 +80,7 @@ module.exports = {
       return res.render("companies/index", {
         title: "Companies",
         companies,
-        pagination,
+        paginationLinks,
         search,
         count,
         orderBy,

@@ -1,6 +1,6 @@
 const contactsService = require("../services/contacts-service");
 const contactIndustriesService = require("../services/admin/contact-industries-service");
-const getPagination = require("../helpers/get-pagination");
+const generatePaginationLinks = require("../helpers/generate-pagination-links");
 
 module.exports = {
   index: async (req, res, next) => {
@@ -18,7 +18,7 @@ module.exports = {
 
       const pages = Math.ceil(count / limit);
 
-      const pagination = getPagination({
+      const paginationLinks = generatePaginationLinks({
         link: "/contacts",
         page,
         pages,
@@ -31,7 +31,7 @@ module.exports = {
       return res.render("contacts/index", {
         title: "Contacts",
         contacts,
-        pagination,
+        paginationLinks,
         search,
         count,
         orderBy,

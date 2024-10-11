@@ -1,5 +1,5 @@
 const usersService = require("../../services/admin/users-service");
-const getPagination = require("../../helpers/get-pagination");
+const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 
 module.exports = {
   index: async (req, res, next) => {
@@ -17,7 +17,7 @@ module.exports = {
 
       const pages = Math.ceil(count / limit);
 
-      const pagination = getPagination({
+      const paginationLinks = generatePaginationLinks({
         link: "/admin/users",
         page,
         pages,
@@ -30,7 +30,7 @@ module.exports = {
       return res.render("admin/users/index", {
         title: "Users",
         users,
-        pagination,
+        paginationLinks,
         search,
         count,
         orderBy,

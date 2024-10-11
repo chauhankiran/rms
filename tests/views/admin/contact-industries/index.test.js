@@ -17,7 +17,7 @@ describe("Render contact industry index template", () => {
       orderDir: "ASC",
       search: "",
       contactIndustries: [],
-      pagination: {},
+      paginationLinks: {},
       info: [],
       error: [],
     });

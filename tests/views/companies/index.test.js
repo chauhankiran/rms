@@ -15,7 +15,7 @@ describe("Render company index template", () => {
       orderDir: "ASC",
       search: "",
       companies: [],
-      pagination: {},
+      paginationLinks: {},
       info: [],
       error: [],
       companyFields: {
