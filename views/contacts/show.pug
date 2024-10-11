@@ -21,45 +21,45 @@ block content
     .col-12 
       .row 
         .col-12.mb-4
-          label(for="prefix").field-name Prefix 
+          label(for="prefix").field-name #{contactFields.prefix} 
           span.field-value #{contact.prefix}
 
         .col-12.mb-4
-          label(for="firstName").field-name First name 
+          label(for="firstName").field-name #{contactFields.firstName}
           span.field-value #{contact.firstName}
             if !contact.isActive 
               span.archive-status (archived)
         
         .col-12.mb-4
-          label(for="lastName").field-name Last name 
+          label(for="lastName").field-name #{contactFields.lastName}
           span.field-value #{contact.lastName}
 
         .col-12.mb-4
-          label(for="annualRevenue").field-name Annual revenue
+          label(for="annualRevenue").field-name #{contactFields.annualRevenue}
           span.field-value #{contact.annualRevenue}
 
         .col-12.mb-4
-          label(for="contactIndustry").field-name Contact industry
+          label(for="contactIndustry").field-name #{contactFields.contactIndustryId}
           span.field-value #{contact.contactIndustry}
 
         .col-12.mb-4
-          label(for="description").field-name Description
+          label(for="description").field-name #{contactFields.description}
           span.field-value #{contact.description || "-"}
         
         .col-6.mb-4
-          label(for="createdAt").field-name Created at
+          label(for="createdAt").field-name #{contactFields.createdAt}
           span.field-value #{contact.createdAt || "-"}
         
         .col-6.mb-4
-          label(for="updatedAt").field-name Updated at
+          label(for="updatedAt").field-name #{contactFields.updatedAt}
           span.field-value #{contact.updatedAt || "-"}
 
         .col-6.mb-4
-          label(for="createdBy").field-name Created by
+          label(for="createdBy").field-name #{contactFields.updatedAt}
           span.field-value #{contact.createdByEmail || "-"}
         
         .col-6.mb-4
-          label(for="updatedBy").field-name Updated by
+          label(for="updatedBy").field-name #{contactFields.updatedBy}
           span.field-value #{contact.updatedByEmail || "-"}
 
 

@@ -37,6 +37,9 @@ describe("Render contact edit template", () => {
       contactIndustries,
       info: [],
       error: [],
+      contactFields: {
+        name: "Name",
+      },
     });
 
     expect(html).toContain("<h1>Edit contact</h1>");

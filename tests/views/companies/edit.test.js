@@ -35,6 +35,9 @@ describe("Render company edit template", () => {
       companySources,
       info: [],
       error: [],
+      companyFields: {
+        name: "Name",
+      },
     });
 
     expect(html).toContain("<h1>Edit company</h1>");

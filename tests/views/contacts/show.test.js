@@ -24,6 +24,7 @@ describe("Render contact show template", () => {
       contact,
       info: [],
       error: [],
+      contactFields: {},
     });
 
     expect(html).toContain("<h1>Show contact</h1>");

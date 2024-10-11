@@ -9,23 +9,23 @@ block content
 
       form(action=`/contacts/${contact.id}?_method=PUT`, method="post") 
         .form-group 
-          label(for="prefix") Prefix
+          label(for="prefix") #{contactFields.prefix}
           input(type="text", name="prefix", value=contact.prefix, placeholder="Mr.", autofocus=true)#prefix
       
         .form-group 
-          label(for="firstName") First name
+          label(for="firstName") #{contactFields.firstName}
           input(type="text", name="firstName", value=contact.firstName, placeholder="Kai", autofocus=true)#firstName
 
         .form-group 
-          label(for="lastName") Last name
+          label(for="lastName") #{contactFields.lastName}
           input(type="text", name="lastName", value=contact.lastName, placeholder="Kai", autofocus=true)#lastName
 
         .form-group 
-          label(for="annualRevenue") Annual revenue
+          label(for="annualRevenue") #{contactFields.annualRevenue}
           input(type="text", name="annualRevenue", value=contact.annualRevenue, placeholder="600000", autofocus=true)#annualRevenue
         
         .form-group 
-          label(for="contactIndustryId") Contact industry
+          label(for="contactIndustryId") #{contactFields.contactIndustryId}
           select(name="contactIndustryId")#contactIndustryId
             for contactIndustry in contactIndustries
               if contactIndustry.id == contact.contactIndustryId
@@ -34,7 +34,7 @@ block content
                 option(value=contactIndustry.id) #{contactIndustry.name}
 
         .form-group 
-          label(for="description") Description
+          label(for="description") #{contactFields.description}
           textarea(name="description", cols="30", rows="10", placeholder="Add informative optional description")#description #{contact.description}
 
         
