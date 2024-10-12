@@ -8,7 +8,8 @@
     "seed": "node ./scripts/seeder.js",
     "test": "jest",
     "prepare": "husky",
-    "fmt": "prettier . --write"
+    "fmt": "prettier . --write",
+    "stub": "node ./scripts/generate.js"
   },
   "dependencies": {
     "connect-flash": "0.1.1",
