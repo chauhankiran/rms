@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const authService = require("../services/auth-service");
-const sql = require("../db/sql");
+const companyFieldsController = require("../controllers/admin/company-fields-controller");
+const contactFieldsController = require("../controllers/admin/contact-fields-controller");
 
 module.exports = {
   showLogin: (req, res, next) => {
@@ -47,47 +48,23 @@ module.exports = {
         return;
       }
 
-      req.session.currentUser = user;
-
-      /**
-       * Company fields
-       */
-      const companyFields = await sql`
-        SELECT
-          name,
-          "displayName"
-        FROM
-          "companyFields"
-      `;
-
-      let sessionCompanyFields = {};
-      for (const companyField of companyFields) {
-        sessionCompanyFields[companyField.name] = companyField.displayName;
-      }
-      req.session.companyFields = sessionCompanyFields;
-
-      /**
-       * Contact fields
-       */
-      const contactFields = await sql`
-        SELECT
-          name,
-          "displayName"
-        FROM
-          "contactFields"
-      `;
-
-      let sessionContactFields = {};
-      for (const contactField of contactFields) {
-        sessionContactFields[contactField.name] = contactField.displayName;
-      }
-      req.session.contactFields = sessionContactFields;
+      req.session.currentUser = {
+        id: user.id,
+        email: user.email,
+        type: user.type,
+      };
 
       if (user.isRequiredToChangePassword) {
         req.flash("info", "Please change the password.");
         res.redirect("/auth/reset");
         return;
       }
+
+      /**
+       * Fields
+       */
+      await companyFieldsController.addCompanyFieldsInSession(req);
+      await contactFieldsController.addContactFieldsInSession(req);
 
       res.redirect("/");
       return;
