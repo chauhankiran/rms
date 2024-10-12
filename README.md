@@ -34,7 +34,7 @@ npm i
 cp .env.example .env
 ```
 
-5. Adjust the environment variables within created .env file.
+5. Adjust the environment variables within created `.env` file.
 6. Create a database with name `rms` or whatever you define in `.env` file.
 7. Run migrations.
 
@@ -42,7 +42,7 @@ cp .env.example .env
 npm run migrate
 ```
 
-8. (Optional) Run seeders. Seeder creates three random user accounts. Check the console to get the email and password.
+8. (Optional) Run seeders.
 
 ```
 npm run seed

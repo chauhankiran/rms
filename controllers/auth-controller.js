@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const authService = require("../services/auth-service");
 const sql = require("../db/sql");
 
@@ -22,11 +23,17 @@ module.exports = {
     }
 
     try {
-      const loginObj = { email, password };
+      const loginObj = { email };
       const user = await authService.login(loginObj);
 
       if (!user) {
-        req.flash("error", "Email and/or Password is invalid");
+        req.flash("error", "Email and/or Password is invalid.");
+        res.redirect("/auth/login");
+        return;
+      }
+
+      if (!bcrypt.compareSync(password, user.password)) {
+        req.flash("error", "Email and/or Password is invalid.");
         res.redirect("/auth/login");
         return;
       }
@@ -108,8 +115,12 @@ module.exports = {
       return;
     }
 
+    // Hashing
+    const salt = bcrypt.genSaltSync();
+    const passwordHash = bcrypt.hashSync(password, salt);
+
     try {
-      const registerObj = { email, password };
+      const registerObj = { email, password: passwordHash };
       const user = await authService.register(registerObj);
 
       if (!user) {
@@ -149,11 +160,13 @@ module.exports = {
       return;
     }
 
-    console.log("req.session.currentUser: ", req.session.currentUser);
+    // Hashing
+    const salt = bcrypt.genSaltSync();
+    const passwordHash = bcrypt.hashSync(password, salt);
 
     try {
       const resetObj = {
-        password,
+        password: passwordHash,
         id: req.session.currentUser.id,
         updatedBy: req.session.currentUser.id,
       };

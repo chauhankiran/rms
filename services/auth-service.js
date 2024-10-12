@@ -2,20 +2,20 @@ const sql = require("../db/sql");
 
 module.exports = {
   login: async (authOptions) => {
-    const { email, password } = authOptions;
+    const { email } = authOptions;
 
     return await sql`
     SELECT
       id,
       email,
+      password,
       "isRequiredToChangePassword",
       "isActive",
       type
     FROM
       users
     WHERE
-      email = ${email} and
-      password = ${password}
+      email = ${email}
   `.then(([x]) => x);
   },
 

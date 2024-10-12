@@ -143,10 +143,14 @@ module.exports = {
         return;
       }
 
+      // Hashing
+      const salt = bcrypt.genSaltSync();
+      const passwordHash = bcrypt.hashSync(password, salt);
+
       const userObj = {
         id,
         email,
-        password,
+        password: passwordHash,
         updatedBy: req.session.currentUser.id,
       };
       await usersService.update(userObj);

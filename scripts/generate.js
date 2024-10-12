@@ -1,3 +1,11 @@
+/**
+ * This file is used to generate stub code.
+ * Usage:
+ *   npm run pluralName singularName
+ *
+ *   e.g.
+ *   npm run deals deal
+ */
 const fs = require("fs");
 const path = require("path");
 
