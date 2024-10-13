@@ -44,7 +44,7 @@ module.exports = {
 
         // updatedBy
         if (companyView.name === "updatedBy") {
-          columns += 'creator."updatedBy" AS "updatedByEmail",';
+          columns += 'updater."email" AS "updatedByEmail",';
           headers.push("updatedBy");
         }
 

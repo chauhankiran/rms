@@ -14,10 +14,10 @@ block content
             button.dropdown-item(onclick="deActiveMultipleUsers()") archived Multiple Users
             button.dropdown-item(onclick="deleteMultipleUsers()") Delete Multiple Users
 
-      a(href="/users/new").btn New user
+      a(href="/admin/users/new").btn New user
 
     .col-12
-      form(action="/users", method="get") 
+      form(action="/admin/users", method="get") 
         .form-group 
           input(type="hidden", name="orderBy", value=orderBy)
           input(type="hidden", name="orderDir", value=orderDir)
@@ -31,18 +31,18 @@ block content
             th  
             th
               if orderDir === 'ASC'
-                a(href=`/users?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) Id
+                a(href=`/admin/users?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) Id
               else 
-                a(href=`/users?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) Id
+                a(href=`/admin/users?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) Id
               
               if orderBy === 'id'
                 span.order-wrapper= orderDir
 
             th
               if orderDir === 'ASC'
-                a(href=`/users?orderBy=email&orderDir=DESC${search ? `&search=${search}` : ''}`) Email
+                a(href=`/admin/users?orderBy=email&orderDir=DESC${search ? `&search=${search}` : ''}`) Email
               else 
-                a(href=`/users?orderBy=email&orderDir=ASC${search ? `&search=${search}` : ''}`) Email
+                a(href=`/admin/users?orderBy=email&orderDir=ASC${search ? `&search=${search}` : ''}`) Email
               
               if orderBy === 'email'
                 span.order-wrapper= orderDir
@@ -52,18 +52,18 @@ block content
 
             th
               if orderDir === 'ASC'
-                a(href=`/users?orderBy=createdAt&orderDir=DESC${search ? `&search=${search}` : ''}`) Created at
+                a(href=`/admin/users?orderBy=createdAt&orderDir=DESC${search ? `&search=${search}` : ''}`) Created at
               else 
-                a(href=`/users?orderBy=createdAt&orderDir=ASC${search ? `&search=${search}` : ''}`) Created at
+                a(href=`/admin/users?orderBy=createdAt&orderDir=ASC${search ? `&search=${search}` : ''}`) Created at
               
               if orderBy === 'createdAt'
                 span.order-wrapper= orderDir
 
             th
               if orderDir === 'ASC'
-                a(href=`/users?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) Updated at
+                a(href=`/admin/users?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) Updated at
               else 
-                a(href=`/users?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) Updated at
+                a(href=`/admin/users?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) Updated at
               
               if orderBy === 'updatedAt'
                 span.order-wrapper= orderDir
@@ -75,7 +75,7 @@ block content
                 td 
                   input(type="checkbox", name="userId", value= user.id)
                 td
-                  a(href=`/users/${user.id}`) #{user.id}
+                  a(href=`/admin/users/${user.id}`) #{user.id}
                 td #{user.email}
                   if (!user.isActive)
                     span.archive-status (archived)
@@ -87,13 +87,13 @@ block content
             tr 
               td(colspan=2).text-center No users found.
     
-      form(action="/users/mass-actions/active?_method=PUT", name="massUserActiveForm" method="post") 
+      form(action="/admin/users/mass-actions/active?_method=PUT", name="massUserActiveForm" method="post") 
         input(type="hidden", name="toActiveUserIds", id="toActiveUserIds" value="")
       
-      form(action="/users/mass-actions/deactive?_method=PUT", name="massUserDeActiveForm" method="post") 
+      form(action="/admin/users/mass-actions/deactive?_method=PUT", name="massUserDeActiveForm" method="post") 
         input(type="hidden", name="toDeActiveUserIds", id="toDeActiveUserIds" value="")
       
-      form(action="/users/mass-actions/delete?_method=DELETE", name="massDeleteUsersForm" method="post") 
+      form(action="/admin/users/mass-actions/delete?_method=DELETE", name="massDeleteUsersForm" method="post") 
         input(type="hidden", name="deleteUserIds", id="deleteUserIds" value="")
 
     .col-12 

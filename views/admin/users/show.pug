@@ -5,12 +5,12 @@ block content
     .col-6 
       h1= user.email
     .col-6.text-end 
-      a(href="/users").btn.is-muted.mr-4 &larr; Back 
+      a(href="/admin/users").btn.is-muted.mr-4 &larr; Back 
       .dropdown
         button.dropdown-trigger Actions
         .dropdown-menu 
           .dropdown-content 
-            a(href=`/users/${user.id}/edit`).dropdown-item.mr-4 Edit user
+            a(href=`/admin/users/${user.id}/edit`).dropdown-item.mr-4 Edit user
             button(type="button", onClick="deleteUser()").dropdown-item Delete user
 
     .col-12
@@ -19,6 +19,6 @@ block content
       p User is #{user.isActive ? 'active' : 'archived' }. Click the button to #{user.isActive ? 'archived' : 'active' }. 
         button(type="button", onClick="archiveUser()") #{user.isActive ? 'archived' : 'Active' } user
 
-      form(action=`/users/${user.id}/archive?_method=PUT`, name="archiveUserForm", method="post") 
+      form(action=`/admin/users/${user.id}/archive?_method=PUT`, name="archiveUserForm", method="post") 
 
-      form(action=`/users/${user.id}?_method=DELETE`, name="deleteUserForm", method="post") 
+      form(action=`/admin/users/${user.id}?_method=DELETE`, name="deleteUserForm", method="post") 

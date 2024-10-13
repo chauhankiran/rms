@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const usersService = require("../../services/admin/users-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 
