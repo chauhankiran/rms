@@ -1,0 +1,34 @@
+extends ../layout
+
+block content
+  .row 
+    .col-6 
+      h1= title
+
+      include ../partials/flash
+
+      form(action="/deals", method="post") 
+        .form-group 
+          label(for="name") #{dealFields.name}
+          input(type="text", name="name", placeholder="42 New LED Monitors", autofocus=true)#name
+        
+        .form-group 
+          label(for="total") #{dealFields.total}
+          input(type="text", name="total", placeholder="1200", autofocus=true)#total
+        
+        .form-group 
+          label(for="dealSourceId") #{dealFields.dealSourceId}
+          select(name="dealSourceId")#dealSourceId
+            for dealSource in dealSources
+              option(value=dealSource.id) #{dealSource.name}
+        
+        .form-group 
+          label(for="description") #{dealFields.description}
+          textarea(name="description", cols="30", rows="10", placeholder="Add informative optional description")#description
+        
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Create deal
+            .col-6.text-end
+              a(href="/deals").btn.is-muted Cancel

@@ -9,7 +9,7 @@
     "test": "jest",
     "prepare": "husky",
     "fmt": "prettier . --write",
-    "stub": "node ./scripts/generate.js"
+    "stub": "node ./scripts/stub.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

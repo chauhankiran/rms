@@ -1,0 +1,39 @@
+extends ../layout
+
+block content
+  .row 
+    .col-6 
+      h1= title
+
+      include ../partials/flash
+
+      form(action=`/deals/${deal.id}?_method=PUT`, method="post") 
+        .form-group 
+          label(for="name") #{dealFields.name}
+          input(type="text", name="name", value=deal.name, placeholder="42 New LED Monitors", autofocus=true)#name
+      
+        .form-group 
+          label(for="total") #{dealFields.total}
+          input(type="text", name="total", value=deal.total, placeholder="1200", autofocus=true)#total
+        
+        .form-group 
+          label(for="dealSourceId") #{dealFields.dealSourceId}
+          select(name="dealSourceId")#dealSourceId
+            for dealSource in dealSources
+              if dealSource.id == deal.dealSourceId
+                option(value=dealSource.id, selected="true") #{dealSource.name}
+              else
+                option(value=dealSource.id) #{dealSource.name}
+
+        .form-group 
+          label(for="description") #{dealFields.description}
+          textarea(name="description", cols="30", rows="10", placeholder="Add informative optional description")#description #{deal.description}
+
+        
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Update deal
+            .col-6.text-end
+              a(href="/deals").btn.is-muted Cancel
+        

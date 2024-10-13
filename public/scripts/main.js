@@ -63,6 +63,31 @@ function deleteContact() {
   }
 }
 
+/**
+ * Deal
+ */
+function activeDeal() {
+  if (confirm("Are you sure you want to active this deal?")) {
+    document.activeDealForm.submit();
+  } else {
+    return false;
+  }
+}
+function archiveDeal() {
+  if (confirm("Are you sure you want to archive this deal?")) {
+    document.archiveDealForm.submit();
+  } else {
+    return false;
+  }
+}
+function deleteDeal() {
+  if (confirm("Are you sure you want to delete this deal?")) {
+    document.deleteDealForm.submit();
+  } else {
+    return false;
+  }
+}
+
 function archiveUser() {
   if (confirm("Are you sure you want to change the user status?")) {
     document.archiveUserForm.submit();

@@ -17,6 +17,7 @@ const homeRoutes = require("./routes/home");
 const authRoutes = require("./routes/auth");
 const companiesRoutes = require("./routes/companies");
 const contactsRoutes = require("./routes/contacts");
+const dealsRoutes = require("./routes/deals");
 const adminRoutes = require("./routes/admin");
 
 const app = express();
@@ -50,6 +51,7 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.session.currentUser;
   res.locals.companyFields = req.session.companyFields;
   res.locals.contactFields = req.session.contactFields;
+  res.locals.dealFields = req.session.dealFields;
   next();
 });
 
@@ -64,6 +66,7 @@ app.use("/", homeRoutes);
 app.use("/auth", authRoutes);
 app.use("/companies", checkAuth, companiesRoutes);
 app.use("/contacts", checkAuth, contactsRoutes);
+app.use("/deals", checkAuth, dealsRoutes);
 app.use("/admin", checkAuth, adminRoutes);
 
 // 404 Error

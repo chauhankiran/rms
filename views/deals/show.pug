@@ -1,0 +1,63 @@
+extends ../layout
+
+block content
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/deals").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu
+          .dropdown-content 
+            a(href=`/deals/${deal.id}/edit`).dropdown-item Edit deal
+            button.dropdown-item(onclick="activeDeal()") Active deal 
+            button.dropdown-item(onclick="archiveDeal()") Archive deal 
+            button.dropdown-item(onclick="deleteDeal()") Delete deal 
+
+    .col-12
+      include ../partials/flash
+
+    .col-12 
+      .row 
+        .col-12.mb-4
+          label(for="name").field-name #{dealFields.name} 
+          span.field-value #{deal.name}
+            if !deal.isActive 
+              span.archive-status (archived)
+
+        .col-12.mb-4
+          label(for="dealSourceId").field-name #{dealFields.dealSourceId}
+          span.field-value #{deal.dealSource}
+
+        .col-12.mb-4
+          label(for="employeeSize").field-name #{dealFields.employeeSize}
+          span.field-value #{deal.employeeSize}
+
+        .col-12.mb-4
+          label(for="description").field-name #{dealFields.description}
+          span.field-value #{deal.description || "-"}
+        
+        .col-6.mb-4
+          label(for="createdAt").field-name #{dealFields.createdAt}
+          span.field-value #{deal.createdAt || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedAt").field-name #{dealFields.updatedAt}
+          span.field-value #{deal.updatedAt || "-"}
+
+        .col-6.mb-4
+          label(for="createdBy").field-name #{dealFields.createdBy}
+          span.field-value #{deal.createdByEmail || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedBy").field-name #{dealFields.updatedBy}
+          span.field-value #{deal.updatedByEmail || "-"}
+
+
+      form(action=`/deals/${deal.id}?_method=DELETE`, name="deleteDealForm", method="post")
+
+      form(action=`/deals/${deal.id}/active?_method=PUT`, name="activeDealForm", method="post")
+
+      form(action=`/deals/${deal.id}/archive?_method=PUT`, name="archiveDealForm", method="post")
+    
