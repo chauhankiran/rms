@@ -3,6 +3,18 @@ const contactIndustriesService = require("../services/admin/contact-industries-s
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const sql = require("../db/sql");
 
+const handleContact = async (id, req, res) => {
+  const contact = await contactsService.findOne(id);
+
+  if (!contact) {
+    req.flash("error", "Contact not found.");
+    res.redirect("/contacts");
+    return;
+  }
+
+  return contact;
+};
+
 module.exports = {
   index: async (req, res, next) => {
     const search = req.query.search || null;
@@ -158,13 +170,7 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const contact = await contactsService.findOne(id);
-
-      if (!contact) {
-        req.flash("error", "Contact not found.");
-        res.redirect("/contacts");
-        return;
-      }
+      const contact = await handleContact(id, req, res);
 
       return res.render("contacts/show", { title: "Show contact", contact });
     } catch (err) {
@@ -176,13 +182,7 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const contact = await contactsService.findOne(id);
-
-      if (!contact) {
-        req.flash("error", "Contact not found.");
-        res.redirect("/contacts");
-        return;
-      }
+      const contact = await handleContact(id, req, res);
 
       const contactIndustries = await contactIndustriesService.pluck([
         "id",
@@ -223,13 +223,7 @@ module.exports = {
     }
 
     try {
-      const contact = await contactsService.findOne(id);
-
-      if (!contact) {
-        req.flash("error", "Contact not found.");
-        res.redirect("/contacts");
-        return;
-      }
+      await handleContact(id, req, res);
 
       const contactObj = {
         id,
@@ -254,13 +248,7 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const contact = await contactsService.findOne(id);
-
-      if (!contact) {
-        req.flash("error", "Contact not found.");
-        res.redirect("/contacts");
-        return;
-      }
+      await handleContact(id, req, res);
 
       await contactsService.destroy(id);
 
@@ -275,13 +263,7 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const contact = await contactsService.findOne(id);
-
-      if (!contact) {
-        req.flash("error", "Contact not found.");
-        res.redirect("/contacts");
-        return;
-      }
+      await handleContact(id, req, res);
 
       const contactObj = { id, updatedBy: req.session.currentUser.id };
       await contactsService.archive(contactObj);
@@ -297,13 +279,7 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const contact = await contactsService.findOne(id);
-
-      if (!contact) {
-        req.flash("error", "Contact not found.");
-        res.redirect("/contacts");
-        return;
-      }
+      await handleContact(id, req, res);
 
       const contactObj = { id, updatedBy: req.session.currentUser.id };
       await contactsService.active(contactObj);

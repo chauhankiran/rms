@@ -4,6 +4,18 @@ const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const contactsService = require("../services/contacts-service");
 const sql = require("../db/sql");
 
+const handleCompany = async (id, req, res) => {
+  const company = await companiesService.findOne(id);
+
+  if (!company) {
+    req.flash("error", "Company not found.");
+    res.redirect("/companies");
+    return;
+  }
+
+  return company;
+};
+
 module.exports = {
   index: async (req, res, next) => {
     const search = req.query.search || null;
@@ -136,13 +148,7 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const company = await companiesService.findOne(id);
-
-      if (!company) {
-        req.flash("error", "Company not found.");
-        res.redirect("/companies");
-        return;
-      }
+      const company = await handleCompany(id, req, res);
 
       const optionsObj = {
         skip: 0,
@@ -167,13 +173,7 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const company = await companiesService.findOne(id);
-
-      if (!company) {
-        req.flash("error", "Company not found.");
-        res.redirect("/companies");
-        return;
-      }
+      const company = await handleCompany(id, req, res);
 
       const companySources = await companySourcesService.pluck(["id", "name"]);
 
@@ -198,13 +198,7 @@ module.exports = {
     }
 
     try {
-      const company = await companiesService.findOne(id);
-
-      if (!company) {
-        req.flash("error", "Company not found.");
-        res.redirect("/companies");
-        return;
-      }
+      const company = await handleCompany(id, req, res);
 
       const companyObj = {
         id,
@@ -227,13 +221,7 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const company = await companiesService.findOne(id);
-
-      if (!company) {
-        req.flash("error", "Company not found.");
-        res.redirect("/companies");
-        return;
-      }
+      await handleCompany(id, req, res);
 
       await companiesService.destroy(id);
 
@@ -248,13 +236,7 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const company = await companiesService.findOne(id);
-
-      if (!company) {
-        req.flash("error", "Company not found.");
-        res.redirect("/companies");
-        return;
-      }
+      await handleCompany(id, req, res);
 
       const companyObj = { id, updatedBy: req.session.currentUser.id };
       await companiesService.archive(companyObj);
@@ -270,13 +252,7 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const company = await companiesService.findOne(id);
-
-      if (!company) {
-        req.flash("error", "Company not found.");
-        res.redirect("/companies");
-        return;
-      }
+      await handleCompany(id, req, res);
 
       const companyObj = { id, updatedBy: req.session.currentUser.id };
       await companiesService.active(companyObj);
