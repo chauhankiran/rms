@@ -15,6 +15,23 @@ const handleContact = async (id, req, res) => {
   return contact;
 };
 
+const updateContactStatus = async (req, res, next, action, message) => {
+  const id = req.params.id;
+
+  try {
+    await handleContact(id, req, res);
+
+    const contactObj = { id, updatedBy: req.session.currentUser.id };
+    await contactsService[action](contactObj);
+
+    req.flash("info", message);
+    res.redirect(`/contacts/${id}`);
+    return;
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   index: async (req, res, next) => {
     const search = req.query.search || null;
@@ -260,34 +277,22 @@ module.exports = {
   },
 
   archive: async (req, res, next) => {
-    const id = req.params.id;
-
-    try {
-      await handleContact(id, req, res);
-
-      const contactObj = { id, updatedBy: req.session.currentUser.id };
-      await contactsService.archive(contactObj);
-
-      req.flash("info", "Contact is archived.");
-      res.redirect(`/contacts/${id}`);
-    } catch (err) {
-      next(err);
-    }
+    await updateContactStatus(
+      req,
+      res,
+      next,
+      "archive",
+      "Contact is archived.",
+    );
   },
 
   active: async (req, res, next) => {
-    const id = req.params.id;
-
-    try {
-      await handleContact(id, req, res);
-
-      const contactObj = { id, updatedBy: req.session.currentUser.id };
-      await contactsService.active(contactObj);
-
-      req.flash("info", "Contact is activated.");
-      res.redirect(`/contacts/${id}`);
-    } catch (err) {
-      next(err);
-    }
+    await updateContactStatus(
+      req,
+      res,
+      next,
+      "active",
+      "Contact is activated.",
+    );
   },
 };

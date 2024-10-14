@@ -1,5 +1,21 @@
 const sql = require("../db/sql");
 
+const updateTaskStatus = async (taskObj, status) => {
+  const { id, updatedBy } = taskObj;
+
+  return await sql`
+    UPDATE
+      tasks
+    SET
+      "isActive" = ${status},
+      "updatedBy" = ${updatedBy},
+      "updatedAt" = ${sql`now()`}
+    WHERE
+      id = ${id}
+    returning id
+  `.then(([x]) => x);
+};
+
 module.exports = {
   find: async (optionsObj) => {
     const {
@@ -184,34 +200,10 @@ module.exports = {
   },
 
   archive: async (taskObj) => {
-    const { id, updatedBy } = taskObj;
-
-    return await sql`
-      UPDATE
-        tasks
-      SET
-        "isActive" = false,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+    return await updateTaskStatus(taskObj, false);
   },
 
   active: async (taskObj) => {
-    const { id, updatedBy } = taskObj;
-
-    return await sql`
-      UPDATE
-        tasks
-      SET
-        "isActive" = true,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+    return await updateTaskStatus(taskObj, true);
   },
 };

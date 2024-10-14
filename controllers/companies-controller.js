@@ -4,6 +4,16 @@ const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const contactsService = require("../services/contacts-service");
 const sql = require("../db/sql");
 
+const columnsObj = {
+  id: "c.id",
+  name: "c.name",
+  companySourceId: 'cs.name AS "companySource"',
+  createdBy: 'creator.email AS "createdByEmail"',
+  createdAt: 'c."createdAt"',
+  updatedBy: 'updater.email AS "updatedByEmail"',
+  updatedAt: 'c."updatedAt"',
+};
+
 const handleCompany = async (id, req, res) => {
   const company = await companiesService.findOne(id);
 
@@ -36,42 +46,16 @@ module.exports = {
       let columns = 'c."isActive",';
       let headers = [];
       for (const companyView of companyViews) {
-        // id
-        if (companyView.name === "id") {
-          columns += "c.id,";
-          headers.push("id");
-        }
-
-        // name
-        if (companyView.name === "name") {
-          columns += "c.name,";
-          headers.push("name");
-        }
-
-        // companySourceId
-        if (companyView.name === "companySourceId") {
-          columns += 'cs.name AS "companySource",';
-          headers.push("companySourceId");
-        }
-
-        // updatedBy
-        if (companyView.name === "updatedBy") {
-          columns += 'updater."email" AS "updatedByEmail",';
-          headers.push("updatedBy");
-        }
-
-        // updatedAt
-        if (companyView.name === "updatedAt") {
-          columns += 'c."updatedAt",';
-          headers.push("updatedAt");
+        const column = columnsObj[companyView.name];
+        if (column) {
+          columns += `${column},`;
+          headers.push(companyView.name);
         }
       }
 
       // TEMP: Track the issue
       // https://github.com/porsager/postgres/issues/894
-      if (columns.length > 0 && columns.slice(-1) === ",") {
-        columns = columns.slice(0, -1);
-      }
+      columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
 
       const optionsObj = { search, limit, skip, orderBy, orderDir, columns };
       const companies = await companiesService.find(optionsObj);
