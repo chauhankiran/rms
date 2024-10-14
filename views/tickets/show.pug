@@ -1,0 +1,59 @@
+extends ../layout
+
+block content
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/tickets").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu
+          .dropdown-content 
+            a(href=`/tickets/${ticket.id}/edit`).dropdown-item Edit ticket
+            button.dropdown-item(onclick="activeTicket()") Active ticket 
+            button.dropdown-item(onclick="archiveTicket()") Archive ticket 
+            button.dropdown-item(onclick="deleteTicket()") Delete ticket 
+
+    .col-12
+      include ../partials/flash
+
+    .col-12 
+      .row 
+        .col-12.mb-4
+          label(for="name").field-name #{ticketFields.name} 
+          span.field-value #{ticket.name}
+            if !ticket.isActive 
+              span.archive-status (archived)
+
+        .col-12.mb-4
+          label(for="ticketTypeId").field-name #{ticketFields.ticketTypeId}
+          span.field-value #{ticket.ticketType}
+
+        .col-12.mb-4
+          label(for="description").field-name #{ticketFields.description}
+          span.field-value #{ticket.description || "-"}
+        
+        .col-6.mb-4
+          label(for="createdAt").field-name #{ticketFields.createdAt}
+          span.field-value #{ticket.createdAt || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedAt").field-name #{ticketFields.updatedAt}
+          span.field-value #{ticket.updatedAt || "-"}
+
+        .col-6.mb-4
+          label(for="createdBy").field-name #{ticketFields.createdBy}
+          span.field-value #{ticket.createdByEmail || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedBy").field-name #{ticketFields.updatedBy}
+          span.field-value #{ticket.updatedByEmail || "-"}
+
+
+      form(action=`/tickets/${ticket.id}?_method=DELETE`, name="deleteTicketForm", method="post")
+
+      form(action=`/tickets/${ticket.id}/active?_method=PUT`, name="activeTicketForm", method="post")
+
+      form(action=`/tickets/${ticket.id}/archive?_method=PUT`, name="archiveTicketForm", method="post")
+    

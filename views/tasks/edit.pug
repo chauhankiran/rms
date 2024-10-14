@@ -1,0 +1,35 @@
+extends ../layout
+
+block content
+  .row 
+    .col-6 
+      h1= title
+
+      include ../partials/flash
+
+      form(action=`/tasks/${task.id}?_method=PUT`, method="post") 
+        .form-group 
+          label(for="name") #{taskFields.name}
+          input(type="text", name="name", value=task.name, placeholder="Kick-off Meeting", autofocus=true)#name
+        
+        .form-group 
+          label(for="taskTypeId") #{taskFields.taskTypeId}
+          select(name="taskTypeId")#taskTypeId
+            for taskType in taskTypes
+              if taskType.id == task.taskTypeId
+                option(value=taskType.id, selected="true") #{taskType.name}
+              else
+                option(value=taskType.id) #{taskType.name}
+
+        .form-group 
+          label(for="description") #{taskFields.description}
+          textarea(name="description", cols="30", rows="10", placeholder="Add informative optional description")#description #{task.description}
+
+        
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Update task
+            .col-6.text-end
+              a(href="/tasks").btn.is-muted Cancel
+        

@@ -1,0 +1,82 @@
+extends ../layout
+include ../mixins/pagination
+
+block content
+  .row.align-items-center 
+    .col-8 
+      h1 #{title} (#{count})
+    .col-4.text-end 
+      a(href="/tickets/new").btn New ticket
+    
+    .col-12
+      form(action="/tickets", method="get") 
+        .form-group 
+          input(type="hidden", name="orderBy", value=orderBy)
+          input(type="hidden", name="orderDir", value=orderDir)
+          input(type="text", name="search", value=search, autofocus=true, placeholder="Type name and press Enter")
+
+      include ../partials/flash
+
+      table 
+        thead 
+          tr 
+            th 
+            each header in headers
+              //- id
+              if header === "id"
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/tickets?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
+                  else 
+                    a(href=`/tickets?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
+                  
+                  if orderBy === 'id'
+                    span.order-wrapper= orderDir
+              
+              //- name
+              if header === "name"
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/tickets?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
+                  else 
+                    a(href=`/tickets?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
+                  
+                  if orderBy === 'name'
+                    span.order-wrapper= orderDir
+
+              //- ticketTypeId
+              if header === "ticketTypeId"
+                th #{ticketFields[header]}
+              
+              //- updatedBy
+              if header === "updatedBy"
+                th #{ticketFields[header]}
+              
+              //- updatedAt
+              if header === "updatedAt"
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/tickets?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
+                  else 
+                    a(href=`/tickets?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
+                  
+                  if orderBy === 'updatedAt'
+                    span.order-wrapper= orderDir
+
+        tbody 
+          if tickets.length > 0
+            each ticket in tickets 
+              tr
+                td 
+                  input(type="checkbox", name="ticketId", value= ticket.id)
+                td
+                  a(href=`/tickets/${ticket.id}`) #{ticket.id}
+                td #{ticket.name}
+                  if (!ticket.isActive)
+                    span.archive-status (archived)
+                td #{ticket.ticketType || "-" }
+                td #{ticket.updatedByEmail || "-" }
+                td #{ticket.updatedAt || "-" } 
+          else 
+            tr 
+              td(colspan=7).text-center No tickets found.

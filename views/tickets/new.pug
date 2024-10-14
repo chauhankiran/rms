@@ -1,0 +1,30 @@
+extends ../layout
+
+block content
+  .row 
+    .col-6 
+      h1= title
+
+      include ../partials/flash
+
+      form(action="/tickets", method="post") 
+        .form-group 
+          label(for="name") #{ticketFields.name}
+          input(type="text", name="name", placeholder="Website is not loading", autofocus=true)#name
+                
+        .form-group 
+          label(for="ticketTypeId") #{ticketFields.ticketTypeId}
+          select(name="ticketTypeId")#ticketTypeId
+            for ticketType in ticketTypes
+              option(value=ticketType.id) #{ticketType.name}
+        
+        .form-group 
+          label(for="description") #{ticketFields.description}
+          textarea(name="description", cols="30", rows="10", placeholder="Add informative optional description")#description
+        
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Create ticket
+            .col-6.text-end
+              a(href="/tickets").btn.is-muted Cancel

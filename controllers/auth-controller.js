@@ -3,6 +3,9 @@ const authService = require("../services/auth-service");
 const companyFieldsController = require("../controllers/admin/company-fields-controller");
 const contactFieldsController = require("../controllers/admin/contact-fields-controller");
 const dealFieldsController = require("../controllers/admin/deal-fields-controller");
+const quoteFieldsController = require("../controllers/admin/quote-fields-controller");
+const ticketFieldsController = require("../controllers/admin/ticket-fields-controller");
+const taskFieldsController = require("../controllers/admin/task-fields-controller");
 
 module.exports = {
   showLogin: (req, res, next) => {
@@ -67,6 +70,9 @@ module.exports = {
       await companyFieldsController.addCompanyFieldsInSession(req);
       await contactFieldsController.addContactFieldsInSession(req);
       await dealFieldsController.addDealFieldsInSession(req);
+      await quoteFieldsController.addQuoteFieldsInSession(req);
+      await ticketFieldsController.addTicketFieldsInSession(req);
+      await taskFieldsController.addTaskFieldsInSession(req);
 
       res.redirect("/");
       return;

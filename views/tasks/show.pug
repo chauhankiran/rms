@@ -1,0 +1,59 @@
+extends ../layout
+
+block content
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/tasks").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu
+          .dropdown-content 
+            a(href=`/tasks/${task.id}/edit`).dropdown-item Edit task
+            button.dropdown-item(onclick="activeTask()") Active task 
+            button.dropdown-item(onclick="archiveTask()") Archive task 
+            button.dropdown-item(onclick="deleteTask()") Delete task 
+
+    .col-12
+      include ../partials/flash
+
+    .col-12 
+      .row 
+        .col-12.mb-4
+          label(for="name").field-name #{taskFields.name} 
+          span.field-value #{task.name}
+            if !task.isActive 
+              span.archive-status (archived)
+
+        .col-12.mb-4
+          label(for="taskTypeId").field-name #{taskFields.taskTypeId}
+          span.field-value #{task.taskType}
+
+        .col-12.mb-4
+          label(for="description").field-name #{taskFields.description}
+          span.field-value #{task.description || "-"}
+        
+        .col-6.mb-4
+          label(for="createdAt").field-name #{taskFields.createdAt}
+          span.field-value #{task.createdAt || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedAt").field-name #{taskFields.updatedAt}
+          span.field-value #{task.updatedAt || "-"}
+
+        .col-6.mb-4
+          label(for="createdBy").field-name #{taskFields.createdBy}
+          span.field-value #{task.createdByEmail || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedBy").field-name #{taskFields.updatedBy}
+          span.field-value #{task.updatedByEmail || "-"}
+
+
+      form(action=`/tasks/${task.id}?_method=DELETE`, name="deleteTaskForm", method="post")
+
+      form(action=`/tasks/${task.id}/active?_method=PUT`, name="activeTaskForm", method="post")
+
+      form(action=`/tasks/${task.id}/archive?_method=PUT`, name="archiveTaskForm", method="post")
+    

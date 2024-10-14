@@ -1,0 +1,35 @@
+extends ../layout
+
+block content
+  .row 
+    .col-6 
+      h1= title
+
+      include ../partials/flash
+
+      form(action=`/tickets/${ticket.id}?_method=PUT`, method="post") 
+        .form-group 
+          label(for="name") #{ticketFields.name}
+          input(type="text", name="name", value=ticket.name, placeholder="Website is not loading", autofocus=true)#name
+        
+        .form-group 
+          label(for="ticketTypeId") #{ticketFields.ticketTypeId}
+          select(name="ticketTypeId")#ticketTypeId
+            for ticketType in ticketTypes
+              if ticketType.id == ticket.ticketTypeId
+                option(value=ticketType.id, selected="true") #{ticketType.name}
+              else
+                option(value=ticketType.id) #{ticketType.name}
+
+        .form-group 
+          label(for="description") #{ticketFields.description}
+          textarea(name="description", cols="30", rows="10", placeholder="Add informative optional description")#description #{ticket.description}
+
+        
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Update ticket
+            .col-6.text-end
+              a(href="/tickets").btn.is-muted Cancel
+        

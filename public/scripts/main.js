@@ -5,14 +5,6 @@ dropdown &&
     dropdown.classList.toggle("is-active");
   });
 
-function deleteUser() {
-  if (confirm("Are you sure you want to delete this user?")) {
-    document.deleteUserForm.submit();
-  } else {
-    return false;
-  }
-}
-
 /**
  * Company
  */
@@ -83,6 +75,93 @@ function archiveDeal() {
 function deleteDeal() {
   if (confirm("Are you sure you want to delete this deal?")) {
     document.deleteDealForm.submit();
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Quote
+ */
+function activeQuote() {
+  if (confirm("Are you sure you want to active this quote?")) {
+    document.activeQuoteForm.submit();
+  } else {
+    return false;
+  }
+}
+function archiveQuote() {
+  if (confirm("Are you sure you want to archive this quote?")) {
+    document.archiveQuoteForm.submit();
+  } else {
+    return false;
+  }
+}
+function deleteQuote() {
+  if (confirm("Are you sure you want to delete this quote?")) {
+    document.deleteQuoteForm.submit();
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Ticket
+ */
+function activeTicket() {
+  if (confirm("Are you sure you want to active this ticket?")) {
+    document.activeTicketForm.submit();
+  } else {
+    return false;
+  }
+}
+function archiveTicket() {
+  if (confirm("Are you sure you want to archive this ticket?")) {
+    document.archiveTicketForm.submit();
+  } else {
+    return false;
+  }
+}
+function deleteTicket() {
+  if (confirm("Are you sure you want to delete this ticket?")) {
+    document.deleteTicketForm.submit();
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Task
+ */
+function activeTask() {
+  if (confirm("Are you sure you want to active this task?")) {
+    document.activeTaskForm.submit();
+  } else {
+    return false;
+  }
+}
+function archiveTask() {
+  if (confirm("Are you sure you want to archive this task?")) {
+    document.archiveTaskForm.submit();
+  } else {
+    return false;
+  }
+}
+function deleteTask() {
+  if (confirm("Are you sure you want to delete this task?")) {
+    document.deleteTaskForm.submit();
+  } else {
+    return false;
+  }
+}
+
+/**
+ * User
+ */
+
+function deleteUser() {
+  if (confirm("Are you sure you want to delete this user?")) {
+    document.deleteUserForm.submit();
   } else {
     return false;
   }

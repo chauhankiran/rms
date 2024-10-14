@@ -1,0 +1,59 @@
+extends ../layout
+
+block content
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/quotes").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu
+          .dropdown-content 
+            a(href=`/quotes/${quote.id}/edit`).dropdown-item Edit quote
+            button.dropdown-item(onclick="activeQuote()") Active quote 
+            button.dropdown-item(onclick="archiveQuote()") Archive quote 
+            button.dropdown-item(onclick="deleteQuote()") Delete quote 
+
+    .col-12
+      include ../partials/flash
+
+    .col-12 
+      .row 
+        .col-12.mb-4
+          label(for="name").field-name #{quoteFields.name} 
+          span.field-value #{quote.name}
+            if !quote.isActive 
+              span.archive-status (archived)
+
+        .col-12.mb-4
+          label(for="total").field-name #{quoteFields.total}
+          span.field-value #{quote.total}
+
+        .col-12.mb-4
+          label(for="description").field-name #{quoteFields.description}
+          span.field-value #{quote.description || "-"}
+        
+        .col-6.mb-4
+          label(for="createdAt").field-name #{quoteFields.createdAt}
+          span.field-value #{quote.createdAt || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedAt").field-name #{quoteFields.updatedAt}
+          span.field-value #{quote.updatedAt || "-"}
+
+        .col-6.mb-4
+          label(for="createdBy").field-name #{quoteFields.createdBy}
+          span.field-value #{quote.createdByEmail || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedBy").field-name #{quoteFields.updatedBy}
+          span.field-value #{quote.updatedByEmail || "-"}
+
+
+      form(action=`/quotes/${quote.id}?_method=DELETE`, name="deleteQuoteForm", method="post")
+
+      form(action=`/quotes/${quote.id}/active?_method=PUT`, name="activeQuoteForm", method="post")
+
+      form(action=`/quotes/${quote.id}/archive?_method=PUT`, name="archiveQuoteForm", method="post")
+    
