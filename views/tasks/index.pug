@@ -80,3 +80,6 @@ block content
           else 
             tr 
               td(colspan=7).text-center No tasks found.
+    
+    .col-12 
+      +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

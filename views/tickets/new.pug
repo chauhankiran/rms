@@ -8,16 +8,19 @@ block content
       include ../partials/flash
 
       form(action="/tickets", method="post") 
+        //- name
         .form-group 
           label(for="name") #{ticketFields.name}
           input(type="text", name="name", placeholder="Website is not loading", autofocus=true)#name
-                
+
+        //- ticketTypeId
         .form-group 
           label(for="ticketTypeId") #{ticketFields.ticketTypeId}
           select(name="ticketTypeId")#ticketTypeId
             for ticketType in ticketTypes
               option(value=ticketType.id) #{ticketType.name}
         
+        //- description
         .form-group 
           label(for="description") #{ticketFields.description}
           textarea(name="description", cols="30", rows="10", placeholder="Add informative optional description")#description
