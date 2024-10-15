@@ -8,13 +8,7 @@ block content
       include ../../partials/flash
 
       form(action=`/admin/users/${user.id}?_method=PUT`, method="post") 
-        .form-group 
-          label(for="email") Email
-          input(type="text", name="email", value=user.email placeholder="kai@doe.com", autofocus=true)#email
-        
-        .form-group 
-          label(for="password") Password
-          input(type="text", name="password", placeholder="******")#password
+        include ./form
         
         .form-group 
           .row.align-items-center 

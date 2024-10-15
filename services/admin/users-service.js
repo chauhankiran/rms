@@ -59,7 +59,7 @@ module.exports = {
       INSERT INTO users (
         email,
         password,
-        "createdBy"
+        "createdBy",
         "isRequiredToChangePassword"
       ) VALUES (
         ${email},

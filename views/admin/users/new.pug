@@ -7,14 +7,8 @@ block content
 
       include ../../partials/flash
 
-      form(action="/users", method="post") 
-        .form-group 
-          label(for="email") Email
-          input(type="text", name="email", placeholder="kai@doe.com", autofocus=true)#email
-        
-        .form-group 
-          label(for="password") Password
-          input(type="text", name="password", placeholder="******")#password
+      form(action="/admin/users", method="post") 
+        include ./form
         
         .form-group 
           .row.align-items-center 
