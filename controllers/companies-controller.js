@@ -14,18 +14,6 @@ const columnsObj = {
   updatedAt: 'c."updatedAt"',
 };
 
-const handleCompany = async (id, req, res) => {
-  const company = await companiesService.findOne(id);
-
-  if (!company) {
-    req.flash("error", "Company not found.");
-    res.redirect("/companies");
-    return;
-  }
-
-  return company;
-};
-
 module.exports = {
   index: async (req, res, next) => {
     const search = req.query.search || null;
@@ -132,7 +120,16 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const company = await handleCompany(id, req, res);
+      // Before displaying company, check if the company
+      // exist or not. If not, re-direct back to listing
+      // page with flashing message.
+      const company = await companiesService.findOne(id);
+
+      if (!company) {
+        req.flash("error", "Company not found.");
+        res.redirect("/companies");
+        return;
+      }
 
       const optionsObj = {
         skip: 0,
@@ -157,7 +154,16 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const company = await handleCompany(id, req, res);
+      // Before editing company, check if the company
+      // exist or not. If not, re-direct back to listing
+      // page with flashing message.
+      const company = await companiesService.findOne(id);
+
+      if (!company) {
+        req.flash("error", "Company not found.");
+        res.redirect("/companies");
+        return;
+      }
 
       const companySources = await companySourcesService.pluck(["id", "name"]);
 
@@ -182,7 +188,16 @@ module.exports = {
     }
 
     try {
-      const company = await handleCompany(id, req, res);
+      // Before updating company, check if the company
+      // exist or not. If not, re-direct back to listing
+      // page with flashing message.
+      const company = await companiesService.findOne(id);
+
+      if (!company) {
+        req.flash("error", "Company not found.");
+        res.redirect("/companies");
+        return;
+      }
 
       const companyObj = {
         id,
@@ -205,7 +220,16 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleCompany(id, req, res);
+      // Before deleting company, check if the company
+      // exist or not. If not, re-direct back to listing
+      // page with flashing message.
+      const company = await companiesService.findOne(id);
+
+      if (!company) {
+        req.flash("error", "Company not found.");
+        res.redirect("/companies");
+        return;
+      }
 
       await companiesService.destroy(id);
 
@@ -220,7 +244,16 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleCompany(id, req, res);
+      // Before archiving company, check if the company
+      // exist or not. If not, re-direct back to listing
+      // page with flashing message.
+      const company = await companiesService.findOne(id);
+
+      if (!company) {
+        req.flash("error", "Company not found.");
+        res.redirect("/companies");
+        return;
+      }
 
       const companyObj = { id, updatedBy: req.session.currentUser.id };
       await companiesService.archive(companyObj);
@@ -236,7 +269,16 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleCompany(id, req, res);
+      // Before activating company, check if the company
+      // exist or not. If not, re-direct back to listing
+      // page with flashing message.
+      const company = await companiesService.findOne(id);
+
+      if (!company) {
+        req.flash("error", "Company not found.");
+        res.redirect("/companies");
+        return;
+      }
 
       const companyObj = { id, updatedBy: req.session.currentUser.id };
       await companiesService.active(companyObj);
