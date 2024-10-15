@@ -8,10 +8,8 @@ block content
       include ../../partials/flash
 
       form(action=`/admin/contact-industries/${contactIndustry.id}?_method=PUT`, method="post") 
-        .form-group 
-          label(for="name") Name
-          input(type="text", name="name", value=contactIndustry.name, placeholder="Healthcare", autofocus=true)#name
-        
+        include ./form
+
         .form-group 
           .row.align-items-center 
             .col-6 

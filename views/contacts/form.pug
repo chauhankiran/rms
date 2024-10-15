@@ -1,0 +1,25 @@
+.form-group 
+  label(for="prefix") #{contactFields.prefix}
+  input(type="text", name="prefix", id="prefix", value=contact ? contact.prefix : "", placeholder="Mr.", autofocus=true)
+
+.form-group 
+  label(for="firstName") #{contactFields.firstName}
+  input(type="text", name="firstName", id="firstName", value=contact ? contact.firstName : "", placeholder="Kai")
+
+.form-group 
+  label(for="lastName") #{contactFields.lastName}
+  input(type="text", name="lastName", id="lastName", value=contact ? contact.lastName : "", placeholder="Doe")
+
+.form-group 
+  label(for="annualRevenue") #{contactFields.annualRevenue}
+  input(type="text", name="annualRevenue", id="annualRevenue", value=contact ? contact.annualRevenue : "", placeholder="600000")
+
+.form-group 
+  label(for="contactIndustryId") #{contactFields.contactIndustryId}
+  select(name="contactIndustryId", id="contactIndustryId")
+    for contactIndustry in contactIndustries
+      option(value=contactIndustry.id, selected=contact && contactIndustry.id == contact.contactIndustryId) #{contactIndustry.name}
+
+.form-group 
+  label(for="description") #{contactFields.description}
+  textarea(name="description", id="description" cols="30", rows="10", placeholder="Add informative optional description") #{contact ? contact.description : ""}

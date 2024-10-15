@@ -1,0 +1,16 @@
+//- name
+.form-group 
+  label(for="name") #{taskFields.name}
+  input(type="text", name="name", id="name", value=task ? task.name : "", placeholder="Kick-off Meeting", autofocus=true)
+
+//- taskTypeId
+.form-group 
+  label(for="taskTypeId") #{taskFields.taskTypeId}
+  select(name="taskTypeId", id="taskTypeId")
+    for taskType in taskTypes
+      option(value=taskType.id, selected=task && taskType.id == task.taskTypeId) #{taskType.name}
+
+//- description
+.form-group 
+  label(for="description") #{taskFields.description}
+  textarea(name="description", id="description" cols="30", rows="10", placeholder="Add informative optional description") #{task ? task.description : ""}

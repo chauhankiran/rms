@@ -8,23 +8,7 @@ block content
       include ../partials/flash
 
       form(action="/companies", method="post") 
-        .form-group 
-          label(for="name") #{companyFields.name}
-          input(type="text", name="name", placeholder="Google, Inc.", autofocus=true)#name
-      
-        .form-group 
-          label(for="employeeSize") #{companyFields.employeeSize}
-          input(type="text", name="employeeSize", placeholder="1200", autofocus=true)#employeeSize
-        
-        .form-group 
-          label(for="companySourceId") #{companyFields.companySourceId}
-          select(name="companySourceId")#companySourceId
-            for companySource in companySources
-              option(value=companySource.id) #{companySource.name}
-
-        .form-group 
-          label(for="description") #{companyFields.description}
-          textarea(name="description", cols="30", rows="10", placeholder="Add informative optional description")#description
+        include ./form
         
         .form-group 
           .row.align-items-center 

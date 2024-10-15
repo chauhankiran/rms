@@ -10,31 +10,7 @@ block content
       form(action="/contacts", method="post") 
         input(type="hidden", name="companyId" value=companyId)
 
-        .form-group 
-          label(for="prefix") #{contactFields.prefix}
-          input(type="text", name="prefix", placeholder="Mr.", autofocus=true)#prefix
-        
-        .form-group 
-          label(for="firstName") #{contactFields.firstName}
-          input(type="text", name="firstName", placeholder="Kai", autofocus=true)#firstName
-        
-        .form-group 
-          label(for="lastName") #{contactFields.lastName}
-          input(type="text", name="lastName", placeholder="Doe", autofocus=true)#lastName
-      
-        .form-group 
-          label(for="annualRevenue") #{contactFields.annualRevenue}
-          input(type="text", name="annualRevenue", placeholder="600000", autofocus=true)#annualRevenue
-        
-        .form-group 
-          label(for="contactIndustryId") #{contactFields.contactIndustryId}
-          select(name="contactIndustryId")#contactIndustryId
-            for contactIndustry in contactIndustries
-              option(value=contactIndustry.id) #{contactIndustry.name}
-
-        .form-group 
-          label(for="description") #{contactFields.description}
-          textarea(name="description", cols="30", rows="10", placeholder="Add informative optional description")#description
+        include ./form
         
         .form-group 
           .row.align-items-center 

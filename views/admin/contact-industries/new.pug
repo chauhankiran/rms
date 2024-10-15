@@ -8,9 +8,7 @@ block content
       include ../../partials/flash
 
       form(action="/admin/contact-industries", method="post") 
-        .form-group 
-          label(for="name") Name
-          input(type="text", name="name", placeholder="Healthcare", autofocus=true)#name
+        include ./form
         
         .form-group 
           .row.align-items-center 

@@ -1,0 +1,17 @@
+.form-group 
+  label(for="name") #{companyFields.name}
+  input(type="text", name="name", id="name", value=company ? company.name : "", placeholder="Google, Inc.", autofocus=true)
+
+.form-group 
+  label(for="employeeSize") #{companyFields.employeeSize}
+  input(type="text", name="employeeSize", id="employeeSize", value=company ? company.employeeSize : "", placeholder="1200", autofocus=true)
+        
+.form-group 
+  label(for="companySourceId") #{companyFields.companySourceId}
+  select(name="companySourceId", id="companySourceId")
+    for companySource in companySources
+      option(value=companySource.id, selected=company && companySource.id == company.companySourceId) #{companySource.name}
+
+.form-group 
+  label(for="description") #{companyFields.description}
+  textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{company ? company.description : ""}

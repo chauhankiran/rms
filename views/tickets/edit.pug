@@ -8,25 +8,7 @@ block content
       include ../partials/flash
 
       form(action=`/tickets/${ticket.id}?_method=PUT`, method="post") 
-        //- name
-        .form-group 
-          label(for="name") #{ticketFields.name}
-          input(type="text", name="name", value=ticket.name, placeholder="Website is not loading", autofocus=true)#name
-        
-        //- ticketTypeId
-        .form-group 
-          label(for="ticketTypeId") #{ticketFields.ticketTypeId}
-          select(name="ticketTypeId")#ticketTypeId
-            for ticketType in ticketTypes
-              if ticketType.id == ticket.ticketTypeId
-                option(value=ticketType.id, selected="true") #{ticketType.name}
-              else
-                option(value=ticketType.id) #{ticketType.name}
-
-        //- description
-        .form-group 
-          label(for="description") #{ticketFields.description}
-          textarea(name="description", cols="30", rows="10", placeholder="Add informative optional description")#description #{ticket.description}
+        include ./form
 
         .form-group 
           .row.align-items-center 

@@ -8,28 +8,8 @@ block content
       include ../partials/flash
 
       form(action=`/companies/${company.id}?_method=PUT`, method="post") 
-        .form-group 
-          label(for="name") #{companyFields.name}
-          input(type="text", name="name", value=company.name, placeholder="Google, Inc.", autofocus=true)#name
-      
-        .form-group 
-          label(for="employeeSize") #{companyFields.employeeSize}
-          input(type="text", name="employeeSize", value=company.employeeSize, placeholder="1200", autofocus=true)#employeeSize
-        
-        .form-group 
-          label(for="companySourceId") #{companyFields.companySourceId}
-          select(name="companySourceId")#companySourceId
-            for companySource in companySources
-              if companySource.id == company.companySourceId
-                option(value=companySource.id, selected="true") #{companySource.name}
-              else
-                option(value=companySource.id) #{companySource.name}
+        include ./form
 
-        .form-group 
-          label(for="description") #{companyFields.description}
-          textarea(name="description", cols="30", rows="10", placeholder="Add informative optional description")#description #{company.description}
-
-        
         .form-group 
           .row.align-items-center 
             .col-6 
