@@ -1,0 +1,50 @@
+extends ../../layout
+
+block content 
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/admin/deal-sources").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu 
+          .dropdown-content 
+            a(href=`/admin/deal-sources/${dealSource.id}/edit`).dropdown-item Edit deal source
+            button(type="button", onClick="activeDealSource()").dropdown-item Active deal source
+            button(type="button", onClick="archiveDealSource()").dropdown-item Archive deal source
+            button(type="button", onClick="deleteDealSource()").dropdown-item Delete deal source
+
+    .col-12
+      include ../../partials/flash
+
+    .col-12 
+      .row 
+        .col-12.mb-4
+          label(for="name").field-name Name 
+          span.field-value #{dealSource.name}
+            if !dealSource.isActive 
+              span.archive-status (archived)
+
+        .col-6.mb-4
+          label(for="createdAt").field-name Created at
+          span.field-value #{dealSource.createdAt || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedAt").field-name Updated at
+          span.field-value #{dealSource.updatedAt || "-"}
+
+        .col-6.mb-4
+          label(for="createdBy").field-name Created by
+          span.field-value #{dealSource.createdByEmail || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedBy").field-name Updated by
+          span.field-value #{dealSource.updatedByEmail || "-"}
+
+
+      form(action=`/admin/deal-sources/${dealSource.id}?_method=DELETE`, name="deleteDealSourceForm", method="post") 
+
+      form(action=`/admin/deal-sources/${dealSource.id}/active?_method=PUT`, name="activeDealSourceForm", method="post") 
+
+      form(action=`/admin/deal-sources/${dealSource.id}/archive?_method=PUT`, name="archiveDealSourceForm", method="post") 

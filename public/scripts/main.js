@@ -225,6 +225,81 @@ function deleteContactIndustry() {
   }
 }
 
+/**
+ * Deal source
+ */
+function activeDealSource() {
+  if (confirm("Are you sure you want to active deal source?")) {
+    document.activeDealSourceForm.submit();
+  } else {
+    return false;
+  }
+}
+function archiveDealSource() {
+  if (confirm("Are you sure you want to archive deal source?")) {
+    document.archiveDealSourceForm.submit();
+  } else {
+    return false;
+  }
+}
+function deleteDealSource() {
+  if (confirm("Are you sure you want to delete deal source?")) {
+    document.deleteDealSourceForm.submit();
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Ticket type
+ */
+function activeTicketType() {
+  if (confirm("Are you sure you want to active ticket type?")) {
+    document.activeTicketTypeForm.submit();
+  } else {
+    return false;
+  }
+}
+function archiveTicketType() {
+  if (confirm("Are you sure you want to archive ticket type?")) {
+    document.archiveTicketTypeForm.submit();
+  } else {
+    return false;
+  }
+}
+function deleteTicketType() {
+  if (confirm("Are you sure you want to delete ticket type?")) {
+    document.deleteTicketTypeForm.submit();
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Task type
+ */
+function activeTaskType() {
+  if (confirm("Are you sure you want to active task type?")) {
+    document.activeTaskTypeForm.submit();
+  } else {
+    return false;
+  }
+}
+function archiveTaskType() {
+  if (confirm("Are you sure you want to archive task type?")) {
+    document.archiveTaskTypeForm.submit();
+  } else {
+    return false;
+  }
+}
+function deleteTaskType() {
+  if (confirm("Are you sure you want to delete task type?")) {
+    document.deleteTaskTypeForm.submit();
+  } else {
+    return false;
+  }
+}
+
 function activeMultipleUsers() {
   const checkboxes = document.querySelectorAll("input[name='userId']:checked");
   const selectedUserIds = [];

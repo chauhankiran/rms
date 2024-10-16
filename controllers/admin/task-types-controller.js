@@ -63,7 +63,7 @@ module.exports = {
       };
       await taskTypesService.create(taskTypeObj);
 
-      req.flash("info", "task type is created.");
+      req.flash("info", "Task type is created.");
       res.redirect("/admin/task-types");
       return;
     } catch (err) {
@@ -78,7 +78,7 @@ module.exports = {
       const taskType = await taskTypesService.findOne(id);
 
       if (!taskType) {
-        req.flash("error", "task type not found.");
+        req.flash("error", "Task type not found.");
         res.redirect("/admin/task-types");
         return;
       }
@@ -100,7 +100,7 @@ module.exports = {
       const taskType = await taskTypesService.findOne(id);
 
       if (!taskType) {
-        req.flash("error", "task type not found.");
+        req.flash("error", "Task type not found.");
         res.redirect("/admin/task-types");
         return;
       }
@@ -129,7 +129,7 @@ module.exports = {
       const taskType = await taskTypesService.findOne(id);
 
       if (!taskType) {
-        req.flash("error", "task type not found.");
+        req.flash("error", "Task type not found.");
         res.redirect("/admin/task-types");
         return;
       }
@@ -141,7 +141,7 @@ module.exports = {
       };
       await taskTypesService.update(taskTypeObj);
 
-      req.flash("info", "task type is updated.");
+      req.flash("info", "Task type is updated.");
       res.redirect(`/admin/task-types/${id}`);
       return;
     } catch (err) {
@@ -156,14 +156,14 @@ module.exports = {
       const taskType = await taskTypesService.findOne(id);
 
       if (!taskType) {
-        req.flash("error", "task type not found.");
+        req.flash("error", "Task type not found.");
         res.redirect("/admin/task-types");
         return;
       }
 
       await taskTypesService.destroy(id);
 
-      req.flash("info", "task type is deleted.");
+      req.flash("info", "Task type is deleted.");
       res.redirect("/admin/task-types");
     } catch (err) {
       next(err);
@@ -177,7 +177,7 @@ module.exports = {
       const taskType = await taskTypesService.findOne(id);
 
       if (!taskType) {
-        req.flash("error", "task type not found.");
+        req.flash("error", "Task type not found.");
         res.redirect("/admin/task-types");
         return;
       }
@@ -185,7 +185,7 @@ module.exports = {
       const taskTypeObj = { id, updatedBy: req.session.currentUser.id };
       await taskTypesService.archive(taskTypeObj);
 
-      req.flash("info", "task type is archived.");
+      req.flash("info", "Task type is archived.");
       res.redirect(`/admin/task-types/${id}`);
     } catch (err) {
       next(err);
@@ -199,7 +199,7 @@ module.exports = {
       const taskType = await taskTypesService.findOne(id);
 
       if (!taskType) {
-        req.flash("error", "task type not found.");
+        req.flash("error", "Task type not found.");
         res.redirect("/admin/task-types");
         return;
       }
@@ -207,7 +207,7 @@ module.exports = {
       const taskTypeObj = { id, updatedBy: req.session.currentUser.id };
       await taskTypesService.active(taskTypeObj);
 
-      req.flash("info", "task type is activated.");
+      req.flash("info", "Task type is activated.");
       res.redirect(`/admin/task-types/${id}`);
     } catch (err) {
       next(err);

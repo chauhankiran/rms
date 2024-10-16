@@ -1,0 +1,50 @@
+extends ../../layout
+
+block content 
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/admin/task-types").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu 
+          .dropdown-content 
+            a(href=`/admin/task-types/${taskType.id}/edit`).dropdown-item Edit task type
+            button(type="button", onClick="activeTaskType()").dropdown-item Active task type
+            button(type="button", onClick="archiveTaskType()").dropdown-item Archive task type
+            button(type="button", onClick="deleteTaskType()").dropdown-item Delete task type
+
+    .col-12
+      include ../../partials/flash
+
+    .col-12 
+      .row 
+        .col-12.mb-4
+          label(for="name").field-name Name 
+          span.field-value #{taskType.name}
+            if !taskType.isActive 
+              span.archive-status (archived)
+
+        .col-6.mb-4
+          label(for="createdAt").field-name Created at
+          span.field-value #{taskType.createdAt || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedAt").field-name Updated at
+          span.field-value #{taskType.updatedAt || "-"}
+
+        .col-6.mb-4
+          label(for="createdBy").field-name Created by
+          span.field-value #{taskType.createdByEmail || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedBy").field-name Updated by
+          span.field-value #{taskType.updatedByEmail || "-"}
+
+
+      form(action=`/admin/task-types/${taskType.id}?_method=DELETE`, name="deleteTaskTypeForm", method="post") 
+
+      form(action=`/admin/task-types/${taskType.id}/active?_method=PUT`, name="activeTaskTypeForm", method="post") 
+
+      form(action=`/admin/task-types/${taskType.id}/archive?_method=PUT`, name="archiveTaskTypeForm", method="post") 

@@ -56,9 +56,38 @@ fs.writeFileSync(
 
 module.exports = {
   index: async (req, res, next) => {
+    const search = req.query.search || null;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const orderBy = req.query.orderBy || "id";
+    const orderDir = req.query.orderDir || "DESC";
+
     try {
+      const optionsObj = { search, limit, skip, orderBy, orderDir };
+      const ${entity} = await ${entity}Service.find(optionsObj);
+      const { count } = await ${entity}Service.count(optionsObj);
+
+      const pages = Math.ceil(count / limit);
+
+      const paginationLinks = generatePaginationLinks({
+        link: "/${entity}",
+        page,
+        pages,
+        search,
+        limit,
+        orderBy,
+        orderDir,
+      });
+
       return res.render("${entity}/index", {
         title: "${capitalize(entity)}",
+        ${entity},
+        paginationLinks,
+        search,
+        count,
+        orderBy,
+        orderDir,
       });
     } catch (err) {
       next(err)
@@ -72,7 +101,21 @@ module.exports = {
   },
 
   create: async (req, res, next) => {
+    const { name } = req.body;
+
+    if (!name) {
+      req.flash("error", "Name is required.");
+      res.redirect("/${entitySingular}/new");
+      return;
+    }
+
     try {
+      const ${entitySingular}Obj = { name, createdBy: req.session.currentUser.id };
+      await ${entity}Service.create(${entitySingular}Obj);
+
+      req.flash("info", "${entitySingular} is created.");
+      res.redirect("/${entitySingular}");
+      return;
     } catch (err) {
       next(err)
     }
@@ -82,8 +125,17 @@ module.exports = {
     const id = req.params.id;
 
     try {
+      const ${entitySingular} = await ${entity}Service.findOne(id);
+
+      if (!${entitySingular}) {
+        req.flash("error", "${entitySingular} not found.");
+        res.redirect("/${entity}");
+        return;
+      }
+
       return res.render("${entity}/show", {
         title: "Show ${entitySingular}",
+        ${entitySingular},
       });
     } catch (err) {
       next(err)
@@ -94,8 +146,17 @@ module.exports = {
     const id = req.params.id;
 
     try {
+      const ${entitySingular} = await ${entity}Service.findOne(id);
+
+      if (!${entitySingular}) {
+        req.flash("error", "${entitySingular} not found.");
+        res.redirect("/${entity}");
+        return;
+      }
+
       return res.render("${entity}/edit", {
         title: "Edit ${entitySingular}",
+        ${entitySingular},
       });    
     } catch (err) {
       next(err)
@@ -104,9 +165,33 @@ module.exports = {
 
   update: async (req, res, next) => {
     const id = req.params.id;
+    const { name } = req.body;
+
+    if (!name) {
+      req.flash("error", "Name is required.");
+      res.redirect(\`/${entity}/\${id}/edit\`);
+      return;
+    }
 
     try {
-    
+      const ${entitySingular} = await ${entity}Service.findOne(id);
+
+      if (!${entitySingular}) {
+        req.flash("error", "${entitySingular} not found.");
+        res.redirect("/${entity}");
+        return;
+      }
+
+      const ${entitySingular}Obj = {
+        id,
+        name,
+        updatedBy: req.session.currentUser.id,
+      };
+      await ${entity}Service.update(${entitySingular}Obj);
+
+      req.flash("info", "Company source is updated.");
+      res.redirect(\`/${entity}/\${id}\`);
+      return;
     } catch (err) {
       next(err)
     }
@@ -116,7 +201,18 @@ module.exports = {
     const id = req.params.id;
 
     try {
-    
+      const ${entitySingular} = await ${entity}Service.findOne(id);
+
+      if (!${entitySingular}) {
+        req.flash("error", "${entitySingular} not found.");
+        res.redirect("/${entity}");
+        return;
+      }
+      
+      await ${entity}Service.destroy(id);
+
+      req.flash("info", "${entitySingular} is deleted.");
+      res.redirect("/${entity}");
     } catch (err) {
       next(err)
     }
@@ -126,7 +222,19 @@ module.exports = {
     const id = req.params.id;
 
     try {
-    
+      const ${entitySingular} = await ${entity}Service.findOne(id);
+
+      if (!${entitySingular}) {
+        req.flash("error", "${entitySingular} not found.");
+        res.redirect("/${entity}");
+        return;
+      }
+
+      const ${entitySingular}Obj = { id, updatedBy: req.session.currentUser.id };
+      await ${entity}Service.active(${entitySingular}Obj);
+
+      req.flash("info", "${entitySingular} is activated.");
+      res.redirect(\`/${entity}/\${id}\`);
     } catch (err) {
       next(err)
     }
@@ -136,7 +244,19 @@ module.exports = {
     const id = req.params.id;
 
     try {
-    
+      const ${entitySingular} = await ${entity}Service.findOne(id);
+
+      if (!${entitySingular}) {
+        req.flash("error", "${entitySingular} not found.");
+        res.redirect("/${entity}");
+        return;
+      }
+
+      const ${entitySingular}Obj = { id, updatedBy: req.session.currentUser.id };
+      await ${entity}Service.active(${entitySingular}Obj);
+
+      req.flash("info", "${entitySingular} is activated.");
+      res.redirect(\`/${entity}/\${id}\`);
     } catch (err) {
       next(err)
     }
@@ -153,27 +273,102 @@ fs.writeFileSync(
 
 module.exports = {
   find: async (optionsObj) => {
+    const { skip, limit, search, orderBy, orderDir } = optionsObj;
+
+    const whereClause = search
+      ? sql\` WHERE name iLIKE \${"%" + search + "%"}\`
+      : sql\`\`;
   },
 
   count: async (optionsObj) => {
+    const { search } = optionsObj;
+
+    const whereClause = search
+      ? sql\` WHERE name iLIKE \${"%" + search + "%"}\`
+      : sql\`\`;
+
+    return await sql\`
+      SELECT
+        COUNT(id)
+      FROM
+        ${entity}
+      \${whereClause}
+    \`.then(([x]) => x);
   },
 
   create: async (${entitySingular}Obj) => {
+    const { name, createdBy } = ${entitySingular}Obj;
+
+    return await sql\`
+        INSERT INTO "${entity}" (
+          name,
+          "createdBy"
+        ) VALUES (
+          \${name},
+          \${createdBy}
+        ) returning id
+      \`;
   },
 
   findOne: async (id) => {
   },
 
   update: async (${entitySingular}Obj) => {
+    const { id, name, updatedBy } = ${entitySingular}Obj;
+
+    return await sql\`
+      UPDATE
+        ${entity}
+      SET
+        name = \${name},
+        "updatedBy" = \${updatedBy},
+        "updatedAt" = \${sql\`now()\`}
+      WHERE
+        id = \${id}
+      returning id
+    \`.then(([x]) => x);
   },
 
   destroy: async (id) => {
+    return await sql\`
+      DELETE FROM
+        ${entity}
+      WHERE
+        id = \${id}
+      returning id
+    \`.then(([x]) => x);
   },
 
   archive: async (${entitySingular}Obj) => {
+    const { id, updatedBy } = ${entitySingular}Obj;
+
+    return await sql\`
+      UPDATE
+        ${entity}
+      SET
+        "isActive" = false,
+        "updatedBy" = \${updatedBy},
+        "updatedAt" = \${sql\`now()\`}
+      WHERE
+        id = \${id}
+      returning id
+    \`.then(([x]) => x);
   },
 
   active: async (${entitySingular}Obj) => {
+    const { id, updatedBy } = ${entitySingular}Obj;
+
+    return await sql\`
+      UPDATE
+        ${entity}
+      SET
+        "isActive" = true,
+        "updatedBy" = \${updatedBy},
+        "updatedAt" = \${sql\`now()\`}
+      WHERE
+        id = \${id}
+      returning id
+    \`.then(([x]) => x);
   },
 
 };

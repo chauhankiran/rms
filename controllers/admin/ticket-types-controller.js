@@ -28,7 +28,7 @@ module.exports = {
       });
 
       return res.render("admin/ticket-types/index", {
-        title: "ticket types",
+        title: "Ticket types",
         ticketTypes,
         paginationLinks,
         search,
@@ -63,7 +63,7 @@ module.exports = {
       };
       await ticketTypesService.create(ticketTypeObj);
 
-      req.flash("info", "ticket type is created.");
+      req.flash("info", "Ticket type is created.");
       res.redirect("/admin/ticket-types");
       return;
     } catch (err) {
@@ -78,7 +78,7 @@ module.exports = {
       const ticketType = await ticketTypesService.findOne(id);
 
       if (!ticketType) {
-        req.flash("error", "ticket type not found.");
+        req.flash("error", "Ticket type not found.");
         res.redirect("/admin/ticket-types");
         return;
       }
@@ -100,7 +100,7 @@ module.exports = {
       const ticketType = await ticketTypesService.findOne(id);
 
       if (!ticketType) {
-        req.flash("error", "ticket type not found.");
+        req.flash("error", "Ticket type not found.");
         res.redirect("/admin/ticket-types");
         return;
       }
@@ -129,7 +129,7 @@ module.exports = {
       const ticketType = await ticketTypesService.findOne(id);
 
       if (!ticketType) {
-        req.flash("error", "ticket type not found.");
+        req.flash("error", "Ticket type not found.");
         res.redirect("/admin/ticket-types");
         return;
       }
@@ -141,7 +141,7 @@ module.exports = {
       };
       await ticketTypesService.update(ticketTypeObj);
 
-      req.flash("info", "ticket type is updated.");
+      req.flash("info", "Ticket type is updated.");
       res.redirect(`/admin/ticket-types/${id}`);
       return;
     } catch (err) {
@@ -156,14 +156,14 @@ module.exports = {
       const ticketType = await ticketTypesService.findOne(id);
 
       if (!ticketType) {
-        req.flash("error", "ticket type not found.");
+        req.flash("error", "Ticket type not found.");
         res.redirect("/admin/ticket-types");
         return;
       }
 
       await ticketTypesService.destroy(id);
 
-      req.flash("info", "ticket type is deleted.");
+      req.flash("info", "Ticket type is deleted.");
       res.redirect("/admin/ticket-types");
     } catch (err) {
       next(err);
@@ -177,7 +177,7 @@ module.exports = {
       const ticketType = await ticketTypesService.findOne(id);
 
       if (!ticketType) {
-        req.flash("error", "ticket type not found.");
+        req.flash("error", "Ticket type not found.");
         res.redirect("/admin/ticket-types");
         return;
       }
@@ -185,7 +185,7 @@ module.exports = {
       const ticketTypeObj = { id, updatedBy: req.session.currentUser.id };
       await ticketTypesService.archive(ticketTypeObj);
 
-      req.flash("info", "ticket type is archived.");
+      req.flash("info", "Ticket type is archived.");
       res.redirect(`/admin/ticket-types/${id}`);
     } catch (err) {
       next(err);
@@ -199,7 +199,7 @@ module.exports = {
       const ticketType = await ticketTypesService.findOne(id);
 
       if (!ticketType) {
-        req.flash("error", "ticket type not found.");
+        req.flash("error", "Ticket type not found.");
         res.redirect("/admin/ticket-types");
         return;
       }
@@ -207,7 +207,7 @@ module.exports = {
       const ticketTypeObj = { id, updatedBy: req.session.currentUser.id };
       await ticketTypesService.active(ticketTypeObj);
 
-      req.flash("info", "ticket type is activated.");
+      req.flash("info", "Ticket type is activated.");
       res.redirect(`/admin/ticket-types/${id}`);
     } catch (err) {
       next(err);
