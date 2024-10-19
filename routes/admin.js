@@ -8,6 +8,11 @@ const ticketTypesController = require("../controllers/admin/ticket-types-control
 const taskTypesController = require("../controllers/admin/task-types-controller");
 
 const companyLabelsController = require("../controllers/admin/company-labels-controller");
+const contactLabelsController = require("../controllers/admin/contact-labels-controller");
+const dealLabelsController = require("../controllers/admin/deal-labels-controller");
+const quoteLabelsController = require("../controllers/admin/quote-labels-controller");
+const ticketLabelsController = require("../controllers/admin/ticket-labels-controller");
+const taskLabelsController = require("../controllers/admin/task-labels-controller");
 
 const router = express.Router();
 
@@ -108,5 +113,55 @@ router.get("/labels/companies/:id/edit", companyLabelsController.edit);
 router.put("/labels/companies/:id", companyLabelsController.update);
 router.put("/labels/companies/:id/archive", companyLabelsController.archive);
 router.put("/labels/companies/:id/active", companyLabelsController.active);
+
+/**
+ * Contact labels
+ */
+router.get("/labels/contacts", contactLabelsController.index);
+router.get("/labels/contacts/:id", contactLabelsController.show);
+router.get("/labels/contacts/:id/edit", contactLabelsController.edit);
+router.put("/labels/contacts/:id", contactLabelsController.update);
+router.put("/labels/contacts/:id/archive", contactLabelsController.archive);
+router.put("/labels/contacts/:id/active", contactLabelsController.active);
+
+/**
+ * Deal labels
+ */
+router.get("/labels/deals", dealLabelsController.index);
+router.get("/labels/deals/:id", dealLabelsController.show);
+router.get("/labels/deals/:id/edit", dealLabelsController.edit);
+router.put("/labels/deals/:id", dealLabelsController.update);
+router.put("/labels/deals/:id/archive", dealLabelsController.archive);
+router.put("/labels/deals/:id/active", dealLabelsController.active);
+
+/**
+ * Quote labels
+ */
+router.get("/labels/quotes", quoteLabelsController.index);
+router.get("/labels/quotes/:id", quoteLabelsController.show);
+router.get("/labels/quotes/:id/edit", quoteLabelsController.edit);
+router.put("/labels/quotes/:id", quoteLabelsController.update);
+router.put("/labels/quotes/:id/archive", quoteLabelsController.archive);
+router.put("/labels/quotes/:id/active", quoteLabelsController.active);
+
+/**
+ * Ticket labels
+ */
+router.get("/labels/tickets", ticketLabelsController.index);
+router.get("/labels/tickets/:id", ticketLabelsController.show);
+router.get("/labels/tickets/:id/edit", ticketLabelsController.edit);
+router.put("/labels/tickets/:id", ticketLabelsController.update);
+router.put("/labels/tickets/:id/archive", ticketLabelsController.archive);
+router.put("/labels/tickets/:id/active", ticketLabelsController.active);
+
+/**
+ * Task labels
+ */
+router.get("/labels/tasks", taskLabelsController.index);
+router.get("/labels/tasks/:id", taskLabelsController.show);
+router.get("/labels/tasks/:id/edit", taskLabelsController.edit);
+router.put("/labels/tasks/:id", taskLabelsController.update);
+router.put("/labels/tasks/:id/archive", taskLabelsController.archive);
+router.put("/labels/tasks/:id/active", taskLabelsController.active);
 
 module.exports = router;
