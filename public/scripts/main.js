@@ -300,6 +300,24 @@ function deleteTaskType() {
   }
 }
 
+/**
+ * Company label
+ */
+function activeCompanyLabel() {
+  if (confirm("Are you sure you want to active this company label?")) {
+    document.activeCompanyLabelForm.submit();
+  } else {
+    return false;
+  }
+}
+function archiveCompanyLabel() {
+  if (confirm("Are you sure you want to archive this company label?")) {
+    document.archiveCompanyLabelForm.submit();
+  } else {
+    return false;
+  }
+}
+
 function activeMultipleUsers() {
   const checkboxes = document.querySelectorAll("input[name='userId']:checked");
   const selectedUserIds = [];

@@ -7,6 +7,8 @@ const dealSourcesController = require("../controllers/admin/deal-sources-control
 const ticketTypesController = require("../controllers/admin/ticket-types-controller");
 const taskTypesController = require("../controllers/admin/task-types-controller");
 
+const companyLabelsController = require("../controllers/admin/company-labels-controller");
+
 const router = express.Router();
 
 router.get("/", adminController.index);
@@ -89,12 +91,22 @@ router.put("/ticket-types/:id/active", ticketTypesController.active);
  */
 router.get("/task-types", taskTypesController.index);
 router.get("/task-types/new", taskTypesController.new);
-router.post("/task-types/", taskTypesController.create);
+router.post("/task-types", taskTypesController.create);
 router.get("/task-types/:id", taskTypesController.show);
 router.get("/task-types/:id/edit", taskTypesController.edit);
 router.put("/task-types/:id", taskTypesController.update);
 router.delete("/task-types/:id", taskTypesController.destroy);
 router.put("/task-types/:id/archive", taskTypesController.archive);
 router.put("/task-types/:id/active", taskTypesController.active);
+
+/**
+ * Company labels
+ */
+router.get("/labels/companies", companyLabelsController.index);
+router.get("/labels/companies/:id", companyLabelsController.show);
+router.get("/labels/companies/:id/edit", companyLabelsController.edit);
+router.put("/labels/companies/:id", companyLabelsController.update);
+router.put("/labels/companies/:id/archive", companyLabelsController.archive);
+router.put("/labels/companies/:id/active", companyLabelsController.active);
 
 module.exports = router;
