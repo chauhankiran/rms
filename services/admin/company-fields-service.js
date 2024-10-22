@@ -8,6 +8,8 @@ module.exports = {
         "displayName"
       FROM
         "companyFields"
+      WHERE
+        "isActive" = true
     `;
   },
 };

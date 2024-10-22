@@ -8,6 +8,8 @@ module.exports = {
         "displayName"
       FROM
         "dealFields"
+      WHERE
+        "isActive" = true
     `;
   },
 };

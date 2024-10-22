@@ -20,35 +20,42 @@ block content
 
     .col-12 
       .row 
-        .col-12.mb-4
-          label(for="name").field-name #{quoteFields.name} 
-          span.field-value #{quote.name}
-            if !quote.isActive 
-              span.archive-status (archived)
+        if quoteFields.name
+          .col-12.mb-4
+            label(for="name").field-name #{quoteFields.name} 
+            span.field-value #{quote.name}
+              if !quote.isActive 
+                span.archive-status (archived)
 
-        .col-12.mb-4
-          label(for="total").field-name #{quoteFields.total}
-          span.field-value #{quote.total}
+        if quoteFields.total
+          .col-12.mb-4
+            label(for="total").field-name #{quoteFields.total}
+            span.field-value #{quote.total}
 
-        .col-12.mb-4
-          label(for="description").field-name #{quoteFields.description}
-          span.field-value #{quote.description || "-"}
+        if quoteFields.description
+          .col-12.mb-4
+            label(for="description").field-name #{quoteFields.description}
+            span.field-value #{quote.description || "-"}
         
-        .col-6.mb-4
-          label(for="createdAt").field-name #{quoteFields.createdAt}
-          span.field-value #{quote.createdAt || "-"}
+        if quoteFields.createdAt
+          .col-6.mb-4
+            label(for="createdAt").field-name #{quoteFields.createdAt}
+            span.field-value #{quote.createdAt || "-"}
         
-        .col-6.mb-4
-          label(for="updatedAt").field-name #{quoteFields.updatedAt}
-          span.field-value #{quote.updatedAt || "-"}
+        if quoteFields.updatedAt
+          .col-6.mb-4
+            label(for="updatedAt").field-name #{quoteFields.updatedAt}
+            span.field-value #{quote.updatedAt || "-"}
 
-        .col-6.mb-4
-          label(for="createdBy").field-name #{quoteFields.createdBy}
-          span.field-value #{quote.createdByEmail || "-"}
+        if quoteFields.createdBy
+          .col-6.mb-4
+            label(for="createdBy").field-name #{quoteFields.createdBy}
+            span.field-value #{quote.createdByEmail || "-"}
         
-        .col-6.mb-4
-          label(for="updatedBy").field-name #{quoteFields.updatedBy}
-          span.field-value #{quote.updatedByEmail || "-"}
+        if quoteFields.updatedBy
+          .col-6.mb-4
+            label(for="updatedBy").field-name #{quoteFields.updatedBy}
+            span.field-value #{quote.updatedByEmail || "-"}
 
 
       form(action=`/quotes/${quote.id}?_method=DELETE`, name="deleteQuoteForm", method="post")

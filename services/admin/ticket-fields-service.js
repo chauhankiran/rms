@@ -8,6 +8,8 @@ module.exports = {
         "displayName"
       FROM
         "ticketFields"
+      WHERE
+        "isActive" = true
     `;
   },
 };

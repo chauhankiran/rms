@@ -20,35 +20,42 @@ block content
 
     .col-12 
       .row 
-        .col-12.mb-4
-          label(for="name").field-name #{ticketFields.name} 
-          span.field-value #{ticket.name}
-            if !ticket.isActive 
-              span.archive-status (archived)
+        if ticketFields.name
+          .col-12.mb-4
+            label(for="name").field-name #{ticketFields.name} 
+            span.field-value #{ticket.name}
+              if !ticket.isActive 
+                span.archive-status (archived)
 
-        .col-12.mb-4
-          label(for="ticketTypeId").field-name #{ticketFields.ticketTypeId}
-          span.field-value #{ticket.ticketType}
+        if ticketFields.ticketTypeId
+          .col-12.mb-4
+            label(for="ticketTypeId").field-name #{ticketFields.ticketTypeId}
+            span.field-value #{ticket.ticketType}
 
-        .col-12.mb-4
-          label(for="description").field-name #{ticketFields.description}
-          span.field-value #{ticket.description || "-"}
+        if ticketFields.description
+          .col-12.mb-4
+            label(for="description").field-name #{ticketFields.description}
+            span.field-value #{ticket.description || "-"}
         
-        .col-6.mb-4
-          label(for="createdAt").field-name #{ticketFields.createdAt}
-          span.field-value #{ticket.createdAt || "-"}
+        if ticketFields.createdAt
+          .col-6.mb-4
+            label(for="createdAt").field-name #{ticketFields.createdAt}
+            span.field-value #{ticket.createdAt || "-"}
         
-        .col-6.mb-4
-          label(for="updatedAt").field-name #{ticketFields.updatedAt}
-          span.field-value #{ticket.updatedAt || "-"}
+        if ticketFields.updatedAt
+          .col-6.mb-4
+            label(for="updatedAt").field-name #{ticketFields.updatedAt}
+            span.field-value #{ticket.updatedAt || "-"}
 
-        .col-6.mb-4
-          label(for="createdBy").field-name #{ticketFields.createdBy}
-          span.field-value #{ticket.createdByEmail || "-"}
+        if ticketFields.createdBy
+          .col-6.mb-4
+            label(for="createdBy").field-name #{ticketFields.createdBy}
+            span.field-value #{ticket.createdByEmail || "-"}
         
-        .col-6.mb-4
-          label(for="updatedBy").field-name #{ticketFields.updatedBy}
-          span.field-value #{ticket.updatedByEmail || "-"}
+        if ticketFields.updatedBy
+          .col-6.mb-4
+            label(for="updatedBy").field-name #{ticketFields.updatedBy}
+            span.field-value #{ticket.updatedByEmail || "-"}
 
 
       form(action=`/tickets/${ticket.id}?_method=DELETE`, name="deleteTicketForm", method="post")

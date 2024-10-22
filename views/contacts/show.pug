@@ -20,47 +20,57 @@ block content
 
     .col-12 
       .row 
-        .col-12.mb-4
-          label(for="prefix").field-name #{contactFields.prefix} 
-          span.field-value #{contact.prefix}
+        if contactFields.prefix
+          .col-12.mb-4
+            label(for="prefix").field-name #{contactFields.prefix} 
+            span.field-value #{contact.prefix}
 
-        .col-12.mb-4
-          label(for="firstName").field-name #{contactFields.firstName}
-          span.field-value #{contact.firstName}
-            if !contact.isActive 
-              span.archive-status (archived)
+        if contactFields.firstName
+          .col-12.mb-4
+            label(for="firstName").field-name #{contactFields.firstName}
+            span.field-value #{contact.firstName}
+              if !contact.isActive 
+                span.archive-status (archived)
         
-        .col-12.mb-4
-          label(for="lastName").field-name #{contactFields.lastName}
-          span.field-value #{contact.lastName}
+        if contactFields.lastName
+          .col-12.mb-4
+            label(for="lastName").field-name #{contactFields.lastName}
+            span.field-value #{contact.lastName}
 
-        .col-12.mb-4
-          label(for="annualRevenue").field-name #{contactFields.annualRevenue}
-          span.field-value #{contact.annualRevenue}
+        if contactFields.annualRevenue
+          .col-12.mb-4
+            label(for="annualRevenue").field-name #{contactFields.annualRevenue}
+            span.field-value #{contact.annualRevenue}
 
-        .col-12.mb-4
-          label(for="contactIndustry").field-name #{contactFields.contactIndustryId}
-          span.field-value #{contact.contactIndustry}
+        if contactFields.contactIndustryId
+          .col-12.mb-4
+            label(for="contactIndustry").field-name #{contactFields.contactIndustryId}
+            span.field-value #{contact.contactIndustry}
 
-        .col-12.mb-4
-          label(for="description").field-name #{contactFields.description}
-          span.field-value #{contact.description || "-"}
+        if contactFields.description
+          .col-12.mb-4
+            label(for="description").field-name #{contactFields.description}
+            span.field-value #{contact.description || "-"}
         
-        .col-6.mb-4
-          label(for="createdAt").field-name #{contactFields.createdAt}
-          span.field-value #{contact.createdAt || "-"}
+        if contactFields.createdAt
+          .col-6.mb-4
+            label(for="createdAt").field-name #{contactFields.createdAt}
+            span.field-value #{contact.createdAt || "-"}
         
-        .col-6.mb-4
-          label(for="updatedAt").field-name #{contactFields.updatedAt}
-          span.field-value #{contact.updatedAt || "-"}
+        if contactFields.updatedAt
+          .col-6.mb-4
+            label(for="updatedAt").field-name #{contactFields.updatedAt}
+            span.field-value #{contact.updatedAt || "-"}
 
-        .col-6.mb-4
-          label(for="createdBy").field-name #{contactFields.updatedAt}
-          span.field-value #{contact.createdByEmail || "-"}
+        if contactFields.updatedAt
+          .col-6.mb-4
+            label(for="createdBy").field-name #{contactFields.updatedAt}
+            span.field-value #{contact.createdByEmail || "-"}
         
-        .col-6.mb-4
-          label(for="updatedBy").field-name #{contactFields.updatedBy}
-          span.field-value #{contact.updatedByEmail || "-"}
+        if contactFields.updatedBy
+          .col-6.mb-4
+            label(for="updatedBy").field-name #{contactFields.updatedBy}
+            span.field-value #{contact.updatedByEmail || "-"}
 
 
       form(action=`/contacts/${contact.id}?_method=DELETE`, name="deleteContactForm", method="post")

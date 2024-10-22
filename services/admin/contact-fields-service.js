@@ -8,6 +8,8 @@ module.exports = {
         "displayName"
       FROM
         "contactFields"
+      WHERE
+        "isActive" = true
     `;
   },
 };

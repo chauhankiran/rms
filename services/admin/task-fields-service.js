@@ -8,6 +8,8 @@ module.exports = {
         "displayName"
       FROM
         "taskFields"
+      WHERE
+        "isActive" = true
     `;
   },
 };

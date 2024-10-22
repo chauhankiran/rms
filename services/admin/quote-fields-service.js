@@ -8,6 +8,8 @@ module.exports = {
         "displayName"
       FROM
         "quoteFields"
+      WHERE
+        "isActive" = true
     `;
   },
 };

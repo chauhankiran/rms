@@ -20,35 +20,42 @@ block content
 
     .col-12 
       .row 
-        .col-12.mb-4
-          label(for="name").field-name #{taskFields.name} 
-          span.field-value #{task.name}
-            if !task.isActive 
-              span.archive-status (archived)
+        if taskFields.name
+          .col-12.mb-4
+            label(for="name").field-name #{taskFields.name} 
+            span.field-value #{task.name}
+              if !task.isActive 
+                span.archive-status (archived)
 
-        .col-12.mb-4
-          label(for="taskTypeId").field-name #{taskFields.taskTypeId}
-          span.field-value #{task.taskType}
+        if taskFields.taskTypeId
+          .col-12.mb-4
+            label(for="taskTypeId").field-name #{taskFields.taskTypeId}
+            span.field-value #{task.taskType}
 
-        .col-12.mb-4
-          label(for="description").field-name #{taskFields.description}
-          span.field-value #{task.description || "-"}
+        if taskFields.description
+          .col-12.mb-4
+            label(for="description").field-name #{taskFields.description}
+            span.field-value #{task.description || "-"}
         
-        .col-6.mb-4
-          label(for="createdAt").field-name #{taskFields.createdAt}
-          span.field-value #{task.createdAt || "-"}
+        if taskFields.createdAt
+          .col-6.mb-4
+            label(for="createdAt").field-name #{taskFields.createdAt}
+            span.field-value #{task.createdAt || "-"}
         
-        .col-6.mb-4
-          label(for="updatedAt").field-name #{taskFields.updatedAt}
-          span.field-value #{task.updatedAt || "-"}
+        if taskFields.updatedAt
+          .col-6.mb-4
+            label(for="updatedAt").field-name #{taskFields.updatedAt}
+            span.field-value #{task.updatedAt || "-"}
 
-        .col-6.mb-4
-          label(for="createdBy").field-name #{taskFields.createdBy}
-          span.field-value #{task.createdByEmail || "-"}
+        if taskFields.createdBy
+          .col-6.mb-4
+            label(for="createdBy").field-name #{taskFields.createdBy}
+            span.field-value #{task.createdByEmail || "-"}
         
-        .col-6.mb-4
-          label(for="updatedBy").field-name #{taskFields.updatedBy}
-          span.field-value #{task.updatedByEmail || "-"}
+        if taskFields.updatedBy
+          .col-6.mb-4
+            label(for="updatedBy").field-name #{taskFields.updatedBy}
+            span.field-value #{task.updatedByEmail || "-"}
 
 
       form(action=`/tasks/${task.id}?_method=DELETE`, name="deleteTaskForm", method="post")

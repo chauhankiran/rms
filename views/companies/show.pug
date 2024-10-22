@@ -20,39 +20,47 @@ block content
 
     .col-12 
       .row 
-        .col-12.mb-4
-          label(for="name").field-name #{companyFields.name} 
-          span.field-value #{company.name}
-            if !company.isActive 
-              span.archive-status (archived)
+        if companyFields.name
+          .col-12.mb-4
+            label(for="name").field-name #{companyFields.name} 
+            span.field-value #{company.name}
+              if !company.isActive 
+                span.archive-status (archived)
 
-        .col-12.mb-4
-          label(for="companySourceId").field-name #{companyFields.companySourceId}
-          span.field-value #{company.companySource}
+        if companyFields.companySourceId
+          .col-12.mb-4
+            label(for="companySourceId").field-name #{companyFields.companySourceId}
+            span.field-value #{company.companySource}
 
-        .col-12.mb-4
-          label(for="employeeSize").field-name #{companyFields.employeeSize}
-          span.field-value #{company.employeeSize}
+        if companyFields.employeeSize
+          .col-12.mb-4
+            label(for="employeeSize").field-name #{companyFields.employeeSize}
+            span.field-value #{company.employeeSize}
 
-        .col-12.mb-4
-          label(for="description").field-name #{companyFields.description}
-          span.field-value #{company.description || "-"}
+        if companyFields.description
+          .col-12.mb-4
+            label(for="description").field-name #{companyFields.description}
+            span.field-value #{company.description || "-"}
         
-        .col-6.mb-4
-          label(for="createdAt").field-name #{companyFields.createdAt}
-          span.field-value #{company.createdAt || "-"}
+        if companyFields.createdAt
+          .col-6.mb-4
+            label(for="createdAt").field-name #{companyFields.createdAt}
+            span.field-value #{company.createdAt || "-"}
         
+        if companyFields.updatedAt
         .col-6.mb-4
           label(for="updatedAt").field-name #{companyFields.updatedAt}
           span.field-value #{company.updatedAt || "-"}
 
-        .col-6.mb-4
-          label(for="createdBy").field-name #{companyFields.createdBy}
-          span.field-value #{company.createdByEmail || "-"}
+        if companyFields.createdBy
+          .col-6.mb-4
+            label(for="createdBy").field-name #{companyFields.createdBy}
+            span.field-value #{company.createdByEmail || "-"}
         
-        .col-6.mb-4
-          label(for="updatedBy").field-name #{companyFields.updatedBy}
-          span.field-value #{company.updatedByEmail || "-"}
+        if companyFields.updatedBy
+          .col-6.mb-4
+            label(for="updatedBy").field-name #{companyFields.updatedBy}
+            span.field-value #{company.updatedByEmail || "-"}
 
 
       form(action=`/companies/${company.id}?_method=DELETE`, name="deleteCompanyForm", method="post")
