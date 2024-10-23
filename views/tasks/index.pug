@@ -23,42 +23,42 @@ block content
             th 
             each header in headers
               //- id
-              if header === "id" && taskFields.id
+              if header === "id" && labels.task.id
                 th
                   if orderDir === 'ASC'
-                    a(href=`/tasks?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{taskFields[header]}
+                    a(href=`/tasks?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.task[header]}
                   else 
-                    a(href=`/tasks?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{taskFields[header]}
+                    a(href=`/tasks?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.task[header]}
                   
                   if orderBy === 'id'
                     span.order-wrapper= orderDir
               
               //- name
-              if header === "name" && taskFields.name
+              if header === "name" && labels.task.name
                 th
                   if orderDir === 'ASC'
-                    a(href=`/tasks?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{taskFields[header]}
+                    a(href=`/tasks?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.task[header]}
                   else 
-                    a(href=`/tasks?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{taskFields[header]}
+                    a(href=`/tasks?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.task[header]}
                   
                   if orderBy === 'name'
                     span.order-wrapper= orderDir
 
               //- taskTypeId
-              if header === "taskTypeId" && taskFields.taskTypeId
-                th #{taskFields[header]}
+              if header === "taskTypeId" && labels.task.taskTypeId
+                th #{labels.task[header]}
               
               //- updatedBy
-              if header === "updatedBy" && taskFields.updatedBy
-                th #{taskFields[header]}
+              if header === "updatedBy" && labels.task.updatedBy
+                th #{labels.task[header]}
               
               //- updatedAt
-              if header === "updatedAt" && taskFields.updatedAt
+              if header === "updatedAt" && labels.task.updatedAt
                 th
                   if orderDir === 'ASC'
-                    a(href=`/tasks?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{taskFields[header]}
+                    a(href=`/tasks?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.task[header]}
                   else 
-                    a(href=`/tasks?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{taskFields[header]}
+                    a(href=`/tasks?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.task[header]}
                   
                   if orderBy === 'updatedAt'
                     span.order-wrapper= orderDir
@@ -67,26 +67,26 @@ block content
           if tasks.length > 0
             each task in tasks 
               tr
-                if taskFields.id
+                if labels.task.id
                   td 
                     input(type="checkbox", name="taskId", value= task.id)
                 
-                if taskFields.id
+                if labels.task.id
                   td
                     a(href=`/tasks/${task.id}`) #{task.id}
                 
-                if taskFields.name
+                if labels.task.name
                   td #{task.name}
                     if (!task.isActive)
                       span.archive-status (archived)
                 
-                if taskFields.taskTypeId
+                if labels.task.taskTypeId
                   td #{task.taskType || "-" }
                 
-                if taskFields.updatedBy
+                if labels.task.updatedBy
                   td #{task.updatedByEmail || "-" }
 
-                if taskFields.updatedAt
+                if labels.task.updatedAt
                   td #{task.updatedAt || "-" } 
           else 
             tr 

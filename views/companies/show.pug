@@ -20,46 +20,46 @@ block content
 
     .col-12 
       .row 
-        if companyFields.name
+        if labels.company.name
           .col-12.mb-4
-            label(for="name").field-name #{companyFields.name} 
+            label(for="name").field-name #{labels.company.name} 
             span.field-value #{company.name}
               if !company.isActive 
                 span.archive-status (archived)
 
-        if companyFields.companySourceId
+        if labels.company.companySourceId
           .col-12.mb-4
-            label(for="companySourceId").field-name #{companyFields.companySourceId}
+            label(for="companySourceId").field-name #{labels.company.companySourceId}
             span.field-value #{company.companySource}
 
-        if companyFields.employeeSize
+        if labels.company.employeeSize
           .col-12.mb-4
-            label(for="employeeSize").field-name #{companyFields.employeeSize}
+            label(for="employeeSize").field-name #{labels.company.employeeSize}
             span.field-value #{company.employeeSize}
 
-        if companyFields.description
+        if labels.company.description
           .col-12.mb-4
-            label(for="description").field-name #{companyFields.description}
+            label(for="description").field-name #{labels.company.description}
             span.field-value #{company.description || "-"}
         
-        if companyFields.createdAt
+        if labels.company.createdAt
           .col-6.mb-4
-            label(for="createdAt").field-name #{companyFields.createdAt}
+            label(for="createdAt").field-name #{labels.company.createdAt}
             span.field-value #{company.createdAt || "-"}
         
-        if companyFields.updatedAt
+        if labels.company.updatedAt
         .col-6.mb-4
-          label(for="updatedAt").field-name #{companyFields.updatedAt}
+          label(for="updatedAt").field-name #{labels.company.updatedAt}
           span.field-value #{company.updatedAt || "-"}
 
-        if companyFields.createdBy
+        if labels.company.createdBy
           .col-6.mb-4
-            label(for="createdBy").field-name #{companyFields.createdBy}
+            label(for="createdBy").field-name #{labels.company.createdBy}
             span.field-value #{company.createdByEmail || "-"}
         
-        if companyFields.updatedBy
+        if labels.company.updatedBy
           .col-6.mb-4
-            label(for="updatedBy").field-name #{companyFields.updatedBy}
+            label(for="updatedBy").field-name #{labels.company.updatedBy}
             span.field-value #{company.updatedByEmail || "-"}
 
 

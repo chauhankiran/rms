@@ -162,4 +162,18 @@ module.exports = {
       next(err);
     }
   },
+
+  findActive: async (req, next) => {
+    try {
+      const contactLabels = await contactLabelsService.findActive();
+
+      let sessionContactLabels = {};
+      for (const contactLabel of contactLabels) {
+        sessionContactLabels[contactLabel.name] = contactLabel.displayName;
+      }
+      req.session.contactLabels = sessionContactLabels;
+    } catch (err) {
+      next(err);
+    }
+  },
 };

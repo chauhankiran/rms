@@ -162,4 +162,18 @@ module.exports = {
       next(err);
     }
   },
+
+  findActive: async (req, next) => {
+    try {
+      const taskLabels = await taskLabelsService.findActive();
+
+      let sessionTaskLabels = {};
+      for (const taskLabel of taskLabels) {
+        sessionTaskLabels[taskLabel.name] = taskLabel.displayName;
+      }
+      req.session.taskLabels = sessionTaskLabels;
+    } catch (err) {
+      next(err);
+    }
+  },
 };

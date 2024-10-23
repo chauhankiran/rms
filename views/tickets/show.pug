@@ -20,41 +20,41 @@ block content
 
     .col-12 
       .row 
-        if ticketFields.name
+        if labels.ticket.name
           .col-12.mb-4
-            label(for="name").field-name #{ticketFields.name} 
+            label(for="name").field-name #{labels.ticket.name} 
             span.field-value #{ticket.name}
               if !ticket.isActive 
                 span.archive-status (archived)
 
-        if ticketFields.ticketTypeId
+        if labels.ticket.ticketTypeId
           .col-12.mb-4
-            label(for="ticketTypeId").field-name #{ticketFields.ticketTypeId}
+            label(for="ticketTypeId").field-name #{labels.ticket.ticketTypeId}
             span.field-value #{ticket.ticketType}
 
-        if ticketFields.description
+        if labels.ticket.description
           .col-12.mb-4
-            label(for="description").field-name #{ticketFields.description}
+            label(for="description").field-name #{labels.ticket.description}
             span.field-value #{ticket.description || "-"}
         
-        if ticketFields.createdAt
+        if labels.ticket.createdAt
           .col-6.mb-4
-            label(for="createdAt").field-name #{ticketFields.createdAt}
+            label(for="createdAt").field-name #{labels.ticket.createdAt}
             span.field-value #{ticket.createdAt || "-"}
         
-        if ticketFields.updatedAt
+        if labels.ticket.updatedAt
           .col-6.mb-4
-            label(for="updatedAt").field-name #{ticketFields.updatedAt}
+            label(for="updatedAt").field-name #{labels.ticket.updatedAt}
             span.field-value #{ticket.updatedAt || "-"}
 
-        if ticketFields.createdBy
+        if labels.ticket.createdBy
           .col-6.mb-4
-            label(for="createdBy").field-name #{ticketFields.createdBy}
+            label(for="createdBy").field-name #{labels.ticket.createdBy}
             span.field-value #{ticket.createdByEmail || "-"}
         
-        if ticketFields.updatedBy
+        if labels.ticket.updatedBy
           .col-6.mb-4
-            label(for="updatedBy").field-name #{ticketFields.updatedBy}
+            label(for="updatedBy").field-name #{labels.ticket.updatedBy}
             span.field-value #{ticket.updatedByEmail || "-"}
 
 

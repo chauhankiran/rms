@@ -22,38 +22,38 @@ block content
             tr
               th
               each header in headers
-                if header === "id" && companyFields.id
+                if header === "id" && labels.company.id
                   th
                     if orderDir === 'ASC'
-                      a(href=`/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
+                      a(href=`/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
                     else 
-                      a(href=`/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
+                      a(href=`/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
                     
                     if orderBy === 'id'
                       span.order-wrapper= orderDir
                 
-                if header === "name" && companyFields.name
+                if header === "name" && labels.company.name
                   th
                     if orderDir === 'ASC'
-                      a(href=`/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
+                      a(href=`/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
                     else 
-                      a(href=`/companies?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
+                      a(href=`/companies?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
                     
                     if orderBy === 'name'
                       span.order-wrapper= orderDir
 
-                if header === "companySourceId" && companyFields.companySourceId
-                  th #{companyFields[header]}
+                if header === "companySourceId" && labels.company.companySourceId
+                  th #{labels.company[header]}
                 
-                if header === "updatedBy" && companyFields.updatedBy
-                  th #{companyFields[header]}
+                if header === "updatedBy" && labels.company.updatedBy
+                  th #{labels.company[header]}
 
-                if header === "updatedAt" && companyFields.updatedAt
+                if header === "updatedAt" && labels.company.updatedAt
                   th
                     if orderDir === 'ASC'
-                      a(href=`/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
+                      a(href=`/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
                     else 
-                      a(href=`/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
+                      a(href=`/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
                     
                     if orderBy === 'updatedAt'
                       span.order-wrapper= orderDir
@@ -62,26 +62,26 @@ block content
           if companies.length > 0
             each company in companies 
               tr
-                if companyFields.id
+                if labels.company.id
                   td 
                     input(type="checkbox", name="companyId", value= company.id)
                 
-                if companyFields.id
+                if labels.company.id
                   td
                     a(href=`/companies/${company.id}`) #{company.id}
 
-                if companyFields.name
+                if labels.company.name
                   td #{company.name}
                     if (!company.isActive)
                       span.archive-status (archived)
                 
-                if companyFields.companySourceId
+                if labels.company.companySourceId
                   td #{company.companySource || "-" }
 
-                if companyFields.updatedBy
+                if labels.company.updatedBy
                   td #{company.updatedByEmail || "-" }
                 
-                if companyFields.updatedAt
+                if labels.company.updatedAt
                   td #{company.updatedAt || "-" } 
           else 
             tr 

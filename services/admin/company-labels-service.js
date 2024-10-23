@@ -124,4 +124,25 @@ module.exports = {
       returning id
     `.then(([x]) => x);
   },
+
+  findActive: async () => {
+    return await sql`
+      SELECT
+        name,
+        "displayName"
+      FROM
+        "companyFields"
+      WHERE
+        "isActive" = true
+    `;
+  },
+
+  pluck: async (columns) => {
+    return await sql`
+      SELECT
+        ${sql(columns)}
+      FROM
+        "companyFields"
+    `;
+  },
 };

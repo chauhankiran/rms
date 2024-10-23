@@ -23,42 +23,42 @@ block content
             th 
             each header in headers
               //- id
-              if header === "id" && dealFields.id
+              if header === "id" && labels.deal.id
                 th
                   if orderDir === 'ASC'
-                    a(href=`/deals?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{dealFields[header]}
+                    a(href=`/deals?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.deal[header]}
                   else 
-                    a(href=`/deals?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{dealFields[header]}
+                    a(href=`/deals?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.deal[header]}
                   
                   if orderBy === 'id'
                     span.order-wrapper= orderDir
               
               //- name
-              if header === "name" && dealFields.name
+              if header === "name" && labels.deal.name
                 th
                   if orderDir === 'ASC'
-                    a(href=`/deals?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{dealFields[header]}
+                    a(href=`/deals?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.deal[header]}
                   else 
-                    a(href=`/deals?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{dealFields[header]}
+                    a(href=`/deals?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.deal[header]}
                   
                   if orderBy === 'name'
                     span.order-wrapper= orderDir
 
               //- dealSourceId
-              if header === "dealSourceId" && dealFields.dealSourceId
-                th #{dealFields[header]}
+              if header === "dealSourceId" && labels.deal.dealSourceId
+                th #{labels.deal[header]}
               
               //- updatedBy
-              if header === "updatedBy" && dealFields.updatedBy
-                th #{dealFields[header]}
+              if header === "updatedBy" && labels.deal.updatedBy
+                th #{labels.deal[header]}
               
               //- updatedAt
-              if header === "updatedAt" && dealFields.updatedAt
+              if header === "updatedAt" && labels.deal.updatedAt
                 th
                   if orderDir === 'ASC'
-                    a(href=`/deals?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{dealFields[header]}
+                    a(href=`/deals?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.deal[header]}
                   else 
-                    a(href=`/deals?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{dealFields[header]}
+                    a(href=`/deals?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.deal[header]}
                   
                   if orderBy === 'updatedAt'
                     span.order-wrapper= orderDir
@@ -67,26 +67,26 @@ block content
           if deals.length > 0
             each deal in deals 
               tr
-                if dealFields.id
+                if labels.deal.id
                   td 
                     input(type="checkbox", name="dealId", value= deal.id)
 
-                if dealFields.id
+                if labels.deal.id
                   td
                     a(href=`/deals/${deal.id}`) #{deal.id}
                 
-                if dealFields.name
+                if labels.deal.name
                   td #{deal.name}
                     if (!deal.isActive)
                       span.archive-status (archived)
                 
-                if dealFields.dealSourceId
+                if labels.deal.dealSourceId
                   td #{deal.dealSource || "-" }
                 
-                if dealFields.updatedBy
+                if labels.deal.updatedBy
                   td #{deal.updatedByEmail || "-" }
 
-                if dealFields.updatedAt
+                if labels.deal.updatedAt
                   td #{deal.updatedAt || "-" } 
           else 
             tr 

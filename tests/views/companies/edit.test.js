@@ -35,8 +35,8 @@ describe("Render company edit template", () => {
       companySources,
       info: [],
       error: [],
-      companyFields: {
-        name: "Name",
+      labels: {
+        company: {},
       },
     });
 

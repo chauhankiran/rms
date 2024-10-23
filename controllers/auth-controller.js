@@ -1,11 +1,25 @@
 const bcrypt = require("bcrypt");
 const authService = require("../services/auth-service");
+const companyLabelsService = require("../services/admin/company-labels-service");
+const contactLabelsService = require("../services/admin/contact-labels-service");
+const dealLabelsService = require("../services/admin/deal-labels-service");
+const quoteLabelsService = require("../services/admin/quote-labels-service");
+const ticketLabelsService = require("../services/admin/ticket-labels-service");
+const taskLabelsService = require("../services/admin/task-labels-service");
+
 const companyFieldsController = require("../controllers/admin/company-fields-controller");
 const contactFieldsController = require("../controllers/admin/contact-fields-controller");
 const dealFieldsController = require("../controllers/admin/deal-fields-controller");
 const quoteFieldsController = require("../controllers/admin/quote-fields-controller");
 const ticketFieldsController = require("../controllers/admin/ticket-fields-controller");
 const taskFieldsController = require("../controllers/admin/task-fields-controller");
+
+const transformLabels = (labels) => {
+  return labels.reduce((acc, { name, displayName }) => {
+    acc[name] = displayName;
+    return acc;
+  }, {});
+};
 
 module.exports = {
   showLogin: (req, res, next) => {
@@ -67,6 +81,33 @@ module.exports = {
       /**
        * Fields
        */
+      req.session.labels = req.session.labels || {};
+      const columns = ["name", "displayName"];
+
+      // Company labels.
+      const companyLabels = await companyLabelsService.pluck(columns);
+      req.session.labels.company = transformLabels(companyLabels);
+
+      // Contact labels.
+      const contactLabels = await contactLabelsService.pluck(columns);
+      req.session.labels.contact = transformLabels(contactLabels);
+
+      // Deal labels.
+      const dealLabels = await dealLabelsService.pluck(columns);
+      req.session.labels.deal = transformLabels(dealLabels);
+
+      // Quote labels.
+      const quoteLabels = await quoteLabelsService.pluck(columns);
+      req.session.labels.quote = transformLabels(quoteLabels);
+
+      // Ticket labels.
+      const ticketLabels = await ticketLabelsService.pluck(columns);
+      req.session.labels.ticket = transformLabels(ticketLabels);
+
+      // Task labels.
+      const taskLabels = await taskLabelsService.pluck(columns);
+      req.session.labels.task = transformLabels(taskLabels);
+
       await companyFieldsController.addCompanyFieldsInSession(req);
       await contactFieldsController.addContactFieldsInSession(req);
       await dealFieldsController.addDealFieldsInSession(req);

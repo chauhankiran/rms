@@ -18,8 +18,8 @@ describe("Render contact index template", () => {
       paginationLinks: {},
       info: [],
       error: [],
-      contactFields: {
-        id: "Id",
+      labels: {
+        contact: {},
       },
       headers: [],
     });

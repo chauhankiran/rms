@@ -24,7 +24,9 @@ describe("Render company show template", () => {
       contacts: [],
       info: [],
       error: [],
-      companyFields: {},
+      labels: {
+        company: {},
+      },
     });
 
     expect(html).toContain("<h1>Show company</h1>");

@@ -20,41 +20,41 @@ block content
 
     .col-12 
       .row 
-        if quoteFields.name
+        if labels.quote.name
           .col-12.mb-4
-            label(for="name").field-name #{quoteFields.name} 
+            label(for="name").field-name #{labels.quote.name} 
             span.field-value #{quote.name}
               if !quote.isActive 
                 span.archive-status (archived)
 
-        if quoteFields.total
+        if labels.quote.total
           .col-12.mb-4
-            label(for="total").field-name #{quoteFields.total}
+            label(for="total").field-name #{labels.quote.total}
             span.field-value #{quote.total}
 
-        if quoteFields.description
+        if labels.quote.description
           .col-12.mb-4
-            label(for="description").field-name #{quoteFields.description}
+            label(for="description").field-name #{labels.quote.description}
             span.field-value #{quote.description || "-"}
         
-        if quoteFields.createdAt
+        if labels.quote.createdAt
           .col-6.mb-4
-            label(for="createdAt").field-name #{quoteFields.createdAt}
+            label(for="createdAt").field-name #{labels.quote.createdAt}
             span.field-value #{quote.createdAt || "-"}
         
-        if quoteFields.updatedAt
+        if labels.quote.updatedAt
           .col-6.mb-4
-            label(for="updatedAt").field-name #{quoteFields.updatedAt}
+            label(for="updatedAt").field-name #{labels.quote.updatedAt}
             span.field-value #{quote.updatedAt || "-"}
 
-        if quoteFields.createdBy
+        if labels.quote.createdBy
           .col-6.mb-4
-            label(for="createdBy").field-name #{quoteFields.createdBy}
+            label(for="createdBy").field-name #{labels.quote.createdBy}
             span.field-value #{quote.createdByEmail || "-"}
         
-        if quoteFields.updatedBy
+        if labels.quote.updatedBy
           .col-6.mb-4
-            label(for="updatedBy").field-name #{quoteFields.updatedBy}
+            label(for="updatedBy").field-name #{labels.quote.updatedBy}
             span.field-value #{quote.updatedByEmail || "-"}
 
 

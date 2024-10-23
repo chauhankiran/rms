@@ -162,4 +162,18 @@ module.exports = {
       next(err);
     }
   },
+
+  findActive: async (req, next) => {
+    try {
+      const quoteLabels = await quoteLabelsService.findActive();
+
+      let sessionQuoteLabels = {};
+      for (const quoteLabel of quoteLabels) {
+        sessionQuoteLabels[quoteLabel.name] = quoteLabel.displayName;
+      }
+      req.session.quoteLabels = sessionQuoteLabels;
+    } catch (err) {
+      next(err);
+    }
+  },
 };

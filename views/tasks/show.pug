@@ -20,41 +20,41 @@ block content
 
     .col-12 
       .row 
-        if taskFields.name
+        if labels.task.name
           .col-12.mb-4
-            label(for="name").field-name #{taskFields.name} 
+            label(for="name").field-name #{labels.task.name} 
             span.field-value #{task.name}
               if !task.isActive 
                 span.archive-status (archived)
 
-        if taskFields.taskTypeId
+        if labels.task.taskTypeId
           .col-12.mb-4
-            label(for="taskTypeId").field-name #{taskFields.taskTypeId}
+            label(for="taskTypeId").field-name #{labels.task.taskTypeId}
             span.field-value #{task.taskType}
 
-        if taskFields.description
+        if labels.task.description
           .col-12.mb-4
-            label(for="description").field-name #{taskFields.description}
+            label(for="description").field-name #{labels.task.description}
             span.field-value #{task.description || "-"}
         
-        if taskFields.createdAt
+        if labels.task.createdAt
           .col-6.mb-4
-            label(for="createdAt").field-name #{taskFields.createdAt}
+            label(for="createdAt").field-name #{labels.task.createdAt}
             span.field-value #{task.createdAt || "-"}
         
-        if taskFields.updatedAt
+        if labels.task.updatedAt
           .col-6.mb-4
-            label(for="updatedAt").field-name #{taskFields.updatedAt}
+            label(for="updatedAt").field-name #{labels.task.updatedAt}
             span.field-value #{task.updatedAt || "-"}
 
-        if taskFields.createdBy
+        if labels.task.createdBy
           .col-6.mb-4
-            label(for="createdBy").field-name #{taskFields.createdBy}
+            label(for="createdBy").field-name #{labels.task.createdBy}
             span.field-value #{task.createdByEmail || "-"}
         
-        if taskFields.updatedBy
+        if labels.task.updatedBy
           .col-6.mb-4
-            label(for="updatedBy").field-name #{taskFields.updatedBy}
+            label(for="updatedBy").field-name #{labels.task.updatedBy}
             span.field-value #{task.updatedByEmail || "-"}
 
 

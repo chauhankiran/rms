@@ -20,56 +20,56 @@ block content
 
     .col-12 
       .row 
-        if contactFields.prefix
+        if labels.contact.prefix
           .col-12.mb-4
-            label(for="prefix").field-name #{contactFields.prefix} 
+            label(for="prefix").field-name #{labels.contact.prefix} 
             span.field-value #{contact.prefix}
 
-        if contactFields.firstName
+        if labels.contact.firstName
           .col-12.mb-4
-            label(for="firstName").field-name #{contactFields.firstName}
+            label(for="firstName").field-name #{labels.contact.firstName}
             span.field-value #{contact.firstName}
               if !contact.isActive 
                 span.archive-status (archived)
         
-        if contactFields.lastName
+        if labels.contact.lastName
           .col-12.mb-4
-            label(for="lastName").field-name #{contactFields.lastName}
+            label(for="lastName").field-name #{labels.contact.lastName}
             span.field-value #{contact.lastName}
 
-        if contactFields.annualRevenue
+        if labels.contact.annualRevenue
           .col-12.mb-4
-            label(for="annualRevenue").field-name #{contactFields.annualRevenue}
+            label(for="annualRevenue").field-name #{labels.contact.annualRevenue}
             span.field-value #{contact.annualRevenue}
 
-        if contactFields.contactIndustryId
+        if labels.contact.contactIndustryId
           .col-12.mb-4
-            label(for="contactIndustry").field-name #{contactFields.contactIndustryId}
+            label(for="contactIndustry").field-name #{labels.contact.contactIndustryId}
             span.field-value #{contact.contactIndustry}
 
-        if contactFields.description
+        if labels.contact.description
           .col-12.mb-4
-            label(for="description").field-name #{contactFields.description}
+            label(for="description").field-name #{labels.contact.description}
             span.field-value #{contact.description || "-"}
         
-        if contactFields.createdAt
+        if labels.contact.createdAt
           .col-6.mb-4
-            label(for="createdAt").field-name #{contactFields.createdAt}
+            label(for="createdAt").field-name #{labels.contact.createdAt}
             span.field-value #{contact.createdAt || "-"}
         
-        if contactFields.updatedAt
+        if labels.contact.updatedAt
           .col-6.mb-4
-            label(for="updatedAt").field-name #{contactFields.updatedAt}
+            label(for="updatedAt").field-name #{labels.contact.updatedAt}
             span.field-value #{contact.updatedAt || "-"}
 
-        if contactFields.updatedAt
+        if labels.contact.updatedAt
           .col-6.mb-4
-            label(for="createdBy").field-name #{contactFields.updatedAt}
+            label(for="createdBy").field-name #{labels.contact.updatedAt}
             span.field-value #{contact.createdByEmail || "-"}
         
-        if contactFields.updatedBy
+        if labels.contact.updatedBy
           .col-6.mb-4
-            label(for="updatedBy").field-name #{contactFields.updatedBy}
+            label(for="updatedBy").field-name #{labels.contact.updatedBy}
             span.field-value #{contact.updatedByEmail || "-"}
 
 

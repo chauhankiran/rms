@@ -37,8 +37,8 @@ describe("Render contact edit template", () => {
       contactIndustries,
       info: [],
       error: [],
-      contactFields: {
-        name: "Name",
+      labels: {
+        contact: {},
       },
     });
 

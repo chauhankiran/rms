@@ -22,38 +22,38 @@ block content
           tr
             th
             each header in headers
-              if header === "id" && contactFields.id
+              if header === "id" && labels.contact.id
                 th
                   if orderDir === 'ASC'
-                    a(href=`/contacts?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
+                    a(href=`/contacts?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
                   else 
-                    a(href=`/contacts?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
+                    a(href=`/contacts?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
                   
                   if orderBy === 'id'
                     span.order-wrapper= orderDir
               
-              if header === "name" && contactFields.name
+              if header === "name" && labels.contact.name
                 th
                   if orderDir === 'ASC'
-                    a(href=`/contacts?orderBy=lastName&orderDir=DESC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
+                    a(href=`/contacts?orderBy=lastName&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
                   else 
-                    a(href=`/contacts?orderBy=lastName&orderDir=ASC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
+                    a(href=`/contacts?orderBy=lastName&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
                   
                   if orderBy === 'lastName'
                     span.order-wrapper= orderDir
 
-              if header === "contactIndustryId" && contactFields.contactIndustryId
-                th #{contactFields[header]}
+              if header === "contactIndustryId" && labels.contact.contactIndustryId
+                th #{labels.contact[header]}
 
-              if header === "updatedBy" && contactFields.updatedBy
-                th #{contactFields[header]}
+              if header === "updatedBy" && labels.contact.updatedBy
+                th #{labels.contact[header]}
               
-              if header === "updatedAt" && contactFields.updatedAt
+              if header === "updatedAt" && labels.contact.updatedAt
                 th
                   if orderDir === 'ASC'
-                    a(href=`/contacts?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
+                    a(href=`/contacts?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
                   else 
-                    a(href=`/contacts?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
+                    a(href=`/contacts?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
                   
                   if orderBy === 'updatedAt'
                     span.order-wrapper= orderDir
@@ -62,26 +62,26 @@ block content
           if contacts.length > 0
             each contact in contacts 
               tr
-                if contactFields.id
+                if labels.contact.id
                   td 
                     input(type="checkbox", name="contactId", value= contact.id)
                 
-                if contactFields.id
+                if labels.contact.id
                   td
                     a(href=`/contacts/${contact.id}`) #{contact.id}
 
-                if contactFields.firstName || contactFields.lastName
+                if labels.contact.firstName || labels.contact.lastName
                   td #{contact.prefix + " " + contact.firstName + " " + contact.lastName}
                     if (!contact.isActive)
                       span.archive-status (archived)
                 
-                if contactFields.contactIndustryId
+                if labels.contact.contactIndustryId
                   td #{contact.contactIndustry || "-" }
                 
-                if contactFields.updatedBy
+                if labels.contact.updatedBy
                   td #{contact.updatedByEmail || "-" }
                 
-                if contactFields.updatedAt
+                if labels.contact.updatedAt
                   td #{contact.updatedAt || "-" } 
           else 
             tr 

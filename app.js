@@ -52,12 +52,21 @@ app.use((req, res, next) => {
   res.locals.info = req.flash("info");
   res.locals.error = req.flash("error");
   res.locals.currentUser = req.session.currentUser;
+
   res.locals.companyFields = req.session.companyFields;
   res.locals.contactFields = req.session.contactFields;
   res.locals.dealFields = req.session.dealFields;
   res.locals.quoteFields = req.session.quoteFields;
   res.locals.ticketFields = req.session.ticketFields;
   res.locals.taskFields = req.session.taskFields;
+
+  res.locals.labels = res.locals.labels || {};
+  res.locals.labels.company = req.session.labels?.company;
+  res.locals.labels.contact = req.session.labels?.contact;
+  res.locals.labels.deal = req.session.labels?.deal;
+  res.locals.labels.quote = req.session.labels?.quote;
+  res.locals.labels.ticket = req.session.labels?.ticket;
+  res.locals.labels.task = req.session.labels?.task;
   next();
 });
 

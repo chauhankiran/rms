@@ -18,8 +18,8 @@ describe("Render company index template", () => {
       paginationLinks: {},
       info: [],
       error: [],
-      companyFields: {
-        id: "Id",
+      labels: {
+        company: {},
       },
       headers: ["id"],
     });

@@ -23,8 +23,8 @@ describe("Render company new template", () => {
           updatedAt: "2023-01-02",
         },
       ],
-      companyFields: {
-        name: "Name",
+      labels: {
+        company: {},
       },
     });
 

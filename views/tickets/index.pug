@@ -23,42 +23,42 @@ block content
             th 
             each header in headers
               //- id
-              if header === "id" && ticketFields.id
+              if header === "id" && labels.ticket.id
                 th
                   if orderDir === 'ASC'
-                    a(href=`/tickets?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
+                    a(href=`/tickets?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.ticket[header]}
                   else 
-                    a(href=`/tickets?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
+                    a(href=`/tickets?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.ticket[header]}
                   
                   if orderBy === 'id'
                     span.order-wrapper= orderDir
               
               //- name
-              if header === "name" && ticketFields.name
+              if header === "name" && labels.ticket.name
                 th
                   if orderDir === 'ASC'
-                    a(href=`/tickets?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
+                    a(href=`/tickets?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.ticket[header]}
                   else 
-                    a(href=`/tickets?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
+                    a(href=`/tickets?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.ticket[header]}
                   
                   if orderBy === 'name'
                     span.order-wrapper= orderDir
 
               //- ticketTypeId
-              if header === "ticketTypeId" && ticketFields.ticketTypeId
-                th #{ticketFields[header]}
+              if header === "ticketTypeId" && labels.ticket.ticketTypeId
+                th #{labels.ticket[header]}
               
               //- updatedBy
-              if header === "updatedBy" && ticketFields.updatedBy
-                th #{ticketFields[header]}
+              if header === "updatedBy" && labels.ticket.updatedBy
+                th #{labels.ticket[header]}
               
               //- updatedAt
-              if header === "updatedAt" && ticketFields.updatedAt
+              if header === "updatedAt" && labels.ticket.updatedAt
                 th
                   if orderDir === 'ASC'
-                    a(href=`/tickets?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
+                    a(href=`/tickets?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.ticket[header]}
                   else 
-                    a(href=`/tickets?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
+                    a(href=`/tickets?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.ticket[header]}
                   
                   if orderBy === 'updatedAt'
                     span.order-wrapper= orderDir
@@ -67,26 +67,26 @@ block content
           if tickets.length > 0
             each ticket in tickets 
               tr
-                if ticketFields.id
+                if labels.ticket.id
                   td 
                     input(type="checkbox", name="ticketId", value= ticket.id)
                 
-                if ticketFields.id
+                if labels.ticket.id
                   td
                     a(href=`/tickets/${ticket.id}`) #{ticket.id}
                 
-                if ticketFields.name
+                if labels.ticket.name
                   td #{ticket.name}
                     if (!ticket.isActive)
                       span.archive-status (archived)
 
-                if ticketFields.ticketTypeId
+                if labels.ticket.ticketTypeId
                   td #{ticket.ticketType || "-" }
 
-                if ticketFields.updatedBy
+                if labels.ticket.updatedBy
                   td #{ticket.updatedByEmail || "-" }
                 
-                if ticketFields.updatedAt
+                if labels.ticket.updatedAt
                   td #{ticket.updatedAt || "-" } 
           else 
             tr 

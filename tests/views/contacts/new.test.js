@@ -23,8 +23,8 @@ describe("Render contact new template", () => {
           updatedAt: "2023-01-02",
         },
       ],
-      contactFields: {
-        name: "Name",
+      labels: {
+        contact: {},
       },
     });
 
