@@ -22,7 +22,7 @@ block content
           tr
             th
             each header in headers
-              if header === "id"
+              if header === "id" && contactFields.id
                 th
                   if orderDir === 'ASC'
                     a(href=`/contacts?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
@@ -32,7 +32,7 @@ block content
                   if orderBy === 'id'
                     span.order-wrapper= orderDir
               
-              if header === "name"
+              if header === "name" && contactFields.name
                 th
                   if orderDir === 'ASC'
                     a(href=`/contacts?orderBy=lastName&orderDir=DESC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
@@ -42,13 +42,13 @@ block content
                   if orderBy === 'lastName'
                     span.order-wrapper= orderDir
 
-              if header === "contactIndustryId"
+              if header === "contactIndustryId" && contactFields.contactIndustryId
                 th #{contactFields[header]}
 
-              if header === "updatedBy"
+              if header === "updatedBy" && contactFields.updatedBy
                 th #{contactFields[header]}
               
-              if header === "updatedAt"
+              if header === "updatedAt" && contactFields.updatedAt
                 th
                   if orderDir === 'ASC'
                     a(href=`/contacts?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{contactFields[header]}
@@ -62,16 +62,27 @@ block content
           if contacts.length > 0
             each contact in contacts 
               tr
-                td 
-                  input(type="checkbox", name="contactId", value= contact.id)
-                td
-                  a(href=`/contacts/${contact.id}`) #{contact.id}
-                td #{contact.prefix + " " + contact.firstName + " " + contact.lastName}
-                  if (!contact.isActive)
-                    span.archive-status (archived)
-                td #{contact.contactIndustry || "-" }
-                td #{contact.updatedByEmail || "-" }
-                td #{contact.updatedAt || "-" } 
+                if contactFields.id
+                  td 
+                    input(type="checkbox", name="contactId", value= contact.id)
+                
+                if contactFields.id
+                  td
+                    a(href=`/contacts/${contact.id}`) #{contact.id}
+
+                if contactFields.firstName || contactFields.lastName
+                  td #{contact.prefix + " " + contact.firstName + " " + contact.lastName}
+                    if (!contact.isActive)
+                      span.archive-status (archived)
+                
+                if contactFields.contactIndustryId
+                  td #{contact.contactIndustry || "-" }
+                
+                if contactFields.updatedBy
+                  td #{contact.updatedByEmail || "-" }
+                
+                if contactFields.updatedAt
+                  td #{contact.updatedAt || "-" } 
           else 
             tr 
               td(colspan=6).text-center No contacts found.

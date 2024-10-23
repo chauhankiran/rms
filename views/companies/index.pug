@@ -22,7 +22,7 @@ block content
             tr
               th
               each header in headers
-                if header === "id"
+                if header === "id" && companyFields.id
                   th
                     if orderDir === 'ASC'
                       a(href=`/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
@@ -32,7 +32,7 @@ block content
                     if orderBy === 'id'
                       span.order-wrapper= orderDir
                 
-                if header === "name"
+                if header === "name" && companyFields.name
                   th
                     if orderDir === 'ASC'
                       a(href=`/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
@@ -42,13 +42,13 @@ block content
                     if orderBy === 'name'
                       span.order-wrapper= orderDir
 
-                if header === "companySourceId"
+                if header === "companySourceId" && companyFields.companySourceId
                   th #{companyFields[header]}
                 
-                if header === "updatedBy"
+                if header === "updatedBy" && companyFields.updatedBy
                   th #{companyFields[header]}
 
-                if header === "updatedAt"
+                if header === "updatedAt" && companyFields.updatedAt
                   th
                     if orderDir === 'ASC'
                       a(href=`/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{companyFields[header]}
@@ -62,16 +62,27 @@ block content
           if companies.length > 0
             each company in companies 
               tr
-                td 
-                  input(type="checkbox", name="companyId", value= company.id)
-                td
-                  a(href=`/companies/${company.id}`) #{company.id}
-                td #{company.name}
-                  if (!company.isActive)
-                    span.archive-status (archived)
-                td #{company.companySource || "-" }
-                td #{company.updatedByEmail || "-" }
-                td #{company.updatedAt || "-" } 
+                if companyFields.id
+                  td 
+                    input(type="checkbox", name="companyId", value= company.id)
+                
+                if companyFields.id
+                  td
+                    a(href=`/companies/${company.id}`) #{company.id}
+
+                if companyFields.name
+                  td #{company.name}
+                    if (!company.isActive)
+                      span.archive-status (archived)
+                
+                if companyFields.companySourceId
+                  td #{company.companySource || "-" }
+
+                if companyFields.updatedBy
+                  td #{company.updatedByEmail || "-" }
+                
+                if companyFields.updatedAt
+                  td #{company.updatedAt || "-" } 
           else 
             tr 
               td(colspan=7).text-center No companies found.

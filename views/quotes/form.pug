@@ -1,14 +1,17 @@
 //- name
-.form-group 
-  label(for="name") #{quoteFields.name}
-  input(type="text", name="name", id="name", value=quote ? quote.name : "", placeholder="42 New LED Monitors", autofocus=true)
+if quoteFields.name
+  .form-group 
+    label(for="name") #{quoteFields.name}
+    input(type="text", name="name", id="name", value=quote ? quote.name : "", placeholder="42 New LED Monitors", autofocus=true)
 
 //- total
-.form-group 
-  label(for="total") #{quoteFields.total}
-  input(type="text", name="total", id="total", value=quote ? quote.total : "", placeholder="1200")
+if quoteFields.total
+  .form-group 
+    label(for="total") #{quoteFields.total}
+    input(type="text", name="total", id="total", value=quote ? quote.total : "", placeholder="1200")
 
 //- description
-.form-group 
-  label(for="description") #{quoteFields.description}
-  textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{quote ? quote.description : ""}
+if quoteFields.description
+  .form-group 
+    label(for="description") #{quoteFields.description}
+    textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{quote ? quote.description : ""}

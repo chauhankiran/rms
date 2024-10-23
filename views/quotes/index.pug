@@ -23,7 +23,7 @@ block content
             th 
             each header in headers
               //- id
-              if header === "id"
+              if header === "id" && quoteFields.id
                 th
                   if orderDir === 'ASC'
                     a(href=`/quotes?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{quoteFields[header]}
@@ -34,7 +34,7 @@ block content
                     span.order-wrapper= orderDir
               
               //- name
-              if header === "name"
+              if header === "name" && quoteFields.name
                 th
                   if orderDir === 'ASC'
                     a(href=`/quotes?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{quoteFields[header]}
@@ -45,11 +45,11 @@ block content
                     span.order-wrapper= orderDir
               
               //- updatedBy
-              if header === "updatedBy"
+              if header === "updatedBy" && quoteFields.updatedBy
                 th #{quoteFields[header]}
               
               //- updatedAt
-              if header === "updatedAt"
+              if header === "updatedAt" && quoteFields.updatedAt
                 th
                   if orderDir === 'ASC'
                     a(href=`/quotes?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{quoteFields[header]}
@@ -63,15 +63,24 @@ block content
           if quotes.length > 0
             each quote in quotes 
               tr
-                td 
-                  input(type="checkbox", name="quoteId", value= quote.id)
-                td
-                  a(href=`/quotes/${quote.id}`) #{quote.id}
-                td #{quote.name}
-                  if (!quote.isActive)
-                    span.archive-status (archived)
-                td #{quote.updatedByEmail || "-" }
-                td #{quote.updatedAt || "-" } 
+                if quoteFields.id
+                  td 
+                    input(type="checkbox", name="quoteId", value= quote.id)
+                
+                if quoteFields.id
+                  td
+                    a(href=`/quotes/${quote.id}`) #{quote.id}
+
+                if quoteFields.name
+                  td #{quote.name}
+                    if (!quote.isActive)
+                      span.archive-status (archived)
+
+                if quoteFields.updatedBy
+                  td #{quote.updatedByEmail || "-" }
+
+                if quoteFields.updatedAt
+                  td #{quote.updatedAt || "-" } 
           else 
             tr 
               td(colspan=7).text-center No quotes found.

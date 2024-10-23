@@ -23,7 +23,7 @@ block content
             th 
             each header in headers
               //- id
-              if header === "id"
+              if header === "id" && dealFields.id
                 th
                   if orderDir === 'ASC'
                     a(href=`/deals?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{dealFields[header]}
@@ -34,7 +34,7 @@ block content
                     span.order-wrapper= orderDir
               
               //- name
-              if header === "name"
+              if header === "name" && dealFields.name
                 th
                   if orderDir === 'ASC'
                     a(href=`/deals?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{dealFields[header]}
@@ -45,15 +45,15 @@ block content
                     span.order-wrapper= orderDir
 
               //- dealSourceId
-              if header === "dealSourceId"
+              if header === "dealSourceId" && dealFields.dealSourceId
                 th #{dealFields[header]}
               
               //- updatedBy
-              if header === "updatedBy"
+              if header === "updatedBy" && dealFields.updatedBy
                 th #{dealFields[header]}
               
               //- updatedAt
-              if header === "updatedAt"
+              if header === "updatedAt" && dealFields.updatedAt
                 th
                   if orderDir === 'ASC'
                     a(href=`/deals?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{dealFields[header]}
@@ -67,16 +67,27 @@ block content
           if deals.length > 0
             each deal in deals 
               tr
-                td 
-                  input(type="checkbox", name="dealId", value= deal.id)
-                td
-                  a(href=`/deals/${deal.id}`) #{deal.id}
-                td #{deal.name}
-                  if (!deal.isActive)
-                    span.archive-status (archived)
-                td #{deal.dealSource || "-" }
-                td #{deal.updatedByEmail || "-" }
-                td #{deal.updatedAt || "-" } 
+                if dealFields.id
+                  td 
+                    input(type="checkbox", name="dealId", value= deal.id)
+
+                if dealFields.id
+                  td
+                    a(href=`/deals/${deal.id}`) #{deal.id}
+                
+                if dealFields.name
+                  td #{deal.name}
+                    if (!deal.isActive)
+                      span.archive-status (archived)
+                
+                if dealFields.dealSourceId
+                  td #{deal.dealSource || "-" }
+                
+                if dealFields.updatedBy
+                  td #{deal.updatedByEmail || "-" }
+
+                if dealFields.updatedAt
+                  td #{deal.updatedAt || "-" } 
           else 
             tr 
               td(colspan=7).text-center No deals found.

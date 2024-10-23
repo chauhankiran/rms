@@ -23,7 +23,7 @@ block content
             th 
             each header in headers
               //- id
-              if header === "id"
+              if header === "id" && taskFields.id
                 th
                   if orderDir === 'ASC'
                     a(href=`/tasks?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{taskFields[header]}
@@ -34,7 +34,7 @@ block content
                     span.order-wrapper= orderDir
               
               //- name
-              if header === "name"
+              if header === "name" && taskFields.name
                 th
                   if orderDir === 'ASC'
                     a(href=`/tasks?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{taskFields[header]}
@@ -45,15 +45,15 @@ block content
                     span.order-wrapper= orderDir
 
               //- taskTypeId
-              if header === "taskTypeId"
+              if header === "taskTypeId" && taskFields.taskTypeId
                 th #{taskFields[header]}
               
               //- updatedBy
-              if header === "updatedBy"
+              if header === "updatedBy" && taskFields.updatedBy
                 th #{taskFields[header]}
               
               //- updatedAt
-              if header === "updatedAt"
+              if header === "updatedAt" && taskFields.updatedAt
                 th
                   if orderDir === 'ASC'
                     a(href=`/tasks?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{taskFields[header]}
@@ -67,16 +67,27 @@ block content
           if tasks.length > 0
             each task in tasks 
               tr
-                td 
-                  input(type="checkbox", name="taskId", value= task.id)
-                td
-                  a(href=`/tasks/${task.id}`) #{task.id}
-                td #{task.name}
-                  if (!task.isActive)
-                    span.archive-status (archived)
-                td #{task.taskType || "-" }
-                td #{task.updatedByEmail || "-" }
-                td #{task.updatedAt || "-" } 
+                if taskFields.id
+                  td 
+                    input(type="checkbox", name="taskId", value= task.id)
+                
+                if taskFields.id
+                  td
+                    a(href=`/tasks/${task.id}`) #{task.id}
+                
+                if taskFields.name
+                  td #{task.name}
+                    if (!task.isActive)
+                      span.archive-status (archived)
+                
+                if taskFields.taskTypeId
+                  td #{task.taskType || "-" }
+                
+                if taskFields.updatedBy
+                  td #{task.updatedByEmail || "-" }
+
+                if taskFields.updatedAt
+                  td #{task.updatedAt || "-" } 
           else 
             tr 
               td(colspan=7).text-center No tasks found.

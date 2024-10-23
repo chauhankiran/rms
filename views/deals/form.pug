@@ -1,21 +1,25 @@
 //- name
-.form-group 
-  label(for="name") #{dealFields.name}
-  input(type="text", name="name", id="name", value=deal ? deal.name : "", placeholder="42 New LED Monitors", autofocus=true)
+if dealFields.name
+  .form-group 
+    label(for="name") #{dealFields.name}
+    input(type="text", name="name", id="name", value=deal ? deal.name : "", placeholder="42 New LED Monitors", autofocus=true)
 
 //- total
-.form-group 
-  label(for="total") #{dealFields.total}
-  input(type="text", name="total", id="total" value=deal ? deal.total : "", placeholder="1200")
+if dealFields.total
+  .form-group 
+    label(for="total") #{dealFields.total}
+    input(type="text", name="total", id="total" value=deal ? deal.total : "", placeholder="1200")
 
 //- dealSourceId
-.form-group 
-  label(for="dealSourceId") #{dealFields.dealSourceId}
-  select(name="dealSourceId", id="dealSourceId")
-    for dealSource in dealSources
-      option(value=dealSource.id, selected=deal && dealSource.id == deal.dealSourceId) #{dealSource.name}
+if dealFields.dealSourceId
+  .form-group 
+    label(for="dealSourceId") #{dealFields.dealSourceId}
+    select(name="dealSourceId", id="dealSourceId")
+      for dealSource in dealSources
+        option(value=dealSource.id, selected=deal && dealSource.id == deal.dealSourceId) #{dealSource.name}
 
 //- description
-.form-group 
-  label(for="description") #{dealFields.description}
-  textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{deal ? deal.description : ""}
+if dealFields.description
+  .form-group 
+    label(for="description") #{dealFields.description}
+    textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{deal ? deal.description : ""}

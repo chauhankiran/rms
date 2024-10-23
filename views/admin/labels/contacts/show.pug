@@ -5,12 +5,12 @@ block content
     .col-6 
       h1= title
     .col-6.text-end 
-      a(href="/admin/labels/companies").btn.is-muted.mr-4 &larr; Back 
+      a(href="/admin/labels/contacts").btn.is-muted.mr-4 &larr; Back 
       .dropdown
         button.dropdown-trigger Actions
         .dropdown-menu 
           .dropdown-content 
-            a(href=`/admin/labels/companies/${contactLabel.id}/edit`).dropdown-item Edit contact label
+            a(href=`/admin/labels/contacts/${contactLabel.id}/edit`).dropdown-item Edit contact label
             button(type="button", onClick="activeContactLabel()").dropdown-item Active contact label
             button(type="button", onClick="archiveContactLabel()").dropdown-item Archive contact label
 
@@ -46,8 +46,8 @@ block content
           span.field-value #{contactLabel.updatedByEmail || "-"}
 
 
-      form(action=`/admin/labels/companies/${contactLabel.id}?_method=DELETE`, name="deleteContactLabelForm", method="post") 
+      form(action=`/admin/labels/contacts/${contactLabel.id}?_method=DELETE`, name="deleteContactLabelForm", method="post") 
 
-      form(action=`/admin/labels/companies/${contactLabel.id}/active?_method=PUT`, name="activeContactLabelForm", method="post") 
+      form(action=`/admin/labels/contacts/${contactLabel.id}/active?_method=PUT`, name="activeContactLabelForm", method="post") 
 
-      form(action=`/admin/labels/companies/${contactLabel.id}/archive?_method=PUT`, name="archiveContactLabelForm", method="post") 
+      form(action=`/admin/labels/contacts/${contactLabel.id}/archive?_method=PUT`, name="archiveContactLabelForm", method="post") 

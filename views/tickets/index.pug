@@ -23,7 +23,7 @@ block content
             th 
             each header in headers
               //- id
-              if header === "id"
+              if header === "id" && ticketFields.id
                 th
                   if orderDir === 'ASC'
                     a(href=`/tickets?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
@@ -34,7 +34,7 @@ block content
                     span.order-wrapper= orderDir
               
               //- name
-              if header === "name"
+              if header === "name" && ticketFields.name
                 th
                   if orderDir === 'ASC'
                     a(href=`/tickets?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
@@ -45,15 +45,15 @@ block content
                     span.order-wrapper= orderDir
 
               //- ticketTypeId
-              if header === "ticketTypeId"
+              if header === "ticketTypeId" && ticketFields.ticketTypeId
                 th #{ticketFields[header]}
               
               //- updatedBy
-              if header === "updatedBy"
+              if header === "updatedBy" && ticketFields.updatedBy
                 th #{ticketFields[header]}
               
               //- updatedAt
-              if header === "updatedAt"
+              if header === "updatedAt" && ticketFields.updatedAt
                 th
                   if orderDir === 'ASC'
                     a(href=`/tickets?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{ticketFields[header]}
@@ -67,16 +67,27 @@ block content
           if tickets.length > 0
             each ticket in tickets 
               tr
-                td 
-                  input(type="checkbox", name="ticketId", value= ticket.id)
-                td
-                  a(href=`/tickets/${ticket.id}`) #{ticket.id}
-                td #{ticket.name}
-                  if (!ticket.isActive)
-                    span.archive-status (archived)
-                td #{ticket.ticketType || "-" }
-                td #{ticket.updatedByEmail || "-" }
-                td #{ticket.updatedAt || "-" } 
+                if ticketFields.id
+                  td 
+                    input(type="checkbox", name="ticketId", value= ticket.id)
+                
+                if ticketFields.id
+                  td
+                    a(href=`/tickets/${ticket.id}`) #{ticket.id}
+                
+                if ticketFields.name
+                  td #{ticket.name}
+                    if (!ticket.isActive)
+                      span.archive-status (archived)
+
+                if ticketFields.ticketTypeId
+                  td #{ticket.ticketType || "-" }
+
+                if ticketFields.updatedBy
+                  td #{ticket.updatedByEmail || "-" }
+                
+                if ticketFields.updatedAt
+                  td #{ticket.updatedAt || "-" } 
           else 
             tr 
               td(colspan=7).text-center No tickets found.
