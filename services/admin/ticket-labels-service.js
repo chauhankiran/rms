@@ -21,7 +21,7 @@ module.exports = {
         updater.id AS "updatedById",
         updater.email AS "updatedByEmail"
       FROM
-        "ticketFields" tf
+        "ticketLabels" tf
       LEFT JOIN
         users creator ON tf."createdBy" = creator.id
       LEFT JOIN
@@ -48,7 +48,7 @@ module.exports = {
       SELECT
         COUNT(id)
       FROM
-        "ticketFields"
+        "ticketLabels"
       ${whereClause}
     `.then(([x]) => x);
   },
@@ -67,7 +67,7 @@ module.exports = {
         updater.id AS "updatedById",
         updater.email AS "updatedByEmail"
       FROM
-        "ticketFields" tf
+        "ticketLabels" tf
       LEFT JOIN
         users creator ON tf."createdBy" = creator.id
       LEFT JOIN
@@ -82,7 +82,7 @@ module.exports = {
 
     return await sql`
       UPDATE
-        "ticketFields"
+        "ticketLabels"
       SET
         "displayName" = ${displayName},
         "updatedBy" = ${updatedBy},
@@ -98,7 +98,7 @@ module.exports = {
 
     return await sql`
       UPDATE
-        "ticketFields"
+        "ticketLabels"
       SET
         "isActive" = false,
         "updatedBy" = ${updatedBy},
@@ -114,7 +114,7 @@ module.exports = {
 
     return await sql`
       UPDATE
-        "ticketFields"
+        "ticketLabels"
       SET
         "isActive" = true,
         "updatedBy" = ${updatedBy},
@@ -131,7 +131,7 @@ module.exports = {
         name,
         "displayName"
       FROM
-        "ticketFields"
+        "ticketLabels"
       WHERE
         "isActive" = true
     `;
@@ -142,7 +142,7 @@ module.exports = {
       SELECT
         ${sql(columns)}
       FROM
-        "ticketFields"
+        "ticketLabels"
     `;
   },
 };

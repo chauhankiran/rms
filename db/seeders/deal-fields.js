@@ -1,7 +1,7 @@
-const dealFields = async (sql) => {
+const dealLabels = async (sql) => {
   // id
   const result1 = await sql`
-    INSERT INTO "dealFields" (
+    INSERT INTO "dealLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -12,7 +12,7 @@ const dealFields = async (sql) => {
 
   // name
   const result2 = await sql`
-    INSERT INTO "dealFields" (
+    INSERT INTO "dealLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -23,7 +23,7 @@ const dealFields = async (sql) => {
 
   // total
   const result3 = await sql`
-    INSERT INTO "dealFields" (
+    INSERT INTO "dealLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -34,7 +34,7 @@ const dealFields = async (sql) => {
 
   // description
   const result4 = await sql`
-    INSERT INTO "dealFields" (
+    INSERT INTO "dealLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -45,7 +45,7 @@ const dealFields = async (sql) => {
 
   // dealSourceId
   const result5 = await sql`
-    INSERT INTO "dealFields" (
+    INSERT INTO "dealLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -56,7 +56,7 @@ const dealFields = async (sql) => {
 
   // isActive
   const result6 = await sql`
-    INSERT INTO "dealFields" (
+    INSERT INTO "dealLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -67,7 +67,7 @@ const dealFields = async (sql) => {
 
   // createdBy
   const result7 = await sql`
-    INSERT INTO "dealFields" (
+    INSERT INTO "dealLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -78,7 +78,7 @@ const dealFields = async (sql) => {
 
   // updatedBy
   const result8 = await sql`
-    INSERT INTO "dealFields" (
+    INSERT INTO "dealLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -89,7 +89,7 @@ const dealFields = async (sql) => {
 
   // createdAt
   const result9 = await sql`
-    INSERT INTO "dealFields" (
+    INSERT INTO "dealLabels" (
     name, 
     "displayName"
     ) VALUES (
@@ -100,7 +100,7 @@ const dealFields = async (sql) => {
 
   // updatedAt
   const result10 = await sql`
-    INSERT INTO "dealFields" (
+    INSERT INTO "dealLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -110,4 +110,4 @@ const dealFields = async (sql) => {
   console.log("updatedAt:", result10);
 };
 
-module.exports = dealFields;
+module.exports = dealLabels;

@@ -1,7 +1,7 @@
-const ticketFields = async (sql) => {
+const ticketLabels = async (sql) => {
   // id
   const result1 = await sql`
-    INSERT INTO "ticketFields" (
+    INSERT INTO "ticketLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -12,7 +12,7 @@ const ticketFields = async (sql) => {
 
   // name
   const result2 = await sql`
-    INSERT INTO "ticketFields" (
+    INSERT INTO "ticketLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -23,7 +23,7 @@ const ticketFields = async (sql) => {
 
   // description
   const result3 = await sql`
-    INSERT INTO "ticketFields" (
+    INSERT INTO "ticketLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -34,7 +34,7 @@ const ticketFields = async (sql) => {
 
   // ticketTypeId
   const result4 = await sql`
-    INSERT INTO "ticketFields" (
+    INSERT INTO "ticketLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -45,7 +45,7 @@ const ticketFields = async (sql) => {
 
   // isActive
   const result5 = await sql`
-    INSERT INTO "ticketFields" (
+    INSERT INTO "ticketLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -56,7 +56,7 @@ const ticketFields = async (sql) => {
 
   // createdBy
   const result6 = await sql`
-    INSERT INTO "ticketFields" (
+    INSERT INTO "ticketLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -67,7 +67,7 @@ const ticketFields = async (sql) => {
 
   // updatedBy
   const result7 = await sql`
-    INSERT INTO "ticketFields" (
+    INSERT INTO "ticketLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -78,7 +78,7 @@ const ticketFields = async (sql) => {
 
   // createdAt
   const result8 = await sql`
-    INSERT INTO "ticketFields" (
+    INSERT INTO "ticketLabels" (
     name, 
     "displayName"
     ) VALUES (
@@ -89,7 +89,7 @@ const ticketFields = async (sql) => {
 
   // updatedAt
   const result9 = await sql`
-    INSERT INTO "ticketFields" (
+    INSERT INTO "ticketLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -99,4 +99,4 @@ const ticketFields = async (sql) => {
   console.log("updatedAt:", result9);
 };
 
-module.exports = ticketFields;
+module.exports = ticketLabels;

@@ -7,7 +7,7 @@ module.exports = {
         name,
         "displayName"
       FROM
-        "dealFields"
+        "dealLabels"
       WHERE
         "isActive" = true
     `;

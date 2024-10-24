@@ -7,7 +7,7 @@ module.exports = {
         name,
         "displayName"
       FROM
-        "ticketFields"
+        "ticketLabels"
       WHERE
         "isActive" = true
     `;

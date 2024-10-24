@@ -7,7 +7,7 @@ module.exports = {
         name,
         "displayName"
       FROM
-        "contactFields"
+        "contactLabels"
       WHERE
         "isActive" = true
     `;

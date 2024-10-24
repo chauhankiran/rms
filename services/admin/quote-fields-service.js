@@ -7,7 +7,7 @@ module.exports = {
         name,
         "displayName"
       FROM
-        "quoteFields"
+        "quoteLabels"
       WHERE
         "isActive" = true
     `;

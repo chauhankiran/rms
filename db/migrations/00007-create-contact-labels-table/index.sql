@@ -1,4 +1,4 @@
-CREATE TABLE "quoteFields" (
+CREATE TABLE "contactLabels" (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) UNIQUE NOT NULL,
   "displayName" VARCHAR(255) UNIQUE NOT NULL,

@@ -1,7 +1,7 @@
-const quoteFields = async (sql) => {
+const quoteLabels = async (sql) => {
   // id
   const result1 = await sql`
-    INSERT INTO "quoteFields" (
+    INSERT INTO "quoteLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -12,7 +12,7 @@ const quoteFields = async (sql) => {
 
   // name
   const result2 = await sql`
-    INSERT INTO "quoteFields" (
+    INSERT INTO "quoteLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -23,7 +23,7 @@ const quoteFields = async (sql) => {
 
   // description
   const result3 = await sql`
-    INSERT INTO "quoteFields" (
+    INSERT INTO "quoteLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -34,7 +34,7 @@ const quoteFields = async (sql) => {
 
   // total
   const result12 = await sql`
-    INSERT INTO "quoteFields" (
+    INSERT INTO "quoteLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -45,7 +45,7 @@ const quoteFields = async (sql) => {
 
   // isActive
   const result4 = await sql`
-    INSERT INTO "quoteFields" (
+    INSERT INTO "quoteLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -56,7 +56,7 @@ const quoteFields = async (sql) => {
 
   // createdBy
   const result5 = await sql`
-    INSERT INTO "quoteFields" (
+    INSERT INTO "quoteLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -67,7 +67,7 @@ const quoteFields = async (sql) => {
 
   // updatedBy
   const result6 = await sql`
-    INSERT INTO "quoteFields" (
+    INSERT INTO "quoteLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -78,7 +78,7 @@ const quoteFields = async (sql) => {
 
   // createdAt
   const result7 = await sql`
-    INSERT INTO "quoteFields" (
+    INSERT INTO "quoteLabels" (
     name, 
     "displayName"
     ) VALUES (
@@ -89,7 +89,7 @@ const quoteFields = async (sql) => {
 
   // updatedAt
   const result8 = await sql`
-    INSERT INTO "quoteFields" (
+    INSERT INTO "quoteLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -99,4 +99,4 @@ const quoteFields = async (sql) => {
   console.log("updatedAt:", result8);
 };
 
-module.exports = quoteFields;
+module.exports = quoteLabels;

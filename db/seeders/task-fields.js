@@ -1,7 +1,7 @@
-const taskFields = async (sql) => {
+const taskLabels = async (sql) => {
   // id
   const result1 = await sql`
-    INSERT INTO "taskFields" (
+    INSERT INTO "taskLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -12,7 +12,7 @@ const taskFields = async (sql) => {
 
   // name
   const result2 = await sql`
-    INSERT INTO "taskFields" (
+    INSERT INTO "taskLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -23,7 +23,7 @@ const taskFields = async (sql) => {
 
   // description
   const result3 = await sql`
-    INSERT INTO "taskFields" (
+    INSERT INTO "taskLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -34,7 +34,7 @@ const taskFields = async (sql) => {
 
   // taskTypeId
   const result4 = await sql`
-    INSERT INTO "taskFields" (
+    INSERT INTO "taskLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -45,7 +45,7 @@ const taskFields = async (sql) => {
 
   // isActive
   const result5 = await sql`
-    INSERT INTO "taskFields" (
+    INSERT INTO "taskLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -56,7 +56,7 @@ const taskFields = async (sql) => {
 
   // createdBy
   const result6 = await sql`
-    INSERT INTO "taskFields" (
+    INSERT INTO "taskLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -67,7 +67,7 @@ const taskFields = async (sql) => {
 
   // updatedBy
   const result7 = await sql`
-    INSERT INTO "taskFields" (
+    INSERT INTO "taskLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -78,7 +78,7 @@ const taskFields = async (sql) => {
 
   // createdAt
   const result8 = await sql`
-    INSERT INTO "taskFields" (
+    INSERT INTO "taskLabels" (
     name, 
     "displayName"
     ) VALUES (
@@ -89,7 +89,7 @@ const taskFields = async (sql) => {
 
   // updatedAt
   const result9 = await sql`
-    INSERT INTO "taskFields" (
+    INSERT INTO "taskLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -99,4 +99,4 @@ const taskFields = async (sql) => {
   console.log("updatedAt:", result9);
 };
 
-module.exports = taskFields;
+module.exports = taskLabels;

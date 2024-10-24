@@ -1,7 +1,7 @@
-const contactFields = async (sql) => {
+const contactLabels = async (sql) => {
   // id
   const result1 = await sql`
-    INSERT INTO "contactFields" (
+    INSERT INTO "contactLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -12,7 +12,7 @@ const contactFields = async (sql) => {
 
   // prefix
   const result2 = await sql`
-    INSERT INTO "contactFields" (
+    INSERT INTO "contactLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -23,7 +23,7 @@ const contactFields = async (sql) => {
 
   // firstName
   const result3 = await sql`
-    INSERT INTO "contactFields" (
+    INSERT INTO "contactLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -34,7 +34,7 @@ const contactFields = async (sql) => {
 
   // lastName
   const result4 = await sql`
-    INSERT INTO "contactFields" (
+    INSERT INTO "contactLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -45,7 +45,7 @@ const contactFields = async (sql) => {
 
   // virtual field: name
   const resultV1 = await sql`
-    INSERT INTO "contactFields" (
+    INSERT INTO "contactLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -56,7 +56,7 @@ const contactFields = async (sql) => {
 
   // annualRevenue
   const result5 = await sql`
-    INSERT INTO "contactFields" (
+    INSERT INTO "contactLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -67,7 +67,7 @@ const contactFields = async (sql) => {
 
   // description
   const result6 = await sql`
-    INSERT INTO "contactFields" (
+    INSERT INTO "contactLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -78,7 +78,7 @@ const contactFields = async (sql) => {
 
   // contactIndustryId
   const result7 = await sql`
-    INSERT INTO "contactFields" (
+    INSERT INTO "contactLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -89,7 +89,7 @@ const contactFields = async (sql) => {
 
   // companyId
   const result8 = await sql`
-    INSERT INTO "contactFields" (
+    INSERT INTO "contactLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -99,7 +99,7 @@ const contactFields = async (sql) => {
   console.log("companyId:", result8);
 
   const result9 = await sql`
-    INSERT INTO "contactFields" (
+    INSERT INTO "contactLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -110,7 +110,7 @@ const contactFields = async (sql) => {
 
   // createdBy
   const result10 = await sql`
-    INSERT INTO "contactFields" (
+    INSERT INTO "contactLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -121,7 +121,7 @@ const contactFields = async (sql) => {
 
   // updatedBy
   const result11 = await sql`
-    INSERT INTO "contactFields" (
+    INSERT INTO "contactLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -132,7 +132,7 @@ const contactFields = async (sql) => {
 
   // createdAt
   const result12 = await sql`
-    INSERT INTO "contactFields" (
+    INSERT INTO "contactLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -143,7 +143,7 @@ const contactFields = async (sql) => {
 
   // updatedAt
   const result13 = await sql`
-    INSERT INTO "contactFields" (
+    INSERT INTO "contactLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -153,4 +153,4 @@ const contactFields = async (sql) => {
   console.log("updatedAt:", result13);
 };
 
-module.exports = contactFields;
+module.exports = contactLabels;

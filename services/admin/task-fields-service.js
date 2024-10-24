@@ -7,7 +7,7 @@ module.exports = {
         name,
         "displayName"
       FROM
-        "taskFields"
+        "taskLabels"
       WHERE
         "isActive" = true
     `;

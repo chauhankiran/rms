@@ -1,4 +1,4 @@
-CREATE TABLE "taskFields" (
+CREATE TABLE "taskLabels" (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) UNIQUE NOT NULL,
   "displayName" VARCHAR(255) UNIQUE NOT NULL,

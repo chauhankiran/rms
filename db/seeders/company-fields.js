@@ -1,7 +1,7 @@
-const companyFields = async (sql) => {
+const companyLabels = async (sql) => {
   // id
   const result1 = await sql`
-    INSERT INTO "companyFields" (
+    INSERT INTO "companyLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -12,7 +12,7 @@ const companyFields = async (sql) => {
 
   // name
   const result2 = await sql`
-    INSERT INTO "companyFields" (
+    INSERT INTO "companyLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -23,7 +23,7 @@ const companyFields = async (sql) => {
 
   // employeeSize
   const result3 = await sql`
-    INSERT INTO "companyFields" (
+    INSERT INTO "companyLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -34,7 +34,7 @@ const companyFields = async (sql) => {
 
   // description
   const result4 = await sql`
-    INSERT INTO "companyFields" (
+    INSERT INTO "companyLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -45,7 +45,7 @@ const companyFields = async (sql) => {
 
   // companySourceId
   const result5 = await sql`
-    INSERT INTO "companyFields" (
+    INSERT INTO "companyLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -56,7 +56,7 @@ const companyFields = async (sql) => {
 
   // isActive
   const result6 = await sql`
-    INSERT INTO "companyFields" (
+    INSERT INTO "companyLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -67,7 +67,7 @@ const companyFields = async (sql) => {
 
   // createdBy
   const result7 = await sql`
-    INSERT INTO "companyFields" (
+    INSERT INTO "companyLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -78,7 +78,7 @@ const companyFields = async (sql) => {
 
   // updatedBy
   const result8 = await sql`
-    INSERT INTO "companyFields" (
+    INSERT INTO "companyLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -89,7 +89,7 @@ const companyFields = async (sql) => {
 
   // createdAt
   const result9 = await sql`
-    INSERT INTO "companyFields" (
+    INSERT INTO "companyLabels" (
     name, 
     "displayName"
     ) VALUES (
@@ -100,7 +100,7 @@ const companyFields = async (sql) => {
 
   // updatedAt
   const result10 = await sql`
-    INSERT INTO "companyFields" (
+    INSERT INTO "companyLabels" (
       name, 
       "displayName"
     ) VALUES (
@@ -110,4 +110,4 @@ const companyFields = async (sql) => {
   console.log("updatedAt:", result10);
 };
 
-module.exports = companyFields;
+module.exports = companyLabels;
