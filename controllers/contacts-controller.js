@@ -3,6 +3,20 @@ const contactViewsService = require("../services/contact-views-service");
 const contactIndustriesService = require("../services/admin/contact-industries-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 
+const columnsObj = {
+  id: "c.id",
+  name: 'c.prefix, c."firstName", c."lastName"',
+  prefix: "c.prefix",
+  firstName: 'c."firstName"',
+  lastName: 'c."lastName"',
+  contactIndustryId: 'ci.name AS "contactIndustry"',
+  annualRevenue: 'c."annualRevenue"',
+  createdBy: 'creator.email AS "createdByEmail"',
+  createdAt: 'c."createdAt"',
+  updatedBy: 'updater.email AS "updatedByEmail"',
+  updatedAt: 'c."updatedAt"',
+};
+
 const handleContact = async (id, req, res) => {
   const contact = await contactsService.findOne(id);
 
@@ -47,42 +61,16 @@ module.exports = {
       let columns = 'c."isActive",';
       let headers = [];
       for (const contactView of contactViews) {
-        // id
-        if (contactView.name === "id") {
-          columns += "c.id,";
-          headers.push("id");
-        }
-
-        // name
-        if (contactView.name === "name") {
-          columns += "c.name,";
-          headers.push("name");
-        }
-
-        // contactIndustryId
-        if (contactView.name === "contactIndustryId") {
-          columns += 'cs.name AS "contactIndustry",';
-          headers.push("contactIndustryId");
-        }
-
-        // updatedBy
-        if (contactView.name === "updatedBy") {
-          columns += 'creator."updatedBy" AS "updatedByEmail",';
-          headers.push("updatedBy");
-        }
-
-        // updatedAt
-        if (contactView.name === "updatedAt") {
-          columns += 'c."updatedAt",';
-          headers.push("updatedAt");
+        const column = columnsObj[contactView.name];
+        if (column) {
+          columns += `${column},`;
+          headers.push(contactView.name);
         }
       }
 
       // TEMP: Track the issue
       // https://github.com/porsager/postgres/issues/894
-      if (columns.length > 0 && columns.slice(-1) === ",") {
-        columns = columns.slice(0, -1);
-      }
+      columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
 
       const optionsObj = { search, limit, skip, orderBy, orderDir, columns };
       const contacts = await contactsService.find(optionsObj);

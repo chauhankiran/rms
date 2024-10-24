@@ -2,6 +2,16 @@ const quotesService = require("../services/quotes-service");
 const quoteViewsService = require("../services/quote-views-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 
+const columnsObj = {
+  id: "q.id",
+  name: "q.name",
+  total: "q.total",
+  createdBy: 'creator.email AS "createdByEmail"',
+  createdAt: 'q."createdAt"',
+  updatedBy: 'updater.email AS "updatedByEmail"',
+  updatedAt: 'q."updatedAt"',
+};
+
 const handleQuote = async (id, req, res) => {
   const quote = await quotesService.findOne(id);
 
@@ -26,39 +36,19 @@ module.exports = {
     try {
       const quoteViews = await quoteViewsService.pluck(["name"]);
 
-      let columns = 'c."isActive",';
+      let columns = 'q."isActive",';
       let headers = [];
       for (const quoteView of quoteViews) {
-        // id
-        if (quoteView.name === "id") {
-          columns += "c.id,";
-          headers.push("id");
-        }
-
-        // name
-        if (quoteView.name === "name") {
-          columns += "c.name,";
-          headers.push("name");
-        }
-
-        // updatedBy
-        if (quoteView.name === "updatedBy") {
-          columns += 'updater."email" AS "updatedByEmail",';
-          headers.push("updatedBy");
-        }
-
-        // updatedAt
-        if (quoteView.name === "updatedAt") {
-          columns += 'c."updatedAt",';
-          headers.push("updatedAt");
+        const column = columnsObj[quoteView.name];
+        if (column) {
+          columns += `${column},`;
+          headers.push(quoteView.name);
         }
       }
 
       // TEMP: Track the issue
       // https://github.com/porsager/postgres/issues/894
-      if (columns.length > 0 && columns.slice(-1) === ",") {
-        columns = columns.slice(0, -1);
-      }
+      columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
 
       const optionsObj = { search, limit, skip, orderBy, orderDir, columns };
       const quotes = await quotesService.find(optionsObj);

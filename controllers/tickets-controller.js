@@ -1,7 +1,17 @@
 const ticketsService = require("../services/tickets-service");
-const ticketTypesService = require("../services/admin/ticket-types-service");
 const ticketViewsService = require("../services/ticket-views-service");
+const ticketTypesService = require("../services/admin/ticket-types-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
+
+const columnsObj = {
+  id: "t.id",
+  name: "t.name",
+  ticketTypeId: 'tt.name AS "ticketType"',
+  createdBy: 'creator.email AS "createdByEmail"',
+  createdAt: 't."createdAt"',
+  updatedBy: 'updater.email AS "updatedByEmail"',
+  updatedAt: 't."updatedAt"',
+};
 
 const handleTicket = async (id, req, res) => {
   const ticket = await ticketsService.findOne(id);
@@ -30,42 +40,16 @@ module.exports = {
       let columns = 't."isActive",';
       let headers = [];
       for (const ticketView of ticketViews) {
-        // id
-        if (ticketView.name === "id") {
-          columns += "t.id,";
-          headers.push("id");
-        }
-
-        // name
-        if (ticketView.name === "name") {
-          columns += "t.name,";
-          headers.push("name");
-        }
-
-        // ticketTypeId
-        if (ticketView.name === "ticketTypeId") {
-          columns += 'tt.name AS "ticketType",';
-          headers.push("ticketTypeId");
-        }
-
-        // updatedBy
-        if (ticketView.name === "updatedBy") {
-          columns += 'updater."email" AS "updatedByEmail",';
-          headers.push("updatedBy");
-        }
-
-        // updatedAt
-        if (ticketView.name === "updatedAt") {
-          columns += 't."updatedAt",';
-          headers.push("updatedAt");
+        const column = columnsObj[ticketView.name];
+        if (column) {
+          columns += `${column},`;
+          headers.push(ticketView.name);
         }
       }
 
       // TEMP: Track the issue
       // https://github.com/porsager/postgres/issues/894
-      if (columns.length > 0 && columns.slice(-1) === ",") {
-        columns = columns.slice(0, -1);
-      }
+      columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
 
       const optionsObj = { search, limit, skip, orderBy, orderDir, columns };
       const tickets = await ticketsService.find(optionsObj);

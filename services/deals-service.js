@@ -2,8 +2,16 @@ const sql = require("../db/sql");
 
 module.exports = {
   find: async (optionsObj) => {
-    const { skip, limit, search, orderBy, orderDir, companyId, contactId } =
-      optionsObj;
+    const {
+      skip,
+      limit,
+      search,
+      orderBy,
+      orderDir,
+      columns,
+      companyId,
+      contactId,
+    } = optionsObj;
 
     const whereClause = search
       ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
@@ -19,19 +27,7 @@ module.exports = {
 
     return await sql`
       SELECT
-        d.id,
-        d."name",
-        d."total",
-        d.description,
-        d."isActive",
-        d."dealSourceId",
-        ds."name" AS "dealSource",
-        d."createdAt",
-        d."updatedAt",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
+        ${sql.unsafe(columns)}
       FROM
         deals d
       LEFT JOIN

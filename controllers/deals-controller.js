@@ -3,6 +3,17 @@ const dealViewsService = require("../services/deal-views-service");
 const dealSourcesService = require("../services/admin/deal-sources-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 
+const columnsObj = {
+  id: "d.id",
+  name: "d.name",
+  total: "d.total",
+  dealSourceId: 'ds.name AS "dealSource"',
+  createdBy: 'creator.email AS "createdByEmail"',
+  createdAt: 'd."createdAt"',
+  updatedBy: 'updater.email AS "updatedByEmail"',
+  updatedAt: 'd."updatedAt"',
+};
+
 const handleDeal = async (id, req, res) => {
   const deal = await dealsService.findOne(id);
 
@@ -27,45 +38,19 @@ module.exports = {
     try {
       const dealViews = await dealViewsService.pluck(["name"]);
 
-      let columns = 'c."isActive",';
+      let columns = 'd."isActive",';
       let headers = [];
       for (const dealView of dealViews) {
-        // id
-        if (dealView.name === "id") {
-          columns += "c.id,";
-          headers.push("id");
-        }
-
-        // name
-        if (dealView.name === "name") {
-          columns += "c.name,";
-          headers.push("name");
-        }
-
-        // dealSourceId
-        if (dealView.name === "dealSourceId") {
-          columns += 'cs.name AS "dealSource",';
-          headers.push("dealSourceId");
-        }
-
-        // updatedBy
-        if (dealView.name === "updatedBy") {
-          columns += 'updater."email" AS "updatedByEmail",';
-          headers.push("updatedBy");
-        }
-
-        // updatedAt
-        if (dealView.name === "updatedAt") {
-          columns += 'c."updatedAt",';
-          headers.push("updatedAt");
+        const column = columnsObj[dealView.name];
+        if (column) {
+          columns += `${column},`;
+          headers.push(dealView.name);
         }
       }
 
       // TEMP: Track the issue
       // https://github.com/porsager/postgres/issues/894
-      if (columns.length > 0 && columns.slice(-1) === ",") {
-        columns = columns.slice(0, -1);
-      }
+      columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
 
       const optionsObj = { search, limit, skip, orderBy, orderDir, columns };
       const deals = await dealsService.find(optionsObj);

@@ -24,6 +24,7 @@ module.exports = {
       search,
       orderBy,
       orderDir,
+      columns,
       companyId,
       contactId,
       dealId,
@@ -53,18 +54,7 @@ module.exports = {
 
     return await sql`
       SELECT
-        t.id,
-        t."name",
-        t.description,
-        t."isActive",
-        t."taskTypeId",
-        tt."name" AS "taskType",
-        t."createdAt",
-        t."updatedAt",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
+        ${sql.unsafe(columns)}
       FROM
         tasks t
       LEFT JOIN

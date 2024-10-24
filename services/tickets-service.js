@@ -8,6 +8,7 @@ module.exports = {
       search,
       orderBy,
       orderDir,
+      columns,
       companyId,
       contactId,
       dealId,
@@ -29,18 +30,7 @@ module.exports = {
 
     return await sql`
       SELECT
-        t.id,
-        t."name",
-        t.description,
-        t."isActive",
-        t."ticketTypeId",
-        tt."name" AS "ticketType",
-        t."createdAt",
-        t."updatedAt",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
+        ${sql.unsafe(columns)}
       FROM
         tickets t
       LEFT JOIN

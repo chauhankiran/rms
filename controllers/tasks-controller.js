@@ -1,7 +1,17 @@
 const tasksService = require("../services/tasks-service");
-const taskTypesService = require("../services/admin/task-types-service");
 const taskViewsService = require("../services/task-views-service");
+const taskTypesService = require("../services/admin/task-types-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
+
+const columnsObj = {
+  id: "t.id",
+  name: "t.name",
+  taskTypeId: 'tt.name AS "taskType"',
+  createdBy: 'creator.email AS "createdByEmail"',
+  createdAt: 't."createdAt"',
+  updatedBy: 'updater.email AS "updatedByEmail"',
+  updatedAt: 't."updatedAt"',
+};
 
 const handleTask = async (id, req, res) => {
   const task = await tasksService.findOne(id);
@@ -30,42 +40,16 @@ module.exports = {
       let columns = 't."isActive",';
       let headers = [];
       for (const taskView of taskViews) {
-        // id
-        if (taskView.name === "id") {
-          columns += "t.id,";
-          headers.push("id");
-        }
-
-        // name
-        if (taskView.name === "name") {
-          columns += "t.name,";
-          headers.push("name");
-        }
-
-        // taskTypeId
-        if (taskView.name === "taskTypeId") {
-          columns += "t.taskTypeId,";
-          headers.push("taskTypeId");
-        }
-
-        // updatedBy
-        if (taskView.name === "updatedBy") {
-          columns += 'updater."email" AS "updatedByEmail",';
-          headers.push("updatedBy");
-        }
-
-        // updatedAt
-        if (taskView.name === "updatedAt") {
-          columns += 't."updatedAt",';
-          headers.push("updatedAt");
+        const column = columnsObj[taskView.name];
+        if (column) {
+          columns += `${column},`;
+          headers.push(taskView.name);
         }
       }
 
       // TEMP: Track the issue
       // https://github.com/porsager/postgres/issues/894
-      if (columns.length > 0 && columns.slice(-1) === ",") {
-        columns = columns.slice(0, -1);
-      }
+      columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
 
       const optionsObj = { search, limit, skip, orderBy, orderDir, columns };
       const tasks = await tasksService.find(optionsObj);
