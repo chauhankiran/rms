@@ -1,8 +1,8 @@
 const companiesService = require("../services/companies-service");
+const contactsService = require("../services/contacts-service");
+const companyViewsService = require("../services/company-views-service");
 const companySourcesService = require("../services/admin/company-sources-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
-const contactsService = require("../services/contacts-service");
-const sql = require("../db/sql");
 
 const columnsObj = {
   id: "c.id",
@@ -24,12 +24,7 @@ module.exports = {
     const orderDir = req.query.orderDir || "DESC";
 
     try {
-      const companyViews = await sql`
-        SELECT
-          name
-        FROM
-          "companyViews"
-      `;
+      const companyViews = await companyViewsService.pluck(["name"]);
 
       let columns = 'c."isActive",';
       let headers = [];
@@ -120,9 +115,6 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      // Before displaying company, check if the company
-      // exist or not. If not, re-direct back to listing
-      // page with flashing message.
       const company = await companiesService.findOne(id);
 
       if (!company) {
@@ -154,9 +146,6 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      // Before editing company, check if the company
-      // exist or not. If not, re-direct back to listing
-      // page with flashing message.
       const company = await companiesService.findOne(id);
 
       if (!company) {
@@ -188,9 +177,6 @@ module.exports = {
     }
 
     try {
-      // Before updating company, check if the company
-      // exist or not. If not, re-direct back to listing
-      // page with flashing message.
       const company = await companiesService.findOne(id);
 
       if (!company) {
@@ -220,9 +206,6 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      // Before deleting company, check if the company
-      // exist or not. If not, re-direct back to listing
-      // page with flashing message.
       const company = await companiesService.findOne(id);
 
       if (!company) {
@@ -244,9 +227,6 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      // Before archiving company, check if the company
-      // exist or not. If not, re-direct back to listing
-      // page with flashing message.
       const company = await companiesService.findOne(id);
 
       if (!company) {
@@ -269,9 +249,6 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      // Before activating company, check if the company
-      // exist or not. If not, re-direct back to listing
-      // page with flashing message.
       const company = await companiesService.findOne(id);
 
       if (!company) {

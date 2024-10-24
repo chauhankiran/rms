@@ -1,7 +1,7 @@
 const ticketsService = require("../services/tickets-service");
-const generatePaginationLinks = require("../helpers/generate-pagination-links");
-const sql = require("../db/sql");
 const ticketTypesService = require("../services/admin/ticket-types-service");
+const ticketViewsService = require("../services/ticket-views-service");
+const generatePaginationLinks = require("../helpers/generate-pagination-links");
 
 const handleTicket = async (id, req, res) => {
   const ticket = await ticketsService.findOne(id);
@@ -25,12 +25,7 @@ module.exports = {
     const orderDir = req.query.orderDir || "DESC";
 
     try {
-      const ticketViews = await sql`
-        SELECT
-          name
-        FROM
-          "ticketViews"
-      `;
+      const ticketViews = await ticketViewsService.pluck(["name"]);
 
       let columns = 't."isActive",';
       let headers = [];

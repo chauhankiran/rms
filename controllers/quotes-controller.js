@@ -1,6 +1,6 @@
 const quotesService = require("../services/quotes-service");
+const quoteViewsService = require("../services/quote-views-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
-const sql = require("../db/sql");
 
 const handleQuote = async (id, req, res) => {
   const quote = await quotesService.findOne(id);
@@ -24,12 +24,7 @@ module.exports = {
     const orderDir = req.query.orderDir || "DESC";
 
     try {
-      const quoteViews = await sql`
-        SELECT
-          name
-        FROM
-          "quoteViews"
-      `;
+      const quoteViews = await quoteViewsService.pluck(["name"]);
 
       let columns = 'c."isActive",';
       let headers = [];

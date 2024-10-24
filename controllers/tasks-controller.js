@@ -1,7 +1,7 @@
 const tasksService = require("../services/tasks-service");
-const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const taskTypesService = require("../services/admin/task-types-service");
-const sql = require("../db/sql");
+const taskViewsService = require("../services/task-views-service");
+const generatePaginationLinks = require("../helpers/generate-pagination-links");
 
 const handleTask = async (id, req, res) => {
   const task = await tasksService.findOne(id);
@@ -25,12 +25,7 @@ module.exports = {
     const orderDir = req.query.orderDir || "DESC";
 
     try {
-      const taskViews = await sql`
-        SELECT
-          name
-        FROM
-          "taskViews"
-      `;
+      const taskViews = await taskViewsService.pluck(["name"]);
 
       let columns = 't."isActive",';
       let headers = [];

@@ -1,7 +1,7 @@
 const dealsService = require("../services/deals-service");
-const generatePaginationLinks = require("../helpers/generate-pagination-links");
-const sql = require("../db/sql");
+const dealViewsService = require("../services/deal-views-service");
 const dealSourcesService = require("../services/admin/deal-sources-service");
+const generatePaginationLinks = require("../helpers/generate-pagination-links");
 
 const handleDeal = async (id, req, res) => {
   const deal = await dealsService.findOne(id);
@@ -25,12 +25,7 @@ module.exports = {
     const orderDir = req.query.orderDir || "DESC";
 
     try {
-      const dealViews = await sql`
-        SELECT
-          name
-        FROM
-          "dealViews"
-      `;
+      const dealViews = await dealViewsService.pluck(["name"]);
 
       let columns = 'c."isActive",';
       let headers = [];

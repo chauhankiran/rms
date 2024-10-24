@@ -1,7 +1,7 @@
 const contactsService = require("../services/contacts-service");
+const contactViewsService = require("../services/contact-views-service");
 const contactIndustriesService = require("../services/admin/contact-industries-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
-const sql = require("../db/sql");
 
 const handleContact = async (id, req, res) => {
   const contact = await contactsService.findOne(id);
@@ -42,12 +42,7 @@ module.exports = {
     const orderDir = req.query.orderDir || "DESC";
 
     try {
-      const contactViews = await sql`
-        SELECT
-          name
-        FROM
-          "contactViews"
-      `;
+      const contactViews = await contactViewsService.pluck(["name"]);
 
       let columns = 'c."isActive",';
       let headers = [];

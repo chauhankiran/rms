@@ -13,7 +13,7 @@ if labels.ticket.ticketTypeId
         option(value=ticketType.id, selected=ticket && ticketType.id == ticket.ticketTypeId) #{ticketType.name}
 
 //- description
-labels.ticket.description
+if labels.ticket.description
   .form-group 
     label(for="description") #{labels.ticket.description}
     textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{ticket ? ticket.description : ""}
