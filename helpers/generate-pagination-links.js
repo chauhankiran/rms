@@ -13,7 +13,7 @@ const generatePaginationLinks = ({
     const orderQuery = orderBy
       ? `&orderBy=${orderBy}&orderDir=${orderDir}`
       : "";
-    return `/${link}?${searchQuery}page=${pageNum}&limit=${limit}${orderQuery}`;
+    return `${link}?${searchQuery}page=${pageNum}&limit=${limit}${orderQuery}`;
   };
 
   return {

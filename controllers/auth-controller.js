@@ -7,13 +7,6 @@ const quoteLabelsService = require("../services/admin/quote-labels-service");
 const ticketLabelsService = require("../services/admin/ticket-labels-service");
 const taskLabelsService = require("../services/admin/task-labels-service");
 
-const companyFieldsController = require("../controllers/admin/company-fields-controller");
-const contactFieldsController = require("../controllers/admin/contact-fields-controller");
-const dealFieldsController = require("../controllers/admin/deal-fields-controller");
-const quoteFieldsController = require("../controllers/admin/quote-fields-controller");
-const ticketFieldsController = require("../controllers/admin/ticket-fields-controller");
-const taskFieldsController = require("../controllers/admin/task-fields-controller");
-
 const transformLabels = (labels) => {
   return labels.reduce((acc, { name, displayName }) => {
     acc[name] = displayName;
@@ -107,13 +100,6 @@ module.exports = {
       // Task labels.
       const taskLabels = await taskLabelsService.pluck(columns);
       req.session.labels.task = transformLabels(taskLabels);
-
-      await companyFieldsController.addCompanyFieldsInSession(req);
-      await contactFieldsController.addContactFieldsInSession(req);
-      await dealFieldsController.addDealFieldsInSession(req);
-      await quoteFieldsController.addQuoteFieldsInSession(req);
-      await ticketFieldsController.addTicketFieldsInSession(req);
-      await taskFieldsController.addTaskFieldsInSession(req);
 
       res.redirect("/");
       return;
