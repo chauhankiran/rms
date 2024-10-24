@@ -12,18 +12,6 @@ const columnsObj = {
   updatedAt: 'q."updatedAt"',
 };
 
-const handleQuote = async (id, req, res) => {
-  const quote = await quotesService.findOne(id);
-
-  if (!quote) {
-    req.flash("error", "Quote not found.");
-    res.redirect("/quotes");
-    return;
-  }
-
-  return quote;
-};
-
 module.exports = {
   index: async (req, res, next) => {
     const search = req.query.search || null;
@@ -120,7 +108,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const quote = await handleQuote(id, req, res);
+      const quote = await quotesService.findOne(id);
+
+      if (!quote) {
+        req.flash("error", "Quote not found.");
+        res.redirect("/quotes");
+        return;
+      }
 
       return res.render("quotes/show", {
         title: "Show quote",
@@ -135,7 +129,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const quote = await handleQuote(id, req, res);
+      const quote = await quotesService.findOne(id);
+
+      if (!quote) {
+        req.flash("error", "Quote not found.");
+        res.redirect("/quotes");
+        return;
+      }
 
       return res.render("quotes/edit", {
         title: "Edit quote",
@@ -157,7 +157,13 @@ module.exports = {
     }
 
     try {
-      await handleQuote(id, req, res);
+      const quote = await quotesService.findOne(id);
+
+      if (!quote) {
+        req.flash("error", "Quote not found.");
+        res.redirect("/quotes");
+        return;
+      }
 
       const quoteObj = {
         id,
@@ -179,7 +185,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleQuote(id, req, res);
+      const quote = await quotesService.findOne(id);
+
+      if (!quote) {
+        req.flash("error", "Quote not found.");
+        res.redirect("/quotes");
+        return;
+      }
 
       await quotesService.destroy(id);
 
@@ -194,7 +206,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleQuote(id, req, res);
+      const quote = await quotesService.findOne(id);
+
+      if (!quote) {
+        req.flash("error", "Quote not found.");
+        res.redirect("/quotes");
+        return;
+      }
 
       const quoteObj = { id, updatedBy: req.session.currentUser.id };
       await quotesService.archive(quoteObj);
@@ -210,7 +228,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleQuote(id, req, res);
+      const quote = await quotesService.findOne(id);
+
+      if (!quote) {
+        req.flash("error", "Quote not found.");
+        res.redirect("/quotes");
+        return;
+      }
 
       const quoteObj = { id, updatedBy: req.session.currentUser.id };
       await quotesService.active(quoteObj);

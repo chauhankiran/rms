@@ -13,18 +13,6 @@ const columnsObj = {
   updatedAt: 't."updatedAt"',
 };
 
-const handleTicket = async (id, req, res) => {
-  const ticket = await ticketsService.findOne(id);
-
-  if (!ticket) {
-    req.flash("error", "Ticket not found.");
-    res.redirect("/tickets");
-    return;
-  }
-
-  return ticket;
-};
-
 module.exports = {
   index: async (req, res, next) => {
     const search = req.query.search || null;
@@ -129,7 +117,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const ticket = await handleTicket(id, req, res);
+      const ticket = await ticketsService.findOne(id);
+
+      if (!ticket) {
+        req.flash("error", "Ticket not found.");
+        res.redirect("/tickets");
+        return;
+      }
 
       return res.render("tickets/show", {
         title: "Show ticket",
@@ -144,7 +138,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const ticket = await handleTicket(id, req, res);
+      const ticket = await ticketsService.findOne(id);
+
+      if (!ticket) {
+        req.flash("error", "Ticket not found.");
+        res.redirect("/tickets");
+        return;
+      }
 
       const ticketTypes = await ticketTypesService.pluck(["id", "name"]);
 
@@ -169,7 +169,13 @@ module.exports = {
     }
 
     try {
-      await handleTicket(id, req, res);
+      const ticket = await ticketsService.findOne(id);
+
+      if (!ticket) {
+        req.flash("error", "Ticket not found.");
+        res.redirect("/tickets");
+        return;
+      }
 
       const ticketObj = {
         id,
@@ -191,7 +197,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleTicket(id, req, res);
+      const ticket = await ticketsService.findOne(id);
+
+      if (!ticket) {
+        req.flash("error", "Ticket not found.");
+        res.redirect("/tickets");
+        return;
+      }
 
       await ticketsService.destroy(id);
 
@@ -206,7 +218,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleTicket(id, req, res);
+      const ticket = await ticketsService.findOne(id);
+
+      if (!ticket) {
+        req.flash("error", "Ticket not found.");
+        res.redirect("/tickets");
+        return;
+      }
 
       const ticketObj = { id, updatedBy: req.session.currentUser.id };
       await ticketsService.archive(ticketObj);
@@ -222,7 +240,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleTicket(id, req, res);
+      const ticket = await ticketsService.findOne(id);
+
+      if (!ticket) {
+        req.flash("error", "Ticket not found.");
+        res.redirect("/tickets");
+        return;
+      }
 
       const ticketObj = { id, updatedBy: req.session.currentUser.id };
       await ticketsService.active(ticketObj);

@@ -13,18 +13,6 @@ const columnsObj = {
   updatedAt: 't."updatedAt"',
 };
 
-const handleTask = async (id, req, res) => {
-  const task = await tasksService.findOne(id);
-
-  if (!task) {
-    req.flash("error", "Task not found.");
-    res.redirect("/tasks");
-    return;
-  }
-
-  return task;
-};
-
 module.exports = {
   index: async (req, res, next) => {
     const search = req.query.search || null;
@@ -139,7 +127,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const task = await handleTask(id, req, res);
+      const task = await tasksService.findOne(id);
+
+      if (!task) {
+        req.flash("error", "Task not found.");
+        res.redirect("/tasks");
+        return;
+      }
 
       return res.render("tasks/show", {
         title: "Show task",
@@ -154,7 +148,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const task = await handleTask(id, req, res);
+      const task = await tasksService.findOne(id);
+
+      if (!task) {
+        req.flash("error", "Task not found.");
+        res.redirect("/tasks");
+        return;
+      }
 
       const taskTypes = await taskTypesService.pluck(["id", "name"]);
 
@@ -179,7 +179,13 @@ module.exports = {
     }
 
     try {
-      await handleTask(id, req, res);
+      const task = await tasksService.findOne(id);
+
+      if (!task) {
+        req.flash("error", "Task not found.");
+        res.redirect("/tasks");
+        return;
+      }
 
       const taskObj = {
         id,
@@ -201,7 +207,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleTask(id, req, res);
+      const task = await tasksService.findOne(id);
+
+      if (!task) {
+        req.flash("error", "Task not found.");
+        res.redirect("/tasks");
+        return;
+      }
 
       await tasksService.destroy(id);
 
@@ -216,7 +228,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleTask(id, req, res);
+      const task = await tasksService.findOne(id);
+
+      if (!task) {
+        req.flash("error", "Task not found.");
+        res.redirect("/tasks");
+        return;
+      }
 
       const taskObj = { id, updatedBy: req.session.currentUser.id };
       await tasksService.archive(taskObj);
@@ -232,7 +250,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleTask(id, req, res);
+      const task = await tasksService.findOne(id);
+
+      if (!task) {
+        req.flash("error", "Task not found.");
+        res.redirect("/tasks");
+        return;
+      }
 
       const taskObj = { id, updatedBy: req.session.currentUser.id };
       await tasksService.active(taskObj);

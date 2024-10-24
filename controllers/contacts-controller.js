@@ -17,35 +17,6 @@ const columnsObj = {
   updatedAt: 'c."updatedAt"',
 };
 
-const handleContact = async (id, req, res) => {
-  const contact = await contactsService.findOne(id);
-
-  if (!contact) {
-    req.flash("error", "Contact not found.");
-    res.redirect("/contacts");
-    return;
-  }
-
-  return contact;
-};
-
-const updateContactStatus = async (req, res, next, action, message) => {
-  const id = req.params.id;
-
-  try {
-    await handleContact(id, req, res);
-
-    const contactObj = { id, updatedBy: req.session.currentUser.id };
-    await contactsService[action](contactObj);
-
-    req.flash("info", message);
-    res.redirect(`/contacts/${id}`);
-    return;
-  } catch (err) {
-    next(err);
-  }
-};
-
 module.exports = {
   index: async (req, res, next) => {
     const search = req.query.search || null;
@@ -170,7 +141,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const contact = await handleContact(id, req, res);
+      const contact = await contactsService.findOne(id);
+
+      if (!contact) {
+        req.flash("error", "Contact not found.");
+        res.redirect("/contacts");
+        return;
+      }
 
       return res.render("contacts/show", { title: "Show contact", contact });
     } catch (err) {
@@ -182,7 +159,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const contact = await handleContact(id, req, res);
+      const contact = await contactsService.findOne(id);
+
+      if (!contact) {
+        req.flash("error", "Contact not found.");
+        res.redirect("/contacts");
+        return;
+      }
 
       const contactIndustries = await contactIndustriesService.pluck([
         "id",
@@ -223,7 +206,13 @@ module.exports = {
     }
 
     try {
-      await handleContact(id, req, res);
+      const contact = await contactsService.findOne(id);
+
+      if (!contact) {
+        req.flash("error", "Contact not found.");
+        res.redirect("/contacts");
+        return;
+      }
 
       const contactObj = {
         id,
@@ -248,7 +237,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleContact(id, req, res);
+      const contact = await contactsService.findOne(id);
+
+      if (!contact) {
+        req.flash("error", "Contact not found.");
+        res.redirect("/contacts");
+        return;
+      }
 
       await contactsService.destroy(id);
 
@@ -260,22 +255,48 @@ module.exports = {
   },
 
   archive: async (req, res, next) => {
-    await updateContactStatus(
-      req,
-      res,
-      next,
-      "archive",
-      "Contact is archived.",
-    );
+    const id = req.params.id;
+
+    try {
+      const contact = await contactsService.findOne(id);
+
+      if (!contact) {
+        req.flash("error", "Contact not found.");
+        res.redirect("/contacts");
+        return;
+      }
+
+      const contactObj = { id, updatedBy: req.session.currentUser.id };
+      await contactsService.archive(contactObj);
+
+      req.flash("info", "Contact is archived.");
+      res.redirect(`/contacts/${id}`);
+      return;
+    } catch (err) {
+      next(err);
+    }
   },
 
   active: async (req, res, next) => {
-    await updateContactStatus(
-      req,
-      res,
-      next,
-      "active",
-      "Contact is activated.",
-    );
+    const id = req.params.id;
+
+    try {
+      const contact = await contactsService.findOne(id);
+
+      if (!contact) {
+        req.flash("error", "Contact not found.");
+        res.redirect("/contacts");
+        return;
+      }
+
+      const contactObj = { id, updatedBy: req.session.currentUser.id };
+      await contactsService.active(contactObj);
+
+      req.flash("info", "Contact is activated.");
+      res.redirect(`/contacts/${id}`);
+      return;
+    } catch (err) {
+      next(err);
+    }
   },
 };

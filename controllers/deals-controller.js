@@ -14,18 +14,6 @@ const columnsObj = {
   updatedAt: 'd."updatedAt"',
 };
 
-const handleDeal = async (id, req, res) => {
-  const deal = await dealsService.findOne(id);
-
-  if (!deal) {
-    req.flash("error", "Deal not found.");
-    res.redirect("/deals");
-    return;
-  }
-
-  return deal;
-};
-
 module.exports = {
   index: async (req, res, next) => {
     const search = req.query.search || null;
@@ -130,7 +118,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const deal = await handleDeal(id, req, res);
+      const deal = await dealsService.findOne(id);
+
+      if (!deal) {
+        req.flash("error", "Deal not found.");
+        res.redirect("/deals");
+        return;
+      }
 
       return res.render("deals/show", {
         title: "Show deal",
@@ -145,7 +139,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const deal = await handleDeal(id, req, res);
+      const deal = await dealsService.findOne(id);
+
+      if (!deal) {
+        req.flash("error", "Deal not found.");
+        res.redirect("/deals");
+        return;
+      }
 
       const dealSources = await dealSourcesService.pluck(["id", "name"]);
 
@@ -170,7 +170,13 @@ module.exports = {
     }
 
     try {
-      await handleDeal(id, req, res);
+      const deal = await dealsService.findOne(id);
+
+      if (!deal) {
+        req.flash("error", "Deal not found.");
+        res.redirect("/deals");
+        return;
+      }
 
       const dealObj = {
         id,
@@ -193,7 +199,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleDeal(id, req, res);
+      const deal = await dealsService.findOne(id);
+
+      if (!deal) {
+        req.flash("error", "Deal not found.");
+        res.redirect("/deals");
+        return;
+      }
 
       await dealsService.destroy(id);
 
@@ -208,7 +220,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleDeal(id, req, res);
+      const deal = await dealsService.findOne(id);
+
+      if (!deal) {
+        req.flash("error", "Deal not found.");
+        res.redirect("/deals");
+        return;
+      }
 
       const dealObj = { id, updatedBy: req.session.currentUser.id };
       await dealsService.archive(dealObj);
@@ -224,7 +242,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      await handleDeal(id, req, res);
+      const deal = await dealsService.findOne(id);
+
+      if (!deal) {
+        req.flash("error", "Deal not found.");
+        res.redirect("/deals");
+        return;
+      }
 
       const dealObj = { id, updatedBy: req.session.currentUser.id };
       await dealsService.active(dealObj);
