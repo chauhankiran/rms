@@ -20,7 +20,6 @@ block content
       table 
         thead 
           tr 
-            th 
             each header in headers
               //- id
               if header === "id" && labels.quote.id
@@ -63,10 +62,6 @@ block content
           if quotes.length > 0
             each quote in quotes 
               tr
-                if labels.quote.id
-                  td 
-                    input(type="checkbox", name="quoteId", value= quote.id)
-                
                 if labels.quote.id
                   td
                     a(href=`/quotes/${quote.id}`) #{quote.id}

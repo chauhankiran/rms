@@ -20,7 +20,6 @@ block content
       table 
         thead 
           tr 
-            th 
             each header in headers
               //- id
               if header === "id" && labels.ticket.id
@@ -67,10 +66,6 @@ block content
           if tickets.length > 0
             each ticket in tickets 
               tr
-                if labels.ticket.id
-                  td 
-                    input(type="checkbox", name="ticketId", value= ticket.id)
-                
                 if labels.ticket.id
                   td
                     a(href=`/tickets/${ticket.id}`) #{ticket.id}
