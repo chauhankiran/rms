@@ -66,7 +66,8 @@ block content
                     a(href=`/contacts/${contact.id}`) #{contact.id}
 
                 if labels.contact.firstName || labels.contact.lastName
-                  td #{contact.prefix + " " + contact.firstName + " " + contact.lastName}
+                  td 
+                    a(href=`/contacts/${contact.id}`) #{contact.firstName + " " + contact.lastName}
                     if (!contact.isActive)
                       span.archive-status (archived)
                 

@@ -71,7 +71,8 @@ block content
                     a(href=`/tickets/${ticket.id}`) #{ticket.id}
                 
                 if labels.ticket.name
-                  td #{ticket.name}
+                  td 
+                    a(href=`/tickets/${ticket.id}`) #{ticket.name}
                     if (!ticket.isActive)
                       span.archive-status (archived)
 

@@ -71,7 +71,8 @@ block content
                     a(href=`/tasks/${task.id}`) #{task.id}
                 
                 if labels.task.name
-                  td #{task.name}
+                  td 
+                    a(href=`/tasks/${task.id}`) #{task.name}
                     if (!task.isActive)
                       span.archive-status (archived)
                 

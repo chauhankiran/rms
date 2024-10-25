@@ -15,7 +15,7 @@ module.exports = {
 
     return await sql`
       SELECT
-      ${sql.unsafe(columns)}
+        ${sql.unsafe(columns)}
       FROM
         contacts c
       LEFT JOIN

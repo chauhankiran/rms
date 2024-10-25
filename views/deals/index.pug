@@ -71,7 +71,8 @@ block content
                     a(href=`/deals/${deal.id}`) #{deal.id}
                 
                 if labels.deal.name
-                  td #{deal.name}
+                  td 
+                    a(href=`/deals/${deal.id}`) #{deal.name}
                     if (!deal.isActive)
                       span.archive-status (archived)
                 

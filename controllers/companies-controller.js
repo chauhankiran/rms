@@ -129,6 +129,13 @@ module.exports = {
         orderBy: "id",
         orderDir: "DESC",
         companyId: company.id,
+        columns: [
+          "c.id",
+          'c."firstName"',
+          'c."lastName"',
+          'c."updatedAt"',
+          'updater.email AS "updatedByEmail"',
+        ],
       };
       const contacts = await contactsService.find(optionsObj);
 
