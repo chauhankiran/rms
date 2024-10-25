@@ -1,3 +1,4 @@
+const createError = require("http-errors");
 const contactsService = require("../services/contacts-service");
 const contactViewsService = require("../services/contact-views-service");
 const contactIndustriesService = require("../services/admin/contact-industries-service");
@@ -144,9 +145,7 @@ module.exports = {
       const contact = await contactsService.findOne(id);
 
       if (!contact) {
-        req.flash("error", "Contact not found.");
-        res.redirect("/contacts");
-        return;
+        return next(createError(404));
       }
 
       return res.render("contacts/show", { title: "Show contact", contact });
@@ -162,9 +161,7 @@ module.exports = {
       const contact = await contactsService.findOne(id);
 
       if (!contact) {
-        req.flash("error", "Contact not found.");
-        res.redirect("/contacts");
-        return;
+        return next(createError(404));
       }
 
       const contactIndustries = await contactIndustriesService.pluck([
@@ -209,9 +206,7 @@ module.exports = {
       const contact = await contactsService.findOne(id);
 
       if (!contact) {
-        req.flash("error", "Contact not found.");
-        res.redirect("/contacts");
-        return;
+        return next(createError(404));
       }
 
       const contactObj = {
@@ -240,9 +235,7 @@ module.exports = {
       const contact = await contactsService.findOne(id);
 
       if (!contact) {
-        req.flash("error", "Contact not found.");
-        res.redirect("/contacts");
-        return;
+        return next(createError(404));
       }
 
       await contactsService.destroy(id);
@@ -261,9 +254,7 @@ module.exports = {
       const contact = await contactsService.findOne(id);
 
       if (!contact) {
-        req.flash("error", "Contact not found.");
-        res.redirect("/contacts");
-        return;
+        return next(createError(404));
       }
 
       const contactObj = { id, updatedBy: req.session.currentUser.id };
@@ -284,9 +275,7 @@ module.exports = {
       const contact = await contactsService.findOne(id);
 
       if (!contact) {
-        req.flash("error", "Contact not found.");
-        res.redirect("/contacts");
-        return;
+        return next(createError(404));
       }
 
       const contactObj = { id, updatedBy: req.session.currentUser.id };

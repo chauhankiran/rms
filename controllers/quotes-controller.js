@@ -1,3 +1,4 @@
+const createError = require("http-errors");
 const quotesService = require("../services/quotes-service");
 const quoteViewsService = require("../services/quote-views-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
@@ -111,9 +112,7 @@ module.exports = {
       const quote = await quotesService.findOne(id);
 
       if (!quote) {
-        req.flash("error", "Quote not found.");
-        res.redirect("/quotes");
-        return;
+        return next(createError(404));
       }
 
       return res.render("quotes/show", {
@@ -132,9 +131,7 @@ module.exports = {
       const quote = await quotesService.findOne(id);
 
       if (!quote) {
-        req.flash("error", "Quote not found.");
-        res.redirect("/quotes");
-        return;
+        return next(createError(404));
       }
 
       return res.render("quotes/edit", {
@@ -160,9 +157,7 @@ module.exports = {
       const quote = await quotesService.findOne(id);
 
       if (!quote) {
-        req.flash("error", "Quote not found.");
-        res.redirect("/quotes");
-        return;
+        return next(createError(404));
       }
 
       const quoteObj = {
@@ -188,9 +183,7 @@ module.exports = {
       const quote = await quotesService.findOne(id);
 
       if (!quote) {
-        req.flash("error", "Quote not found.");
-        res.redirect("/quotes");
-        return;
+        return next(createError(404));
       }
 
       await quotesService.destroy(id);
@@ -209,9 +202,7 @@ module.exports = {
       const quote = await quotesService.findOne(id);
 
       if (!quote) {
-        req.flash("error", "Quote not found.");
-        res.redirect("/quotes");
-        return;
+        return next(createError(404));
       }
 
       const quoteObj = { id, updatedBy: req.session.currentUser.id };
@@ -231,9 +222,7 @@ module.exports = {
       const quote = await quotesService.findOne(id);
 
       if (!quote) {
-        req.flash("error", "Quote not found.");
-        res.redirect("/quotes");
-        return;
+        return next(createError(404));
       }
 
       const quoteObj = { id, updatedBy: req.session.currentUser.id };

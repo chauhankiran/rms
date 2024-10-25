@@ -1,3 +1,4 @@
+const createError = require("http-errors");
 const ticketsService = require("../services/tickets-service");
 const ticketViewsService = require("../services/ticket-views-service");
 const ticketTypesService = require("../services/admin/ticket-types-service");
@@ -120,9 +121,7 @@ module.exports = {
       const ticket = await ticketsService.findOne(id);
 
       if (!ticket) {
-        req.flash("error", "Ticket not found.");
-        res.redirect("/tickets");
-        return;
+        return next(createError(404));
       }
 
       return res.render("tickets/show", {
@@ -141,9 +140,7 @@ module.exports = {
       const ticket = await ticketsService.findOne(id);
 
       if (!ticket) {
-        req.flash("error", "Ticket not found.");
-        res.redirect("/tickets");
-        return;
+        return next(createError(404));
       }
 
       const ticketTypes = await ticketTypesService.pluck(["id", "name"]);
@@ -172,9 +169,7 @@ module.exports = {
       const ticket = await ticketsService.findOne(id);
 
       if (!ticket) {
-        req.flash("error", "Ticket not found.");
-        res.redirect("/tickets");
-        return;
+        return next(createError(404));
       }
 
       const ticketObj = {
@@ -200,9 +195,7 @@ module.exports = {
       const ticket = await ticketsService.findOne(id);
 
       if (!ticket) {
-        req.flash("error", "Ticket not found.");
-        res.redirect("/tickets");
-        return;
+        return next(createError(404));
       }
 
       await ticketsService.destroy(id);
@@ -221,9 +214,7 @@ module.exports = {
       const ticket = await ticketsService.findOne(id);
 
       if (!ticket) {
-        req.flash("error", "Ticket not found.");
-        res.redirect("/tickets");
-        return;
+        return next(createError(404));
       }
 
       const ticketObj = { id, updatedBy: req.session.currentUser.id };
@@ -243,9 +234,7 @@ module.exports = {
       const ticket = await ticketsService.findOne(id);
 
       if (!ticket) {
-        req.flash("error", "Ticket not found.");
-        res.redirect("/tickets");
-        return;
+        return next(createError(404));
       }
 
       const ticketObj = { id, updatedBy: req.session.currentUser.id };

@@ -1,3 +1,4 @@
+const createError = require("http-errors");
 const dealsService = require("../services/deals-service");
 const dealViewsService = require("../services/deal-views-service");
 const dealSourcesService = require("../services/admin/deal-sources-service");
@@ -121,9 +122,7 @@ module.exports = {
       const deal = await dealsService.findOne(id);
 
       if (!deal) {
-        req.flash("error", "Deal not found.");
-        res.redirect("/deals");
-        return;
+        return next(createError(404));
       }
 
       return res.render("deals/show", {
@@ -142,9 +141,7 @@ module.exports = {
       const deal = await dealsService.findOne(id);
 
       if (!deal) {
-        req.flash("error", "Deal not found.");
-        res.redirect("/deals");
-        return;
+        return next(createError(404));
       }
 
       const dealSources = await dealSourcesService.pluck(["id", "name"]);
@@ -173,9 +170,7 @@ module.exports = {
       const deal = await dealsService.findOne(id);
 
       if (!deal) {
-        req.flash("error", "Deal not found.");
-        res.redirect("/deals");
-        return;
+        return next(createError(404));
       }
 
       const dealObj = {
@@ -202,9 +197,7 @@ module.exports = {
       const deal = await dealsService.findOne(id);
 
       if (!deal) {
-        req.flash("error", "Deal not found.");
-        res.redirect("/deals");
-        return;
+        return next(createError(404));
       }
 
       await dealsService.destroy(id);
@@ -245,9 +238,7 @@ module.exports = {
       const deal = await dealsService.findOne(id);
 
       if (!deal) {
-        req.flash("error", "Deal not found.");
-        res.redirect("/deals");
-        return;
+        return next(createError(404));
       }
 
       const dealObj = { id, updatedBy: req.session.currentUser.id };
