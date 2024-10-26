@@ -1,4 +1,4 @@
-const createError = require("http-errors");
+const notFound = require("../errors/not-found");
 const tasksService = require("../services/tasks-service");
 const taskViewsService = require("../services/task-views-service");
 const taskTypesService = require("../services/admin/task-types-service");
@@ -131,7 +131,7 @@ module.exports = {
       const task = await tasksService.findOne(id);
 
       if (!task) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       return res.render("tasks/show", {
@@ -150,7 +150,7 @@ module.exports = {
       const task = await tasksService.findOne(id);
 
       if (!task) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const taskTypes = await taskTypesService.pluck(["id", "name"]);
@@ -170,7 +170,7 @@ module.exports = {
     const { name, description, taskTypeId } = req.body;
 
     if (!name) {
-      return next(createError(404));
+      return next(notFound());
     }
 
     try {
@@ -205,7 +205,7 @@ module.exports = {
       const task = await tasksService.findOne(id);
 
       if (!task) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       await tasksService.destroy(id);
@@ -224,7 +224,7 @@ module.exports = {
       const task = await tasksService.findOne(id);
 
       if (!task) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const taskObj = { id, updatedBy: req.session.currentUser.id };
@@ -244,7 +244,7 @@ module.exports = {
       const task = await tasksService.findOne(id);
 
       if (!task) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const taskObj = { id, updatedBy: req.session.currentUser.id };

@@ -1,4 +1,4 @@
-const createError = require("http-errors");
+const notFound = require("../errors/not-found");
 const dealsService = require("../services/deals-service");
 const dealViewsService = require("../services/deal-views-service");
 const dealSourcesService = require("../services/admin/deal-sources-service");
@@ -122,7 +122,7 @@ module.exports = {
       const deal = await dealsService.findOne(id);
 
       if (!deal) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       return res.render("deals/show", {
@@ -141,7 +141,7 @@ module.exports = {
       const deal = await dealsService.findOne(id);
 
       if (!deal) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const dealSources = await dealSourcesService.pluck(["id", "name"]);
@@ -170,7 +170,7 @@ module.exports = {
       const deal = await dealsService.findOne(id);
 
       if (!deal) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const dealObj = {
@@ -197,7 +197,7 @@ module.exports = {
       const deal = await dealsService.findOne(id);
 
       if (!deal) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       await dealsService.destroy(id);
@@ -238,7 +238,7 @@ module.exports = {
       const deal = await dealsService.findOne(id);
 
       if (!deal) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const dealObj = { id, updatedBy: req.session.currentUser.id };

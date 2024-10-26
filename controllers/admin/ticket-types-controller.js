@@ -1,3 +1,4 @@
+const notFound = require("../../errors/not-found");
 const ticketTypesService = require("../../services/admin/ticket-types-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 
@@ -78,9 +79,7 @@ module.exports = {
       const ticketType = await ticketTypesService.findOne(id);
 
       if (!ticketType) {
-        req.flash("error", "Ticket type not found.");
-        res.redirect("/admin/ticket-types");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/ticket-types/show", {
@@ -100,9 +99,7 @@ module.exports = {
       const ticketType = await ticketTypesService.findOne(id);
 
       if (!ticketType) {
-        req.flash("error", "Ticket type not found.");
-        res.redirect("/admin/ticket-types");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/ticket-types/edit", {
@@ -129,9 +126,7 @@ module.exports = {
       const ticketType = await ticketTypesService.findOne(id);
 
       if (!ticketType) {
-        req.flash("error", "Ticket type not found.");
-        res.redirect("/admin/ticket-types");
-        return;
+        return next(notFound());
       }
 
       const ticketTypeObj = {
@@ -156,9 +151,7 @@ module.exports = {
       const ticketType = await ticketTypesService.findOne(id);
 
       if (!ticketType) {
-        req.flash("error", "Ticket type not found.");
-        res.redirect("/admin/ticket-types");
-        return;
+        return next(notFound());
       }
 
       await ticketTypesService.destroy(id);
@@ -177,9 +170,7 @@ module.exports = {
       const ticketType = await ticketTypesService.findOne(id);
 
       if (!ticketType) {
-        req.flash("error", "Ticket type not found.");
-        res.redirect("/admin/ticket-types");
-        return;
+        return next(notFound());
       }
 
       const ticketTypeObj = { id, updatedBy: req.session.currentUser.id };
@@ -199,9 +190,7 @@ module.exports = {
       const ticketType = await ticketTypesService.findOne(id);
 
       if (!ticketType) {
-        req.flash("error", "Ticket type not found.");
-        res.redirect("/admin/ticket-types");
-        return;
+        return next(notFound());
       }
 
       const ticketTypeObj = { id, updatedBy: req.session.currentUser.id };

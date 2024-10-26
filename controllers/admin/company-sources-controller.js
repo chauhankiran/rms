@@ -1,3 +1,4 @@
+const notFound = require("../../errors/not-found");
 const companySourcesService = require("../../services/admin/company-sources-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 
@@ -73,9 +74,7 @@ module.exports = {
       const companySource = await companySourcesService.findOne(id);
 
       if (!companySource) {
-        req.flash("error", "Company source not found.");
-        res.redirect("/admin/company-sources");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/company-sources/show", {
@@ -93,6 +92,10 @@ module.exports = {
 
     try {
       const companySource = await companySourcesService.findOne(id);
+
+      if (!companySource) {
+        return next(notFound());
+      }
 
       res.render("admin/company-sources/edit", {
         title: "Edit company source",
@@ -115,19 +118,18 @@ module.exports = {
     }
 
     try {
+      const companySource = await companySourcesService.findOne(id);
+
+      if (!companySource) {
+        return next(notFound());
+      }
+
       const companySourceObj = {
         id,
         name,
         updatedBy: req.session.currentUser.id,
       };
-      const companySource =
-        await companySourcesService.update(companySourceObj);
-
-      if (!companySource) {
-        req.flash("error", "Problem while updating user.");
-        res.redirect(`/admin/company-sources/${id}`);
-        return;
-      }
+      await companySourcesService.update(companySourceObj);
 
       req.flash("info", "Company source is updated.");
       res.redirect(`/admin/company-sources/${id}`);
@@ -141,13 +143,13 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const companySource = await companySourcesService.destroy(id);
+      const companySource = await companySourcesService.findOne(id);
 
       if (!companySource) {
-        req.flash("error", "Problem while deleting company source.");
-        res.redirect(`/admin/company-sources/${id}`);
-        return;
+        return next(notFound());
       }
+
+      await companySourcesService.destroy(id);
 
       req.flash("info", "Company sources is deleted.");
       res.redirect("/admin/company-sources");
@@ -163,9 +165,7 @@ module.exports = {
       const companySource = await companySourcesService.findOne(id);
 
       if (!companySource) {
-        req.flash("error", "Company source not found.");
-        res.redirect("/admin/company-sources");
-        return;
+        return next(notFound());
       }
 
       const companySourceObj = { id, updatedBy: req.session.currentUser.id };
@@ -185,9 +185,7 @@ module.exports = {
       const companySource = await companySourcesService.findOne(id);
 
       if (!companySource) {
-        req.flash("error", "Company source not found.");
-        res.redirect("/admin/company-sources");
-        return;
+        return next(notFound());
       }
 
       const companySourceObj = { id, updatedBy: req.session.currentUser.id };

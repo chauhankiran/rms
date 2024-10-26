@@ -1,4 +1,4 @@
-const createError = require("http-errors");
+const notFound = require("../errors/not-found");
 const ticketsService = require("../services/tickets-service");
 const ticketViewsService = require("../services/ticket-views-service");
 const ticketTypesService = require("../services/admin/ticket-types-service");
@@ -121,7 +121,7 @@ module.exports = {
       const ticket = await ticketsService.findOne(id);
 
       if (!ticket) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       return res.render("tickets/show", {
@@ -140,7 +140,7 @@ module.exports = {
       const ticket = await ticketsService.findOne(id);
 
       if (!ticket) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const ticketTypes = await ticketTypesService.pluck(["id", "name"]);
@@ -169,7 +169,7 @@ module.exports = {
       const ticket = await ticketsService.findOne(id);
 
       if (!ticket) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const ticketObj = {
@@ -195,7 +195,7 @@ module.exports = {
       const ticket = await ticketsService.findOne(id);
 
       if (!ticket) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       await ticketsService.destroy(id);
@@ -214,7 +214,7 @@ module.exports = {
       const ticket = await ticketsService.findOne(id);
 
       if (!ticket) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const ticketObj = { id, updatedBy: req.session.currentUser.id };
@@ -234,7 +234,7 @@ module.exports = {
       const ticket = await ticketsService.findOne(id);
 
       if (!ticket) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const ticketObj = { id, updatedBy: req.session.currentUser.id };

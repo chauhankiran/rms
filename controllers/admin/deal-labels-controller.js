@@ -1,3 +1,4 @@
+const notFound = require("../../errors/not-found");
 const dealLabelsService = require("../../services/admin/deal-labels-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 
@@ -48,9 +49,7 @@ module.exports = {
       const dealLabel = await dealLabelsService.findOne(id);
 
       if (!dealLabel) {
-        req.flash("error", "Deal label not found.");
-        res.redirect("/admin/labels/deals");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/labels/deals/show", {
@@ -70,9 +69,7 @@ module.exports = {
       const dealLabel = await dealLabelsService.findOne(id);
 
       if (!dealLabel) {
-        req.flash("error", "Deal label not found.");
-        res.redirect("/admin/labels/deals");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/labels/deals/edit", {
@@ -99,9 +96,7 @@ module.exports = {
       const dealLabel = await dealLabelsService.findOne(id);
 
       if (!dealLabel) {
-        req.flash("error", "Deal label not found.");
-        res.redirect("/admin/labels/deals");
-        return;
+        return next(notFound());
       }
 
       const dealLabelObj = {
@@ -126,9 +121,7 @@ module.exports = {
       const dealLabel = await dealLabelsService.findOne(id);
 
       if (!dealLabel) {
-        req.flash("error", "Deal label not found.");
-        res.redirect("/admin/labels/deals");
-        return;
+        return next(notFound());
       }
 
       const dealLabelObj = { id, updatedBy: req.session.currentUser.id };
@@ -148,9 +141,7 @@ module.exports = {
       const dealLabel = await dealLabelsService.findOne(id);
 
       if (!dealLabel) {
-        req.flash("error", "Deal label not found.");
-        res.redirect("/admin/labels/deals");
-        return;
+        return next(notFound());
       }
 
       const dealLabelObj = { id, updatedBy: req.session.currentUser.id };

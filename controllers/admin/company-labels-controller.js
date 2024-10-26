@@ -1,3 +1,4 @@
+const notFound = require("../../errors/not-found");
 const companyLabelsService = require("../../services/admin/company-labels-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 
@@ -48,9 +49,7 @@ module.exports = {
       const companyLabel = await companyLabelsService.findOne(id);
 
       if (!companyLabel) {
-        req.flash("error", "Company label not found.");
-        res.redirect("/admin/labels/companies");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/labels/companies/show", {
@@ -70,9 +69,7 @@ module.exports = {
       const companyLabel = await companyLabelsService.findOne(id);
 
       if (!companyLabel) {
-        req.flash("error", "Company label not found.");
-        res.redirect("/admin/labels/companies");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/labels/companies/edit", {
@@ -99,9 +96,7 @@ module.exports = {
       const companyLabel = await companyLabelsService.findOne(id);
 
       if (!companyLabel) {
-        req.flash("error", "Company label not found.");
-        res.redirect("/admin/labels/companies");
-        return;
+        return next(notFound());
       }
 
       const companyLabelObj = {
@@ -126,9 +121,7 @@ module.exports = {
       const companyLabel = await companyLabelsService.findOne(id);
 
       if (!companyLabel) {
-        req.flash("error", "Company label not found.");
-        res.redirect("/admin/labels/companies");
-        return;
+        return next(notFound());
       }
 
       const companyLabelObj = { id, updatedBy: req.session.currentUser.id };
@@ -148,9 +141,7 @@ module.exports = {
       const companyLabel = await companyLabelsService.findOne(id);
 
       if (!companyLabel) {
-        req.flash("error", "Company label not found.");
-        res.redirect("/admin/labels/companies");
-        return;
+        return next(notFound());
       }
 
       const companyLabelObj = { id, updatedBy: req.session.currentUser.id };

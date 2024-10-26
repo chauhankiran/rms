@@ -1,3 +1,4 @@
+const notFound = require("../../errors/not-found");
 const bcrypt = require("bcrypt");
 const usersService = require("../../services/admin/users-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
@@ -90,9 +91,7 @@ module.exports = {
       const user = await usersService.findOne(id);
 
       if (!user) {
-        req.flash("error", "User not found.");
-        res.redirect("/admin/users");
-        return;
+        return next(notFound());
       }
 
       return res.render("admin/users/show", { title: user.email, user });
@@ -108,9 +107,7 @@ module.exports = {
       const user = await usersService.findOne(id);
 
       if (!user) {
-        req.flash("error", "User not found.");
-        res.redirect("/admin/users");
-        return;
+        return next(notFound());
       }
 
       return res.render("admin/users/edit", { title: "Edit user", user });
@@ -139,9 +136,7 @@ module.exports = {
       const user = await usersService.findOne(id);
 
       if (!user) {
-        req.flash("error", "User not found.");
-        res.redirect("/admin/users");
-        return;
+        return next(notFound());
       }
 
       // Hashing
@@ -171,18 +166,10 @@ module.exports = {
       const user = await usersService.findOne(id);
 
       if (!user) {
-        req.flash("error", "User not found.");
-        res.redirect("/admin/users");
-        return;
+        return next(notFound());
       }
 
       await usersService.destroy(id);
-
-      if (!user) {
-        req.flash("error", "Problem while deleting user.");
-        res.redirect(`/admin/users/${id}`);
-        return;
-      }
 
       req.flash("info", "User is deleted.");
       res.redirect("/admin/users");
@@ -198,9 +185,7 @@ module.exports = {
       const user = await usersService.findOne(id);
 
       if (!user) {
-        req.flash("error", "User not found.");
-        res.redirect(`/admin/users`);
-        return;
+        return next(notFound());
       }
 
       const userObj = { id, newUserStatus: !user.isActive };

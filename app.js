@@ -82,6 +82,8 @@ app.use("/admin", checkAuth, adminRoutes);
 
 // 404 Error
 app.use((req, res, next) => {
+  // createError() call the default error handler
+  // to render the error.pug.
   next(createError(404));
 });
 

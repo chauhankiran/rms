@@ -1,3 +1,4 @@
+const notFound = require("../../errors/not-found");
 const contactLabelsService = require("../../services/admin/contact-labels-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 
@@ -28,7 +29,7 @@ module.exports = {
       });
 
       return res.render("admin/labels/contacts/index", {
-        title: "contact labels",
+        title: "Contact labels",
         contactLabels,
         paginationLinks,
         search,
@@ -48,9 +49,7 @@ module.exports = {
       const contactLabel = await contactLabelsService.findOne(id);
 
       if (!contactLabel) {
-        req.flash("error", "Contact label not found.");
-        res.redirect("/admin/labels/contacts");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/labels/contacts/show", {
@@ -70,9 +69,7 @@ module.exports = {
       const contactLabel = await contactLabelsService.findOne(id);
 
       if (!contactLabel) {
-        req.flash("error", "Contact label not found.");
-        res.redirect("/admin/labels/contacts");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/labels/contacts/edit", {
@@ -99,9 +96,7 @@ module.exports = {
       const contactLabel = await contactLabelsService.findOne(id);
 
       if (!contactLabel) {
-        req.flash("error", "Contact label not found.");
-        res.redirect("/admin/labels/contacts");
-        return;
+        return next(notFound());
       }
 
       const contactLabelObj = {
@@ -126,9 +121,7 @@ module.exports = {
       const contactLabel = await contactLabelsService.findOne(id);
 
       if (!contactLabel) {
-        req.flash("error", "Contact label not found.");
-        res.redirect("/admin/labels/contacts");
-        return;
+        return next(notFound());
       }
 
       const contactLabelObj = { id, updatedBy: req.session.currentUser.id };
@@ -148,9 +141,7 @@ module.exports = {
       const contactLabel = await contactLabelsService.findOne(id);
 
       if (!contactLabel) {
-        req.flash("error", "Contact label not found.");
-        res.redirect("/admin/labels/contacts");
-        return;
+        return next(notFound());
       }
 
       const contactLabelObj = { id, updatedBy: req.session.currentUser.id };

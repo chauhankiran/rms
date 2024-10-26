@@ -1,3 +1,4 @@
+const notFound = require("../../errors/not-found");
 const taskLabelsService = require("../../services/admin/task-labels-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 
@@ -48,9 +49,7 @@ module.exports = {
       const taskLabel = await taskLabelsService.findOne(id);
 
       if (!taskLabel) {
-        req.flash("error", "Task label not found.");
-        res.redirect("/admin/labels/tasks");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/labels/tasks/show", {
@@ -70,9 +69,7 @@ module.exports = {
       const taskLabel = await taskLabelsService.findOne(id);
 
       if (!taskLabel) {
-        req.flash("error", "Task label not found.");
-        res.redirect("/admin/labels/tasks");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/labels/tasks/edit", {
@@ -99,9 +96,7 @@ module.exports = {
       const taskLabel = await taskLabelsService.findOne(id);
 
       if (!taskLabel) {
-        req.flash("error", "Task label not found.");
-        res.redirect("/admin/labels/tasks");
-        return;
+        return next(notFound());
       }
 
       const taskLabelObj = {
@@ -126,9 +121,7 @@ module.exports = {
       const taskLabel = await taskLabelsService.findOne(id);
 
       if (!taskLabel) {
-        req.flash("error", "Task label not found.");
-        res.redirect("/admin/labels/tasks");
-        return;
+        return next(notFound());
       }
 
       const taskLabelObj = { id, updatedBy: req.session.currentUser.id };
@@ -148,9 +141,7 @@ module.exports = {
       const taskLabel = await taskLabelsService.findOne(id);
 
       if (!taskLabel) {
-        req.flash("error", "Task label not found.");
-        res.redirect("/admin/labels/tasks");
-        return;
+        return next(notFound());
       }
 
       const taskLabelObj = { id, updatedBy: req.session.currentUser.id };

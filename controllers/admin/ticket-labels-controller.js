@@ -1,3 +1,4 @@
+const notFound = require("../../errors/not-found");
 const ticketLabelsService = require("../../services/admin/ticket-labels-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 
@@ -48,9 +49,7 @@ module.exports = {
       const ticketLabel = await ticketLabelsService.findOne(id);
 
       if (!ticketLabel) {
-        req.flash("error", "Ticket label not found.");
-        res.redirect("/admin/labels/tickets");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/labels/tickets/show", {
@@ -70,9 +69,7 @@ module.exports = {
       const ticketLabel = await ticketLabelsService.findOne(id);
 
       if (!ticketLabel) {
-        req.flash("error", "Ticket label not found.");
-        res.redirect("/admin/labels/tickets");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/labels/tickets/edit", {
@@ -99,9 +96,7 @@ module.exports = {
       const ticketLabel = await ticketLabelsService.findOne(id);
 
       if (!ticketLabel) {
-        req.flash("error", "Ticket label not found.");
-        res.redirect("/admin/labels/tickets");
-        return;
+        return next(notFound());
       }
 
       const ticketLabelObj = {
@@ -126,9 +121,7 @@ module.exports = {
       const ticketLabel = await ticketLabelsService.findOne(id);
 
       if (!ticketLabel) {
-        req.flash("error", "Ticket label not found.");
-        res.redirect("/admin/labels/tickets");
-        return;
+        return next(notFound());
       }
 
       const ticketLabelObj = { id, updatedBy: req.session.currentUser.id };
@@ -148,9 +141,7 @@ module.exports = {
       const ticketLabel = await ticketLabelsService.findOne(id);
 
       if (!ticketLabel) {
-        req.flash("error", "Ticket label not found.");
-        res.redirect("/admin/labels/tickets");
-        return;
+        return next(notFound());
       }
 
       const ticketLabelObj = { id, updatedBy: req.session.currentUser.id };

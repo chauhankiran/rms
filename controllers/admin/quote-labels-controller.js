@@ -1,3 +1,4 @@
+const notFound = require("../../errors/not-found");
 const quoteLabelsService = require("../../services/admin/quote-labels-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 
@@ -48,9 +49,7 @@ module.exports = {
       const quoteLabel = await quoteLabelsService.findOne(id);
 
       if (!quoteLabel) {
-        req.flash("error", "Quote label not found.");
-        res.redirect("/admin/labels/quotes");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/labels/quotes/show", {
@@ -70,9 +69,7 @@ module.exports = {
       const quoteLabel = await quoteLabelsService.findOne(id);
 
       if (!quoteLabel) {
-        req.flash("error", "Quote label not found.");
-        res.redirect("/admin/labels/quotes");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/labels/quotes/edit", {
@@ -99,9 +96,7 @@ module.exports = {
       const quoteLabel = await quoteLabelsService.findOne(id);
 
       if (!quoteLabel) {
-        req.flash("error", "Quote label not found.");
-        res.redirect("/admin/labels/quotes");
-        return;
+        return next(notFound());
       }
 
       const quoteLabelObj = {
@@ -126,9 +121,7 @@ module.exports = {
       const quoteLabel = await quoteLabelsService.findOne(id);
 
       if (!quoteLabel) {
-        req.flash("error", "Quote label not found.");
-        res.redirect("/admin/labels/quotes");
-        return;
+        return next(notFound());
       }
 
       const quoteLabelObj = { id, updatedBy: req.session.currentUser.id };
@@ -148,9 +141,7 @@ module.exports = {
       const quoteLabel = await quoteLabelsService.findOne(id);
 
       if (!quoteLabel) {
-        req.flash("error", "Quote label not found.");
-        res.redirect("/admin/labels/quotes");
-        return;
+        return next(notFound());
       }
 
       const quoteLabelObj = { id, updatedBy: req.session.currentUser.id };

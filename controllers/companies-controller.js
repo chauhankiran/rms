@@ -1,4 +1,4 @@
-const createError = require("http-errors");
+const notFound = require("../errors/not-found");
 const companiesService = require("../services/companies-service");
 const contactsService = require("../services/contacts-service");
 const companyViewsService = require("../services/company-views-service");
@@ -119,7 +119,7 @@ module.exports = {
       const company = await companiesService.findOne(id);
 
       if (!company) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const optionsObj = {
@@ -155,7 +155,7 @@ module.exports = {
       const company = await companiesService.findOne(id);
 
       if (!company) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const companySources = await companySourcesService.pluck(["id", "name"]);
@@ -184,7 +184,7 @@ module.exports = {
       const company = await companiesService.findOne(id);
 
       if (!company) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const companyObj = {
@@ -211,7 +211,7 @@ module.exports = {
       const company = await companiesService.findOne(id);
 
       if (!company) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       await companiesService.destroy(id);
@@ -230,7 +230,7 @@ module.exports = {
       const company = await companiesService.findOne(id);
 
       if (!company) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const companyObj = { id, updatedBy: req.session.currentUser.id };
@@ -250,7 +250,7 @@ module.exports = {
       const company = await companiesService.findOne(id);
 
       if (!company) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const companyObj = { id, updatedBy: req.session.currentUser.id };

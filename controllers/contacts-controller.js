@@ -1,4 +1,4 @@
-const createError = require("http-errors");
+const notFound = require("../errors/not-found");
 const contactsService = require("../services/contacts-service");
 const contactViewsService = require("../services/contact-views-service");
 const contactIndustriesService = require("../services/admin/contact-industries-service");
@@ -145,7 +145,7 @@ module.exports = {
       const contact = await contactsService.findOne(id);
 
       if (!contact) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       return res.render("contacts/show", { title: "Show contact", contact });
@@ -161,7 +161,7 @@ module.exports = {
       const contact = await contactsService.findOne(id);
 
       if (!contact) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const contactIndustries = await contactIndustriesService.pluck([
@@ -206,7 +206,7 @@ module.exports = {
       const contact = await contactsService.findOne(id);
 
       if (!contact) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const contactObj = {
@@ -235,7 +235,7 @@ module.exports = {
       const contact = await contactsService.findOne(id);
 
       if (!contact) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       await contactsService.destroy(id);
@@ -254,7 +254,7 @@ module.exports = {
       const contact = await contactsService.findOne(id);
 
       if (!contact) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const contactObj = { id, updatedBy: req.session.currentUser.id };
@@ -275,7 +275,7 @@ module.exports = {
       const contact = await contactsService.findOne(id);
 
       if (!contact) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const contactObj = { id, updatedBy: req.session.currentUser.id };

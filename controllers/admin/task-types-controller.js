@@ -1,3 +1,4 @@
+const notFound = require("../../errors/not-found");
 const taskTypesService = require("../../services/admin/task-types-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 
@@ -78,9 +79,7 @@ module.exports = {
       const taskType = await taskTypesService.findOne(id);
 
       if (!taskType) {
-        req.flash("error", "Task type not found.");
-        res.redirect("/admin/task-types");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/task-types/show", {
@@ -100,9 +99,7 @@ module.exports = {
       const taskType = await taskTypesService.findOne(id);
 
       if (!taskType) {
-        req.flash("error", "Task type not found.");
-        res.redirect("/admin/task-types");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/task-types/edit", {
@@ -129,9 +126,7 @@ module.exports = {
       const taskType = await taskTypesService.findOne(id);
 
       if (!taskType) {
-        req.flash("error", "Task type not found.");
-        res.redirect("/admin/task-types");
-        return;
+        return next(notFound());
       }
 
       const taskTypeObj = {
@@ -156,9 +151,7 @@ module.exports = {
       const taskType = await taskTypesService.findOne(id);
 
       if (!taskType) {
-        req.flash("error", "Task type not found.");
-        res.redirect("/admin/task-types");
-        return;
+        return next(notFound());
       }
 
       await taskTypesService.destroy(id);
@@ -177,9 +170,7 @@ module.exports = {
       const taskType = await taskTypesService.findOne(id);
 
       if (!taskType) {
-        req.flash("error", "Task type not found.");
-        res.redirect("/admin/task-types");
-        return;
+        return next(notFound());
       }
 
       const taskTypeObj = { id, updatedBy: req.session.currentUser.id };
@@ -199,9 +190,7 @@ module.exports = {
       const taskType = await taskTypesService.findOne(id);
 
       if (!taskType) {
-        req.flash("error", "Task type not found.");
-        res.redirect("/admin/task-types");
-        return;
+        return next(notFound());
       }
 
       const taskTypeObj = { id, updatedBy: req.session.currentUser.id };

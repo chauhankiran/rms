@@ -1,3 +1,4 @@
+const notFound = require("../../errors/not-found");
 const dealSourcesService = require("../../services/admin/deal-sources-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 
@@ -73,9 +74,7 @@ module.exports = {
       const dealSource = await dealSourcesService.findOne(id);
 
       if (!dealSource) {
-        req.flash("error", "Deal source not found.");
-        res.redirect("/admin/deal-sources");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/deal-sources/show", {
@@ -93,6 +92,10 @@ module.exports = {
 
     try {
       const dealSource = await dealSourcesService.findOne(id);
+
+      if (!dealSource) {
+        return next(notFound());
+      }
 
       res.render("admin/deal-sources/edit", {
         title: "Edit deal source",
@@ -115,18 +118,18 @@ module.exports = {
     }
 
     try {
+      const dealSource = await dealSourcesService.findOne(id);
+
+      if (!dealSource) {
+        return next(notFound());
+      }
+
       const dealSourceObj = {
         id,
         name,
         updatedBy: req.session.currentUser.id,
       };
-      const dealSource = await dealSourcesService.update(dealSourceObj);
-
-      if (!dealSource) {
-        req.flash("error", "Problem while updating user.");
-        res.redirect(`/admin/deal-sources/${id}`);
-        return;
-      }
+      dealSourcesService.update(dealSourceObj);
 
       req.flash("info", "Deal source is updated.");
       res.redirect(`/admin/deal-sources/${id}`);
@@ -140,12 +143,10 @@ module.exports = {
     const id = req.params.id;
 
     try {
-      const dealSource = await dealSourcesService.destroy(id);
+      const dealSource = await dealSourcesService.findOne(id);
 
       if (!dealSource) {
-        req.flash("error", "Problem while deleting deal source.");
-        res.redirect(`/admin/deal-sources/${id}`);
-        return;
+        return next(notFound());
       }
 
       req.flash("info", "Deal source is deleted.");
@@ -162,9 +163,7 @@ module.exports = {
       const dealSource = await dealSourcesService.findOne(id);
 
       if (!dealSource) {
-        req.flash("error", "Deal source not found.");
-        res.redirect("/admin/deal-sources");
-        return;
+        return next(notFound());
       }
 
       const dealSourceObj = { id, updatedBy: req.session.currentUser.id };
@@ -184,9 +183,7 @@ module.exports = {
       const dealSource = await dealSourcesService.findOne(id);
 
       if (!dealSource) {
-        req.flash("error", "Deal source not found.");
-        res.redirect("/admin/deal-sources");
-        return;
+        return next(notFound());
       }
 
       const dealSourceObj = { id, updatedBy: req.session.currentUser.id };

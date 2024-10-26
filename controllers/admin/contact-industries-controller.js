@@ -1,3 +1,4 @@
+const notFound = require("../../errors/not-found");
 const contactIndustriesService = require("../../services/admin/contact-industries-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 
@@ -78,9 +79,7 @@ module.exports = {
       const contactIndustry = await contactIndustriesService.findOne(id);
 
       if (!contactIndustry) {
-        req.flash("error", "Contact industry not found.");
-        res.redirect("/admin/contact-industries");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/contact-industries/show", {
@@ -100,9 +99,7 @@ module.exports = {
       const contactIndustry = await contactIndustriesService.findOne(id);
 
       if (!contactIndustry) {
-        req.flash("error", "Contact industry not found.");
-        res.redirect("/admin/contact-industries");
-        return;
+        return next(notFound());
       }
 
       res.render("admin/contact-industries/edit", {
@@ -129,9 +126,7 @@ module.exports = {
       const contactIndustry = await contactIndustriesService.findOne(id);
 
       if (!contactIndustry) {
-        req.flash("error", "Contact industry not found.");
-        res.redirect("/admin/contact-industries");
-        return;
+        return next(notFound());
       }
 
       const contactIndustryObj = {
@@ -156,9 +151,7 @@ module.exports = {
       const contactIndustry = await contactIndustriesService.findOne(id);
 
       if (!contactIndustry) {
-        req.flash("error", "Contact industry not found.");
-        res.redirect("/admin/contact-industries");
-        return;
+        return next(notFound());
       }
 
       await contactIndustriesService.destroy(id);
@@ -177,9 +170,7 @@ module.exports = {
       const contactIndustry = await contactIndustriesService.findOne(id);
 
       if (!contactIndustry) {
-        req.flash("error", "Contact industry not found.");
-        res.redirect("/admin/contact-industries");
-        return;
+        return next(notFound());
       }
 
       const contactIndustryObj = { id, updatedBy: req.session.currentUser.id };
@@ -199,9 +190,7 @@ module.exports = {
       const contactIndustry = await contactIndustriesService.findOne(id);
 
       if (!contactIndustry) {
-        req.flash("error", "Contact industry not found.");
-        res.redirect("/admin/contact-industries");
-        return;
+        return next(notFound());
       }
 
       const contactIndustryObj = { id, updatedBy: req.session.currentUser.id };

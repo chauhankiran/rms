@@ -1,4 +1,4 @@
-const createError = require("http-errors");
+const notFound = require("../errors/not-found");
 const quotesService = require("../services/quotes-service");
 const quoteViewsService = require("../services/quote-views-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
@@ -112,7 +112,7 @@ module.exports = {
       const quote = await quotesService.findOne(id);
 
       if (!quote) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       return res.render("quotes/show", {
@@ -131,7 +131,7 @@ module.exports = {
       const quote = await quotesService.findOne(id);
 
       if (!quote) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       return res.render("quotes/edit", {
@@ -157,7 +157,7 @@ module.exports = {
       const quote = await quotesService.findOne(id);
 
       if (!quote) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const quoteObj = {
@@ -183,7 +183,7 @@ module.exports = {
       const quote = await quotesService.findOne(id);
 
       if (!quote) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       await quotesService.destroy(id);
@@ -202,7 +202,7 @@ module.exports = {
       const quote = await quotesService.findOne(id);
 
       if (!quote) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const quoteObj = { id, updatedBy: req.session.currentUser.id };
@@ -222,7 +222,7 @@ module.exports = {
       const quote = await quotesService.findOne(id);
 
       if (!quote) {
-        return next(createError(404));
+        return next(notFound());
       }
 
       const quoteObj = { id, updatedBy: req.session.currentUser.id };
