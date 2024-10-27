@@ -52,11 +52,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/labels/quotes/show", {
+      return res.render("admin/labels/quotes/show", {
         title: "Show Quote label",
         quoteLabel,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -72,11 +71,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/labels/quotes/edit", {
+      return res.render("admin/labels/quotes/edit", {
         title: "Edit Quote label",
         quoteLabel,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -88,8 +86,7 @@ module.exports = {
 
     if (!displayName) {
       req.flash("error", "Display name is required.");
-      res.redirect(`/admin/labels/quotes/${id}/edit`);
-      return;
+      return res.redirect(`/admin/labels/quotes/${id}/edit`);
     }
 
     try {
@@ -107,8 +104,7 @@ module.exports = {
       await quoteLabelsService.update(quoteLabelObj);
 
       req.flash("info", "Quote label is updated.");
-      res.redirect(`/admin/labels/quotes/${id}`);
-      return;
+      return res.redirect(`/admin/labels/quotes/${id}`);
     } catch (err) {
       next(err);
     }
@@ -128,7 +124,7 @@ module.exports = {
       await quoteLabelsService.archive(quoteLabelObj);
 
       req.flash("info", "Quote label is archived.");
-      res.redirect(`/admin/labels/quotes/${id}`);
+      return res.redirect(`/admin/labels/quotes/${id}`);
     } catch (err) {
       next(err);
     }
@@ -148,7 +144,7 @@ module.exports = {
       await quoteLabelsService.active(quoteLabelObj);
 
       req.flash("info", "Quote label is activated.");
-      res.redirect(`/admin/labels/quotes/${id}`);
+      return res.redirect(`/admin/labels/quotes/${id}`);
     } catch (err) {
       next(err);
     }

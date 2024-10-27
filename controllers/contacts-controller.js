@@ -131,8 +131,7 @@ module.exports = {
       await contactsService.create(contactObj);
 
       req.flash("info", "Contact is created.");
-      res.redirect("/contacts");
-      return;
+      return res.redirect("/contacts");
     } catch (err) {
       next(err);
     }
@@ -192,14 +191,12 @@ module.exports = {
 
     if (!firstName) {
       req.flash("error", "First name is required.");
-      res.redirect(`/contacts/${id}/edit`);
-      return;
+      return res.redirect(`/contacts/${id}/edit`);
     }
 
     if (!lastName) {
       req.flash("error", "Last name is required.");
-      res.redirect(`/contacts/${id}/edit`);
-      return;
+      return res.redirect(`/contacts/${id}/edit`);
     }
 
     try {
@@ -222,7 +219,7 @@ module.exports = {
       await contactsService.update(contactObj);
 
       req.flash("info", "Contact is updated.");
-      res.redirect(`/contacts/${id}`);
+      return res.redirect(`/contacts/${id}`);
     } catch (err) {
       next(err);
     }
@@ -241,7 +238,7 @@ module.exports = {
       await contactsService.destroy(id);
 
       req.flash("info", "Contact is deleted.");
-      res.redirect("/contacts");
+      return res.redirect("/contacts");
     } catch (err) {
       next(err);
     }
@@ -261,8 +258,7 @@ module.exports = {
       await contactsService.archive(contactObj);
 
       req.flash("info", "Contact is archived.");
-      res.redirect(`/contacts/${id}`);
-      return;
+      return res.redirect(`/contacts/${id}`);
     } catch (err) {
       next(err);
     }
@@ -282,8 +278,7 @@ module.exports = {
       await contactsService.active(contactObj);
 
       req.flash("info", "Contact is activated.");
-      res.redirect(`/contacts/${id}`);
-      return;
+      return res.redirect(`/contacts/${id}`);
     } catch (err) {
       next(err);
     }

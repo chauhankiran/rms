@@ -52,11 +52,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/labels/tickets/show", {
+      return res.render("admin/labels/tickets/show", {
         title: "Show Ticket label",
         ticketLabel,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -72,11 +71,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/labels/tickets/edit", {
+      return res.render("admin/labels/tickets/edit", {
         title: "Edit Ticket label",
         ticketLabel,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -88,8 +86,7 @@ module.exports = {
 
     if (!displayName) {
       req.flash("error", "Display name is required.");
-      res.redirect(`/admin/labels/tickets/${id}/edit`);
-      return;
+      return res.redirect(`/admin/labels/tickets/${id}/edit`);
     }
 
     try {
@@ -107,8 +104,7 @@ module.exports = {
       await ticketLabelsService.update(ticketLabelObj);
 
       req.flash("info", "Ticket label is updated.");
-      res.redirect(`/admin/labels/tickets/${id}`);
-      return;
+      return res.redirect(`/admin/labels/tickets/${id}`);
     } catch (err) {
       next(err);
     }
@@ -128,7 +124,7 @@ module.exports = {
       await ticketLabelsService.archive(ticketLabelObj);
 
       req.flash("info", "Ticket label is archived.");
-      res.redirect(`/admin/labels/tickets/${id}`);
+      return res.redirect(`/admin/labels/tickets/${id}`);
     } catch (err) {
       next(err);
     }
@@ -148,7 +144,7 @@ module.exports = {
       await ticketLabelsService.active(ticketLabelObj);
 
       req.flash("info", "Ticket label is activated.");
-      res.redirect(`/admin/labels/tickets/${id}`);
+      return res.redirect(`/admin/labels/tickets/${id}`);
     } catch (err) {
       next(err);
     }

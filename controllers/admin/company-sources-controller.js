@@ -43,7 +43,9 @@ module.exports = {
   },
 
   new: async (req, res, next) => {
-    res.render("admin/company-sources/new", { title: "New company sources" });
+    return res.render("admin/company-sources/new", {
+      title: "New company sources",
+    });
   },
 
   create: async (req, res, next) => {
@@ -51,8 +53,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect("/admin/company-sources/new");
-      return;
+      return res.redirect("/admin/company-sources/new");
     }
 
     try {
@@ -60,8 +61,7 @@ module.exports = {
       await companySourcesService.create(companySourceObj);
 
       req.flash("info", "Company source is created.");
-      res.redirect("/admin/company-sources");
-      return;
+      return res.redirect("/admin/company-sources");
     } catch (err) {
       next(err);
     }
@@ -77,11 +77,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/company-sources/show", {
+      return res.render("admin/company-sources/show", {
         title: "Show company source",
         companySource,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -97,11 +96,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/company-sources/edit", {
+      return res.render("admin/company-sources/edit", {
         title: "Edit company source",
         companySource,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -113,8 +111,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect(`/admin/company-sources/${id}/edit`);
-      return;
+      return res.redirect(`/admin/company-sources/${id}/edit`);
     }
 
     try {
@@ -132,8 +129,7 @@ module.exports = {
       await companySourcesService.update(companySourceObj);
 
       req.flash("info", "Company source is updated.");
-      res.redirect(`/admin/company-sources/${id}`);
-      return;
+      return res.redirect(`/admin/company-sources/${id}`);
     } catch (err) {
       next(err);
     }
@@ -152,7 +148,7 @@ module.exports = {
       await companySourcesService.destroy(id);
 
       req.flash("info", "Company sources is deleted.");
-      res.redirect("/admin/company-sources");
+      return res.redirect("/admin/company-sources");
     } catch (err) {
       next(err);
     }
@@ -172,7 +168,7 @@ module.exports = {
       await companySourcesService.archive(companySourceObj);
 
       req.flash("info", "Company source is archived.");
-      res.redirect(`/admin/company-sources/${id}`);
+      return res.redirect(`/admin/company-sources/${id}`);
     } catch (err) {
       next(err);
     }
@@ -192,7 +188,7 @@ module.exports = {
       await companySourcesService.active(companySourceObj);
 
       req.flash("info", "Company source is activated.");
-      res.redirect(`/admin/company-sources/${id}`);
+      return res.redirect(`/admin/company-sources/${id}`);
     } catch (err) {
       next(err);
     }

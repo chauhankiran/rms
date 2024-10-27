@@ -52,14 +52,12 @@ module.exports = {
 
     if (!email) {
       req.flash("error", "Email is required.");
-      res.redirect("/admin/users/new");
-      return;
+      return res.redirect("/admin/users/new");
     }
 
     if (!password) {
       req.flash("error", "Password is required.");
-      res.redirect("/admin/users/new");
-      return;
+      return res.redirect("/admin/users/new");
     }
 
     try {
@@ -68,17 +66,10 @@ module.exports = {
         password,
         createdBy: req.session.currentUser.id,
       };
-      const user = await usersService.create(userObj);
-
-      if (!user) {
-        req.flash("error", "Problem while creating an user.");
-        res.redirect("/admin/users/new");
-        return;
-      }
+      await usersService.create(userObj);
 
       req.flash("info", "User is created.");
-      res.redirect("/admin/users");
-      return;
+      return res.redirect("/admin/users");
     } catch (err) {
       next(err);
     }
@@ -122,14 +113,12 @@ module.exports = {
 
     if (!email) {
       req.flash("error", "Email is required.");
-      res.redirect(`/admin/users/${id}/edit`);
-      return;
+      return res.redirect(`/admin/users/${id}/edit`);
     }
 
     if (!password) {
       req.flash("error", "Password is required.");
-      res.redirect(`/admin/users/${id}/edit`);
-      return;
+      return res.redirect(`/admin/users/${id}/edit`);
     }
 
     try {
@@ -152,8 +141,7 @@ module.exports = {
       await usersService.update(userObj);
 
       req.flash("info", "User is updated.");
-      res.redirect(`/admin/users/${id}`);
-      return;
+      return res.redirect(`/admin/users/${id}`);
     } catch (err) {
       next(err);
     }
@@ -172,7 +160,7 @@ module.exports = {
       await usersService.destroy(id);
 
       req.flash("info", "User is deleted.");
-      res.redirect("/admin/users");
+      return res.redirect("/admin/users");
     } catch (err) {
       next(err);
     }
@@ -192,8 +180,7 @@ module.exports = {
       await usersService.archive(userObj);
 
       req.flash("info", "User status is updated.");
-      res.redirect(`/admin/users/${id}`);
-      return;
+      return res.redirect(`/admin/users/${id}`);
     } catch (err) {
       next(err);
     }
@@ -208,7 +195,7 @@ module.exports = {
       await usersService.massActive(userObj);
 
       req.flash("info", "Users are activated.");
-      res.redirect("/admin/users");
+      return res.redirect("/admin/users");
     } catch (err) {
       next(err);
     }
@@ -223,7 +210,7 @@ module.exports = {
       await usersService.massDeActive(userObj);
 
       req.flash("info", "Users are de-activated.");
-      res.redirect("/admin/users");
+      return res.redirect("/admin/users");
     } catch (err) {
       next(err);
     }
@@ -238,7 +225,7 @@ module.exports = {
       await usersService.massDelete(userObj);
 
       req.flash("info", "Users are deleted.");
-      res.redirect("/admin/users");
+      return res.redirect("/admin/users");
     } catch (err) {
       next(err);
     }

@@ -52,11 +52,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/labels/companies/show", {
+      return res.render("admin/labels/companies/show", {
         title: "Show company label",
         companyLabel,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -72,11 +71,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/labels/companies/edit", {
+      return res.render("admin/labels/companies/edit", {
         title: "Edit company label",
         companyLabel,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -88,8 +86,7 @@ module.exports = {
 
     if (!displayName) {
       req.flash("error", "Display name is required.");
-      res.redirect(`/admin/labels/companies/${id}/edit`);
-      return;
+      return res.redirect(`/admin/labels/companies/${id}/edit`);
     }
 
     try {
@@ -107,8 +104,7 @@ module.exports = {
       await companyLabelsService.update(companyLabelObj);
 
       req.flash("info", "Company label is updated.");
-      res.redirect(`/admin/labels/companies/${id}`);
-      return;
+      return res.redirect(`/admin/labels/companies/${id}`);
     } catch (err) {
       next(err);
     }
@@ -128,7 +124,7 @@ module.exports = {
       await companyLabelsService.archive(companyLabelObj);
 
       req.flash("info", "Company label is archived.");
-      res.redirect(`/admin/labels/companies/${id}`);
+      return res.redirect(`/admin/labels/companies/${id}`);
     } catch (err) {
       next(err);
     }
@@ -148,7 +144,7 @@ module.exports = {
       await companyLabelsService.active(companyLabelObj);
 
       req.flash("info", "Company label is activated.");
-      res.redirect(`/admin/labels/companies/${id}`);
+      return res.redirect(`/admin/labels/companies/${id}`);
     } catch (err) {
       next(err);
     }

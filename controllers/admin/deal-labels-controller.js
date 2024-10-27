@@ -52,11 +52,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/labels/deals/show", {
+      return res.render("admin/labels/deals/show", {
         title: "Show Deal label",
         dealLabel,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -72,11 +71,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/labels/deals/edit", {
+      return res.render("admin/labels/deals/edit", {
         title: "Edit Deal label",
         dealLabel,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -107,8 +105,7 @@ module.exports = {
       await dealLabelsService.update(dealLabelObj);
 
       req.flash("info", "Deal label is updated.");
-      res.redirect(`/admin/labels/deals/${id}`);
-      return;
+      return res.redirect(`/admin/labels/deals/${id}`);
     } catch (err) {
       next(err);
     }
@@ -128,7 +125,7 @@ module.exports = {
       await dealLabelsService.archive(dealLabelObj);
 
       req.flash("info", "Deal label is archived.");
-      res.redirect(`/admin/labels/deals/${id}`);
+      return res.redirect(`/admin/labels/deals/${id}`);
     } catch (err) {
       next(err);
     }
@@ -148,7 +145,7 @@ module.exports = {
       await dealLabelsService.active(dealLabelObj);
 
       req.flash("info", "Deal label is activated.");
-      res.redirect(`/admin/labels/deals/${id}`);
+      return res.redirect(`/admin/labels/deals/${id}`);
     } catch (err) {
       next(err);
     }

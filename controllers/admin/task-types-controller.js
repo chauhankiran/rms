@@ -43,7 +43,7 @@ module.exports = {
   },
 
   new: async (req, res, next) => {
-    res.render("admin/task-types/new", {
+    return res.render("admin/task-types/new", {
       title: "New task type",
     });
   },
@@ -53,8 +53,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect("/admin/task-types/new");
-      return;
+      return res.redirect("/admin/task-types/new");
     }
 
     try {
@@ -65,8 +64,7 @@ module.exports = {
       await taskTypesService.create(taskTypeObj);
 
       req.flash("info", "Task type is created.");
-      res.redirect("/admin/task-types");
-      return;
+      return res.redirect("/admin/task-types");
     } catch (err) {
       next(err);
     }
@@ -82,11 +80,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/task-types/show", {
+      return res.render("admin/task-types/show", {
         title: "Show task type",
         taskType,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -102,11 +99,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/task-types/edit", {
+      return res.render("admin/task-types/edit", {
         title: "Edit task type",
         taskType,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -118,8 +114,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect(`/admin/task-types/${id}/edit`);
-      return;
+      return res.redirect(`/admin/task-types/${id}/edit`);
     }
 
     try {
@@ -137,8 +132,7 @@ module.exports = {
       await taskTypesService.update(taskTypeObj);
 
       req.flash("info", "Task type is updated.");
-      res.redirect(`/admin/task-types/${id}`);
-      return;
+      return res.redirect(`/admin/task-types/${id}`);
     } catch (err) {
       next(err);
     }
@@ -157,7 +151,7 @@ module.exports = {
       await taskTypesService.destroy(id);
 
       req.flash("info", "Task type is deleted.");
-      res.redirect("/admin/task-types");
+      return res.redirect("/admin/task-types");
     } catch (err) {
       next(err);
     }
@@ -177,7 +171,7 @@ module.exports = {
       await taskTypesService.archive(taskTypeObj);
 
       req.flash("info", "Task type is archived.");
-      res.redirect(`/admin/task-types/${id}`);
+      return res.redirect(`/admin/task-types/${id}`);
     } catch (err) {
       next(err);
     }
@@ -197,7 +191,7 @@ module.exports = {
       await taskTypesService.active(taskTypeObj);
 
       req.flash("info", "Task type is activated.");
-      res.redirect(`/admin/task-types/${id}`);
+      return res.redirect(`/admin/task-types/${id}`);
     } catch (err) {
       next(err);
     }

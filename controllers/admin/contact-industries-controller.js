@@ -53,8 +53,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect("/admin/contact-industries/new");
-      return;
+      return res.redirect("/admin/contact-industries/new");
     }
 
     try {
@@ -65,8 +64,7 @@ module.exports = {
       await contactIndustriesService.create(contactIndustryObj);
 
       req.flash("info", "Contact industry is created.");
-      res.redirect("/admin/contact-industries");
-      return;
+      return res.redirect("/admin/contact-industries");
     } catch (err) {
       next(err);
     }
@@ -82,11 +80,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/contact-industries/show", {
+      return res.render("admin/contact-industries/show", {
         title: "Show contact industry",
         contactIndustry,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -102,11 +99,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/contact-industries/edit", {
+      return res.render("admin/contact-industries/edit", {
         title: "Edit contact industry",
         contactIndustry,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -118,8 +114,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect(`/admin/contact-industries/${id}/edit`);
-      return;
+      return res.redirect(`/admin/contact-industries/${id}/edit`);
     }
 
     try {
@@ -137,8 +132,7 @@ module.exports = {
       await contactIndustriesService.update(contactIndustryObj);
 
       req.flash("info", "Contact industry is updated.");
-      res.redirect(`/admin/contact-industries/${id}`);
-      return;
+      return res.redirect(`/admin/contact-industries/${id}`);
     } catch (err) {
       next(err);
     }
@@ -157,7 +151,7 @@ module.exports = {
       await contactIndustriesService.destroy(id);
 
       req.flash("info", "Contact industry is deleted.");
-      res.redirect("/admin/contact-industries");
+      return res.redirect("/admin/contact-industries");
     } catch (err) {
       next(err);
     }
@@ -177,7 +171,7 @@ module.exports = {
       await contactIndustriesService.archive(contactIndustryObj);
 
       req.flash("info", "Contact industry is archived.");
-      res.redirect(`/admin/contact-industries/${id}`);
+      return res.redirect(`/admin/contact-industries/${id}`);
     } catch (err) {
       next(err);
     }
@@ -197,7 +191,7 @@ module.exports = {
       await contactIndustriesService.active(contactIndustryObj);
 
       req.flash("info", "Contact industry is activated.");
-      res.redirect(`/admin/contact-industries/${id}`);
+      return res.redirect(`/admin/contact-industries/${id}`);
     } catch (err) {
       next(err);
     }

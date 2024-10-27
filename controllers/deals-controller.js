@@ -91,8 +91,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect(`/deals/new`);
-      return;
+      return res.redirect(`/deals/new`);
     }
 
     try {
@@ -108,8 +107,7 @@ module.exports = {
       await dealsService.create(dealObj);
 
       req.flash("info", "Deal is created.");
-      res.redirect("/deals");
-      return;
+      return res.redirect("/deals");
     } catch (err) {
       next(err);
     }
@@ -162,8 +160,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect(`/deals/${id}/edit`);
-      return;
+      return res.redirect(`/deals/${id}/edit`);
     }
 
     try {
@@ -184,7 +181,7 @@ module.exports = {
       await dealsService.update(dealObj);
 
       req.flash("info", "Deal is updated.");
-      res.redirect(`/deals/${id}`);
+      return res.redirect(`/deals/${id}`);
     } catch (err) {
       next(err);
     }
@@ -203,7 +200,7 @@ module.exports = {
       await dealsService.destroy(id);
 
       req.flash("info", "Deal is deleted.");
-      res.redirect("/deals");
+      return res.redirect("/deals");
     } catch (err) {
       next(err);
     }
@@ -217,15 +214,14 @@ module.exports = {
 
       if (!deal) {
         req.flash("error", "Deal not found.");
-        res.redirect("/deals");
-        return;
+        return res.redirect("/deals");
       }
 
       const dealObj = { id, updatedBy: req.session.currentUser.id };
       await dealsService.archive(dealObj);
 
       req.flash("info", "Deal is archived.");
-      res.redirect(`/deals/${id}`);
+      return res.redirect(`/deals/${id}`);
     } catch (err) {
       next(err);
     }
@@ -245,7 +241,7 @@ module.exports = {
       await dealsService.active(dealObj);
 
       req.flash("info", "Deal is activated.");
-      res.redirect(`/deals/${id}`);
+      return res.redirect(`/deals/${id}`);
     } catch (err) {
       next(err);
     }

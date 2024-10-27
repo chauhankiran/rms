@@ -53,8 +53,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect("/admin/ticket-types/new");
-      return;
+      return res.redirect("/admin/ticket-types/new");
     }
 
     try {
@@ -65,8 +64,7 @@ module.exports = {
       await ticketTypesService.create(ticketTypeObj);
 
       req.flash("info", "Ticket type is created.");
-      res.redirect("/admin/ticket-types");
-      return;
+      return res.redirect("/admin/ticket-types");
     } catch (err) {
       next(err);
     }
@@ -82,11 +80,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/ticket-types/show", {
+      return res.render("admin/ticket-types/show", {
         title: "Show ticket type",
         ticketType,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -102,11 +99,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/ticket-types/edit", {
+      return res.render("admin/ticket-types/edit", {
         title: "Edit ticket type",
         ticketType,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -118,8 +114,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect(`/admin/ticket-types/${id}/edit`);
-      return;
+      return res.redirect(`/admin/ticket-types/${id}/edit`);
     }
 
     try {
@@ -137,8 +132,7 @@ module.exports = {
       await ticketTypesService.update(ticketTypeObj);
 
       req.flash("info", "Ticket type is updated.");
-      res.redirect(`/admin/ticket-types/${id}`);
-      return;
+      return res.redirect(`/admin/ticket-types/${id}`);
     } catch (err) {
       next(err);
     }
@@ -157,7 +151,7 @@ module.exports = {
       await ticketTypesService.destroy(id);
 
       req.flash("info", "Ticket type is deleted.");
-      res.redirect("/admin/ticket-types");
+      return res.redirect("/admin/ticket-types");
     } catch (err) {
       next(err);
     }
@@ -177,7 +171,7 @@ module.exports = {
       await ticketTypesService.archive(ticketTypeObj);
 
       req.flash("info", "Ticket type is archived.");
-      res.redirect(`/admin/ticket-types/${id}`);
+      return res.redirect(`/admin/ticket-types/${id}`);
     } catch (err) {
       next(err);
     }
@@ -197,7 +191,7 @@ module.exports = {
       await ticketTypesService.active(ticketTypeObj);
 
       req.flash("info", "Ticket type is activated.");
-      res.redirect(`/admin/ticket-types/${id}`);
+      return res.redirect(`/admin/ticket-types/${id}`);
     } catch (err) {
       next(err);
     }

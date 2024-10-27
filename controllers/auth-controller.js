@@ -16,7 +16,7 @@ const transformLabels = (labels) => {
 
 module.exports = {
   showLogin: (req, res, next) => {
-    res.render("auth/login", { title: "Login" });
+    return res.render("auth/login", { title: "Login" });
   },
 
   login: async (req, res, next) => {
@@ -24,14 +24,12 @@ module.exports = {
 
     if (!email) {
       req.flash("error", "Email is required.");
-      res.redirect("/auth/login");
-      return;
+      return res.redirect("/auth/login");
     }
 
     if (!password) {
       req.flash("error", "Password is required.");
-      res.redirect("/auth/login");
-      return;
+      return res.redirect("/auth/login");
     }
 
     try {
@@ -40,14 +38,12 @@ module.exports = {
 
       if (!user) {
         req.flash("error", "Email and/or Password is invalid.");
-        res.redirect("/auth/login");
-        return;
+        return res.redirect("/auth/login");
       }
 
       if (!bcrypt.compareSync(password, user.password)) {
         req.flash("error", "Email and/or Password is invalid.");
-        res.redirect("/auth/login");
-        return;
+        return res.redirect("/auth/login");
       }
 
       if (!user.isActive) {
@@ -55,8 +51,7 @@ module.exports = {
           "error",
           "User is de-activated. Please contact administrator.",
         );
-        res.redirect("/auth/login");
-        return;
+        return res.redirect("/auth/login");
       }
 
       req.session.currentUser = {
@@ -67,8 +62,7 @@ module.exports = {
 
       if (user.isRequiredToChangePassword) {
         req.flash("info", "Please change the password.");
-        res.redirect("/auth/reset");
-        return;
+        return res.redirect("/auth/reset");
       }
 
       /**
@@ -101,8 +95,7 @@ module.exports = {
       const taskLabels = await taskLabelsService.pluck(columns);
       req.session.labels.task = transformLabels(taskLabels);
 
-      res.redirect("/");
-      return;
+      return res.redirect("/");
     } catch (err) {
       next(err);
     }
@@ -117,14 +110,12 @@ module.exports = {
 
     if (!email) {
       req.flash("error", "Email is required.");
-      res.redirect("/auth/register");
-      return;
+      return res.redirect("/auth/register");
     }
 
     if (!password) {
       req.flash("error", "Password is required.");
-      res.redirect("/auth/register");
-      return;
+      return res.redirect("/auth/register");
     }
 
     // Hashing
@@ -137,13 +128,11 @@ module.exports = {
 
       if (!user) {
         req.flash("error", "Problem while creating an user.");
-        res.redirect("/auth/register");
-        return;
+        return res.redirect("/auth/register");
       }
 
       req.flash("info", "User is created.");
-      res.redirect("/auth/login");
-      return;
+      return res.redirect("/auth/login");
     } catch (err) {
       next(err);
     }
@@ -154,8 +143,7 @@ module.exports = {
       if (err) {
         next(err);
       }
-      res.redirect("/");
-      return;
+      return res.redirect("/");
     });
   },
 
@@ -168,8 +156,7 @@ module.exports = {
 
     if (!password) {
       req.flash("error", "Password is required.");
-      res.redirect("/auth/reset");
-      return;
+      return res.redirect("/auth/reset");
     }
 
     // Hashing
@@ -185,8 +172,7 @@ module.exports = {
       await authService.reset(resetObj);
 
       req.flash("info", "Password is updated.");
-      res.redirect("/auth/login");
-      return;
+      return res.redirect("/auth/login");
     } catch (err) {
       next(err);
     }

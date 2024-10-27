@@ -52,11 +52,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/labels/contacts/show", {
+      return res.render("admin/labels/contacts/show", {
         title: "Show contact label",
         contactLabel,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -72,11 +71,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/labels/contacts/edit", {
+      return res.render("admin/labels/contacts/edit", {
         title: "Edit contact label",
         contactLabel,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -88,8 +86,7 @@ module.exports = {
 
     if (!displayName) {
       req.flash("error", "Display name is required.");
-      res.redirect(`/admin/labels/contacts/${id}/edit`);
-      return;
+      return res.redirect(`/admin/labels/contacts/${id}/edit`);
     }
 
     try {
@@ -107,8 +104,7 @@ module.exports = {
       await contactLabelsService.update(contactLabelObj);
 
       req.flash("info", "Contact label is updated.");
-      res.redirect(`/admin/labels/contacts/${id}`);
-      return;
+      return res.redirect(`/admin/labels/contacts/${id}`);
     } catch (err) {
       next(err);
     }
@@ -128,7 +124,7 @@ module.exports = {
       await contactLabelsService.archive(contactLabelObj);
 
       req.flash("info", "Contact label is archived.");
-      res.redirect(`/admin/labels/contacts/${id}`);
+      return res.redirect(`/admin/labels/contacts/${id}`);
     } catch (err) {
       next(err);
     }
@@ -148,7 +144,7 @@ module.exports = {
       await contactLabelsService.active(contactLabelObj);
 
       req.flash("info", "Contact label is activated.");
-      res.redirect(`/admin/labels/contacts/${id}`);
+      return res.redirect(`/admin/labels/contacts/${id}`);
     } catch (err) {
       next(err);
     }

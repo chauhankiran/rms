@@ -52,11 +52,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/labels/tasks/show", {
+      return res.render("admin/labels/tasks/show", {
         title: "Show Task label",
         taskLabel,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -72,11 +71,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/labels/tasks/edit", {
+      return res.render("admin/labels/tasks/edit", {
         title: "Edit Task label",
         taskLabel,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -88,8 +86,7 @@ module.exports = {
 
     if (!displayName) {
       req.flash("error", "Display name is required.");
-      res.redirect(`/admin/labels/tasks/${id}/edit`);
-      return;
+      return res.redirect(`/admin/labels/tasks/${id}/edit`);
     }
 
     try {
@@ -107,8 +104,7 @@ module.exports = {
       await taskLabelsService.update(taskLabelObj);
 
       req.flash("info", "Task label is updated.");
-      res.redirect(`/admin/labels/tasks/${id}`);
-      return;
+      return res.redirect(`/admin/labels/tasks/${id}`);
     } catch (err) {
       next(err);
     }
@@ -128,7 +124,7 @@ module.exports = {
       await taskLabelsService.archive(taskLabelObj);
 
       req.flash("info", "Task label is archived.");
-      res.redirect(`/admin/labels/tasks/${id}`);
+      return res.redirect(`/admin/labels/tasks/${id}`);
     } catch (err) {
       next(err);
     }
@@ -148,7 +144,7 @@ module.exports = {
       await taskLabelsService.active(taskLabelObj);
 
       req.flash("info", "Task label is activated.");
-      res.redirect(`/admin/labels/tasks/${id}`);
+      return res.redirect(`/admin/labels/tasks/${id}`);
     } catch (err) {
       next(err);
     }

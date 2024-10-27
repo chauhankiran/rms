@@ -43,7 +43,7 @@ module.exports = {
   },
 
   new: async (req, res, next) => {
-    res.render("admin/deal-sources/new", { title: "New deal source" });
+    return res.render("admin/deal-sources/new", { title: "New deal source" });
   },
 
   create: async (req, res, next) => {
@@ -51,8 +51,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect("/admin/deal-sources/new");
-      return;
+      return res.redirect("/admin/deal-sources/new");
     }
 
     try {
@@ -60,8 +59,7 @@ module.exports = {
       await dealSourcesService.create(dealSourceObj);
 
       req.flash("info", "Deal source is created.");
-      res.redirect("/admin/deal-sources");
-      return;
+      return res.redirect("/admin/deal-sources");
     } catch (err) {
       next(err);
     }
@@ -77,11 +75,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/deal-sources/show", {
+      return res.render("admin/deal-sources/show", {
         title: "Show deal source",
         dealSource,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -97,11 +94,10 @@ module.exports = {
         return next(notFound());
       }
 
-      res.render("admin/deal-sources/edit", {
+      return res.render("admin/deal-sources/edit", {
         title: "Edit deal source",
         dealSource,
       });
-      return;
     } catch (err) {
       next(err);
     }
@@ -113,8 +109,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect(`/admin/deal-sources/${id}/edit`);
-      return;
+      return res.redirect(`/admin/deal-sources/${id}/edit`);
     }
 
     try {
@@ -132,8 +127,7 @@ module.exports = {
       dealSourcesService.update(dealSourceObj);
 
       req.flash("info", "Deal source is updated.");
-      res.redirect(`/admin/deal-sources/${id}`);
-      return;
+      return res.redirect(`/admin/deal-sources/${id}`);
     } catch (err) {
       next(err);
     }
@@ -150,7 +144,7 @@ module.exports = {
       }
 
       req.flash("info", "Deal source is deleted.");
-      res.redirect("/admin/deal-sources");
+      return res.redirect("/admin/deal-sources");
     } catch (err) {
       next(err);
     }
@@ -170,7 +164,7 @@ module.exports = {
       await dealSourcesService.archive(dealSourceObj);
 
       req.flash("info", "Deal source is archived.");
-      res.redirect(`/admin/deal-sources/${id}`);
+      return res.redirect(`/admin/deal-sources/${id}`);
     } catch (err) {
       next(err);
     }
@@ -190,7 +184,7 @@ module.exports = {
       await dealSourcesService.active(dealSourceObj);
 
       req.flash("info", "Deal source is activated.");
-      res.redirect(`/admin/deal-sources/${id}`);
+      return res.redirect(`/admin/deal-sources/${id}`);
     } catch (err) {
       next(err);
     }

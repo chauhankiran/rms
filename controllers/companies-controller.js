@@ -90,8 +90,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect(`/companies/new`);
-      return;
+      return res.redirect(`/companies/new`);
     }
 
     try {
@@ -105,8 +104,7 @@ module.exports = {
       await companiesService.create(companyObj);
 
       req.flash("info", "Company is created.");
-      res.redirect("/companies");
-      return;
+      return res.redirect("/companies");
     } catch (err) {
       next(err);
     }
@@ -176,8 +174,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect(`/companies/${id}/edit`);
-      return;
+      return res.redirect(`/companies/${id}/edit`);
     }
 
     try {
@@ -198,7 +195,7 @@ module.exports = {
       await companiesService.update(companyObj);
 
       req.flash("info", "Company is updated.");
-      res.redirect(`/companies/${id}`);
+      return res.redirect(`/companies/${id}`);
     } catch (err) {
       next(err);
     }
@@ -217,7 +214,7 @@ module.exports = {
       await companiesService.destroy(id);
 
       req.flash("info", "Company is deleted.");
-      res.redirect("/companies");
+      return res.redirect("/companies");
     } catch (err) {
       next(err);
     }
@@ -237,7 +234,7 @@ module.exports = {
       await companiesService.archive(companyObj);
 
       req.flash("info", "Company is archived.");
-      res.redirect(`/companies/${id}`);
+      return res.redirect(`/companies/${id}`);
     } catch (err) {
       next(err);
     }
@@ -257,7 +254,7 @@ module.exports = {
       await companiesService.active(companyObj);
 
       req.flash("info", "Company is activated.");
-      res.redirect(`/companies/${id}`);
+      return res.redirect(`/companies/${id}`);
     } catch (err) {
       next(err);
     }

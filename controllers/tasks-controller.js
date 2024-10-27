@@ -98,8 +98,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect(`/tasks/new`);
-      return;
+      return res.redirect(`/tasks/new`);
     }
 
     try {
@@ -117,8 +116,7 @@ module.exports = {
       await tasksService.create(taskObj);
 
       req.flash("info", "Task is created.");
-      res.redirect("/tasks");
-      return;
+      return res.redirect("/tasks");
     } catch (err) {
       next(err);
     }
@@ -178,8 +176,7 @@ module.exports = {
 
       if (!task) {
         req.flash("error", "Task not found.");
-        res.redirect("/tasks");
-        return;
+        return res.redirect("/tasks");
       }
 
       const taskObj = {
@@ -192,7 +189,7 @@ module.exports = {
       await tasksService.update(taskObj);
 
       req.flash("info", "Task is updated.");
-      res.redirect(`/tasks/${id}`);
+      return res.redirect(`/tasks/${id}`);
     } catch (err) {
       next(err);
     }
@@ -211,7 +208,7 @@ module.exports = {
       await tasksService.destroy(id);
 
       req.flash("info", "Task is deleted.");
-      res.redirect("/tasks");
+      return res.redirect("/tasks");
     } catch (err) {
       next(err);
     }
@@ -231,7 +228,7 @@ module.exports = {
       await tasksService.archive(taskObj);
 
       req.flash("info", "Task is archived.");
-      res.redirect(`/tasks/${id}`);
+      return res.redirect(`/tasks/${id}`);
     } catch (err) {
       next(err);
     }
@@ -251,7 +248,7 @@ module.exports = {
       await tasksService.active(taskObj);
 
       req.flash("info", "Task is activated.");
-      res.redirect(`/tasks/${id}`);
+      return res.redirect(`/tasks/${id}`);
     } catch (err) {
       next(err);
     }

@@ -98,8 +98,7 @@ module.exports = {
       await quotesService.create(quoteObj);
 
       req.flash("info", "Quote is created.");
-      res.redirect("/quotes");
-      return;
+      return res.redirect("/quotes");
     } catch (err) {
       next(err);
     }
@@ -149,8 +148,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect(`/quotes/${id}/edit`);
-      return;
+      return res.redirect(`/quotes/${id}/edit`);
     }
 
     try {
@@ -170,7 +168,7 @@ module.exports = {
       await quotesService.update(quoteObj);
 
       req.flash("info", "Quote is updated.");
-      res.redirect(`/quotes/${id}`);
+      return res.redirect(`/quotes/${id}`);
     } catch (err) {
       next(err);
     }
@@ -189,7 +187,7 @@ module.exports = {
       await quotesService.destroy(id);
 
       req.flash("info", "Quote is deleted.");
-      res.redirect("/quotes");
+      return res.redirect("/quotes");
     } catch (err) {
       next(err);
     }
@@ -209,7 +207,7 @@ module.exports = {
       await quotesService.archive(quoteObj);
 
       req.flash("info", "Quote is archived.");
-      res.redirect(`/quotes/${id}`);
+      return res.redirect(`/quotes/${id}`);
     } catch (err) {
       next(err);
     }
@@ -229,7 +227,7 @@ module.exports = {
       await quotesService.active(quoteObj);
 
       req.flash("info", "Quote is activated.");
-      res.redirect(`/quotes/${id}`);
+      return res.redirect(`/quotes/${id}`);
     } catch (err) {
       next(err);
     }

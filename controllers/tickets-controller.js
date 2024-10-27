@@ -90,8 +90,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect(`/tickets/new`);
-      return;
+      return res.redirect(`/tickets/new`);
     }
 
     try {
@@ -107,8 +106,7 @@ module.exports = {
       await ticketsService.create(ticketObj);
 
       req.flash("info", "Ticket is created.");
-      res.redirect("/tickets");
-      return;
+      return res.redirect("/tickets");
     } catch (err) {
       next(err);
     }
@@ -161,8 +159,7 @@ module.exports = {
 
     if (!name) {
       req.flash("error", "Name is required.");
-      res.redirect(`/tickets/${id}/edit`);
-      return;
+      return res.redirect(`/tickets/${id}/edit`);
     }
 
     try {
@@ -182,7 +179,7 @@ module.exports = {
       await ticketsService.update(ticketObj);
 
       req.flash("info", "Ticket is updated.");
-      res.redirect(`/tickets/${id}`);
+      return res.redirect(`/tickets/${id}`);
     } catch (err) {
       next(err);
     }
@@ -201,7 +198,7 @@ module.exports = {
       await ticketsService.destroy(id);
 
       req.flash("info", "Ticket is deleted.");
-      res.redirect("/tickets");
+      return res.redirect("/tickets");
     } catch (err) {
       next(err);
     }
@@ -221,7 +218,7 @@ module.exports = {
       await ticketsService.archive(ticketObj);
 
       req.flash("info", "Ticket is archived.");
-      res.redirect(`/tickets/${id}`);
+      return res.redirect(`/tickets/${id}`);
     } catch (err) {
       next(err);
     }
@@ -241,7 +238,7 @@ module.exports = {
       await ticketsService.active(ticketObj);
 
       req.flash("info", "Ticket is activated.");
-      res.redirect(`/tickets/${id}`);
+      return res.redirect(`/tickets/${id}`);
     } catch (err) {
       next(err);
     }
