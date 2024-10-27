@@ -6,7 +6,7 @@ module.exports = {
       optionsObj;
 
     const whereClause = search
-      ? sql` WHERE "lastName" iLIKE ${"%" + search + "%"}`
+      ? sql` WHERE "firstName" iLIKE ${"%" + search + "%"} OR "lastName" iLIKE ${"%" + search + "%"}`
       : sql``;
 
     const whereClause2 = companyId
