@@ -72,12 +72,15 @@ module.exports = {
   },
 
   new: async (req, res, next) => {
+    const companyId = req.query.companyId;
+
     try {
       const ticketTypes = await ticketTypesService.pluck(["id", "name"]);
 
       return res.render("tickets/new", {
         title: "New ticket",
         ticketTypes,
+        companyId,
       });
     } catch (err) {
       next(err);

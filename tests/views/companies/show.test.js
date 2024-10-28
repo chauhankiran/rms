@@ -22,6 +22,10 @@ describe("Render company show template", () => {
       title: "Show company",
       company,
       contacts: [],
+      deals: [],
+      quotes: [],
+      tickets: [],
+      tasks: [],
       info: [],
       error: [],
       labels: {

@@ -71,8 +71,11 @@ module.exports = {
   },
 
   new: async (req, res, next) => {
+    const companyId = req.query.companyId;
+
     return res.render("quotes/new", {
       title: "New quote",
+      companyId,
     });
   },
 

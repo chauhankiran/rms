@@ -8,6 +8,8 @@ block content
       include ../partials/flash
 
       form(action="/tasks", method="post") 
+        input(type="hidden", name="companyId" value=companyId)
+        
         include ./form
         
         .form-group 

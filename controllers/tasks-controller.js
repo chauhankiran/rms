@@ -72,12 +72,15 @@ module.exports = {
   },
 
   new: async (req, res, next) => {
+    const companyId = req.query.companyId;
+
     try {
       const taskTypes = await taskTypesService.pluck(["id", "name"]);
 
       return res.render("tasks/new", {
         title: "New task",
         taskTypes,
+        companyId,
       });
     } catch (err) {
       next(err);
