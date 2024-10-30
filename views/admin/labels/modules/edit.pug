@@ -1,0 +1,21 @@
+extends ../../../layout
+
+block content
+  .row 
+    .col-6 
+      h1= title
+
+      include ../../../partials/flash
+
+      form(action=`/admin/labels/modules/${moduleLabel.id}?_method=PUT`, method="post") 
+        .form-group 
+          label(for="displayName") Display name
+          input(type="text", name="displayName", id="displayName", value=moduleLabel.displayName, placeholder="Visitor", autofocus=true)
+
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Update company label
+            .col-6.text-end
+              a(href=`/admin/labels/modules/${moduleLabel.id}`).btn.is-muted Cancel
+        

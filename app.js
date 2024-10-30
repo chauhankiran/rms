@@ -60,6 +60,7 @@ app.use((req, res, next) => {
   res.locals.labels.quote = req.session.labels?.quote;
   res.locals.labels.ticket = req.session.labels?.ticket;
   res.locals.labels.task = req.session.labels?.task;
+  res.locals.labels.module = req.session.labels?.module;
   next();
 });
 

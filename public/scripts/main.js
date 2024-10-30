@@ -408,6 +408,24 @@ function archiveTaskLabel() {
   }
 }
 
+/**
+ * Module label
+ */
+function activeModuleLabel() {
+  if (confirm("Are you sure you want to active this module label?")) {
+    document.activeModuleLabelForm.submit();
+  } else {
+    return false;
+  }
+}
+function archiveModuleLabel() {
+  if (confirm("Are you sure you want to archive this module label?")) {
+    document.archiveModuleLabelForm.submit();
+  } else {
+    return false;
+  }
+}
+
 function activeMultipleUsers() {
   const checkboxes = document.querySelectorAll("input[name='userId']:checked");
   const selectedUserIds = [];

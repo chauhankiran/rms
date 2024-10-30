@@ -2,12 +2,12 @@ nav.nav
   .nav-start
     a(href="/").nav-brand Home
     if currentUser
-      a(href="/companies").nav-item Companies
-      a(href="/contacts").nav-item Contacts
-      a(href="/deals").nav-item Deals
-      a(href="/quotes").nav-item Quotes
-      a(href="/tickets").nav-item Tickets
-      a(href="/tasks").nav-item Tasks
+      a(href="/companies").nav-item #{labels.module.company}
+      a(href="/contacts").nav-item #{labels.module.contact}
+      a(href="/deals").nav-item #{labels.module.deal}
+      a(href="/quotes").nav-item #{labels.module.quote}
+      a(href="/tickets").nav-item #{labels.module.ticket}
+      a(href="/tasks").nav-item #{labels.module.task}
   .nav-end
     if currentUser
       if currentUser.type == 'admin'

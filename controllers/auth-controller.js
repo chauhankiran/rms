@@ -6,6 +6,7 @@ const dealLabelsService = require("../services/admin/deal-labels-service");
 const quoteLabelsService = require("../services/admin/quote-labels-service");
 const ticketLabelsService = require("../services/admin/ticket-labels-service");
 const taskLabelsService = require("../services/admin/task-labels-service");
+const moduleLabelsService = require("../services/admin/module-labels-service");
 
 const transformLabels = (labels) => {
   return labels.reduce((acc, { name, displayName }) => {
@@ -94,6 +95,10 @@ module.exports = {
       // Task labels.
       const taskLabels = await taskLabelsService.pluck(columns);
       req.session.labels.task = transformLabels(taskLabels);
+
+      // Module labels.
+      const moduleLabels = await moduleLabelsService.pluck(columns);
+      req.session.labels.module = transformLabels(moduleLabels);
 
       return res.redirect("/");
     } catch (err) {

@@ -13,6 +13,7 @@ const dealLabelsController = require("../controllers/admin/deal-labels-controlle
 const quoteLabelsController = require("../controllers/admin/quote-labels-controller");
 const ticketLabelsController = require("../controllers/admin/ticket-labels-controller");
 const taskLabelsController = require("../controllers/admin/task-labels-controller");
+const moduleLabelsController = require("../controllers/admin/module-labels-controller");
 
 const router = express.Router();
 
@@ -163,5 +164,15 @@ router.get("/labels/tasks/:id/edit", taskLabelsController.edit);
 router.put("/labels/tasks/:id", taskLabelsController.update);
 router.put("/labels/tasks/:id/archive", taskLabelsController.archive);
 router.put("/labels/tasks/:id/active", taskLabelsController.active);
+
+/**
+ * Module labels
+ */
+router.get("/labels/modules", moduleLabelsController.index);
+router.get("/labels/modules/:id", moduleLabelsController.show);
+router.get("/labels/modules/:id/edit", moduleLabelsController.edit);
+router.put("/labels/modules/:id", moduleLabelsController.update);
+router.put("/labels/modules/:id/archive", moduleLabelsController.archive);
+router.put("/labels/modules/:id/active", moduleLabelsController.active);
 
 module.exports = router;
