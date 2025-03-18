@@ -1,0 +1,35 @@
+{
+    "name": "rms",
+    "version": "1.0.0",
+    "description": "Record Management System",
+    "main": "app.js",
+    "scripts": {
+        "dev": "nodemon app.js",
+        "start": "node app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/chauhankiran/rms.git"
+    },
+    "keywords": [],
+    "author": "Kiran Chauhan",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/chauhankiran/rms/issues"
+    },
+    "homepage": "https://github.com/chauhankiran/rms#readme",
+    "dependencies": {
+        "dayjs": "1.11.13",
+        "dotenv": "16.4.7",
+        "express": "4.21.2",
+        "morgan": "1.10.0",
+        "postgres": "3.4.5",
+        "pug": "3.0.3",
+        "serve-favicon": "2.5.0"
+    },
+    "devDependencies": {
+        "husky": "9.1.7",
+        "nodemon": "3.1.9",
+        "prettier": "3.5.3"
+    }
+}
