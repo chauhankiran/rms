@@ -5,6 +5,7 @@
     "main": "app.js",
     "scripts": {
         "dev": "nodemon app.js",
+        "migrate": "node ./scripts/migrate.js",
         "start": "node app.js"
     },
     "repository": {
