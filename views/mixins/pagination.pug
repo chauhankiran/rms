@@ -1,0 +1,20 @@
+mixin pagination(first, prev, next, last)
+  if first
+    a(href=first).btn.mr-4 First
+  else 
+    button(disabled).btn.mr-4 First
+
+  if prev
+    a(href=prev).btn.mr-4 Prev 
+  else 
+    button(disabled).btn.mr-4 Prev
+
+  if next
+    a(href=next).btn.mr-4 Next 
+  else 
+    button(disabled).btn.mr-4 Next
+
+  if last 
+    a(href=last).btn.mr-4 Last
+  else 
+    button(disabled).btn.mr-4 Last

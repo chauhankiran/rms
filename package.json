@@ -1,36 +1,39 @@
 {
-    "name": "rms",
-    "version": "1.0.0",
-    "description": "Record Management System",
-    "main": "app.js",
-    "scripts": {
-        "dev": "nodemon app.js",
-        "migrate": "node ./scripts/migrate.js",
-        "start": "node app.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/chauhankiran/rms.git"
-    },
-    "keywords": [],
-    "author": "Kiran Chauhan",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/chauhankiran/rms/issues"
-    },
-    "homepage": "https://github.com/chauhankiran/rms#readme",
-    "dependencies": {
-        "dayjs": "1.11.13",
-        "dotenv": "16.4.7",
-        "express": "4.21.2",
-        "morgan": "1.10.0",
-        "postgres": "3.4.5",
-        "pug": "3.0.3",
-        "serve-favicon": "2.5.0"
-    },
-    "devDependencies": {
-        "husky": "9.1.7",
-        "nodemon": "3.1.9",
-        "prettier": "3.5.3"
-    }
+  "name": "rms",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js",
+    "migrate": "node ./scripts/migration.js",
+    "seed": "node ./scripts/seeder.js",
+    "test": "jest",
+    "prepare": "husky",
+    "fmt": "prettier . --write",
+    "stub": "node ./scripts/stub.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "connect-flash": "0.1.1",
+    "connect-redis": "7.1.1",
+    "cookie-parser": "1.4.6",
+    "dotenv": "16.4.5",
+    "express": "4.21.0",
+    "express-session": "1.18.0",
+    "http-errors": "2.0.0",
+    "method-override": "3.0.0",
+    "morgan": "1.10.0",
+    "pluralize": "^8.0.0",
+    "postgres": "3.4.4",
+    "pug": "3.0.3",
+    "redis": "4.7.0",
+    "serve-favicon": "2.5.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "9.0.1",
+    "husky": "9.1.6",
+    "jest": "29.7.0",
+    "nodemon": "3.1.4",
+    "prettier": "3.3.3",
+    "supertest": "7.0.0"
+  }
 }

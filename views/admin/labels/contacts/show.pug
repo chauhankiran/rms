@@ -1,0 +1,53 @@
+extends ../../../layout
+
+block content 
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/admin/labels/contacts").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu 
+          .dropdown-content 
+            a(href=`/admin/labels/contacts/${contactLabel.id}/edit`).dropdown-item Edit contact label
+            button(type="button", onClick="activeContactLabel()").dropdown-item Active contact label
+            button(type="button", onClick="archiveContactLabel()").dropdown-item Archive contact label
+
+    .col-12
+      include ../../../partials/flash
+
+    .col-12 
+      .row 
+        .col-12.mb-4
+          label(for="name").field-name Name 
+          span.field-value #{contactLabel.name}
+            if !contactLabel.isActive 
+              span.archive-status (archived)
+
+        .col-12.mb-4
+          label(for="displayName").field-name Display name 
+          span.field-value #{contactLabel.displayName}
+
+        .col-6.mb-4
+          label(for="createdAt").field-name Created at
+          span.field-value #{contactLabel.createdAt || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedAt").field-name Updated at
+          span.field-value #{contactLabel.updatedAt || "-"}
+
+        .col-6.mb-4
+          label(for="createdBy").field-name Created by
+          span.field-value #{contactLabel.createdByEmail || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedBy").field-name Updated by
+          span.field-value #{contactLabel.updatedByEmail || "-"}
+
+
+      form(action=`/admin/labels/contacts/${contactLabel.id}?_method=DELETE`, name="deleteContactLabelForm", method="post") 
+
+      form(action=`/admin/labels/contacts/${contactLabel.id}/active?_method=PUT`, name="activeContactLabelForm", method="post") 
+
+      form(action=`/admin/labels/contacts/${contactLabel.id}/archive?_method=PUT`, name="archiveContactLabelForm", method="post") 

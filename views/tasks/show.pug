@@ -1,0 +1,66 @@
+extends ../layout
+
+block content
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/tasks").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu
+          .dropdown-content 
+            a(href=`/tasks/${task.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.task))}
+            button.dropdown-item(onclick="activeTask()") Active #{singular(downcase(labels.module.task))}
+            button.dropdown-item(onclick="archiveTask()") Archive #{singular(downcase(labels.module.task))}
+            button.dropdown-item(onclick="deleteTask()") Delete #{singular(downcase(labels.module.task))}
+
+    .col-12
+      include ../partials/flash
+
+    .col-12 
+      .row 
+        if labels.task.name
+          .col-12.mb-4
+            label(for="name").field-name #{labels.task.name} 
+            span.field-value #{task.name}
+              if !task.isActive 
+                span.archive-status (archived)
+
+        if labels.task.taskTypeId
+          .col-12.mb-4
+            label(for="taskTypeId").field-name #{labels.task.taskTypeId}
+            span.field-value #{task.taskType}
+
+        if labels.task.description
+          .col-12.mb-4
+            label(for="description").field-name #{labels.task.description}
+            span.field-value #{task.description || "-"}
+        
+        if labels.task.createdAt
+          .col-6.mb-4
+            label(for="createdAt").field-name #{labels.task.createdAt}
+            span.field-value #{task.createdAt || "-"}
+        
+        if labels.task.updatedAt
+          .col-6.mb-4
+            label(for="updatedAt").field-name #{labels.task.updatedAt}
+            span.field-value #{task.updatedAt || "-"}
+
+        if labels.task.createdBy
+          .col-6.mb-4
+            label(for="createdBy").field-name #{labels.task.createdBy}
+            span.field-value #{task.createdByEmail || "-"}
+        
+        if labels.task.updatedBy
+          .col-6.mb-4
+            label(for="updatedBy").field-name #{labels.task.updatedBy}
+            span.field-value #{task.updatedByEmail || "-"}
+
+
+      form(action=`/tasks/${task.id}?_method=DELETE`, name="deleteTaskForm", method="post")
+
+      form(action=`/tasks/${task.id}/active?_method=PUT`, name="activeTaskForm", method="post")
+
+      form(action=`/tasks/${task.id}/archive?_method=PUT`, name="archiveTaskForm", method="post")
+    

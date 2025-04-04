@@ -1,0 +1,163 @@
+extends ../layout
+
+block content
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/deals").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu
+          .dropdown-content 
+            a(href=`/deals/${deal.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.deal))}
+            button.dropdown-item(onclick="activeDeal()") Active #{singular(downcase(labels.module.deal))} 
+            button.dropdown-item(onclick="archiveDeal()") Archive #{singular(downcase(labels.module.deal))} 
+            button.dropdown-item(onclick="deleteDeal()") Delete #{singular(downcase(labels.module.deal))} 
+
+    .col-12
+      include ../partials/flash
+
+    .col-12 
+      .row 
+        labels.deal.name
+          .col-12.mb-4
+            label(for="name").field-name #{labels.deal.name} 
+            span.field-value #{deal.name}
+              if !deal.isActive 
+                span.archive-status (archived)
+
+        if labels.deal.dealSourceId
+          .col-12.mb-4
+            label(for="dealSourceId").field-name #{labels.deal.dealSourceId}
+            span.field-value #{deal.dealSource}
+
+        if labels.deal.total
+          .col-12.mb-4
+            label(for="total").field-name #{labels.deal.total}
+            span.field-value #{deal.total}
+
+        if labels.deal.description
+          .col-12.mb-4
+            label(for="description").field-name #{labels.deal.description}
+            span.field-value #{deal.description || "-"}
+        
+        if labels.deal.createdAt
+          .col-6.mb-4
+            label(for="createdAt").field-name #{labels.deal.createdAt}
+            span.field-value #{deal.createdAt || "-"}
+        
+        if labels.deal.updatedAt
+          .col-6.mb-4
+            label(for="updatedAt").field-name #{labels.deal.updatedAt}
+            span.field-value #{deal.updatedAt || "-"}
+
+        if labels.deal.createdBy
+          .col-6.mb-4
+            label(for="createdBy").field-name #{labels.deal.createdBy}
+            span.field-value #{deal.createdByEmail || "-"}
+        
+        if labels.deal.updatedBy
+          .col-6.mb-4
+            label(for="updatedBy").field-name #{labels.deal.updatedBy}
+            span.field-value #{deal.updatedByEmail || "-"}
+
+
+      form(action=`/deals/${deal.id}?_method=DELETE`, name="deleteDealForm", method="post")
+
+      form(action=`/deals/${deal.id}/active?_method=PUT`, name="activeDealForm", method="post")
+
+      form(action=`/deals/${deal.id}/archive?_method=PUT`, name="archiveDealForm", method="post")
+
+  hr
+  
+  .row.mb-4.mt-4.align-items-center
+    .col-6 
+      h3 #{plural(capitalize(labels.module.quote))}
+    .col-6.text-end
+      a(href=`/quotes/new?dealId=${deal.id}`).btn New #{singular(capitalize(labels.module.quote))}
+
+  .row
+    .col-12 
+      table 
+        thead 
+          tr 
+            th Id 
+            th Name 
+            th Updated at 
+            th Updated by 
+        tbody 
+          if quotes.length > 0
+            for quote in quotes  
+              tr 
+                td 
+                  a(href=`/quotes/${quote.id}`) #{quote.id}
+                td 
+                  a(href=`/quotes/${quote.id}`) #{quote.name}
+                td #{quote.updatedAt || "-"}
+                td #{quote.updatedByEmail || "-"}
+          else 
+            tr 
+              td(colspan=4).text-center No #{plural(downcase(labels.module.quote))} found.
+
+  hr
+  
+  .row.mb-4.mt-4.align-items-center
+    .col-6 
+      h3 #{plural(capitalize(labels.module.ticket))} 
+    .col-6.text-end
+      a(href=`/tickets/new?dealId=${deal.id}`).btn New #{singular(capitalize(labels.module.ticket))}
+
+  .row
+    .col-12 
+      table 
+        thead 
+          tr 
+            th Id 
+            th Name 
+            th Updated at 
+            th Updated by 
+        tbody 
+          if tickets.length > 0
+            for ticket in tickets  
+              tr 
+                td 
+                  a(href=`/tickets/${ticket.id}`) #{ticket.id}
+                td 
+                  a(href=`/tickets/${ticket.id}`) #{ticket.name}
+                td #{ticket.updatedAt || "-"}
+                td #{ticket.updatedByEmail || "-"}
+          else 
+            tr 
+              td(colspan=4).text-center No #{plural(downcase(labels.module.ticket))} found.
+
+  hr
+  
+  .row.mb-4.mt-4.align-items-center
+    .col-6 
+      h3 #{plural(capitalize(labels.module.task))}
+    .col-6.text-end
+      a(href=`/tasks/new?dealId=${deal.id}`).btn New #{singular(capitalize(labels.module.task))}
+
+  .row
+    .col-12 
+      table 
+        thead 
+          tr 
+            th Id 
+            th Name 
+            th Updated at 
+            th Updated by 
+        tbody 
+          if tasks.length > 0
+            for task in tasks  
+              tr 
+                td 
+                  a(href=`/tasks/${task.id}`) #{task.id}
+                td 
+                  a(href=`/tasks/${task.id}`) #{task.name}
+                td #{task.updatedAt || "-"}
+                td #{task.updatedByEmail || "-"}
+          else 
+            tr 
+              td(colspan=4).text-center No #{plural(downcase(labels.module.task))} found.

@@ -1,0 +1,19 @@
+extends ../../layout
+
+block content
+  .row 
+    .col-6 
+      h1= title
+
+      include ../../partials/flash
+
+      form(action=`/admin/users/${user.id}?_method=PUT`, method="post") 
+        include ./form
+        
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Update user
+            .col-6.text-end
+              a(href=`/admin/users/${user.id}`).btn.is-muted Cancel
+        

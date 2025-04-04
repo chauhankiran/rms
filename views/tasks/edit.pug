@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+  .row 
+    .col-6 
+      h1= title
+
+      include ../partials/flash
+
+      form(action=`/tasks/${task.id}?_method=PUT`, method="post") 
+        include ./form
+        
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Update #{singular(downcase(labels.module.task))}
+            .col-6.text-end
+              a(href="/tasks").btn.is-muted Cancel
+        

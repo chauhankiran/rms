@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+  .row 
+    .col-6 
+      h1= title
+
+      include ../partials/flash
+
+      form(action="/tickets", method="post") 
+        input(type="hidden", name="companyId" value=companyId)
+        input(type="hidden", name="contactId" value=contactId)
+        input(type="hidden", name="dealId" value=dealId)
+        
+        include ./form
+        
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Create #{singular(downcase(labels.module.ticket))}
+            .col-6.text-end
+              a(href="/tickets").btn.is-muted Cancel

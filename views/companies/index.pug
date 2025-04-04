@@ -1,28 +1,87 @@
 extends ../layout
+include ../mixins/pagination
 
 block content
-    h1 Companies 
-    table 
+  .row.align-items-center 
+    .col-8 
+      h1 #{title} (#{count})
+    .col-4.text-end 
+      a(href="/companies/new").btn New #{downcase(singular(labels.module.company))}
+    
+    .col-12
+      form(action="/companies", method="get") 
+        .form-group 
+          input(type="hidden", name="orderBy", value=orderBy)
+          input(type="hidden", name="orderDir", value=orderDir)
+          input(type="text", name="search", value=search, autofocus=true, placeholder="Type name and press Enter")
+
+      include ../partials/flash
+    
+      table
         thead 
-            tr 
-                th Id 
-                th Name 
-                th Website 
-                th Email 
-                th Phone 
-                th Created by 
-                th Created on 
-                th Updated by 
-                th Updated on 
-        tbody 
-            tr 
-                td 1
-                td Example, inc.
-                td example.com 
-                td info@example.com
-                td +91 9988776655
-                td Jane Doe 
-                td Jan 12, 2025
-                td Kai Doe 
-                td Feb 14, 2025
+            tr
+              each header in headers
+                if header === "id" && labels.company.id
+                  th
+                    if orderDir === 'ASC'
+                      a(href=`/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
+                    else 
+                      a(href=`/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
+                    
+                    if orderBy === 'id'
+                      span.order-wrapper= orderDir
                 
+                if header === "name" && labels.company.name
+                  th
+                    if orderDir === 'ASC'
+                      a(href=`/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
+                    else 
+                      a(href=`/companies?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
+                    
+                    if orderBy === 'name'
+                      span.order-wrapper= orderDir
+
+                if header === "companySourceId" && labels.company.companySourceId
+                  th #{labels.company[header]}
+                
+                if header === "updatedBy" && labels.company.updatedBy
+                  th #{labels.company[header]}
+
+                if header === "updatedAt" && labels.company.updatedAt
+                  th
+                    if orderDir === 'ASC'
+                      a(href=`/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
+                    else 
+                      a(href=`/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
+                    
+                    if orderBy === 'updatedAt'
+                      span.order-wrapper= orderDir
+            
+        tbody 
+          if companies.length > 0
+            each company in companies 
+              tr
+                if labels.company.id
+                  td
+                    a(href=`/companies/${company.id}`) #{company.id}
+
+                if labels.company.name
+                  td 
+                    a(href=`/companies/${company.id}`) #{company.name}
+                    if (!company.isActive)
+                      span.archive-status (archived)
+                
+                if labels.company.companySourceId
+                  td #{company.companySource || "-" }
+
+                if labels.company.updatedBy
+                  td #{company.updatedByEmail || "-" }
+                
+                if labels.company.updatedAt
+                  td #{company.updatedAt || "-" } 
+          else 
+            tr 
+              td(colspan=7).text-center No #{downcase(labels.module.company)} found.
+
+    .col-12 
+      +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

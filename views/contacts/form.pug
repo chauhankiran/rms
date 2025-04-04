@@ -1,0 +1,37 @@
+//- prefix
+if labels.contact.prefix
+  .form-group 
+    label(for="prefix") #{labels.contact.prefix}
+    input(type="text", name="prefix", id="prefix", value=contact ? contact.prefix : "", placeholder="Mr.", autofocus=true)
+
+//- firstName
+if labels.contact.firstName
+  .form-group 
+    label(for="firstName") #{labels.contact.firstName}
+    input(type="text", name="firstName", id="firstName", value=contact ? contact.firstName : "", placeholder="Kai")
+
+//- lastName
+if labels.contact.lastName
+  .form-group 
+    label(for="lastName") #{labels.contact.lastName}
+    input(type="text", name="lastName", id="lastName", value=contact ? contact.lastName : "", placeholder="Doe")
+
+//- annualRevenue
+if labels.contact.annualRevenue
+  .form-group 
+    label(for="annualRevenue") #{labels.contact.annualRevenue}
+    input(type="text", name="annualRevenue", id="annualRevenue", value=contact ? contact.annualRevenue : "", placeholder="600000")
+
+//- contactIndustryId
+if labels.contact.contactIndustryId
+  .form-group 
+    label(for="contactIndustryId") #{labels.contact.contactIndustryId}
+    select(name="contactIndustryId", id="contactIndustryId")
+      for contactIndustry in contactIndustries
+        option(value=contactIndustry.id, selected=contact && contactIndustry.id == contact.contactIndustryId) #{contactIndustry.name}
+
+//- description
+if labels.contact.description
+  .form-group 
+    label(for="description") #{labels.contact.description}
+    textarea(name="description", id="description" cols="30", rows="10", placeholder="Add informative optional description") #{contact ? contact.description : ""}

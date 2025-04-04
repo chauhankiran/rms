@@ -1,6 +1,18 @@
 nav.nav
-    .nav-start
-        a(href="/").nav-brand Home
-    .nav-end
-        a(href="/login").nav-item Login
-        a(href="/register").nav-item Register
+  .nav-start
+    a(href="/").nav-brand Home
+    if currentUser
+      a(href="/companies").nav-item #{capitalize(labels.module.company)}
+      a(href="/contacts").nav-item #{capitalize(labels.module.contact)}
+      a(href="/deals").nav-item #{capitalize(labels.module.deal)}
+      a(href="/quotes").nav-item #{capitalize(labels.module.quote)}
+      a(href="/tickets").nav-item #{capitalize(labels.module.ticket)}
+      a(href="/tasks").nav-item #{capitalize(labels.module.task)}
+  .nav-end
+    if currentUser
+      if currentUser.type == 'admin'
+        a(href="/admin").nav-item Admin
+      a(href="/auth/logout").nav-item Logout
+    else
+      a(href="/auth/login").nav-item Login
+      a(href="/auth/register").nav-item Register

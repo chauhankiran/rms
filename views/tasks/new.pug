@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  .row 
+    .col-6 
+      h1= title
+
+      include ../partials/flash
+
+      form(action="/tasks", method="post") 
+        input(type="hidden", name="companyId" value=companyId)
+        input(type="hidden", name="contactId" value=contactId)
+        input(type="hidden", name="dealId" value=dealId)
+        input(type="hidden", name="quoteId" value=quoteId)
+        input(type="hidden", name="ticketId" value=ticketId)
+        
+        include ./form
+        
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Create #{singular(downcase(labels.module.task))}
+            .col-6.text-end
+              a(href="/tasks").btn.is-muted Cancel

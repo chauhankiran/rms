@@ -1,0 +1,96 @@
+extends ../layout
+
+block content
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/tickets").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu
+          .dropdown-content 
+            a(href=`/tickets/${ticket.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.ticket))}
+            button.dropdown-item(onclick="activeTicket()") Active #{singular(downcase(labels.module.ticket))}
+            button.dropdown-item(onclick="archiveTicket()") Archive #{singular(downcase(labels.module.ticket))}
+            button.dropdown-item(onclick="deleteTicket()") Delete #{singular(downcase(labels.module.ticket))}
+
+    .col-12
+      include ../partials/flash
+
+    .col-12 
+      .row 
+        if labels.ticket.name
+          .col-12.mb-4
+            label(for="name").field-name #{labels.ticket.name} 
+            span.field-value #{ticket.name}
+              if !ticket.isActive 
+                span.archive-status (archived)
+
+        if labels.ticket.ticketTypeId
+          .col-12.mb-4
+            label(for="ticketTypeId").field-name #{labels.ticket.ticketTypeId}
+            span.field-value #{ticket.ticketType}
+
+        if labels.ticket.description
+          .col-12.mb-4
+            label(for="description").field-name #{labels.ticket.description}
+            span.field-value #{ticket.description || "-"}
+        
+        if labels.ticket.createdAt
+          .col-6.mb-4
+            label(for="createdAt").field-name #{labels.ticket.createdAt}
+            span.field-value #{ticket.createdAt || "-"}
+        
+        if labels.ticket.updatedAt
+          .col-6.mb-4
+            label(for="updatedAt").field-name #{labels.ticket.updatedAt}
+            span.field-value #{ticket.updatedAt || "-"}
+
+        if labels.ticket.createdBy
+          .col-6.mb-4
+            label(for="createdBy").field-name #{labels.ticket.createdBy}
+            span.field-value #{ticket.createdByEmail || "-"}
+        
+        if labels.ticket.updatedBy
+          .col-6.mb-4
+            label(for="updatedBy").field-name #{labels.ticket.updatedBy}
+            span.field-value #{ticket.updatedByEmail || "-"}
+
+
+      form(action=`/tickets/${ticket.id}?_method=DELETE`, name="deleteTicketForm", method="post")
+
+      form(action=`/tickets/${ticket.id}/active?_method=PUT`, name="activeTicketForm", method="post")
+
+      form(action=`/tickets/${ticket.id}/archive?_method=PUT`, name="archiveTicketForm", method="post")
+
+  hr
+  
+  .row.mb-4.mt-4.align-items-center
+    .col-6 
+      h3 #{plural(capitalize(labels.module.task))}
+    .col-6.text-end
+      a(href=`/tasks/new?ticketId=${ticket.id}`).btn New #{singular(capitalize(labels.module.task))}
+
+  .row
+    .col-12 
+      table 
+        thead 
+          tr 
+            th Id 
+            th Name 
+            th Updated at 
+            th Updated by 
+        tbody 
+          if tasks.length > 0
+            for task in tasks  
+              tr 
+                td 
+                  a(href=`/tasks/${task.id}`) #{task.id}
+                td 
+                  a(href=`/tasks/${task.id}`) #{task.name}
+                td #{task.updatedAt || "-"}
+                td #{task.updatedByEmail || "-"}
+          else 
+            tr 
+              td(colspan=4).text-center No #{plural(downcase(labels.module.task))} found.

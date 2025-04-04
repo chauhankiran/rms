@@ -1,0 +1,85 @@
+extends ../layout
+include ../mixins/pagination
+
+block content
+  .row.align-items-center 
+    .col-8 
+      h1 #{title} (#{count})
+    .col-4.text-end 
+      a(href="/quotes/new").btn New #{downcase(singular(labels.module.quote))}
+    
+    .col-12
+      form(action="/quotes", method="get") 
+        .form-group 
+          input(type="hidden", name="orderBy", value=orderBy)
+          input(type="hidden", name="orderDir", value=orderDir)
+          input(type="text", name="search", value=search, autofocus=true, placeholder="Type name and press Enter")
+
+      include ../partials/flash
+
+      table 
+        thead 
+          tr 
+            each header in headers
+              //- id
+              if header === "id" && labels.quote.id
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/quotes?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.quote[header]}
+                  else 
+                    a(href=`/quotes?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.quote[header]}
+                  
+                  if orderBy === 'id'
+                    span.order-wrapper= orderDir
+              
+              //- name
+              if header === "name" && labels.quote.name
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/quotes?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.quote[header]}
+                  else 
+                    a(href=`/quotes?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.quote[header]}
+                  
+                  if orderBy === 'name'
+                    span.order-wrapper= orderDir
+              
+              //- updatedBy
+              if header === "updatedBy" && labels.quote.updatedBy
+                th #{labels.quote[header]}
+              
+              //- updatedAt
+              if header === "updatedAt" && labels.quote.updatedAt
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/quotes?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.quote[header]}
+                  else 
+                    a(href=`/quotes?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.quote[header]}
+                  
+                  if orderBy === 'updatedAt'
+                    span.order-wrapper= orderDir
+
+        tbody 
+          if quotes.length > 0
+            each quote in quotes 
+              tr
+                if labels.quote.id
+                  td
+                    a(href=`/quotes/${quote.id}`) #{quote.id}
+
+                if labels.quote.name
+                  td 
+                    a(href=`/quotes/${quote.id}`) #{quote.name}
+                    if (!quote.isActive)
+                      span.archive-status (archived)
+
+                if labels.quote.updatedBy
+                  td #{quote.updatedByEmail || "-" }
+
+                if labels.quote.updatedAt
+                  td #{quote.updatedAt || "-" } 
+          else 
+            tr 
+              td(colspan=7).text-center No #{downcase(labels.module.quote)} found.
+
+    .col-12 
+      +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

@@ -1,0 +1,53 @@
+extends ../../../layout
+
+block content 
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/admin/labels/deals").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu 
+          .dropdown-content 
+            a(href=`/admin/labels/deals/${dealLabel.id}/edit`).dropdown-item Edit company label
+            button(type="button", onClick="activeDealLabel()").dropdown-item Active company label
+            button(type="button", onClick="archiveDealLabel()").dropdown-item Archive company label
+
+    .col-12
+      include ../../../partials/flash
+
+    .col-12 
+      .row 
+        .col-12.mb-4
+          label(for="name").field-name Name 
+          span.field-value #{dealLabel.name}
+            if !dealLabel.isActive 
+              span.archive-status (archived)
+
+        .col-12.mb-4
+          label(for="displayName").field-name Display name 
+          span.field-value #{dealLabel.displayName}
+
+        .col-6.mb-4
+          label(for="createdAt").field-name Created at
+          span.field-value #{dealLabel.createdAt || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedAt").field-name Updated at
+          span.field-value #{dealLabel.updatedAt || "-"}
+
+        .col-6.mb-4
+          label(for="createdBy").field-name Created by
+          span.field-value #{dealLabel.createdByEmail || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedBy").field-name Updated by
+          span.field-value #{dealLabel.updatedByEmail || "-"}
+
+
+      form(action=`/admin/labels/deals/${dealLabel.id}?_method=DELETE`, name="deleteDealLabelForm", method="post") 
+
+      form(action=`/admin/labels/deals/${dealLabel.id}/active?_method=PUT`, name="activeDealLabelForm", method="post") 
+
+      form(action=`/admin/labels/deals/${dealLabel.id}/archive?_method=PUT`, name="archiveDealLabelForm", method="post") 

@@ -1,0 +1,53 @@
+extends ../../../layout
+
+block content 
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/admin/labels/tasks").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu 
+          .dropdown-content 
+            a(href=`/admin/labels/tasks/${taskLabel.id}/edit`).dropdown-item Edit task label
+            button(type="button", onClick="activeTaskLabel()").dropdown-item Active task label
+            button(type="button", onClick="archiveTaskLabel()").dropdown-item Archive task label
+
+    .col-12
+      include ../../../partials/flash
+
+    .col-12 
+      .row 
+        .col-12.mb-4
+          label(for="name").field-name Name 
+          span.field-value #{taskLabel.name}
+            if !taskLabel.isActive 
+              span.archive-status (archived)
+
+        .col-12.mb-4
+          label(for="displayName").field-name Display name 
+          span.field-value #{taskLabel.displayName}
+
+        .col-6.mb-4
+          label(for="createdAt").field-name Created at
+          span.field-value #{taskLabel.createdAt || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedAt").field-name Updated at
+          span.field-value #{taskLabel.updatedAt || "-"}
+
+        .col-6.mb-4
+          label(for="createdBy").field-name Created by
+          span.field-value #{taskLabel.createdByEmail || "-"}
+        
+        .col-6.mb-4
+          label(for="updatedBy").field-name Updated by
+          span.field-value #{taskLabel.updatedByEmail || "-"}
+
+
+      form(action=`/admin/labels/tasks/${taskLabel.id}?_method=DELETE`, name="deleteTaskLabelForm", method="post") 
+
+      form(action=`/admin/labels/tasks/${taskLabel.id}/active?_method=PUT`, name="activeTaskLabelForm", method="post") 
+
+      form(action=`/admin/labels/tasks/${taskLabel.id}/archive?_method=PUT`, name="archiveTaskLabelForm", method="post") 

@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+  .row 
+    .col-6 
+      h1= title
+
+      include ../partials/flash
+
+      form(action="/auth/reset?_method=PUT", method="post")         
+        .form-group 
+          label(for="password") Password
+          input(type="text", name="password", placeholder="******")#password
+        
+        .form-group 
+          button(type="submit") Reset password

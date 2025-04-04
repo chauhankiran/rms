@@ -1,0 +1,80 @@
+extends ../../layout
+include ../../mixins/pagination
+
+block content
+  .row.align-items-center 
+    .col-8 
+      h1 #{title} (#{count})
+    .col-4.text-end 
+      a(href="/admin/company-sources/new").btn New company source
+
+    .col-12
+      form(action="/admin/company-sources", method="get") 
+        .form-group 
+          input(type="hidden", name="orderBy", value=orderBy)
+          input(type="hidden", name="orderDir", value=orderDir)
+          input(type="text", name="search", value=search, autofocus=true, placeholder="Type name and press Enter")
+
+      include ../../partials/flash
+
+      table
+        thead 
+          tr
+            th
+              if orderDir === 'ASC'
+                a(href=`/admin/company-sources?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) Id
+              else 
+                a(href=`/admin/company-sources?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) Id
+              
+              if orderBy === 'id'
+                span.order-wrapper= orderDir
+
+            th
+              if orderDir === 'ASC'
+                a(href=`/admin/company-sources?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) Name
+              else 
+                a(href=`/admin/company-sources?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) Name
+              
+              if orderBy === 'name'
+                span.order-wrapper= orderDir
+
+            th Created by
+            th Updated by
+
+            th
+              if orderDir === 'ASC'
+                a(href=`/admin/company-sources?orderBy=createdAt&orderDir=DESC${search ? `&search=${search}` : ''}`) Created at
+              else 
+                a(href=`/admin/company-sources?orderBy=createdAt&orderDir=ASC${search ? `&search=${search}` : ''}`) Created at
+              
+              if orderBy === 'createdAt'
+                span.order-wrapper= orderDir
+
+            th
+              if orderDir === 'ASC'
+                a(href=`/admin/company-sources?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) Updated at
+              else 
+                a(href=`/admin/company-sources?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) Updated at
+              
+              if orderBy === 'updatedAt'
+                span.order-wrapper= orderDir
+            
+        tbody 
+          if companySources.length > 0
+            each companySource in companySources 
+              tr
+                td
+                  a(href=`/admin/company-sources/${companySource.id}`) #{companySource.id}
+                td #{companySource.name}
+                  if (!companySource.isActive)
+                    span.archive-status (archived)
+                td #{companySource.createdByEmail || "-" }
+                td #{companySource.updatedByEmail || "-" }
+                td #{companySource.createdAt || "-" }
+                td #{companySource.updatedAt || "-" } 
+          else 
+            tr 
+              td(colspan=7).text-center No company sources found.
+
+    .col-12 
+      +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

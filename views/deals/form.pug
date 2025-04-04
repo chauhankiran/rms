@@ -1,0 +1,25 @@
+//- name
+if labels.deal.name
+  .form-group 
+    label(for="name") #{labels.deal.name}
+    input(type="text", name="name", id="name", value=deal ? deal.name : "", placeholder="42 New LED Monitors", autofocus=true)
+
+//- total
+if labels.deal.total
+  .form-group 
+    label(for="total") #{labels.deal.total}
+    input(type="text", name="total", id="total" value=deal ? deal.total : 0, placeholder="1200")
+
+//- dealSourceId
+if labels.deal.dealSourceId
+  .form-group 
+    label(for="dealSourceId") #{labels.deal.dealSourceId}
+    select(name="dealSourceId", id="dealSourceId")
+      for dealSource in dealSources
+        option(value=dealSource.id, selected=deal && dealSource.id == deal.dealSourceId) #{dealSource.name}
+
+//- description
+if labels.deal.description
+  .form-group 
+    label(for="description") #{labels.deal.description}
+    textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{deal ? deal.description : ""}

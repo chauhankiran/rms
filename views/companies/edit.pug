@@ -1,4 +1,19 @@
 extends ../layout
 
 block content
-    h1 Edit
+  .row 
+    .col-6 
+      h1= title
+
+      include ../partials/flash
+
+      form(action=`/companies/${company.id}?_method=PUT`, method="post") 
+        include ./form
+
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Update #{singular(downcase(labels.module.company))}
+            .col-6.text-end
+              a(href="/companies").btn.is-muted Cancel
+        

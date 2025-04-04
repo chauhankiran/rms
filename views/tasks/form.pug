@@ -1,0 +1,19 @@
+//- name
+if labels.task.name
+  .form-group 
+    label(for="name") #{labels.task.name}
+    input(type="text", name="name", id="name", value=task ? task.name : "", placeholder="Kick-off Meeting", autofocus=true)
+
+//- taskTypeId
+if labels.task.taskTypeId
+  .form-group 
+    label(for="taskTypeId") #{labels.task.taskTypeId}
+    select(name="taskTypeId", id="taskTypeId")
+      for taskType in taskTypes
+        option(value=taskType.id, selected=task && taskType.id == task.taskTypeId) #{taskType.name}
+
+//- description
+if labels.task.description
+  .form-group 
+    label(for="description") #{labels.task.description}
+    textarea(name="description", id="description" cols="30", rows="10", placeholder="Add informative optional description") #{task ? task.description : ""}

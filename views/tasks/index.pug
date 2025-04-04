@@ -1,0 +1,92 @@
+extends ../layout
+include ../mixins/pagination
+
+block content
+  .row.align-items-center 
+    .col-8 
+      h1 #{title} (#{count})
+    .col-4.text-end 
+      a(href="/tasks/new").btn New #{downcase(singular(labels.module.task))}
+    
+    .col-12
+      form(action="/tasks", method="get") 
+        .form-group 
+          input(type="hidden", name="orderBy", value=orderBy)
+          input(type="hidden", name="orderDir", value=orderDir)
+          input(type="text", name="search", value=search, autofocus=true, placeholder="Type name and press Enter")
+
+      include ../partials/flash
+
+      table 
+        thead 
+          tr 
+            each header in headers
+              //- id
+              if header === "id" && labels.task.id
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/tasks?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.task[header]}
+                  else 
+                    a(href=`/tasks?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.task[header]}
+                  
+                  if orderBy === 'id'
+                    span.order-wrapper= orderDir
+              
+              //- name
+              if header === "name" && labels.task.name
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/tasks?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.task[header]}
+                  else 
+                    a(href=`/tasks?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.task[header]}
+                  
+                  if orderBy === 'name'
+                    span.order-wrapper= orderDir
+
+              //- taskTypeId
+              if header === "taskTypeId" && labels.task.taskTypeId
+                th #{labels.task[header]}
+              
+              //- updatedBy
+              if header === "updatedBy" && labels.task.updatedBy
+                th #{labels.task[header]}
+              
+              //- updatedAt
+              if header === "updatedAt" && labels.task.updatedAt
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/tasks?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.task[header]}
+                  else 
+                    a(href=`/tasks?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.task[header]}
+                  
+                  if orderBy === 'updatedAt'
+                    span.order-wrapper= orderDir
+
+        tbody 
+          if tasks.length > 0
+            each task in tasks 
+              tr                
+                if labels.task.id
+                  td
+                    a(href=`/tasks/${task.id}`) #{task.id}
+                
+                if labels.task.name
+                  td 
+                    a(href=`/tasks/${task.id}`) #{task.name}
+                    if (!task.isActive)
+                      span.archive-status (archived)
+                
+                if labels.task.taskTypeId
+                  td #{task.taskType || "-" }
+                
+                if labels.task.updatedBy
+                  td #{task.updatedByEmail || "-" }
+
+                if labels.task.updatedAt
+                  td #{task.updatedAt || "-" } 
+          else 
+            tr 
+              td(colspan=7).text-center No #{downcase(labels.module.task)} found.
+    
+    .col-12 
+      +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

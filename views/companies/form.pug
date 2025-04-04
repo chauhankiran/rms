@@ -1,0 +1,25 @@
+//- name
+if labels.company.name
+  .form-group 
+    label(for="name") #{labels.company.name}
+    input(type="text", name="name", id="name", value=company ? company.name : "", placeholder="Google, Inc.", autofocus=true)
+
+//- employeeSize
+if labels.company.employeeSize
+  .form-group 
+    label(for="employeeSize") #{labels.company.employeeSize}
+    input(type="text", name="employeeSize", id="employeeSize", value=company ? company.employeeSize : "", placeholder="1200", autofocus=true)
+
+//- companySourceId
+if labels.company.companySourceId
+  .form-group 
+    label(for="companySourceId") #{labels.company.companySourceId}
+    select(name="companySourceId", id="companySourceId")
+      for companySource in companySources
+        option(value=companySource.id, selected=company && companySource.id == company.companySourceId) #{companySource.name}
+
+//- description
+if labels.company.description
+  .form-group 
+    label(for="description") #{labels.company.description}
+    textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{company ? company.description : ""}

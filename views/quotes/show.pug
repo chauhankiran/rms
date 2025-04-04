@@ -1,0 +1,96 @@
+extends ../layout
+
+block content
+  .row.align-items-center 
+    .col-6 
+      h1= title
+    .col-6.text-end 
+      a(href="/quotes").btn.is-muted.mr-4 &larr; Back 
+      .dropdown
+        button.dropdown-trigger Actions
+        .dropdown-menu
+          .dropdown-content 
+            a(href=`/quotes/${quote.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.quote))}
+            button.dropdown-item(onclick="activeQuote()") Active #{singular(downcase(labels.module.quote))} 
+            button.dropdown-item(onclick="archiveQuote()") Archive #{singular(downcase(labels.module.quote))} 
+            button.dropdown-item(onclick="deleteQuote()") Delete #{singular(downcase(labels.module.quote))} 
+
+    .col-12
+      include ../partials/flash
+
+    .col-12 
+      .row 
+        if labels.quote.name
+          .col-12.mb-4
+            label(for="name").field-name #{labels.quote.name} 
+            span.field-value #{quote.name}
+              if !quote.isActive 
+                span.archive-status (archived)
+
+        if labels.quote.total
+          .col-12.mb-4
+            label(for="total").field-name #{labels.quote.total}
+            span.field-value #{quote.total}
+
+        if labels.quote.description
+          .col-12.mb-4
+            label(for="description").field-name #{labels.quote.description}
+            span.field-value #{quote.description || "-"}
+        
+        if labels.quote.createdAt
+          .col-6.mb-4
+            label(for="createdAt").field-name #{labels.quote.createdAt}
+            span.field-value #{quote.createdAt || "-"}
+        
+        if labels.quote.updatedAt
+          .col-6.mb-4
+            label(for="updatedAt").field-name #{labels.quote.updatedAt}
+            span.field-value #{quote.updatedAt || "-"}
+
+        if labels.quote.createdBy
+          .col-6.mb-4
+            label(for="createdBy").field-name #{labels.quote.createdBy}
+            span.field-value #{quote.createdByEmail || "-"}
+        
+        if labels.quote.updatedBy
+          .col-6.mb-4
+            label(for="updatedBy").field-name #{labels.quote.updatedBy}
+            span.field-value #{quote.updatedByEmail || "-"}
+
+
+      form(action=`/quotes/${quote.id}?_method=DELETE`, name="deleteQuoteForm", method="post")
+
+      form(action=`/quotes/${quote.id}/active?_method=PUT`, name="activeQuoteForm", method="post")
+
+      form(action=`/quotes/${quote.id}/archive?_method=PUT`, name="archiveQuoteForm", method="post")
+
+  hr
+  
+  .row.mb-4.mt-4.align-items-center
+    .col-6 
+      h3 #{plural(capitalize(labels.module.task))}
+    .col-6.text-end
+      a(href=`/tasks/new?quoteId=${quote.id}`).btn New #{singular(capitalize(labels.module.task))}
+
+  .row
+    .col-12 
+      table 
+        thead 
+          tr 
+            th Id 
+            th Name 
+            th Updated at 
+            th Updated by 
+        tbody 
+          if tasks.length > 0
+            for task in tasks  
+              tr 
+                td 
+                  a(href=`/tasks/${task.id}`) #{task.id}
+                td 
+                  a(href=`/tasks/${task.id}`) #{task.name}
+                td #{task.updatedAt || "-"}
+                td #{task.updatedByEmail || "-"}
+          else 
+            tr 
+              td(colspan=4).text-center No #{plural(downcase(labels.module.task))} found.

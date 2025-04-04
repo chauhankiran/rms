@@ -1,0 +1,19 @@
+//- name
+if labels.ticket.name
+  .form-group 
+    label(for="name") #{labels.ticket.name}
+    input(type="text", name="name", id="name" value=ticket ? ticket.name : "", placeholder="Website is not loading", autofocus=true)
+        
+//- ticketTypeId
+if labels.ticket.ticketTypeId
+  .form-group 
+    label(for="ticketTypeId") #{labels.ticket.ticketTypeId}
+    select(name="ticketTypeId", id="ticketTypeId")
+      for ticketType in ticketTypes
+        option(value=ticketType.id, selected=ticket && ticketType.id == ticket.ticketTypeId) #{ticketType.name}
+
+//- description
+if labels.ticket.description
+  .form-group 
+    label(for="description") #{labels.ticket.description}
+    textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{ticket ? ticket.description : ""}

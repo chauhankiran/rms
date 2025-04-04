@@ -1,0 +1,87 @@
+extends ../layout
+include ../mixins/pagination
+
+block content
+  .row.align-items-center 
+    .col-8 
+      h1 #{title} (#{count})
+    .col-4.text-end 
+      a(href="/contacts/new").btn New #{downcase(singular(labels.module.contact))}
+    
+    .col-12
+      form(action="/contacts", method="get") 
+        .form-group 
+          input(type="hidden", name="orderBy", value=orderBy)
+          input(type="hidden", name="orderDir", value=orderDir)
+          input(type="text", name="search", value=search, autofocus=true, placeholder="Type last name and press Enter")
+
+      include ../partials/flash
+    
+      table
+        thead 
+          tr
+            each header in headers
+              if header === "id" && labels.contact.id
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/contacts?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
+                  else 
+                    a(href=`/contacts?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
+                  
+                  if orderBy === 'id'
+                    span.order-wrapper= orderDir
+              
+              if header === "name" && labels.contact.name
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/contacts?orderBy=lastName&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
+                  else 
+                    a(href=`/contacts?orderBy=lastName&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
+                  
+                  if orderBy === 'lastName'
+                    span.order-wrapper= orderDir
+
+              if header === "contactIndustryId" && labels.contact.contactIndustryId
+                th #{labels.contact[header]}
+
+              if header === "updatedBy" && labels.contact.updatedBy
+                th #{labels.contact[header]}
+              
+              if header === "updatedAt" && labels.contact.updatedAt
+                th
+                  if orderDir === 'ASC'
+                    a(href=`/contacts?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
+                  else 
+                    a(href=`/contacts?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
+                  
+                  if orderBy === 'updatedAt'
+                    span.order-wrapper= orderDir
+            
+        tbody 
+          if contacts.length > 0
+            each contact in contacts 
+              tr
+                if labels.contact.id
+                  td
+                    a(href=`/contacts/${contact.id}`) #{contact.id}
+
+                if labels.contact.firstName || labels.contact.lastName
+                  td 
+                    a(href=`/contacts/${contact.id}`) #{contact.firstName + " " + contact.lastName}
+                    if (!contact.isActive)
+                      span.archive-status (archived)
+                
+                if labels.contact.contactIndustryId
+                  td #{contact.contactIndustry || "-" }
+                
+                if labels.contact.updatedBy
+                  td #{contact.updatedByEmail || "-" }
+                
+                if labels.contact.updatedAt
+                  td #{contact.updatedAt || "-" } 
+          else 
+            tr 
+              td(colspan=6).text-center No #{downcase(labels.module.contact)} found.
+
+    .col-12 
+      +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

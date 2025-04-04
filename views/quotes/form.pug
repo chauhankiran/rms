@@ -1,0 +1,17 @@
+//- name
+if labels.quote.name
+  .form-group 
+    label(for="name") #{labels.quote.name}
+    input(type="text", name="name", id="name", value=quote ? quote.name : "", placeholder="42 New LED Monitors", autofocus=true)
+
+//- total
+if labels.quote.total
+  .form-group 
+    label(for="total") #{labels.quote.total}
+    input(type="text", name="total", id="total", value=quote ? quote.total : 0, placeholder="1200")
+
+//- description
+if labels.quote.description
+  .form-group 
+    label(for="description") #{labels.quote.description}
+    textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{quote ? quote.description : ""}
