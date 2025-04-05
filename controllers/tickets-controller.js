@@ -8,272 +8,300 @@ const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
 
 const columnsObj = {
-  id: "t.id",
-  name: "t.name",
-  ticketTypeId: 'tt.name AS "ticketType"',
-  createdBy: 'creator.email AS "createdByEmail"',
-  createdAt: 't."createdAt"',
-  updatedBy: 'updater.email AS "updatedByEmail"',
-  updatedAt: 't."updatedAt"',
+    id: "t.id",
+    name: "t.name",
+    ticketTypeId: 'tt.name AS "ticketType"',
+    createdBy: 'creator.email AS "createdByEmail"',
+    createdAt: 't."createdAt"',
+    updatedBy: 'updater.email AS "updatedByEmail"',
+    updatedAt: 't."updatedAt"',
 };
 
 module.exports = {
-  index: async (req, res, next) => {
-    const search = req.query.search || null;
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-    const orderBy = req.query.orderBy || "id";
-    const orderDir = req.query.orderDir || "DESC";
+    index: async (req, res, next) => {
+        const search = req.query.search || null;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+        const orderBy = req.query.orderBy || "id";
+        const orderDir = req.query.orderDir || "DESC";
 
-    try {
-      const ticketViews = await ticketViewsService.pluck(["name"]);
+        try {
+            const ticketViews = await ticketViewsService.pluck(["name"]);
 
-      let columns = 't."isActive",';
-      let headers = [];
-      for (const ticketView of ticketViews) {
-        const column = columnsObj[ticketView.name];
-        if (column) {
-          columns += `${column},`;
-          headers.push(ticketView.name);
+            let columns = 't."isActive",';
+            let headers = [];
+            for (const ticketView of ticketViews) {
+                const column = columnsObj[ticketView.name];
+                if (column) {
+                    columns += `${column},`;
+                    headers.push(ticketView.name);
+                }
+            }
+
+            // TEMP: Track the issue
+            // https://github.com/porsager/postgres/issues/894
+            columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
+
+            const optionsObj = {
+                search,
+                limit,
+                skip,
+                orderBy,
+                orderDir,
+                columns,
+            };
+            const tickets = await ticketsService.find(optionsObj);
+            const { count } = await ticketsService.count(optionsObj);
+
+            const pages = Math.ceil(count / limit);
+
+            const paginationLinks = generatePaginationLinks({
+                link: "/tickets",
+                page,
+                pages,
+                search,
+                limit,
+                orderBy,
+                orderDir,
+            });
+
+            return res.render("tickets/index", {
+                title: capitalize(req.session.labels.module.ticket),
+                tickets,
+                paginationLinks,
+                search,
+                count,
+                orderBy,
+                orderDir,
+                headers,
+            });
+        } catch (err) {
+            next(err);
         }
-      }
+    },
 
-      // TEMP: Track the issue
-      // https://github.com/porsager/postgres/issues/894
-      columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
+    new: async (req, res, next) => {
+        const companyId = req.query.companyId;
+        const contactId = req.query.contactId;
+        const dealId = req.query.dealId;
 
-      const optionsObj = { search, limit, skip, orderBy, orderDir, columns };
-      const tickets = await ticketsService.find(optionsObj);
-      const { count } = await ticketsService.count(optionsObj);
+        try {
+            const ticketTypes = await ticketTypesService.pluck(["id", "name"]);
 
-      const pages = Math.ceil(count / limit);
+            return res.render("tickets/new", {
+                title:
+                    "New " +
+                    pluralize.singular(
+                        req.session.labels.module.ticket.toLowerCase()
+                    ),
+                ticketTypes,
+                companyId,
+                contactId,
+                dealId,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
 
-      const paginationLinks = generatePaginationLinks({
-        link: "/tickets",
-        page,
-        pages,
-        search,
-        limit,
-        orderBy,
-        orderDir,
-      });
+    create: async (req, res, next) => {
+        const {
+            name,
+            description,
+            ticketTypeId,
+            companyId,
+            contactId,
+            dealId,
+        } = req.body;
 
-      return res.render("tickets/index", {
-        title: capitalize(req.session.labels.module.ticket),
-        tickets,
-        paginationLinks,
-        search,
-        count,
-        orderBy,
-        orderDir,
-        headers,
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
+        if (!name) {
+            req.flash("error", "Name is required.");
+            return res.redirect(`/tickets/new`);
+        }
 
-  new: async (req, res, next) => {
-    const companyId = req.query.companyId;
-    const contactId = req.query.contactId;
-    const dealId = req.query.dealId;
+        try {
+            const ticketObj = {
+                name,
+                description,
+                ticketTypeId,
+                companyId: companyId || null,
+                contactId: contactId || null,
+                dealId: dealId || null,
+                createdBy: req.session.currentUser.id,
+            };
+            await ticketsService.create(ticketObj);
 
-    try {
-      const ticketTypes = await ticketTypesService.pluck(["id", "name"]);
+            req.flash("info", "Ticket is created.");
 
-      return res.render("tickets/new", {
-        title:
-          "New " +
-          pluralize.singular(req.session.labels.module.ticket.toLowerCase()),
-        ticketTypes,
-        companyId,
-        contactId,
-        dealId,
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
+            if (companyId) {
+                return res.redirect(`/companies/${companyId}`);
+            } else if (contactId) {
+                return res.redirect(`/contacts/${contactId}`);
+            } else if (dealId) {
+                return res.redirect(`/deals/${dealId}`);
+            } else {
+                return res.redirect("/tickets");
+            }
+        } catch (err) {
+            next(err);
+        }
+    },
 
-  create: async (req, res, next) => {
-    const { name, description, ticketTypeId, companyId, contactId, dealId } =
-      req.body;
+    show: async (req, res, next) => {
+        const id = req.params.id;
 
-    if (!name) {
-      req.flash("error", "Name is required.");
-      return res.redirect(`/tickets/new`);
-    }
+        try {
+            const ticket = await ticketsService.findOne(id);
 
-    try {
-      const ticketObj = {
-        name,
-        description,
-        ticketTypeId,
-        companyId: companyId || null,
-        contactId: contactId || null,
-        dealId: dealId || null,
-        createdBy: req.session.currentUser.id,
-      };
-      await ticketsService.create(ticketObj);
+            if (!ticket) {
+                return next(notFound());
+            }
 
-      req.flash("info", "Ticket is created.");
-      return res.redirect("/tickets");
-    } catch (err) {
-      next(err);
-    }
-  },
+            // Get all associated tasks.
+            const optionsObj = {
+                skip: 0,
+                limit: 100,
+                orderBy: "id",
+                orderDir: "DESC",
+                ticketId: ticket.id,
+                columns: [
+                    "t.id",
+                    "t.name",
+                    'updater.email AS "updatedByEmail"',
+                    't."updatedAt"',
+                ],
+            };
+            const tasks = await tasksService.find(optionsObj);
 
-  show: async (req, res, next) => {
-    const id = req.params.id;
+            return res.render("tickets/show", {
+                title:
+                    "Show " +
+                    pluralize.singular(
+                        req.session.labels.module.ticket.toLowerCase()
+                    ),
+                ticket,
+                tasks,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    try {
-      const ticket = await ticketsService.findOne(id);
+    edit: async (req, res, next) => {
+        const id = req.params.id;
 
-      if (!ticket) {
-        return next(notFound());
-      }
+        try {
+            const ticket = await ticketsService.findOne(id);
 
-      // Get all associated tasks.
-      const optionsObj = {
-        skip: 0,
-        limit: 100,
-        orderBy: "id",
-        orderDir: "DESC",
-        ticketId: ticket.id,
-        columns: [
-          "t.id",
-          "t.name",
-          'updater.email AS "updatedByEmail"',
-          't."updatedAt"',
-        ],
-      };
-      const tasks = await tasksService.find(optionsObj);
+            if (!ticket) {
+                return next(notFound());
+            }
 
-      return res.render("tickets/show", {
-        title:
-          "Show " +
-          pluralize.singular(req.session.labels.module.ticket.toLowerCase()),
-        ticket,
-        tasks,
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
+            const ticketTypes = await ticketTypesService.pluck(["id", "name"]);
 
-  edit: async (req, res, next) => {
-    const id = req.params.id;
+            return res.render("tickets/edit", {
+                title:
+                    "Edit " +
+                    pluralize.singular(
+                        req.session.labels.module.ticket.toLowerCase()
+                    ),
+                ticket,
+                ticketTypes,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    try {
-      const ticket = await ticketsService.findOne(id);
+    update: async (req, res, next) => {
+        const id = req.params.id;
+        const { name, description, ticketTypeId } = req.body;
 
-      if (!ticket) {
-        return next(notFound());
-      }
+        if (!name) {
+            req.flash("error", "Name is required.");
+            return res.redirect(`/tickets/${id}/edit`);
+        }
 
-      const ticketTypes = await ticketTypesService.pluck(["id", "name"]);
+        try {
+            const ticket = await ticketsService.findOne(id);
 
-      return res.render("tickets/edit", {
-        title:
-          "Edit " +
-          pluralize.singular(req.session.labels.module.ticket.toLowerCase()),
-        ticket,
-        ticketTypes,
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
+            if (!ticket) {
+                return next(notFound());
+            }
 
-  update: async (req, res, next) => {
-    const id = req.params.id;
-    const { name, description, ticketTypeId } = req.body;
+            const ticketObj = {
+                id,
+                name,
+                description,
+                ticketTypeId,
+                updatedBy: req.session.currentUser.id,
+            };
+            await ticketsService.update(ticketObj);
 
-    if (!name) {
-      req.flash("error", "Name is required.");
-      return res.redirect(`/tickets/${id}/edit`);
-    }
+            req.flash("info", "Ticket is updated.");
+            return res.redirect(`/tickets/${id}`);
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    try {
-      const ticket = await ticketsService.findOne(id);
+    destroy: async (req, res, next) => {
+        const id = req.params.id;
 
-      if (!ticket) {
-        return next(notFound());
-      }
+        try {
+            const ticket = await ticketsService.findOne(id);
 
-      const ticketObj = {
-        id,
-        name,
-        description,
-        ticketTypeId,
-        updatedBy: req.session.currentUser.id,
-      };
-      await ticketsService.update(ticketObj);
+            if (!ticket) {
+                return next(notFound());
+            }
 
-      req.flash("info", "Ticket is updated.");
-      return res.redirect(`/tickets/${id}`);
-    } catch (err) {
-      next(err);
-    }
-  },
+            await ticketsService.destroy(id);
 
-  destroy: async (req, res, next) => {
-    const id = req.params.id;
+            req.flash("info", "Ticket is deleted.");
+            return res.redirect("/tickets");
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    try {
-      const ticket = await ticketsService.findOne(id);
+    archive: async (req, res, next) => {
+        const id = req.params.id;
 
-      if (!ticket) {
-        return next(notFound());
-      }
+        try {
+            const ticket = await ticketsService.findOne(id);
 
-      await ticketsService.destroy(id);
+            if (!ticket) {
+                return next(notFound());
+            }
 
-      req.flash("info", "Ticket is deleted.");
-      return res.redirect("/tickets");
-    } catch (err) {
-      next(err);
-    }
-  },
+            const ticketObj = { id, updatedBy: req.session.currentUser.id };
+            await ticketsService.archive(ticketObj);
 
-  archive: async (req, res, next) => {
-    const id = req.params.id;
+            req.flash("info", "Ticket is archived.");
+            return res.redirect(`/tickets/${id}`);
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    try {
-      const ticket = await ticketsService.findOne(id);
+    active: async (req, res, next) => {
+        const id = req.params.id;
 
-      if (!ticket) {
-        return next(notFound());
-      }
+        try {
+            const ticket = await ticketsService.findOne(id);
 
-      const ticketObj = { id, updatedBy: req.session.currentUser.id };
-      await ticketsService.archive(ticketObj);
+            if (!ticket) {
+                return next(notFound());
+            }
 
-      req.flash("info", "Ticket is archived.");
-      return res.redirect(`/tickets/${id}`);
-    } catch (err) {
-      next(err);
-    }
-  },
+            const ticketObj = { id, updatedBy: req.session.currentUser.id };
+            await ticketsService.active(ticketObj);
 
-  active: async (req, res, next) => {
-    const id = req.params.id;
-
-    try {
-      const ticket = await ticketsService.findOne(id);
-
-      if (!ticket) {
-        return next(notFound());
-      }
-
-      const ticketObj = { id, updatedBy: req.session.currentUser.id };
-      await ticketsService.active(ticketObj);
-
-      req.flash("info", "Ticket is activated.");
-      return res.redirect(`/tickets/${id}`);
-    } catch (err) {
-      next(err);
-    }
-  },
+            req.flash("info", "Ticket is activated.");
+            return res.redirect(`/tickets/${id}`);
+        } catch (err) {
+            next(err);
+        }
+    },
 };

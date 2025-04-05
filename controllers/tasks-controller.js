@@ -7,269 +7,295 @@ const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
 
 const columnsObj = {
-  id: "t.id",
-  name: "t.name",
-  taskTypeId: 'tt.name AS "taskType"',
-  createdBy: 'creator.email AS "createdByEmail"',
-  createdAt: 't."createdAt"',
-  updatedBy: 'updater.email AS "updatedByEmail"',
-  updatedAt: 't."updatedAt"',
+    id: "t.id",
+    name: "t.name",
+    taskTypeId: 'tt.name AS "taskType"',
+    createdBy: 'creator.email AS "createdByEmail"',
+    createdAt: 't."createdAt"',
+    updatedBy: 'updater.email AS "updatedByEmail"',
+    updatedAt: 't."updatedAt"',
 };
 
 module.exports = {
-  index: async (req, res, next) => {
-    const search = req.query.search || null;
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-    const orderBy = req.query.orderBy || "id";
-    const orderDir = req.query.orderDir || "DESC";
+    index: async (req, res, next) => {
+        const search = req.query.search || null;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+        const orderBy = req.query.orderBy || "id";
+        const orderDir = req.query.orderDir || "DESC";
 
-    try {
-      const taskViews = await taskViewsService.pluck(["name"]);
+        try {
+            const taskViews = await taskViewsService.pluck(["name"]);
 
-      let columns = 't."isActive",';
-      let headers = [];
-      for (const taskView of taskViews) {
-        const column = columnsObj[taskView.name];
-        if (column) {
-          columns += `${column},`;
-          headers.push(taskView.name);
+            let columns = 't."isActive",';
+            let headers = [];
+            for (const taskView of taskViews) {
+                const column = columnsObj[taskView.name];
+                if (column) {
+                    columns += `${column},`;
+                    headers.push(taskView.name);
+                }
+            }
+
+            // TEMP: Track the issue
+            // https://github.com/porsager/postgres/issues/894
+            columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
+
+            const optionsObj = {
+                search,
+                limit,
+                skip,
+                orderBy,
+                orderDir,
+                columns,
+            };
+            const tasks = await tasksService.find(optionsObj);
+            const { count } = await tasksService.count(optionsObj);
+
+            const pages = Math.ceil(count / limit);
+
+            const paginationLinks = generatePaginationLinks({
+                link: "/tasks",
+                page,
+                pages,
+                search,
+                limit,
+                orderBy,
+                orderDir,
+            });
+
+            return res.render("tasks/index", {
+                title: capitalize(req.session.labels.module.task),
+                tasks,
+                paginationLinks,
+                search,
+                count,
+                orderBy,
+                orderDir,
+                headers,
+            });
+        } catch (err) {
+            next(err);
         }
-      }
+    },
 
-      // TEMP: Track the issue
-      // https://github.com/porsager/postgres/issues/894
-      columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
+    new: async (req, res, next) => {
+        const companyId = req.query.companyId;
+        const contactId = req.query.contactId;
+        const dealId = req.query.dealId;
+        const quoteId = req.query.quoteId;
+        const ticketId = req.query.ticketId;
 
-      const optionsObj = { search, limit, skip, orderBy, orderDir, columns };
-      const tasks = await tasksService.find(optionsObj);
-      const { count } = await tasksService.count(optionsObj);
+        try {
+            const taskTypes = await taskTypesService.pluck(["id", "name"]);
 
-      const pages = Math.ceil(count / limit);
+            return res.render("tasks/new", {
+                title:
+                    "New " +
+                    pluralize.singular(
+                        req.session.labels.module.task.toLowerCase()
+                    ),
+                taskTypes,
+                companyId,
+                contactId,
+                dealId,
+                quoteId,
+                ticketId,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
 
-      const paginationLinks = generatePaginationLinks({
-        link: "/tasks",
-        page,
-        pages,
-        search,
-        limit,
-        orderBy,
-        orderDir,
-      });
+    create: async (req, res, next) => {
+        const {
+            name,
+            description,
+            taskTypeId,
+            companyId,
+            contactId,
+            dealId,
+            quoteId,
+            ticketId,
+        } = req.body;
 
-      return res.render("tasks/index", {
-        title: capitalize(req.session.labels.module.task),
-        tasks,
-        paginationLinks,
-        search,
-        count,
-        orderBy,
-        orderDir,
-        headers,
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
+        if (!name) {
+            req.flash("error", "Name is required.");
+            return res.redirect(`/tasks/new`);
+        }
 
-  new: async (req, res, next) => {
-    const companyId = req.query.companyId;
-    const contactId = req.query.contactId;
-    const dealId = req.query.dealId;
-    const quoteId = req.query.quoteId;
-    const ticketId = req.query.ticketId;
+        try {
+            const taskObj = {
+                name,
+                description,
+                taskTypeId,
+                companyId: companyId || null,
+                contactId: contactId || null,
+                dealId: dealId || null,
+                quoteId: quoteId || null,
+                ticketId: ticketId || null,
+                createdBy: req.session.currentUser.id,
+            };
+            await tasksService.create(taskObj);
 
-    try {
-      const taskTypes = await taskTypesService.pluck(["id", "name"]);
+            req.flash("info", "Task is created.");
 
-      return res.render("tasks/new", {
-        title:
-          "New " +
-          pluralize.singular(req.session.labels.module.task.toLowerCase()),
-        taskTypes,
-        companyId,
-        contactId,
-        dealId,
-        quoteId,
-        ticketId,
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
+            if (companyId) {
+                return res.redirect(`/companies/${companyId}`);
+            } else if (contactId) {
+                return res.redirect(`/contacts/${contactId}`);
+            } else if (dealId) {
+                return res.redirect(`/deals/${dealId}`);
+            } else if (quoteId) {
+                return res.redirect(`/quotes/${quoteId}`);
+            } else if (ticketId) {
+                return res.redirect(`/tickets/${ticketId}`);
+            } else {
+                return res.redirect("/tasks");
+            }
+        } catch (err) {
+            next(err);
+        }
+    },
 
-  create: async (req, res, next) => {
-    const {
-      name,
-      description,
-      taskTypeId,
-      companyId,
-      contactId,
-      dealId,
-      quoteId,
-      ticketId,
-    } = req.body;
+    show: async (req, res, next) => {
+        const id = req.params.id;
 
-    if (!name) {
-      req.flash("error", "Name is required.");
-      return res.redirect(`/tasks/new`);
-    }
+        try {
+            const task = await tasksService.findOne(id);
 
-    try {
-      const taskObj = {
-        name,
-        description,
-        taskTypeId,
-        companyId: companyId || null,
-        contactId: contactId || null,
-        dealId: dealId || null,
-        quoteId: quoteId || null,
-        ticketId: ticketId || null,
-        createdBy: req.session.currentUser.id,
-      };
-      await tasksService.create(taskObj);
+            if (!task) {
+                return next(notFound());
+            }
 
-      req.flash("info", "Task is created.");
-      return res.redirect("/tasks");
-    } catch (err) {
-      next(err);
-    }
-  },
+            return res.render("tasks/show", {
+                title:
+                    "Show " +
+                    pluralize.singular(
+                        req.session.labels.module.task.toLowerCase()
+                    ),
+                task,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
 
-  show: async (req, res, next) => {
-    const id = req.params.id;
+    edit: async (req, res, next) => {
+        const id = req.params.id;
 
-    try {
-      const task = await tasksService.findOne(id);
+        try {
+            const task = await tasksService.findOne(id);
 
-      if (!task) {
-        return next(notFound());
-      }
+            if (!task) {
+                return next(notFound());
+            }
 
-      return res.render("tasks/show", {
-        title:
-          "Show " +
-          pluralize.singular(req.session.labels.module.task.toLowerCase()),
-        task,
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
+            const taskTypes = await taskTypesService.pluck(["id", "name"]);
 
-  edit: async (req, res, next) => {
-    const id = req.params.id;
+            return res.render("tasks/edit", {
+                title:
+                    "Edit " +
+                    pluralize.singular(
+                        req.session.labels.module.task.toLowerCase()
+                    ),
+                task,
+                taskTypes,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    try {
-      const task = await tasksService.findOne(id);
+    update: async (req, res, next) => {
+        const id = req.params.id;
+        const { name, description, taskTypeId } = req.body;
 
-      if (!task) {
-        return next(notFound());
-      }
+        if (!name) {
+            return next(notFound());
+        }
 
-      const taskTypes = await taskTypesService.pluck(["id", "name"]);
+        try {
+            const task = await tasksService.findOne(id);
 
-      return res.render("tasks/edit", {
-        title:
-          "Edit " +
-          pluralize.singular(req.session.labels.module.task.toLowerCase()),
-        task,
-        taskTypes,
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
+            if (!task) {
+                req.flash("error", "Task not found.");
+                return res.redirect("/tasks");
+            }
 
-  update: async (req, res, next) => {
-    const id = req.params.id;
-    const { name, description, taskTypeId } = req.body;
+            const taskObj = {
+                id,
+                name,
+                description,
+                taskTypeId,
+                updatedBy: req.session.currentUser.id,
+            };
+            await tasksService.update(taskObj);
 
-    if (!name) {
-      return next(notFound());
-    }
+            req.flash("info", "Task is updated.");
+            return res.redirect(`/tasks/${id}`);
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    try {
-      const task = await tasksService.findOne(id);
+    destroy: async (req, res, next) => {
+        const id = req.params.id;
 
-      if (!task) {
-        req.flash("error", "Task not found.");
-        return res.redirect("/tasks");
-      }
+        try {
+            const task = await tasksService.findOne(id);
 
-      const taskObj = {
-        id,
-        name,
-        description,
-        taskTypeId,
-        updatedBy: req.session.currentUser.id,
-      };
-      await tasksService.update(taskObj);
+            if (!task) {
+                return next(notFound());
+            }
 
-      req.flash("info", "Task is updated.");
-      return res.redirect(`/tasks/${id}`);
-    } catch (err) {
-      next(err);
-    }
-  },
+            await tasksService.destroy(id);
 
-  destroy: async (req, res, next) => {
-    const id = req.params.id;
+            req.flash("info", "Task is deleted.");
+            return res.redirect("/tasks");
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    try {
-      const task = await tasksService.findOne(id);
+    archive: async (req, res, next) => {
+        const id = req.params.id;
 
-      if (!task) {
-        return next(notFound());
-      }
+        try {
+            const task = await tasksService.findOne(id);
 
-      await tasksService.destroy(id);
+            if (!task) {
+                return next(notFound());
+            }
 
-      req.flash("info", "Task is deleted.");
-      return res.redirect("/tasks");
-    } catch (err) {
-      next(err);
-    }
-  },
+            const taskObj = { id, updatedBy: req.session.currentUser.id };
+            await tasksService.archive(taskObj);
 
-  archive: async (req, res, next) => {
-    const id = req.params.id;
+            req.flash("info", "Task is archived.");
+            return res.redirect(`/tasks/${id}`);
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    try {
-      const task = await tasksService.findOne(id);
+    active: async (req, res, next) => {
+        const id = req.params.id;
 
-      if (!task) {
-        return next(notFound());
-      }
+        try {
+            const task = await tasksService.findOne(id);
 
-      const taskObj = { id, updatedBy: req.session.currentUser.id };
-      await tasksService.archive(taskObj);
+            if (!task) {
+                return next(notFound());
+            }
 
-      req.flash("info", "Task is archived.");
-      return res.redirect(`/tasks/${id}`);
-    } catch (err) {
-      next(err);
-    }
-  },
+            const taskObj = { id, updatedBy: req.session.currentUser.id };
+            await tasksService.active(taskObj);
 
-  active: async (req, res, next) => {
-    const id = req.params.id;
-
-    try {
-      const task = await tasksService.findOne(id);
-
-      if (!task) {
-        return next(notFound());
-      }
-
-      const taskObj = { id, updatedBy: req.session.currentUser.id };
-      await tasksService.active(taskObj);
-
-      req.flash("info", "Task is activated.");
-      return res.redirect(`/tasks/${id}`);
-    } catch (err) {
-      next(err);
-    }
-  },
+            req.flash("info", "Task is activated.");
+            return res.redirect(`/tasks/${id}`);
+        } catch (err) {
+            next(err);
+        }
+    },
 };

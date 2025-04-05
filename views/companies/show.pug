@@ -92,7 +92,8 @@ block content
               tr 
                 td 
                   a(href=`/contacts/${contact.id}`) #{contact.id}
-                td #{contact.firstName + " " + contact.lastName}
+                td
+                  a(href=`/contacts/${contact.id}`) #{contact.firstName + " " + contact.lastName}
                 td #{contact.updatedAt || "-"}
                 td #{contact.updatedByEmail || "-"}
           else 

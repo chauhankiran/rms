@@ -1,28 +1,3 @@
-@font-face {
-    font-family: "Atkinson";
-    src: url("../fonts/Atkinson-Hyperlegible-Bold-102a.woff2");
-    font-weight: 700;
-    font-style: normal;
-}
-@font-face {
-    font-family: "Atkinson";
-    src: url("../fonts/Atkinson-Hyperlegible-BoldItalic-102a.woff2");
-    font-weight: 700;
-    font-style: italic;
-}
-@font-face {
-    font-family: "Atkinson";
-    src: url("../fonts/Atkinson-Hyperlegible-Italic-102a.woff2");
-    font-weight: 400;
-    font-style: italic;
-}
-@font-face {
-    font-family: "Atkinson";
-    src: url("../fonts/Atkinson-Hyperlegible-Regular-102a.woff2");
-    font-weight: 400;
-    font-style: normal;
-}
-
 *,
 *::before,
 *::after {
@@ -36,8 +11,7 @@ body {
 body {
     background-color: #fff;
     color: #333;
-    font-family: "Atkinson", "Lucida Grande", Helvetica, Arial, sans-serif;
-    /* font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; */
+    font-family: "Lucida Grande", "Helvetica Neue", Helvetica, Arial, sans-serif;
     /* font-family: "skolar", "Hoefler Text",
                   Constantia, "Lucida Bright", Lucidabright,
                   "Lucida Serif", Lucida, "Bitstream Vera Serif",

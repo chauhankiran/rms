@@ -10,307 +10,327 @@ const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
 
 const columnsObj = {
-  id: "d.id",
-  name: "d.name",
-  total: "d.total",
-  dealSourceId: 'ds.name AS "dealSource"',
-  createdBy: 'creator.email AS "createdByEmail"',
-  createdAt: 'd."createdAt"',
-  updatedBy: 'updater.email AS "updatedByEmail"',
-  updatedAt: 'd."updatedAt"',
+    id: "d.id",
+    name: "d.name",
+    total: "d.total",
+    dealSourceId: 'ds.name AS "dealSource"',
+    createdBy: 'creator.email AS "createdByEmail"',
+    createdAt: 'd."createdAt"',
+    updatedBy: 'updater.email AS "updatedByEmail"',
+    updatedAt: 'd."updatedAt"',
 };
 
 module.exports = {
-  index: async (req, res, next) => {
-    const search = req.query.search || null;
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-    const orderBy = req.query.orderBy || "id";
-    const orderDir = req.query.orderDir || "DESC";
+    index: async (req, res, next) => {
+        const search = req.query.search || null;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+        const orderBy = req.query.orderBy || "id";
+        const orderDir = req.query.orderDir || "DESC";
 
-    try {
-      const dealViews = await dealViewsService.pluck(["name"]);
+        try {
+            const dealViews = await dealViewsService.pluck(["name"]);
 
-      let columns = 'd."isActive",';
-      let headers = [];
-      for (const dealView of dealViews) {
-        const column = columnsObj[dealView.name];
-        if (column) {
-          columns += `${column},`;
-          headers.push(dealView.name);
+            let columns = 'd."isActive",';
+            let headers = [];
+            for (const dealView of dealViews) {
+                const column = columnsObj[dealView.name];
+                if (column) {
+                    columns += `${column},`;
+                    headers.push(dealView.name);
+                }
+            }
+
+            // TEMP: Track the issue
+            // https://github.com/porsager/postgres/issues/894
+            columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
+
+            const optionsObj = {
+                search,
+                limit,
+                skip,
+                orderBy,
+                orderDir,
+                columns,
+            };
+            const deals = await dealsService.find(optionsObj);
+            const { count } = await dealsService.count(optionsObj);
+
+            const pages = Math.ceil(count / limit);
+
+            const paginationLinks = generatePaginationLinks({
+                link: "/deals",
+                page,
+                pages,
+                search,
+                limit,
+                orderBy,
+                orderDir,
+            });
+
+            return res.render("deals/index", {
+                title: capitalize(req.session.labels.module.deal),
+                deals,
+                paginationLinks,
+                search,
+                count,
+                orderBy,
+                orderDir,
+                headers,
+            });
+        } catch (err) {
+            next(err);
         }
-      }
+    },
 
-      // TEMP: Track the issue
-      // https://github.com/porsager/postgres/issues/894
-      columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
+    new: async (req, res, next) => {
+        const companyId = req.query.companyId;
+        const contactId = req.query.contactId;
 
-      const optionsObj = { search, limit, skip, orderBy, orderDir, columns };
-      const deals = await dealsService.find(optionsObj);
-      const { count } = await dealsService.count(optionsObj);
+        try {
+            const dealSources = await dealSourcesService.pluck(["id", "name"]);
 
-      const pages = Math.ceil(count / limit);
+            return res.render("deals/new", {
+                title:
+                    "New " +
+                    pluralize.singular(
+                        req.session.labels.module.deal.toLowerCase()
+                    ),
+                dealSources,
+                companyId,
+                contactId,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
 
-      const paginationLinks = generatePaginationLinks({
-        link: "/deals",
-        page,
-        pages,
-        search,
-        limit,
-        orderBy,
-        orderDir,
-      });
+    create: async (req, res, next) => {
+        const { name, total, description, dealSourceId, companyId, contactId } =
+            req.body;
 
-      return res.render("deals/index", {
-        title: capitalize(req.session.labels.module.deal),
-        deals,
-        paginationLinks,
-        search,
-        count,
-        orderBy,
-        orderDir,
-        headers,
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
+        if (!name) {
+            req.flash("error", "Name is required.");
+            return res.redirect(`/deals/new`);
+        }
 
-  new: async (req, res, next) => {
-    const companyId = req.query.companyId;
-    const contactId = req.query.contactId;
+        try {
+            const dealObj = {
+                name,
+                total,
+                description,
+                dealSourceId,
+                companyId: companyId || null,
+                contactId: contactId || null,
+                createdBy: req.session.currentUser.id,
+            };
+            await dealsService.create(dealObj);
 
-    try {
-      const dealSources = await dealSourcesService.pluck(["id", "name"]);
+            req.flash("info", "Deal is created.");
 
-      return res.render("deals/new", {
-        title:
-          "New " +
-          pluralize.singular(req.session.labels.module.deal.toLowerCase()),
-        dealSources,
-        companyId,
-        contactId,
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
+            if (companyId) {
+                return res.redirect(`/companies/${companyId}`);
+            } else if (contactId) {
+                return res.redirect(`/contacts/${contactId}`);
+            } else {
+                return res.redirect("/deals");
+            }
+        } catch (err) {
+            next(err);
+        }
+    },
 
-  create: async (req, res, next) => {
-    const { name, total, description, dealSourceId, companyId, contactId } =
-      req.body;
+    show: async (req, res, next) => {
+        const id = req.params.id;
 
-    if (!name) {
-      req.flash("error", "Name is required.");
-      return res.redirect(`/deals/new`);
-    }
+        try {
+            const deal = await dealsService.findOne(id);
 
-    try {
-      const dealObj = {
-        name,
-        total,
-        description,
-        dealSourceId,
-        companyId: companyId || null,
-        contactId: contactId || null,
-        createdBy: req.session.currentUser.id,
-      };
-      await dealsService.create(dealObj);
+            if (!deal) {
+                return next(notFound());
+            }
 
-      req.flash("info", "Deal is created.");
-      return res.redirect("/deals");
-    } catch (err) {
-      next(err);
-    }
-  },
+            // Get all associated quotes.
+            const optionsObj = {
+                skip: 0,
+                limit: 100,
+                orderBy: "id",
+                orderDir: "DESC",
+                dealId: deal.id,
+                columns: [
+                    "q.id",
+                    "q.name",
+                    'updater.email AS "updatedByEmail"',
+                    'q."updatedAt"',
+                ],
+            };
+            const quotes = await quotesService.find(optionsObj);
 
-  show: async (req, res, next) => {
-    const id = req.params.id;
+            // Get all associated tickets.
+            const optionsObj2 = {
+                skip: 0,
+                limit: 100,
+                orderBy: "id",
+                orderDir: "DESC",
+                dealId: deal.id,
+                columns: [
+                    "t.id",
+                    "t.name",
+                    'updater.email AS "updatedByEmail"',
+                    't."updatedAt"',
+                ],
+            };
+            const tickets = await ticketsService.find(optionsObj2);
 
-    try {
-      const deal = await dealsService.findOne(id);
+            // Get all associated tasks.
+            const optionsObj3 = {
+                skip: 0,
+                limit: 100,
+                orderBy: "id",
+                orderDir: "DESC",
+                dealId: deal.id,
+                columns: [
+                    "t.id",
+                    "t.name",
+                    'updater.email AS "updatedByEmail"',
+                    't."updatedAt"',
+                ],
+            };
+            const tasks = await tasksService.find(optionsObj3);
 
-      if (!deal) {
-        return next(notFound());
-      }
+            return res.render("deals/show", {
+                title:
+                    "Show " +
+                    pluralize.singular(
+                        req.session.labels.module.deal.toLowerCase()
+                    ),
+                deal,
+                quotes,
+                tickets,
+                tasks,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
 
-      // Get all associated quotes.
-      const optionsObj = {
-        skip: 0,
-        limit: 100,
-        orderBy: "id",
-        orderDir: "DESC",
-        dealId: deal.id,
-        columns: [
-          "q.id",
-          "q.name",
-          'updater.email AS "updatedByEmail"',
-          'q."updatedAt"',
-        ],
-      };
-      const quotes = await quotesService.find(optionsObj);
+    edit: async (req, res, next) => {
+        const id = req.params.id;
 
-      // Get all associated tickets.
-      const optionsObj2 = {
-        skip: 0,
-        limit: 100,
-        orderBy: "id",
-        orderDir: "DESC",
-        dealId: deal.id,
-        columns: [
-          "t.id",
-          "t.name",
-          'updater.email AS "updatedByEmail"',
-          't."updatedAt"',
-        ],
-      };
-      const tickets = await ticketsService.find(optionsObj2);
+        try {
+            const deal = await dealsService.findOne(id);
 
-      // Get all associated tasks.
-      const optionsObj3 = {
-        skip: 0,
-        limit: 100,
-        orderBy: "id",
-        orderDir: "DESC",
-        dealId: deal.id,
-        columns: [
-          "t.id",
-          "t.name",
-          'updater.email AS "updatedByEmail"',
-          't."updatedAt"',
-        ],
-      };
-      const tasks = await tasksService.find(optionsObj3);
+            if (!deal) {
+                return next(notFound());
+            }
 
-      return res.render("deals/show", {
-        title:
-          "Show " +
-          pluralize.singular(req.session.labels.module.deal.toLowerCase()),
-        deal,
-        quotes,
-        tickets,
-        tasks,
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
+            const dealSources = await dealSourcesService.pluck(["id", "name"]);
 
-  edit: async (req, res, next) => {
-    const id = req.params.id;
+            return res.render("deals/edit", {
+                title:
+                    "Edit " +
+                    pluralize.singular(
+                        req.session.labels.module.deal.toLowerCase()
+                    ),
+                deal,
+                dealSources,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    try {
-      const deal = await dealsService.findOne(id);
+    update: async (req, res, next) => {
+        const id = req.params.id;
+        const { name, total, description, dealSourceId } = req.body;
 
-      if (!deal) {
-        return next(notFound());
-      }
+        if (!name) {
+            req.flash("error", "Name is required.");
+            return res.redirect(`/deals/${id}/edit`);
+        }
 
-      const dealSources = await dealSourcesService.pluck(["id", "name"]);
+        try {
+            const deal = await dealsService.findOne(id);
 
-      return res.render("deals/edit", {
-        title:
-          "Edit " +
-          pluralize.singular(req.session.labels.module.deal.toLowerCase()),
-        deal,
-        dealSources,
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
+            if (!deal) {
+                return next(notFound());
+            }
 
-  update: async (req, res, next) => {
-    const id = req.params.id;
-    const { name, total, description, dealSourceId } = req.body;
+            const dealObj = {
+                id,
+                name,
+                total,
+                description,
+                dealSourceId,
+                updatedBy: req.session.currentUser.id,
+            };
+            await dealsService.update(dealObj);
 
-    if (!name) {
-      req.flash("error", "Name is required.");
-      return res.redirect(`/deals/${id}/edit`);
-    }
+            req.flash("info", "Deal is updated.");
+            return res.redirect(`/deals/${id}`);
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    try {
-      const deal = await dealsService.findOne(id);
+    destroy: async (req, res, next) => {
+        const id = req.params.id;
 
-      if (!deal) {
-        return next(notFound());
-      }
+        try {
+            const deal = await dealsService.findOne(id);
 
-      const dealObj = {
-        id,
-        name,
-        total,
-        description,
-        dealSourceId,
-        updatedBy: req.session.currentUser.id,
-      };
-      await dealsService.update(dealObj);
+            if (!deal) {
+                return next(notFound());
+            }
 
-      req.flash("info", "Deal is updated.");
-      return res.redirect(`/deals/${id}`);
-    } catch (err) {
-      next(err);
-    }
-  },
+            await dealsService.destroy(id);
 
-  destroy: async (req, res, next) => {
-    const id = req.params.id;
+            req.flash("info", "Deal is deleted.");
+            return res.redirect("/deals");
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    try {
-      const deal = await dealsService.findOne(id);
+    archive: async (req, res, next) => {
+        const id = req.params.id;
 
-      if (!deal) {
-        return next(notFound());
-      }
+        try {
+            const deal = await dealsService.findOne(id);
 
-      await dealsService.destroy(id);
+            if (!deal) {
+                req.flash("error", "Deal not found.");
+                return res.redirect("/deals");
+            }
 
-      req.flash("info", "Deal is deleted.");
-      return res.redirect("/deals");
-    } catch (err) {
-      next(err);
-    }
-  },
+            const dealObj = { id, updatedBy: req.session.currentUser.id };
+            await dealsService.archive(dealObj);
 
-  archive: async (req, res, next) => {
-    const id = req.params.id;
+            req.flash("info", "Deal is archived.");
+            return res.redirect(`/deals/${id}`);
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    try {
-      const deal = await dealsService.findOne(id);
+    active: async (req, res, next) => {
+        const id = req.params.id;
 
-      if (!deal) {
-        req.flash("error", "Deal not found.");
-        return res.redirect("/deals");
-      }
+        try {
+            const deal = await dealsService.findOne(id);
 
-      const dealObj = { id, updatedBy: req.session.currentUser.id };
-      await dealsService.archive(dealObj);
+            if (!deal) {
+                return next(notFound());
+            }
 
-      req.flash("info", "Deal is archived.");
-      return res.redirect(`/deals/${id}`);
-    } catch (err) {
-      next(err);
-    }
-  },
+            const dealObj = { id, updatedBy: req.session.currentUser.id };
+            await dealsService.active(dealObj);
 
-  active: async (req, res, next) => {
-    const id = req.params.id;
-
-    try {
-      const deal = await dealsService.findOne(id);
-
-      if (!deal) {
-        return next(notFound());
-      }
-
-      const dealObj = { id, updatedBy: req.session.currentUser.id };
-      await dealsService.active(dealObj);
-
-      req.flash("info", "Deal is activated.");
-      return res.redirect(`/deals/${id}`);
-    } catch (err) {
-      next(err);
-    }
-  },
+            req.flash("info", "Deal is activated.");
+            return res.redirect(`/deals/${id}`);
+        } catch (err) {
+            next(err);
+        }
+    },
 };
