@@ -1,5 +1,6 @@
 const notFound = require("../errors/not-found");
 const tasksService = require("../services/tasks-service");
+const taskCommentsService = require("../services/task-comments-service");
 const taskViewsService = require("../services/task-views-service");
 const taskTypesService = require("../services/admin/task-types-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
@@ -173,6 +174,9 @@ module.exports = {
                 return next(notFound());
             }
 
+            // Get all comments.
+            const comments = await taskCommentsService.findOne(id);
+
             return res.render("tasks/show", {
                 title:
                     "Show " +
@@ -180,6 +184,7 @@ module.exports = {
                         req.session.labels.module.task.toLowerCase()
                     ),
                 task,
+                comments,
             });
         } catch (err) {
             next(err);

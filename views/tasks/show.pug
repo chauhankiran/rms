@@ -74,3 +74,23 @@ block content
 
       form(action=`/tasks/${task.id}/archive?_method=PUT`, name="archiveTaskForm", method="post")
     
+  hr
+
+  .row
+    .col-12 
+      h3 Comments
+
+      ul 
+        each comment in comments 
+          li #{comment.createdByEmail} added a comment on #{comment.createdAt}
+          p.mt-0.mb-0.mr-0.ml-0 #{comment.comment} 
+
+      form(action=`/tasks/${task.id}/comments`, method="post")
+        .form-group 
+          label(for="comment") #{labels.task.comment}
+          textarea(name="comment", id="comment" cols="30", rows="5", placeholder="Add informative optional comment") #{task ? task.comment : ""}
+        
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Create comment

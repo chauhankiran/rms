@@ -1,5 +1,6 @@
 const express = require("express");
 const tasksController = require("../controllers/tasks-controller");
+const taskCommentsController = require("../controllers/task-comments-controller");
 
 const router = express.Router();
 
@@ -12,5 +13,7 @@ router.put("/:id", tasksController.update);
 router.delete("/:id", tasksController.destroy);
 router.put("/:id/archive", tasksController.archive);
 router.put("/:id/active", tasksController.active);
+
+router.post("/:id/comments", taskCommentsController.create);
 
 module.exports = router;
