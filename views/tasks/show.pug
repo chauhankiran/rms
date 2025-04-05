@@ -36,6 +36,16 @@ block content
           .col-12.mb-4
             label(for="description").field-name #{labels.task.description}
             span.field-value #{task.description || "-"}
+
+        if labels.task.phone
+          .col-12.mb-4
+            label(for="phone").field-name #{labels.task.phone}
+            span.field-value #{task.phone || "-"}
+        
+        if labels.task.location
+          .col-12.mb-4
+            label(for="location").field-name #{labels.task.location}
+            span.field-value #{task.location || "-"}
         
         if labels.task.createdAt
           .col-6.mb-4

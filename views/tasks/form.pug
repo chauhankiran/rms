@@ -12,6 +12,18 @@ if labels.task.taskTypeId
       for taskType in taskTypes
         option(value=taskType.id, selected=task && taskType.id == task.taskTypeId) #{taskType.name}
 
+//- phone
+if labels.task.phone 
+  .form-group 
+    label(for="phone") #{labels.task.phone}
+    input(type="text", name="phone", id="phone", value=task ? task.phone : "", placeholder="+91 9876543210", autofocus=true)
+
+//- location
+if labels.task.location 
+  .form-group 
+    label(for="location") #{labels.task.location}
+    input(type="text", name="location", id="location", value=task ? task.location : "", placeholder="Saturn Conf. Room", autofocus=true)
+
 //- description
 if labels.task.description
   .form-group 

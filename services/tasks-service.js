@@ -1,9 +1,9 @@
 const sql = require("../db/sql");
 
 const updateTaskStatus = async (taskObj, status) => {
-  const { id, updatedBy } = taskObj;
+    const { id, updatedBy } = taskObj;
 
-  return await sql`
+    return await sql`
     UPDATE
       tasks
     SET
@@ -17,42 +17,44 @@ const updateTaskStatus = async (taskObj, status) => {
 };
 
 module.exports = {
-  find: async (optionsObj) => {
-    const {
-      skip,
-      limit,
-      search,
-      orderBy,
-      orderDir,
-      columns,
-      companyId,
-      contactId,
-      dealId,
-      quoteId,
-      ticketId,
-    } = optionsObj;
+    find: async (optionsObj) => {
+        const {
+            skip,
+            limit,
+            search,
+            orderBy,
+            orderDir,
+            columns,
+            companyId,
+            contactId,
+            dealId,
+            quoteId,
+            ticketId,
+        } = optionsObj;
 
-    const whereClause = search
-      ? sql` WHERE t."name" iLIKE ${"%" + search + "%"}`
-      : sql``;
+        const whereClause = search
+            ? sql` WHERE t."name" iLIKE ${"%" + search + "%"}`
+            : sql``;
 
-    const whereClause2 = companyId
-      ? sql` WHERE "companyId" = ${companyId}`
-      : sql``;
+        const whereClause2 = companyId
+            ? sql` WHERE "companyId" = ${companyId}`
+            : sql``;
 
-    const whereClause3 = contactId
-      ? sql` WHERE "contactId" = ${contactId}`
-      : sql``;
+        const whereClause3 = contactId
+            ? sql` WHERE "contactId" = ${contactId}`
+            : sql``;
 
-    const whereClause4 = dealId ? sql` WHERE "dealId" = ${dealId}` : sql``;
+        const whereClause4 = dealId ? sql` WHERE "dealId" = ${dealId}` : sql``;
 
-    const whereClause5 = quoteId ? sql` WHERE "quoteId" = ${quoteId}` : sql``;
+        const whereClause5 = quoteId
+            ? sql` WHERE "quoteId" = ${quoteId}`
+            : sql``;
 
-    const whereClause6 = ticketId
-      ? sql` WHERE "ticketId" = ${ticketId}`
-      : sql``;
+        const whereClause6 = ticketId
+            ? sql` WHERE "ticketId" = ${ticketId}`
+            : sql``;
 
-    return await sql`
+        return await sql`
       SELECT
         ${sql.unsafe(columns)}
       FROM
@@ -77,40 +79,44 @@ module.exports = {
       OFFSET
         ${skip}
     `;
-  },
+    },
 
-  count: async (optionsObj) => {
-    const { search } = optionsObj;
+    count: async (optionsObj) => {
+        const { search } = optionsObj;
 
-    const whereClause = search
-      ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
-      : sql``;
+        const whereClause = search
+            ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
+            : sql``;
 
-    return await sql`
+        return await sql`
       SELECT
         COUNT(id)
       FROM
         tasks
       ${whereClause}
     `.then(([x]) => x);
-  },
+    },
 
-  create: async (taskObj) => {
-    const {
-      name,
-      description,
-      taskTypeId,
-      companyId,
-      contactId,
-      dealId,
-      quoteId,
-      ticketId,
-      createdBy,
-    } = taskObj;
+    create: async (taskObj) => {
+        const {
+            name,
+            phone,
+            location,
+            description,
+            taskTypeId,
+            companyId,
+            contactId,
+            dealId,
+            quoteId,
+            ticketId,
+            createdBy,
+        } = taskObj;
 
-    return await sql`
+        return await sql`
       INSERT INTO tasks (
         name,
+        phone,
+        location,
         description,
         "taskTypeId",
         "companyId",
@@ -121,6 +127,8 @@ module.exports = {
         "createdBy"
       ) VALUES (
         ${name},
+        ${phone},
+        ${location},
         ${description},
         ${taskTypeId},
         ${companyId},
@@ -131,13 +139,15 @@ module.exports = {
         ${createdBy}
       ) returning id
     `;
-  },
+    },
 
-  findOne: async (id) => {
-    return await sql`
+    findOne: async (id) => {
+        return await sql`
       SELECT
         t.id,
         t.name,
+        t.phone,
+        t.location,
         t.description,
         t."isActive",
         t."taskTypeId",
@@ -159,41 +169,51 @@ module.exports = {
       WHERE
         t.id = ${id}
     `.then(([x]) => x);
-  },
+    },
 
-  update: async (taskObj) => {
-    const { id, name, description, taskTypeId, updatedBy } = taskObj;
+    update: async (taskObj) => {
+        const {
+            id,
+            name,
+            phone,
+            location,
+            description,
+            taskTypeId,
+            updatedBy,
+        } = taskObj;
 
-    return await sql`
-      UPDATE
-        tasks
-      SET
-        name = ${name},
-        description = ${description},
-        "taskTypeId" = ${taskTypeId},
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
-  },
+        return await sql`
+            UPDATE
+                tasks
+            SET
+                name = ${name},
+                phone = ${phone},
+                location = ${location},
+                description = ${description},
+                "taskTypeId" = ${taskTypeId},
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
+    },
 
-  destroy: async (id) => {
-    return await sql`
+    destroy: async (id) => {
+        return await sql`
       DELETE FROM
         tasks
       WHERE
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  archive: async (taskObj) => {
-    return await updateTaskStatus(taskObj, false);
-  },
+    archive: async (taskObj) => {
+        return await updateTaskStatus(taskObj, false);
+    },
 
-  active: async (taskObj) => {
-    return await updateTaskStatus(taskObj, true);
-  },
+    active: async (taskObj) => {
+        return await updateTaskStatus(taskObj, true);
+    },
 };

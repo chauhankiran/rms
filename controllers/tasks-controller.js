@@ -111,6 +111,8 @@ module.exports = {
     create: async (req, res, next) => {
         const {
             name,
+            phone,
+            location,
             description,
             taskTypeId,
             companyId,
@@ -128,6 +130,8 @@ module.exports = {
         try {
             const taskObj = {
                 name,
+                phone,
+                location,
                 description,
                 taskTypeId,
                 companyId: companyId || null,
@@ -210,7 +214,7 @@ module.exports = {
 
     update: async (req, res, next) => {
         const id = req.params.id;
-        const { name, description, taskTypeId } = req.body;
+        const { name, phone, location, description, taskTypeId } = req.body;
 
         if (!name) {
             return next(notFound());
@@ -227,6 +231,8 @@ module.exports = {
             const taskObj = {
                 id,
                 name,
+                phone,
+                location,
                 description,
                 taskTypeId,
                 updatedBy: req.session.currentUser.id,
