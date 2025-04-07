@@ -1,5 +1,6 @@
 const notFound = require("../errors/not-found");
 const dealsService = require("../services/deals-service");
+const dealCommentsService = require("../services/deal-comments-service");
 const dealViewsService = require("../services/deal-views-service");
 const dealSourcesService = require("../services/admin/deal-sources-service");
 const quotesService = require("../services/quotes-service");
@@ -199,6 +200,9 @@ module.exports = {
             };
             const tasks = await tasksService.find(optionsObj3);
 
+            // Get all comments.
+            const comments = await dealCommentsService.findOne(id);
+
             return res.render("deals/show", {
                 title:
                     "Show " +
@@ -209,6 +213,7 @@ module.exports = {
                 quotes,
                 tickets,
                 tasks,
+                comments,
             });
         } catch (err) {
             next(err);

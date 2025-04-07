@@ -88,7 +88,7 @@ block content
       form(action=`/tasks/${task.id}/comments`, method="post")
         .form-group 
           label(for="comment") #{labels.task.comment}
-          textarea(name="comment", id="comment" cols="30", rows="5", placeholder="Add informative optional comment") #{task ? task.comment : ""}
+          textarea(name="comment", id="comment" cols="30", rows="5", placeholder="Add a comment") #{task ? task.comment : ""}
         
         .form-group 
           .row.align-items-center 

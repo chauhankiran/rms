@@ -70,6 +70,27 @@ block content
       form(action=`/deals/${deal.id}/archive?_method=PUT`, name="archiveDealForm", method="post")
 
   hr
+
+  .row
+    .col-12 
+      h3 Comments
+
+      ul 
+        each comment in comments 
+          li #{comment.createdByEmail} added a comment on #{comment.createdAt}
+          p.mt-0.mb-0.mr-0.ml-0 #{comment.comment} 
+
+      form(action=`/deals/${deal.id}/comments`, method="post")
+        .form-group 
+          label(for="comment") #{labels.deal.comment}
+          textarea(name="comment", id="comment" cols="30", rows="5", placeholder="Add a comment") #{deal ? deal.comment : ""}
+        
+        .form-group 
+          .row.align-items-center 
+            .col-6 
+              button(type="submit") Create comment
+  
+  hr
   
   .row.mb-4.mt-4.align-items-center
     .col-6 
