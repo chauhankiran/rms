@@ -131,9 +131,9 @@ module.exports = {
                 dealId: dealId || null,
                 createdBy: req.session.currentUser.id,
             };
-            await ticketsService.create(ticketObj);
 
-            req.flash("info", "Ticket is created.");
+            const resp = await ticketsService.create(ticketObj);
+            req.flash("info", `${resp.name} is created.`);
 
             if (companyId) {
                 return res.redirect(`/companies/${companyId}`);

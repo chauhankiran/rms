@@ -126,9 +126,9 @@ module.exports = {
                 contactId: contactId || null,
                 createdBy: req.session.currentUser.id,
             };
-            await dealsService.create(dealObj);
 
-            req.flash("info", "Deal is created.");
+            const resp = await dealsService.create(dealObj);
+            req.flash("info", `${resp.name} is created.`);
 
             if (companyId) {
                 return res.redirect(`/companies/${companyId}`);

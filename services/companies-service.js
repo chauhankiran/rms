@@ -1,14 +1,14 @@
 const sql = require("../db/sql");
 
 module.exports = {
-  find: async (optionsObj) => {
-    const { skip, limit, search, orderBy, orderDir, columns } = optionsObj;
+    find: async (optionsObj) => {
+        const { skip, limit, search, orderBy, orderDir, columns } = optionsObj;
 
-    const whereClause = search
-      ? sql` WHERE c.name iLIKE ${"%" + search + "%"}`
-      : sql``;
+        const whereClause = search
+            ? sql` WHERE c.name iLIKE ${"%" + search + "%"}`
+            : sql``;
 
-    return await sql`
+        return await sql`
       SELECT
         ${sql.unsafe(columns)}
       FROM
@@ -28,47 +28,47 @@ module.exports = {
       OFFSET
         ${skip}
     `;
-  },
+    },
 
-  count: async (optionsObj) => {
-    const { search } = optionsObj;
+    count: async (optionsObj) => {
+        const { search } = optionsObj;
 
-    const whereClause = search
-      ? sql` WHERE name iLIKE ${"%" + search + "%"}`
-      : sql``;
+        const whereClause = search
+            ? sql` WHERE name iLIKE ${"%" + search + "%"}`
+            : sql``;
 
-    return await sql`
+        return await sql`
       SELECT
         COUNT(id)
       FROM
         companies
       ${whereClause}
     `.then(([x]) => x);
-  },
+    },
 
-  create: async (companyObj) => {
-    const { name, employeeSize, description, companySourceId, createdBy } =
-      companyObj;
+    create: async (companyObj) => {
+        const { name, employeeSize, description, companySourceId, createdBy } =
+            companyObj;
 
-    return await sql`
-      INSERT INTO companies (
-        name,
-        "employeeSize",
-        description,
-        "companySourceId",
-        "createdBy"
-      ) VALUES (
-        ${name},
-        ${employeeSize},
-        ${description},
-        ${companySourceId},
-        ${createdBy}
-      ) returning id
-    `;
-  },
+        return await sql`
+            INSERT INTO companies (
+                name,
+                "employeeSize",
+                description,
+                "companySourceId",
+                "createdBy"
+            ) VALUES (
+                ${name},
+                ${employeeSize},
+                ${description},
+                ${companySourceId},
+                ${createdBy}
+            ) returning id, name
+        `.then(([x]) => x);
+    },
 
-  findOne: async (id) => {
-    return await sql`
+    findOne: async (id) => {
+        return await sql`
       SELECT
         c.id,
         c.name,
@@ -94,13 +94,19 @@ module.exports = {
       WHERE
         c.id = ${id}
     `.then(([x]) => x);
-  },
+    },
 
-  update: async (companyObj) => {
-    const { id, name, employeeSize, description, companySourceId, updatedBy } =
-      companyObj;
+    update: async (companyObj) => {
+        const {
+            id,
+            name,
+            employeeSize,
+            description,
+            companySourceId,
+            updatedBy,
+        } = companyObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         companies
       SET
@@ -114,22 +120,22 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  destroy: async (id) => {
-    return await sql`
+    destroy: async (id) => {
+        return await sql`
       DELETE FROM
         companies
       WHERE
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  archive: async (companyObj) => {
-    const { id, updatedBy } = companyObj;
+    archive: async (companyObj) => {
+        const { id, updatedBy } = companyObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         companies
       SET
@@ -140,12 +146,12 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  active: async (companyObj) => {
-    const { id, updatedBy } = companyObj;
+    active: async (companyObj) => {
+        const { id, updatedBy } = companyObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         companies
       SET
@@ -156,5 +162,5 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 };

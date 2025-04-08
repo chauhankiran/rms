@@ -118,9 +118,9 @@ module.exports = {
                 dealId: dealId || null,
                 createdBy: req.session.currentUser.id,
             };
-            await quotesService.create(quoteObj);
 
-            req.flash("info", "Quote is created.");
+            const resp = await quotesService.create(quoteObj);
+            req.flash("info", `${resp.name} is created.`);
 
             if (companyId) {
                 return res.redirect(`/companies/${companyId}`);

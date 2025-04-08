@@ -146,9 +146,8 @@ module.exports = {
                 companyId: companyId || null,
                 createdBy: req.session.currentUser.id,
             };
-            await contactsService.create(contactObj);
-
-            req.flash("info", "Contact is created.");
+            const resp = await contactsService.create(contactObj);
+            req.flash("info", `${resp.firstName} ${resp.lastName} is created.`);
 
             if (companyId) {
                 return res.redirect(`/companies/${companyId}`);

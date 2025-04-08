@@ -122,9 +122,9 @@ module.exports = {
                 companySourceId,
                 createdBy: req.session.currentUser.id,
             };
-            await companiesService.create(companyObj);
+            const resp = await companiesService.create(companyObj);
+            req.flash("info", `${resp.name} is created.`);
 
-            req.flash("info", "Company is created.");
             return res.redirect("/companies");
         } catch (err) {
             next(err);

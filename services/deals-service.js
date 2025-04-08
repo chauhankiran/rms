@@ -1,31 +1,31 @@
 const sql = require("../db/sql");
 
 module.exports = {
-  find: async (optionsObj) => {
-    const {
-      skip,
-      limit,
-      search,
-      orderBy,
-      orderDir,
-      columns,
-      companyId,
-      contactId,
-    } = optionsObj;
+    find: async (optionsObj) => {
+        const {
+            skip,
+            limit,
+            search,
+            orderBy,
+            orderDir,
+            columns,
+            companyId,
+            contactId,
+        } = optionsObj;
 
-    const whereClause = search
-      ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
-      : sql``;
+        const whereClause = search
+            ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
+            : sql``;
 
-    const whereClause2 = companyId
-      ? sql` WHERE "companyId" = ${companyId}`
-      : sql``;
+        const whereClause2 = companyId
+            ? sql` WHERE "companyId" = ${companyId}`
+            : sql``;
 
-    const whereClause3 = contactId
-      ? sql` WHERE "contactId" = ${contactId}`
-      : sql``;
+        const whereClause3 = contactId
+            ? sql` WHERE "contactId" = ${contactId}`
+            : sql``;
 
-    return await sql`
+        return await sql`
       SELECT
         ${sql.unsafe(columns)}
       FROM
@@ -47,58 +47,58 @@ module.exports = {
       OFFSET
         ${skip}
     `;
-  },
+    },
 
-  count: async (optionsObj) => {
-    const { search } = optionsObj;
+    count: async (optionsObj) => {
+        const { search } = optionsObj;
 
-    const whereClause = search
-      ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
-      : sql``;
+        const whereClause = search
+            ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
+            : sql``;
 
-    return await sql`
+        return await sql`
       SELECT
         COUNT(id)
       FROM
         deals
       ${whereClause}
     `.then(([x]) => x);
-  },
+    },
 
-  create: async (dealObj) => {
-    const {
-      name,
-      total,
-      description,
-      dealSourceId,
-      companyId,
-      contactId,
-      createdBy,
-    } = dealObj;
+    create: async (dealObj) => {
+        const {
+            name,
+            total,
+            description,
+            dealSourceId,
+            companyId,
+            contactId,
+            createdBy,
+        } = dealObj;
 
-    return await sql`
-      INSERT INTO deals (
-        name,
-        total,
-        description,
-        "dealSourceId",
-        "companyId",
-        "contactId",
-        "createdBy"
-      ) VALUES (
-        ${name},
-        ${total},
-        ${description},
-        ${dealSourceId},
-        ${companyId},
-        ${contactId},
-        ${createdBy}
-      ) returning id
-    `;
-  },
+        return await sql`
+            INSERT INTO deals (
+                name,
+                total,
+                description,
+                "dealSourceId",
+                "companyId",
+                "contactId",
+                "createdBy"
+            ) VALUES (
+                ${name},
+                ${total},
+                ${description},
+                ${dealSourceId},
+                ${companyId},
+                ${contactId},
+                ${createdBy}
+            ) returning id, name
+        `.then(([x]) => x);
+    },
 
-  findOne: async (id) => {
-    return await sql`
+    findOne: async (id) => {
+        return await sql`
       SELECT
         d.id,
         d.name,
@@ -124,12 +124,13 @@ module.exports = {
       WHERE
         d.id = ${id}
     `.then(([x]) => x);
-  },
+    },
 
-  update: async (dealObj) => {
-    const { id, name, total, description, dealSourceId, updatedBy } = dealObj;
+    update: async (dealObj) => {
+        const { id, name, total, description, dealSourceId, updatedBy } =
+            dealObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         deals
       SET
@@ -143,22 +144,22 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  destroy: async (id) => {
-    return await sql`
+    destroy: async (id) => {
+        return await sql`
       DELETE FROM
         deals
       WHERE
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  archive: async (dealObj) => {
-    const { id, updatedBy } = dealObj;
+    archive: async (dealObj) => {
+        const { id, updatedBy } = dealObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         deals
       SET
@@ -169,12 +170,12 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  active: async (dealObj) => {
-    const { id, updatedBy } = dealObj;
+    active: async (dealObj) => {
+        const { id, updatedBy } = dealObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         deals
       SET
@@ -185,5 +186,5 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 };

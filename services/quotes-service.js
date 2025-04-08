@@ -1,34 +1,34 @@
 const sql = require("../db/sql");
 
 module.exports = {
-  find: async (optionsObj) => {
-    const {
-      skip,
-      limit,
-      search,
-      orderBy,
-      orderDir,
-      columns,
-      companyId,
-      contactId,
-      dealId,
-    } = optionsObj;
+    find: async (optionsObj) => {
+        const {
+            skip,
+            limit,
+            search,
+            orderBy,
+            orderDir,
+            columns,
+            companyId,
+            contactId,
+            dealId,
+        } = optionsObj;
 
-    const whereClause = search
-      ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
-      : sql``;
+        const whereClause = search
+            ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
+            : sql``;
 
-    const whereClause2 = companyId
-      ? sql` WHERE "companyId" = ${companyId}`
-      : sql``;
+        const whereClause2 = companyId
+            ? sql` WHERE "companyId" = ${companyId}`
+            : sql``;
 
-    const whereClause3 = contactId
-      ? sql` WHERE "contactId" = ${contactId}`
-      : sql``;
+        const whereClause3 = contactId
+            ? sql` WHERE "contactId" = ${contactId}`
+            : sql``;
 
-    const whereClause4 = dealId ? sql` WHERE "dealId" = ${dealId}` : sql``;
+        const whereClause4 = dealId ? sql` WHERE "dealId" = ${dealId}` : sql``;
 
-    return await sql`
+        return await sql`
       SELECT
         ${sql.unsafe(columns)}
       FROM
@@ -49,58 +49,58 @@ module.exports = {
       OFFSET
         ${skip}
     `;
-  },
+    },
 
-  count: async (optionsObj) => {
-    const { search } = optionsObj;
+    count: async (optionsObj) => {
+        const { search } = optionsObj;
 
-    const whereClause = search
-      ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
-      : sql``;
+        const whereClause = search
+            ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
+            : sql``;
 
-    return await sql`
+        return await sql`
       SELECT
         COUNT(id)
       FROM
         quotes
       ${whereClause}
     `.then(([x]) => x);
-  },
+    },
 
-  create: async (quoteObj) => {
-    const {
-      name,
-      total,
-      description,
-      companyId,
-      contactId,
-      dealId,
-      createdBy,
-    } = quoteObj;
+    create: async (quoteObj) => {
+        const {
+            name,
+            total,
+            description,
+            companyId,
+            contactId,
+            dealId,
+            createdBy,
+        } = quoteObj;
 
-    return await sql`
-      INSERT INTO quotes (
-        name,
-        total,
-        description,
-        "companyId",
-        "contactId",
-        "dealId",
-        "createdBy"
-      ) VALUES (
-        ${name},
-        ${total},
-        ${description},
-        ${companyId},
-        ${contactId},
-        ${dealId},
-        ${createdBy}
-      ) returning id
-    `;
-  },
+        return await sql`
+            INSERT INTO quotes (
+                name,
+                total,
+                description,
+                "companyId",
+                "contactId",
+                "dealId",
+                "createdBy"
+            ) VALUES (
+                ${name},
+                ${total},
+                ${description},
+                ${companyId},
+                ${contactId},
+                ${dealId},
+                ${createdBy}
+            ) returning id, name
+        `.then(([x]) => x);
+    },
 
-  findOne: async (id) => {
-    return await sql`
+    findOne: async (id) => {
+        return await sql`
       SELECT
         q.id,
         q.name,
@@ -122,12 +122,12 @@ module.exports = {
       WHERE
         q.id = ${id}
     `.then(([x]) => x);
-  },
+    },
 
-  update: async (quoteObj) => {
-    const { id, name, total, description, updatedBy } = quoteObj;
+    update: async (quoteObj) => {
+        const { id, name, total, description, updatedBy } = quoteObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         quotes
       SET
@@ -140,22 +140,22 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  destroy: async (id) => {
-    return await sql`
+    destroy: async (id) => {
+        return await sql`
       DELETE FROM
         quotes
       WHERE
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  archive: async (quoteObj) => {
-    const { id, updatedBy } = quoteObj;
+    archive: async (quoteObj) => {
+        const { id, updatedBy } = quoteObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         quotes
       SET
@@ -166,12 +166,12 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  active: async (quoteObj) => {
-    const { id, updatedBy } = quoteObj;
+    active: async (quoteObj) => {
+        const { id, updatedBy } = quoteObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         quotes
       SET
@@ -182,5 +182,5 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 };

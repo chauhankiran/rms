@@ -113,32 +113,32 @@ module.exports = {
         } = taskObj;
 
         return await sql`
-      INSERT INTO tasks (
-        name,
-        phone,
-        location,
-        description,
-        "taskTypeId",
-        "companyId",
-        "contactId",
-        "dealId",
-        "quoteId",
-        "ticketId",
-        "createdBy"
-      ) VALUES (
-        ${name},
-        ${phone},
-        ${location},
-        ${description},
-        ${taskTypeId},
-        ${companyId},
-        ${contactId},
-        ${dealId},
-        ${quoteId},
-        ${ticketId},
-        ${createdBy}
-      ) returning id
-    `;
+            INSERT INTO tasks (
+                name,
+                phone,
+                location,
+                description,
+                "taskTypeId",
+                "companyId",
+                "contactId",
+                "dealId",
+                "quoteId",
+                "ticketId",
+                "createdBy"
+            ) VALUES (
+                ${name},
+                ${phone},
+                ${location},
+                ${description},
+                ${taskTypeId},
+                ${companyId},
+                ${contactId},
+                ${dealId},
+                ${quoteId},
+                ${ticketId},
+                ${createdBy}
+            ) returning id, name
+        `.then(([x]) => x);
     },
 
     findOne: async (id) => {

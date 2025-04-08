@@ -142,9 +142,9 @@ module.exports = {
                 ticketId: ticketId || null,
                 createdBy: req.session.currentUser.id,
             };
-            await tasksService.create(taskObj);
 
-            req.flash("info", "Task is created.");
+            const resp = await tasksService.create(taskObj);
+            req.flash("info", `${resp.name} is created.`);
 
             if (companyId) {
                 return res.redirect(`/companies/${companyId}`);

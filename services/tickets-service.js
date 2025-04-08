@@ -1,34 +1,34 @@
 const sql = require("../db/sql");
 
 module.exports = {
-  find: async (optionsObj) => {
-    const {
-      skip,
-      limit,
-      search,
-      orderBy,
-      orderDir,
-      columns,
-      companyId,
-      contactId,
-      dealId,
-    } = optionsObj;
+    find: async (optionsObj) => {
+        const {
+            skip,
+            limit,
+            search,
+            orderBy,
+            orderDir,
+            columns,
+            companyId,
+            contactId,
+            dealId,
+        } = optionsObj;
 
-    const whereClause = search
-      ? sql` WHERE t."name" iLIKE ${"%" + search + "%"}`
-      : sql``;
+        const whereClause = search
+            ? sql` WHERE t."name" iLIKE ${"%" + search + "%"}`
+            : sql``;
 
-    const whereClause2 = companyId
-      ? sql` WHERE "companyId" = ${companyId}`
-      : sql``;
+        const whereClause2 = companyId
+            ? sql` WHERE "companyId" = ${companyId}`
+            : sql``;
 
-    const whereClause3 = contactId
-      ? sql` WHERE "contactId" = ${contactId}`
-      : sql``;
+        const whereClause3 = contactId
+            ? sql` WHERE "contactId" = ${contactId}`
+            : sql``;
 
-    const whereClause4 = dealId ? sql` WHERE "dealId" = ${dealId}` : sql``;
+        const whereClause4 = dealId ? sql` WHERE "dealId" = ${dealId}` : sql``;
 
-    return await sql`
+        return await sql`
       SELECT
         ${sql.unsafe(columns)}
       FROM
@@ -51,58 +51,58 @@ module.exports = {
       OFFSET
         ${skip}
     `;
-  },
+    },
 
-  count: async (optionsObj) => {
-    const { search } = optionsObj;
+    count: async (optionsObj) => {
+        const { search } = optionsObj;
 
-    const whereClause = search
-      ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
-      : sql``;
+        const whereClause = search
+            ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
+            : sql``;
 
-    return await sql`
+        return await sql`
       SELECT
         COUNT(id)
       FROM
         tickets
       ${whereClause}
     `.then(([x]) => x);
-  },
+    },
 
-  create: async (ticketObj) => {
-    const {
-      name,
-      description,
-      ticketTypeId,
-      companyId,
-      contactId,
-      dealId,
-      createdBy,
-    } = ticketObj;
+    create: async (ticketObj) => {
+        const {
+            name,
+            description,
+            ticketTypeId,
+            companyId,
+            contactId,
+            dealId,
+            createdBy,
+        } = ticketObj;
 
-    return await sql`
-      INSERT INTO tickets (
-        name,
-        description,
-        "ticketTypeId",
-        "companyId",
-        "contactId",
-        "dealId",
-        "createdBy"
-      ) VALUES (
-        ${name},
-        ${description},
-        ${ticketTypeId},
-        ${companyId},
-        ${contactId},
-        ${dealId},
-        ${createdBy}
-      ) returning id
-    `;
-  },
+        return await sql`
+            INSERT INTO tickets (
+                name,
+                description,
+                "ticketTypeId",
+                "companyId",
+                "contactId",
+                "dealId",
+                "createdBy"
+            ) VALUES (
+                ${name},
+                ${description},
+                ${ticketTypeId},
+                ${companyId},
+                ${contactId},
+                ${dealId},
+                ${createdBy}
+            ) returning id, name
+        `.then(([x]) => x);
+    },
 
-  findOne: async (id) => {
-    return await sql`
+    findOne: async (id) => {
+        return await sql`
       SELECT
         t.id,
         t.name,
@@ -127,12 +127,12 @@ module.exports = {
       WHERE
         t.id = ${id}
     `.then(([x]) => x);
-  },
+    },
 
-  update: async (ticketObj) => {
-    const { id, name, description, ticketTypeId, updatedBy } = ticketObj;
+    update: async (ticketObj) => {
+        const { id, name, description, ticketTypeId, updatedBy } = ticketObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         tickets
       SET
@@ -145,22 +145,22 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  destroy: async (id) => {
-    return await sql`
+    destroy: async (id) => {
+        return await sql`
       DELETE FROM
         tickets
       WHERE
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  archive: async (ticketObj) => {
-    const { id, updatedBy } = ticketObj;
+    archive: async (ticketObj) => {
+        const { id, updatedBy } = ticketObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         tickets
       SET
@@ -171,12 +171,12 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  active: async (ticketObj) => {
-    const { id, updatedBy } = ticketObj;
+    active: async (ticketObj) => {
+        const { id, updatedBy } = ticketObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         tickets
       SET
@@ -187,5 +187,5 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 };
