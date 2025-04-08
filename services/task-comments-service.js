@@ -39,4 +39,14 @@ module.exports = {
                 tc."taskId" = ${taskId}
         `;
     },
+
+    destroy: async (commentId) => {
+        return await sql`
+            DELETE FROM 
+                "taskComments"
+            WHERE 
+                id = ${commentId}
+            returning id
+        `.then(([x]) => x);
+    },
 };

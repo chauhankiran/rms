@@ -356,6 +356,21 @@ button.is-muted:hover {
     background-color: #efefef;
 }
 
+.btn-link {
+    background-color: unset;
+    border: none;
+    margin: 0;
+    padding: 0.25rem;
+    color: #477dca;
+    text-decoration: none;
+    transition: color 0.1s linear;
+}
+.btn-link:hover {
+    text-decoration: underline;
+    background-color: unset;
+    color: #2c5999;
+}
+
 /*
  * Table.
  * ============================================================================
@@ -668,5 +683,12 @@ button.dropdown-item {
 .archive-status {
     padding-left: 4px;
     padding-right: 4px;
+    color: #767676;
+}
+
+.comment__createdBy {
+    text-decoration: underline;
+}
+.comment__createdAt {
     color: #767676;
 }

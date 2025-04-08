@@ -15,5 +15,6 @@ router.put("/:id/archive", quotesController.archive);
 router.put("/:id/active", quotesController.active);
 
 router.post("/:id/comments", quoteCommentsController.create);
+router.delete("/:quoteId/comments/:id", quoteCommentsController.destroy);
 
 module.exports = router;

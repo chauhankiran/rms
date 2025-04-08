@@ -25,4 +25,18 @@ module.exports = {
             next(err);
         }
     },
+
+    destroy: async (req, res, next) => {
+        const { ticketId, id } = req.params;
+
+        try {
+            await ticketCommentsService.destroy(id);
+
+            req.flash("info", "Comment is deleted.");
+
+            return res.redirect(`/tickets/${ticketId}`);
+        } catch (err) {
+            next(err);
+        }
+    },
 };

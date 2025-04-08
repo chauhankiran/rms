@@ -84,8 +84,13 @@ block content
 
       ul 
         each comment in comments 
-          li #{comment.createdByEmail} added a comment on #{comment.createdAt}
-          p.mt-0.mb-0.mr-0.ml-0 #{comment.comment} 
+          li 
+            span.comment__createdBy #{comment.createdByEmail} 
+            | added a comment on 
+            span.comment__createdAt #{comment.createdAt}
+            form(action=`/tasks/${task.id}/comments/${comment.id}?_method=DELETE` name="deleteTaskCommentByIdForm" method="post", style="display:inline;") 
+              button.btn-link(onclick=`deleteTaskCommentById()`) delete
+            p.mt-0.mb-0.mr-0.ml-0 #{comment.comment} 
 
       form(action=`/tasks/${task.id}/comments`, method="post")
         .form-group 

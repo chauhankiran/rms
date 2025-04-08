@@ -15,5 +15,6 @@ router.put("/:id/archive", dealsController.archive);
 router.put("/:id/active", dealsController.active);
 
 router.post("/:id/comments", dealCommentsController.create);
+router.delete("/:dealId/comments/:id", dealCommentsController.destroy);
 
 module.exports = router;

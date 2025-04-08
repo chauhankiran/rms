@@ -15,5 +15,6 @@ router.put("/:id/archive", contactsController.archive);
 router.put("/:id/active", contactsController.active);
 
 router.post("/:id/comments", contactCommentsController.create);
+router.delete("/:contactId/comments/:id", contactCommentsController.destroy);
 
 module.exports = router;

@@ -39,4 +39,14 @@ module.exports = {
                 tc."contactId" = ${contactId}
         `;
     },
+
+    destroy: async (commentId) => {
+        return await sql`
+            DELETE FROM 
+                "contactComments"
+            WHERE 
+                id = ${commentId}
+            returning id
+        `.then(([x]) => x);
+    },
 };

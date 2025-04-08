@@ -73,14 +73,21 @@ block content
     
   hr
 
+  //- Comment section.
   .row
     .col-12 
       h3 Comments
 
       ul 
         each comment in comments 
-          li #{comment.createdByEmail} added a comment on #{comment.createdAt}
-          p.mt-0.mb-0.mr-0.ml-0 #{comment.comment} 
+          li 
+            span.comment__createdBy #{comment.createdByEmail} 
+            | added a comment on 
+            span.comment__createdAt #{comment.createdAt}
+            if currentUser.id == comment.createdById
+              form(action=`/companies/${company.id}/comments/${comment.id}?_method=DELETE` name="deleteCompanyCommentByIdForm" method="post", style="display:inline;") 
+                button.btn-link(onclick=`deleteCompanyCommentById()`) delete
+            p.mt-0.mb-0.mr-0.ml-0 #{comment.comment} 
 
       form(action=`/companies/${company.id}/comments`, method="post")
         .form-group 

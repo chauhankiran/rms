@@ -25,4 +25,18 @@ module.exports = {
             next(err);
         }
     },
+
+    destroy: async (req, res, next) => {
+        const { quoteId, id } = req.params;
+
+        try {
+            await quoteCommentsService.destroy(id);
+
+            req.flash("info", "Comment is deleted.");
+
+            return res.redirect(`/quotes/${quoteId}`);
+        } catch (err) {
+            next(err);
+        }
+    },
 };

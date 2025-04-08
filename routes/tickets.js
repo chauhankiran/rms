@@ -15,5 +15,6 @@ router.put("/:id/archive", ticketsController.archive);
 router.put("/:id/active", ticketsController.active);
 
 router.post("/:id/comments", ticketCommentsController.create);
+router.delete("/:ticketId/comments/:id", ticketCommentsController.destroy);
 
 module.exports = router;

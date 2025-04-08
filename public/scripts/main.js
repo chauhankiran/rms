@@ -33,6 +33,13 @@ function deleteCompany() {
         return false;
     }
 }
+function deleteCompanyCommentById(id) {
+    if (confirm("Are you sure you want to delete this comment?")) {
+        document.deleteCompanyCommentByIdForm.submit();
+    } else {
+        return false;
+    }
+}
 
 /**
  * Contact
@@ -58,6 +65,13 @@ function archiveContact() {
 function deleteContact() {
     if (confirm("Are you sure you want to delete this contact?")) {
         document.deleteContactForm.submit();
+    } else {
+        return false;
+    }
+}
+function deleteContactCommentById(id) {
+    if (confirm("Are you sure you want to delete this comment?")) {
+        document.deleteContactCommentByIdForm.submit();
     } else {
         return false;
     }
@@ -91,6 +105,13 @@ function deleteDeal() {
         return false;
     }
 }
+function deleteDealCommentById(id) {
+    if (confirm("Are you sure you want to delete this comment?")) {
+        document.deleteDealCommentByIdForm.submit();
+    } else {
+        return false;
+    }
+}
 
 /**
  * Quote
@@ -116,6 +137,13 @@ function archiveQuote() {
 function deleteQuote() {
     if (confirm("Are you sure you want to delete this quote?")) {
         document.deleteQuoteForm.submit();
+    } else {
+        return false;
+    }
+}
+function deleteQuoteCommentById(id) {
+    if (confirm("Are you sure you want to delete this comment?")) {
+        document.deleteQuoteCommentByIdForm.submit();
     } else {
         return false;
     }
@@ -149,6 +177,13 @@ function deleteTicket() {
         return false;
     }
 }
+function deleteTicketCommentById(id) {
+    if (confirm("Are you sure you want to delete this comment?")) {
+        document.deleteTicketCommentByIdForm.submit();
+    } else {
+        return false;
+    }
+}
 
 /**
  * Task
@@ -174,6 +209,13 @@ function archiveTask() {
 function deleteTask() {
     if (confirm("Are you sure you want to delete this task?")) {
         document.deleteTaskForm.submit();
+    } else {
+        return false;
+    }
+}
+function deleteTaskCommentById(id) {
+    if (confirm("Are you sure you want to delete this comment?")) {
+        document.deleteTaskCommentByIdForm.submit();
     } else {
         return false;
     }

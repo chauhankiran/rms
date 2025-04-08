@@ -15,5 +15,6 @@ router.put("/:id/archive", tasksController.archive);
 router.put("/:id/active", tasksController.active);
 
 router.post("/:id/comments", taskCommentsController.create);
+router.delete("/:taskId/comments/:id", taskCommentsController.destroy);
 
 module.exports = router;

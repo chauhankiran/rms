@@ -15,5 +15,6 @@ router.put("/:id/archive", companiesController.archive);
 router.put("/:id/active", companiesController.active);
 
 router.post("/:id/comments", companyCommentsController.create);
+router.delete("/:companyId/comments/:id", companyCommentsController.destroy);
 
 module.exports = router;
