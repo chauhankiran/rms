@@ -11,8 +11,10 @@ block content
         .dropdown-menu
           .dropdown-content 
             a(href=`/contacts/${contact.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.contact))}
-            button.dropdown-item(onclick="activeContact()") Active #{singular(downcase(labels.module.contact))}
-            button.dropdown-item(onclick="archiveContact()") Archive #{singular(downcase(labels.module.contact))}
+            if contact.isActive
+              button.dropdown-item(onclick="archiveContact()") Archive #{singular(downcase(labels.module.contact))}
+            if !contact.isActive && currentUser.type == 'admin'
+              button.dropdown-item(onclick="activeContact()") Active #{singular(downcase(labels.module.contact))}
             button.dropdown-item(onclick="deleteContact()") Delete #{singular(downcase(labels.module.contact))}
 
     .col-12

@@ -11,8 +11,10 @@ block content
         .dropdown-menu
           .dropdown-content 
             a(href=`/tickets/${ticket.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.ticket))}
-            button.dropdown-item(onclick="activeTicket()") Active #{singular(downcase(labels.module.ticket))}
-            button.dropdown-item(onclick="archiveTicket()") Archive #{singular(downcase(labels.module.ticket))}
+            if ticket.isActive
+              button.dropdown-item(onclick="archiveTicket()") Archive #{singular(downcase(labels.module.ticket))}
+            if !ticket.isActive && currentUser.type == 'admin'
+              button.dropdown-item(onclick="activeTicket()") Active #{singular(downcase(labels.module.ticket))}
             button.dropdown-item(onclick="deleteTicket()") Delete #{singular(downcase(labels.module.ticket))}
 
     .col-12

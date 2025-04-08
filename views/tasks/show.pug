@@ -11,8 +11,10 @@ block content
         .dropdown-menu
           .dropdown-content 
             a(href=`/tasks/${task.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.task))}
-            button.dropdown-item(onclick="activeTask()") Active #{singular(downcase(labels.module.task))}
-            button.dropdown-item(onclick="archiveTask()") Archive #{singular(downcase(labels.module.task))}
+            if task.isActive 
+              button.dropdown-item(onclick="archiveTask()") Archive #{singular(downcase(labels.module.task))}
+            if !task.isActive && currentUser.type == 'admin'
+              button.dropdown-item(onclick="activeTask()") Active #{singular(downcase(labels.module.task))}
             button.dropdown-item(onclick="deleteTask()") Delete #{singular(downcase(labels.module.task))}
 
     .col-12

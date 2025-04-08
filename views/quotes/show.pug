@@ -11,8 +11,10 @@ block content
         .dropdown-menu
           .dropdown-content 
             a(href=`/quotes/${quote.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.quote))}
-            button.dropdown-item(onclick="activeQuote()") Active #{singular(downcase(labels.module.quote))} 
-            button.dropdown-item(onclick="archiveQuote()") Archive #{singular(downcase(labels.module.quote))} 
+            if quote.isActive
+              button.dropdown-item(onclick="archiveQuote()") Archive #{singular(downcase(labels.module.quote))} 
+            if !quote.isActive && currentUser.type == 'admin'
+              button.dropdown-item(onclick="activeQuote()") Active #{singular(downcase(labels.module.quote))} 
             button.dropdown-item(onclick="deleteQuote()") Delete #{singular(downcase(labels.module.quote))} 
 
     .col-12

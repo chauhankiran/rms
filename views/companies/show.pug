@@ -11,8 +11,10 @@ block content
         .dropdown-menu
           .dropdown-content 
             a(href=`/companies/${company.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.company))}
-            button.dropdown-item(onclick="activeCompany()") Active #{singular(downcase(labels.module.company))} 
-            button.dropdown-item(onclick="archiveCompany()") Archive #{singular(downcase(labels.module.company))}
+            if company.isActive 
+              button.dropdown-item(onclick="archiveCompany()") Archive #{singular(downcase(labels.module.company))}
+            if !company.isActive && currentUser.type == 'admin'
+              button.dropdown-item(onclick="activeCompany()") Active #{singular(downcase(labels.module.company))} 
             button.dropdown-item(onclick="deleteCompany()") Delete #{singular(downcase(labels.module.company))}
 
     .col-12

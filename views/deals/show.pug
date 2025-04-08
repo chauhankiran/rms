@@ -11,8 +11,10 @@ block content
         .dropdown-menu
           .dropdown-content 
             a(href=`/deals/${deal.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.deal))}
-            button.dropdown-item(onclick="activeDeal()") Active #{singular(downcase(labels.module.deal))} 
-            button.dropdown-item(onclick="archiveDeal()") Archive #{singular(downcase(labels.module.deal))} 
+            if deal.isActive
+              button.dropdown-item(onclick="archiveDeal()") Archive #{singular(downcase(labels.module.deal))} 
+            if !deal.isActive && currentUser.type == 'admin'
+              button.dropdown-item(onclick="activeDeal()") Active #{singular(downcase(labels.module.deal))} 
             button.dropdown-item(onclick="deleteDeal()") Delete #{singular(downcase(labels.module.deal))} 
 
     .col-12
