@@ -1,0 +1,43 @@
+mixin inlineTasks(from, id)
+    - let queryParam;
+
+    case from
+        when "company"
+            - queryParam = `companyId=${id}`;
+        when "contact"
+            - queryParam = `contactId=${id}`;
+        when "deal"
+            - queryParam = `dealId=${id}`;
+        when "quote"
+            - queryParam = `quoteId=${id}`;
+        when "ticket"
+            - queryParam = `ticketId=${id}`;
+
+    .row.mb-4.mt-4.align-items-center
+        .col-6 
+            h3 #{plural(capitalize(labels.module.task))}
+        .col-6.text-end
+            a(href=`/tasks/new?${queryParam}`).btn New #{singular(capitalize(labels.module.task))}
+
+    .row
+        .col-12 
+            table 
+                thead 
+                    tr 
+                        th Id 
+                        th Name 
+                        th Updated at 
+                        th Updated by 
+                tbody 
+                    if tasks.length > 0
+                        for task in tasks  
+                            tr 
+                                td 
+                                    a(href=`/tasks/${task.id}`) #{task.id}
+                                td 
+                                    a(href=`/tasks/${task.id}`) #{task.name}
+                                td #{task.updatedAt || "-"}
+                                td #{task.updatedByEmail || "-"}
+                    else 
+                        tr 
+                            td(colspan=4).text-center No #{plural(downcase(labels.module.task))} found.

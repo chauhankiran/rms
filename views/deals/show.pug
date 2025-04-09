@@ -1,4 +1,7 @@
 extends ../layout
+include ../quotes/inline-quotes
+include ../tickets/inline-tickets
+include ../tasks/inline-tasks
 
 block content
   .row.align-items-center 
@@ -99,93 +102,12 @@ block content
   
   hr
   
-  .row.mb-4.mt-4.align-items-center
-    .col-6 
-      h3 #{plural(capitalize(labels.module.quote))}
-    .col-6.text-end
-      a(href=`/quotes/new?dealId=${deal.id}`).btn New #{singular(capitalize(labels.module.quote))}
-
-  .row
-    .col-12 
-      table 
-        thead 
-          tr 
-            th Id 
-            th Name 
-            th Updated at 
-            th Updated by 
-        tbody 
-          if quotes.length > 0
-            for quote in quotes  
-              tr 
-                td 
-                  a(href=`/quotes/${quote.id}`) #{quote.id}
-                td 
-                  a(href=`/quotes/${quote.id}`) #{quote.name}
-                td #{quote.updatedAt || "-"}
-                td #{quote.updatedByEmail || "-"}
-          else 
-            tr 
-              td(colspan=4).text-center No #{plural(downcase(labels.module.quote))} found.
+  +inlineQuotes("deal", deal.id)
 
   hr
   
-  .row.mb-4.mt-4.align-items-center
-    .col-6 
-      h3 #{plural(capitalize(labels.module.ticket))} 
-    .col-6.text-end
-      a(href=`/tickets/new?dealId=${deal.id}`).btn New #{singular(capitalize(labels.module.ticket))}
-
-  .row
-    .col-12 
-      table 
-        thead 
-          tr 
-            th Id 
-            th Name 
-            th Updated at 
-            th Updated by 
-        tbody 
-          if tickets.length > 0
-            for ticket in tickets  
-              tr 
-                td 
-                  a(href=`/tickets/${ticket.id}`) #{ticket.id}
-                td 
-                  a(href=`/tickets/${ticket.id}`) #{ticket.name}
-                td #{ticket.updatedAt || "-"}
-                td #{ticket.updatedByEmail || "-"}
-          else 
-            tr 
-              td(colspan=4).text-center No #{plural(downcase(labels.module.ticket))} found.
+  +inlineTickets("deal", deal.id)
 
   hr
-  
-  .row.mb-4.mt-4.align-items-center
-    .col-6 
-      h3 #{plural(capitalize(labels.module.task))}
-    .col-6.text-end
-      a(href=`/tasks/new?dealId=${deal.id}`).btn New #{singular(capitalize(labels.module.task))}
 
-  .row
-    .col-12 
-      table 
-        thead 
-          tr 
-            th Id 
-            th Name 
-            th Updated at 
-            th Updated by 
-        tbody 
-          if tasks.length > 0
-            for task in tasks  
-              tr 
-                td 
-                  a(href=`/tasks/${task.id}`) #{task.id}
-                td 
-                  a(href=`/tasks/${task.id}`) #{task.name}
-                td #{task.updatedAt || "-"}
-                td #{task.updatedByEmail || "-"}
-          else 
-            tr 
-              td(colspan=4).text-center No #{plural(downcase(labels.module.task))} found.
+  +inlineTasks("deal", deal.id)
