@@ -568,3 +568,45 @@ function deleteMultipleUsers() {
         return false;
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Get all elements needed
+    const openModalBtns = document.querySelectorAll(".open-modal");
+    const closeModalBtns = document.querySelectorAll(
+        ".close-modal, .cancel-modal"
+    );
+    const modals = document.querySelectorAll(".modal");
+
+    // Open modal function
+    openModalBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const modalId = btn.getAttribute("data-modal");
+            document.getElementById(modalId).style.display = "flex";
+        });
+    });
+
+    // Close modal functions
+    closeModalBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            btn.closest(".modal").style.display = "none";
+        });
+    });
+
+    // Close when clicking outside modal content
+    modals.forEach((modal) => {
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    });
+
+    // Close with Escape key
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            modals.forEach((modal) => {
+                modal.style.display = "none";
+            });
+        }
+    });
+});

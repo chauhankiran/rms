@@ -90,8 +90,7 @@ block content
             | added a comment on 
             span.comment__createdAt #{comment.createdAt}
             if currentUser.id == comment.createdById
-              form(action=`/companies/${company.id}/comments/${comment.id}?_method=DELETE` name="deleteCompanyCommentByIdForm" method="post", style="display:inline;") 
-                button.btn-link(onclick=`deleteCompanyCommentById()`) delete
+              button.btn-link.open-modal(data-modal=`deleteCommentModal-${comment.id}`) delete
             p.mt-0.mb-0.mr-0.ml-0 #{comment.comment} 
 
       form(action=`/companies/${company.id}/comments`, method="post")
@@ -103,7 +102,16 @@ block content
           .row.align-items-center 
             .col-6 
               button(type="submit") Create comment
-  
+
+      //- Modals for deleting comments
+      each comment in comments
+        .modal(id=`deleteCommentModal-${comment.id}`)
+          .modal-content
+            p Are you sure you want to delete this comment?
+            form(action=`/companies/${company.id}/comments/${comment.id}?_method=DELETE`, method="post")
+              button(type="submit").mr-2 Yes, delete
+              button(type="button" class="cancel-modal") Cancel
+
   hr
   
   +inlineContacts("company", company.id)
