@@ -1,0 +1,19 @@
+mixin indexCells(deal)
+    if labels.deal.id
+        td
+            a(href=`/deals/${deal.id}`) #{deal.id}
+                
+    if labels.deal.name
+        td 
+            a(href=`/deals/${deal.id}`) #{deal.name}
+            if (!deal.isActive)
+                span.archive-status (archived)
+                
+    if labels.deal.dealSourceId
+        td #{deal.dealSource || "-" }
+                
+    if labels.deal.updatedBy
+        td #{deal.updatedByEmail || "-" }
+
+    if labels.deal.updatedAt
+        td #{deal.updatedAt || "-" } 

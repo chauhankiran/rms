@@ -1,0 +1,20 @@
+mixin indexCells(contact)
+    if labels.contact.id
+        td
+            a(href=`/contacts/${contact.id}`) #{contact.id}
+
+    if labels.contact.firstName || labels.contact.lastName
+        td 
+            a(href=`/contacts/${contact.id}`) #{contact.firstName + " " + contact.lastName}
+            
+            if (!contact.isActive)
+                span.archive-status (archived)
+                
+    if labels.contact.contactIndustryId
+        td #{contact.contactIndustry || "-" }
+
+    if labels.contact.updatedBy
+        td #{contact.updatedByEmail || "-" }
+                
+    if labels.contact.updatedAt
+        td #{contact.updatedAt || "-" } 

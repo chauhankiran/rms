@@ -1,0 +1,36 @@
+mixin indexHeaders(header)
+    if header === "id" && labels.contact.id
+        th
+            if orderDir === 'ASC'
+                a(href=`/contacts?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
+            else 
+                a(href=`/contacts?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
+                  
+            if orderBy === 'id'
+                span.order-wrapper= orderDir
+        
+    if header === "name" && labels.contact.name
+        th
+            if orderDir === 'ASC'
+                a(href=`/contacts?orderBy=lastName&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
+            else 
+                a(href=`/contacts?orderBy=lastName&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
+            
+            if orderBy === 'lastName'
+                span.order-wrapper= orderDir
+
+    if header === "contactIndustryId" && labels.contact.contactIndustryId
+        th #{labels.contact[header]}
+
+    if header === "updatedBy" && labels.contact.updatedBy
+        th #{labels.contact[header]}
+              
+    if header === "updatedAt" && labels.contact.updatedAt
+        th
+            if orderDir === 'ASC'
+                a(href=`/contacts?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
+            else 
+                a(href=`/contacts?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.contact[header]}
+                  
+            if orderBy === 'updatedAt'
+                span.order-wrapper= orderDir

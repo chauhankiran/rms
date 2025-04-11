@@ -1,0 +1,36 @@
+mixin indexHeaders(header)
+    if header === "id" && labels.company.id
+        th
+            if orderDir === 'ASC'
+                a(href=`/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
+            else 
+                a(href=`/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
+                    
+            if orderBy === 'id'
+                span.order-wrapper= orderDir
+                
+    if header === "name" && labels.company.name
+        th
+            if orderDir === 'ASC'
+                a(href=`/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
+            else 
+                a(href=`/companies?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
+                    
+            if orderBy === 'name'
+                span.order-wrapper= orderDir
+
+    if header === "companySourceId" && labels.company.companySourceId
+        th #{labels.company[header]}
+                
+    if header === "updatedBy" && labels.company.updatedBy
+        th #{labels.company[header]}
+
+    if header === "updatedAt" && labels.company.updatedAt
+        th
+            if orderDir === 'ASC'
+                a(href=`/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
+            else 
+                a(href=`/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
+                    
+            if orderBy === 'updatedAt'
+                span.order-wrapper= orderDir

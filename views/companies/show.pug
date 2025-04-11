@@ -89,10 +89,14 @@ block content
             span.comment__createdBy #{comment.createdByEmail} 
             | added a comment on 
             span.comment__createdAt #{comment.createdAt}
+
+            //- show delete button if the user is the creator of the comment
             if currentUser.id == comment.createdById
-              button.btn-link.open-modal(data-modal=`deleteCommentModal-${comment.id}`) delete
+              button.btn-link.open-modal(data-modal=`comment-modal-${comment.id}`) delete
+
             p.mt-0.mb-0.mr-0.ml-0 #{comment.comment} 
 
+      //- form to add a new comment
       form(action=`/companies/${company.id}/comments`, method="post")
         .form-group 
           label(for="comment") #{labels.company.comment}
@@ -103,9 +107,9 @@ block content
             .col-6 
               button(type="submit") Create comment
 
-      //- Modals for deleting comments
+      //- modals for deleting comments
       each comment in comments
-        .modal(id=`deleteCommentModal-${comment.id}`)
+        .modal(id=`comment-modal-${comment.id}`)
           .modal-content
             p Are you sure you want to delete this comment?
             form(action=`/companies/${company.id}/comments/${comment.id}?_method=DELETE`, method="post")
@@ -113,21 +117,26 @@ block content
               button(type="button" class="cancel-modal") Cancel
 
   hr
-  
+
+  //- Contacts section.
   +inlineContacts("company", company.id)
 
   hr
-  
+
+  //- Deals section.
   +inlineDeals("company", company.id)
 
   hr
   
+  //- Quotes section.
   +inlineQuotes("company", company.id)
 
   hr
   
+  //- Tickets section.
   +inlineTickets("company", company.id)
 
   hr
 
+  //- Tasks section.
   +inlineTasks("company", company.id)

@@ -1,19 +1,16 @@
 extends ../layout
+include ../mixins/index-title
+include ../mixins/search
 include ../mixins/pagination
+include ./mixins/index-headers
+include ./mixins/index-cells
 
 block content
   .row.align-items-center 
-    .col-8 
-      h1 #{title} (#{count})
-    .col-4.text-end 
-      a(href="/tickets/new").btn New #{downcase(singular(labels.module.ticket))}
+    +indexTitle("tickets")
     
     .col-12
-      form(action="/tickets", method="get") 
-        .form-group 
-          input(type="hidden", name="orderBy", value=orderBy)
-          input(type="hidden", name="orderDir", value=orderDir)
-          input(type="text", name="search", value=search, autofocus=true, placeholder="Type name and press Enter")
+      +search("tickets", "Type name and press Enter")
 
       include ../partials/flash
 
@@ -21,69 +18,13 @@ block content
         thead 
           tr 
             each header in headers
-              //- id
-              if header === "id" && labels.ticket.id
-                th
-                  if orderDir === 'ASC'
-                    a(href=`/tickets?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.ticket[header]}
-                  else 
-                    a(href=`/tickets?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.ticket[header]}
-                  
-                  if orderBy === 'id'
-                    span.order-wrapper= orderDir
-              
-              //- name
-              if header === "name" && labels.ticket.name
-                th
-                  if orderDir === 'ASC'
-                    a(href=`/tickets?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.ticket[header]}
-                  else 
-                    a(href=`/tickets?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.ticket[header]}
-                  
-                  if orderBy === 'name'
-                    span.order-wrapper= orderDir
-
-              //- ticketTypeId
-              if header === "ticketTypeId" && labels.ticket.ticketTypeId
-                th #{labels.ticket[header]}
-              
-              //- updatedBy
-              if header === "updatedBy" && labels.ticket.updatedBy
-                th #{labels.ticket[header]}
-              
-              //- updatedAt
-              if header === "updatedAt" && labels.ticket.updatedAt
-                th
-                  if orderDir === 'ASC'
-                    a(href=`/tickets?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.ticket[header]}
-                  else 
-                    a(href=`/tickets?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.ticket[header]}
-                  
-                  if orderBy === 'updatedAt'
-                    span.order-wrapper= orderDir
+              +indexHeaders(header)
 
         tbody 
           if tickets.length > 0
             each ticket in tickets 
               tr
-                if labels.ticket.id
-                  td
-                    a(href=`/tickets/${ticket.id}`) #{ticket.id}
-                
-                if labels.ticket.name
-                  td 
-                    a(href=`/tickets/${ticket.id}`) #{ticket.name}
-                    if (!ticket.isActive)
-                      span.archive-status (archived)
-
-                if labels.ticket.ticketTypeId
-                  td #{ticket.ticketType || "-" }
-
-                if labels.ticket.updatedBy
-                  td #{ticket.updatedByEmail || "-" }
-                
-                if labels.ticket.updatedAt
-                  td #{ticket.updatedAt || "-" } 
+                +indexCells(ticket)
           else 
             tr 
               td(colspan=7).text-center No #{downcase(labels.module.ticket)} found.

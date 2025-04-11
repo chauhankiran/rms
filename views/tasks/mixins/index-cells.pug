@@ -1,0 +1,20 @@
+mixin indexCells(task)
+    if labels.task.id
+        td
+            a(href=`/tasks/${task.id}`) #{task.id}
+                
+    if labels.task.name
+        td 
+            a(href=`/tasks/${task.id}`) #{task.name}
+            
+            if (!task.isActive)
+                span.archive-status (archived)
+                
+    if labels.task.taskTypeId
+        td #{task.taskType || "-" }
+                
+    if labels.task.updatedBy
+        td #{task.updatedByEmail || "-" }
+
+    if labels.task.updatedAt
+        td #{task.updatedAt || "-" } 

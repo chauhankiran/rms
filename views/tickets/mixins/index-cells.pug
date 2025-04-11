@@ -1,0 +1,19 @@
+mixin indexCells(ticket)
+    if labels.ticket.id
+        td
+            a(href=`/tickets/${ticket.id}`) #{ticket.id}
+                
+    if labels.ticket.name
+        td 
+            a(href=`/tickets/${ticket.id}`) #{ticket.name}
+            if (!ticket.isActive)
+                span.archive-status (archived)
+
+    if labels.ticket.ticketTypeId
+        td #{ticket.ticketType || "-" }
+
+    if labels.ticket.updatedBy
+        td #{ticket.updatedByEmail || "-" }
+    
+    if labels.ticket.updatedAt
+        td #{ticket.updatedAt || "-" } 

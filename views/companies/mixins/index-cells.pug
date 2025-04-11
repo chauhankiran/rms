@@ -1,0 +1,19 @@
+mixin indexCells(company)
+    if labels.company.id
+        td
+            a(href=`/companies/${company.id}`) #{company.id}
+
+    if labels.company.name
+        td 
+            a(href=`/companies/${company.id}`) #{company.name}
+            if (!company.isActive)
+                span.archive-status (archived)
+                
+    if labels.company.companySourceId
+        td #{company.companySource || "-" }
+
+    if labels.company.updatedBy
+        td #{company.updatedByEmail || "-" }
+                
+    if labels.company.updatedAt
+        td #{company.updatedAt || "-" } 

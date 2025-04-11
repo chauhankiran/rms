@@ -1,19 +1,16 @@
 extends ../layout
+include ../mixins/index-title
+include ../mixins/search
 include ../mixins/pagination
+include ./mixins/index-headers
+include ./mixins/index-cells
 
 block content
   .row.align-items-center 
-    .col-8 
-      h1 #{title} (#{count})
-    .col-4.text-end 
-      a(href="/quotes/new").btn New #{downcase(singular(labels.module.quote))}
+    +indexTitle("quotes")
     
     .col-12
-      form(action="/quotes", method="get") 
-        .form-group 
-          input(type="hidden", name="orderBy", value=orderBy)
-          input(type="hidden", name="orderDir", value=orderDir)
-          input(type="text", name="search", value=search, autofocus=true, placeholder="Type name and press Enter")
+      +search("quotes", "Type name and press Enter")
 
       include ../partials/flash
 
@@ -21,42 +18,7 @@ block content
         thead 
           tr 
             each header in headers
-              //- id
-              if header === "id" && labels.quote.id
-                th
-                  if orderDir === 'ASC'
-                    a(href=`/quotes?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.quote[header]}
-                  else 
-                    a(href=`/quotes?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.quote[header]}
-                  
-                  if orderBy === 'id'
-                    span.order-wrapper= orderDir
-              
-              //- name
-              if header === "name" && labels.quote.name
-                th
-                  if orderDir === 'ASC'
-                    a(href=`/quotes?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.quote[header]}
-                  else 
-                    a(href=`/quotes?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.quote[header]}
-                  
-                  if orderBy === 'name'
-                    span.order-wrapper= orderDir
-              
-              //- updatedBy
-              if header === "updatedBy" && labels.quote.updatedBy
-                th #{labels.quote[header]}
-              
-              //- updatedAt
-              if header === "updatedAt" && labels.quote.updatedAt
-                th
-                  if orderDir === 'ASC'
-                    a(href=`/quotes?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.quote[header]}
-                  else 
-                    a(href=`/quotes?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.quote[header]}
-                  
-                  if orderBy === 'updatedAt'
-                    span.order-wrapper= orderDir
+              +indexHeaders(header)
 
         tbody 
           if quotes.length > 0
