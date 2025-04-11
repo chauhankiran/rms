@@ -1,47 +1,32 @@
 extends ../layout
-include ../mixins/index-title
-include ../mixins/search
+include ../mixins/index
 include ../mixins/pagination
-include ./mixins/index-headers
-include ./mixins/index-cells
+include ./mixins/head
+include ./mixins/cell
 
 block content
-  .row.align-items-center 
-    +indexTitle("quotes")
+    .row.align-items-center 
+        +title("quotes")
     
-    .col-12
-      +search("quotes", "Type name and press Enter")
+        .col-12
+            +search("quotes", "Type name and press Enter")
 
-      include ../partials/flash
+            include ../partials/flash
 
-      table 
-        thead 
-          tr 
-            each header in headers
-              +indexHeaders(header)
+            table 
+                thead 
+                    tr 
+                        each header in headers
+                            +head(header)
 
-        tbody 
-          if quotes.length > 0
-            each quote in quotes 
-              tr
-                if labels.quote.id
-                  td
-                    a(href=`/quotes/${quote.id}`) #{quote.id}
+                tbody 
+                    if quotes.length > 0
+                        each quote in quotes 
+                            tr
+                                +cell(quote)
+                    else 
+                        tr 
+                            td(colspan=7).text-center No #{downcase(labels.module.quote)} found.
 
-                if labels.quote.name
-                  td 
-                    a(href=`/quotes/${quote.id}`) #{quote.name}
-                    if (!quote.isActive)
-                      span.archive-status (archived)
-
-                if labels.quote.updatedBy
-                  td #{quote.updatedByEmail || "-" }
-
-                if labels.quote.updatedAt
-                  td #{quote.updatedAt || "-" } 
-          else 
-            tr 
-              td(colspan=7).text-center No #{downcase(labels.module.quote)} found.
-
-    .col-12 
-      +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)
+        .col-12 
+            +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

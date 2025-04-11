@@ -1,0 +1,12 @@
+mixin title(from)
+    .col-8 
+        h1 #{title} (#{count})
+    .col-4.text-end 
+        a(href=`/${from}/new`).btn New #{downcase(singular(labels.module.company))}
+
+mixin search(from, placeholder)
+    form(action=`/${from}`, method="get") 
+        .form-group 
+            input(type="hidden", name="orderBy", value=orderBy)
+            input(type="hidden", name="orderDir", value=orderDir)
+            input(type="text", name="search", value=search, autofocus=true, placeholder=placeholder)

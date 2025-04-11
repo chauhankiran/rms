@@ -1,13 +1,12 @@
 extends ../layout
-include ../mixins/index-title
-include ../mixins/search
+include ../mixins/index
 include ../mixins/pagination
-include ./mixins/index-headers
-include ./mixins/index-cells
+include ./mixins/head
+include ./mixins/cell
 
 block content
     .row.align-items-center 
-        +indexTitle("contacts")
+        +title("contacts")
     
         .col-12
             +search("contacts", "Type last name and press Enter")
@@ -18,13 +17,13 @@ block content
                 thead 
                     tr
                         each header in headers
-                            +indexHeaders(header)
+                            +head(header)
             
                 tbody 
                     if contacts.length > 0
                         each contact in contacts 
                             tr
-                                +indexCells(contact)
+                                +cell(contact)
                     else 
                         tr 
                             td(colspan=6).text-center No #{downcase(labels.module.contact)} found.

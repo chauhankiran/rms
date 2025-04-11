@@ -1,33 +1,33 @@
 extends ../layout
-include ../mixins/index-title
-include ../mixins/search
+include ../mixins/index
 include ../mixins/pagination
-include ./mixins/index-headers
-include ./mixins/index-cells
+include ./mixins/head
+include ./mixins/cell
+
 
 block content
-  .row.align-items-center 
-    +indexTitle("tickets")
+    .row.align-items-center 
+        +title("tickets")
     
-    .col-12
-      +search("tickets", "Type name and press Enter")
+        .col-12
+            +search("tickets", "Type name and press Enter")
 
-      include ../partials/flash
+            include ../partials/flash
 
-      table 
-        thead 
-          tr 
-            each header in headers
-              +indexHeaders(header)
+            table 
+                thead 
+                    tr 
+                        each header in headers
+                            +head(header)
 
-        tbody 
-          if tickets.length > 0
-            each ticket in tickets 
-              tr
-                +indexCells(ticket)
-          else 
-            tr 
-              td(colspan=7).text-center No #{downcase(labels.module.ticket)} found.
-      
-    .col-12 
-      +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)
+                    tbody 
+                        if tickets.length > 0
+                            each ticket in tickets 
+                                tr
+                                    +cell(ticket)
+                        else 
+                            tr 
+                                td(colspan=7).text-center No #{downcase(labels.module.ticket)} found.
+        
+        .col-12 
+            +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

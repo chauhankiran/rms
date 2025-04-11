@@ -1,13 +1,12 @@
 extends ../layout
-include ../mixins/index-title
-include ../mixins/search
+include ../mixins/index
 include ../mixins/pagination
-include ./mixins/index-headers
-include ./mixins/index-cells
+include ./mixins/head
+include ./mixins/cell
 
 block content
     .row.align-items-center 
-        +indexTitle("companies")
+        +title("companies")
         
         .col-12
             +search("companies", "Type name and press Enter")
@@ -18,13 +17,13 @@ block content
                 thead 
                     tr
                         each header in headers
-                            +indexHeaders(header)
+                            +head(header)
                 
                 tbody 
                     if companies.length > 0
                         each company in companies 
                             tr
-                                +indexCells(company)
+                                +cell(company)
                     else 
                         tr 
                             td(colspan=7).text-center No #{downcase(labels.module.company)} found.
