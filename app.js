@@ -28,17 +28,17 @@ const app = express();
 
 // Helper functions available in pug.
 function capitalize(text) {
-  return text
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+    return text
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
 }
 
 app.locals.capitalize = capitalize;
 app.locals.singular = pluralize.singular;
 app.locals.plural = pluralize.plural;
 app.locals.downcase = function (text) {
-  return text.toLowerCase();
+    return text.toLowerCase();
 };
 
 // Setup
@@ -53,38 +53,38 @@ app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 app.use(methodOverride("_method"));
 app.use(cookieParser());
 app.use(
-  session({
-    store: new RedisStore({ client: redisClient }),
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false },
-  }),
+    session({
+        store: new RedisStore({ client: redisClient }),
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: false },
+    })
 );
 app.use(flash());
 
 // Flash locals
 app.use((req, res, next) => {
-  res.locals.info = req.flash("info");
-  res.locals.error = req.flash("error");
-  res.locals.currentUser = req.session.currentUser;
+    res.locals.info = req.flash("info");
+    res.locals.error = req.flash("error");
+    res.locals.currentUser = req.session.currentUser;
 
-  res.locals.labels = res.locals.labels || {};
-  res.locals.labels.company = req.session.labels?.company;
-  res.locals.labels.contact = req.session.labels?.contact;
-  res.locals.labels.deal = req.session.labels?.deal;
-  res.locals.labels.quote = req.session.labels?.quote;
-  res.locals.labels.ticket = req.session.labels?.ticket;
-  res.locals.labels.task = req.session.labels?.task;
-  res.locals.labels.module = req.session.labels?.module;
-  next();
+    res.locals.labels = res.locals.labels || {};
+    res.locals.labels.company = req.session.labels?.company;
+    res.locals.labels.contact = req.session.labels?.contact;
+    res.locals.labels.deal = req.session.labels?.deal;
+    res.locals.labels.quote = req.session.labels?.quote;
+    res.locals.labels.ticket = req.session.labels?.ticket;
+    res.locals.labels.task = req.session.labels?.task;
+    res.locals.labels.module = req.session.labels?.module;
+    next();
 });
 
 // FIXME: Added for flash testing. Once done, remove.
 app.post("/submit", (req, res) => {
-  req.flash("info", "Your submission was successful.");
-  req.flash("error", "There is problem with your submission.");
-  res.redirect("/");
+    req.flash("info", "Your submission was successful.");
+    req.flash("error", "There is problem with your submission.");
+    res.redirect("/");
 });
 
 app.use("/", homeRoutes);
@@ -99,37 +99,37 @@ app.use("/admin", checkAuth, adminRoutes);
 
 // 404 Error
 app.use((req, res, next) => {
-  // createError() call the default error handler
-  // to render the error.pug.
-  next(createError(404));
+    // createError() call the default error handler
+    // to render the error.pug.
+    next(createError(404));
 });
 
 // Error handler
 app.use((err, req, res, next) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.title = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.title = err.message;
+    res.locals.error = req.app.get("env") === "development" ? err : {};
 
-  console.log(err);
+    console.log(err);
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
+    // render the error page
+    res.status(err.status || 500);
+    res.render("error");
 });
 
 // Main
 const main = async () => {
-  await redisClient.connect().catch(console.error);
+    await redisClient.connect().catch(console.error);
 
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Application is up and running at http://localhost:3000`);
-  });
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`Application is up and running at http://localhost:3000`);
+    });
 };
 
 if (require.main === module) {
-  main();
+    main();
 }
 
 module.exports = app;

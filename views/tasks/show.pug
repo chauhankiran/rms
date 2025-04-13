@@ -101,3 +101,53 @@ block content
           .row.align-items-center 
             .col-6 
               button(type="submit") Create comment
+
+  hr 
+  
+  //- Files section.
+  .row
+    .col-12 
+      h3 Files
+  
+      form(action=`/tasks/${task.id}/files`, method="post", enctype="multipart/form-data").mb-4
+        .row.align-items-center 
+          .col-8
+            label(for="file") Upload file:
+            input#file(type="file", name="displayName", accept="*")
+          .col-4.text-end
+            button(type="submit").btn.mt-4 Upload
+  
+      //- modals for deleting files
+      each file in files
+        .modal(id=`file-modal-${file.id}`)
+          .modal-content
+            p Are you sure you want to delete this file?
+            form(action=`/tasks/${task.id}/files/${file.id}?_method=DELETE`, method="post")
+              button(type="submit").mr-2 Yes, delete
+              button(type="button" class="cancel-modal") Cancel
+
+      table 
+        thead 
+          tr 
+            th Id 
+            th Name 
+            th Created at 
+            th Created by 
+            th 
+        tbody 
+          if files.length > 0
+            for file in files  
+              tr 
+                td 
+                  a(href=`/tasks/${task.id}/files/${file.id}`) #{file.id}
+                td 
+                  a(href=`/tasks/${task.id}/files/${file.id}`) #{file.displayName}
+                td #{file.cretedAt || "-"}
+                td #{file.createdByEmail || "-"}
+                td 
+                  //- show delete button if the user is the creator of the comment
+                  if currentUser.id == file.createdById
+                    button.btn-link.open-modal(data-modal=`file-modal-${file.id}`) delete
+          else 
+            tr 
+              td(colspan=5).text-center No files found.

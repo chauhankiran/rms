@@ -302,10 +302,24 @@ select:focus-visible {
     border: 1px solid #000;
 }
 
+input[type="file"] {
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+
+    cursor: pointer;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+}
+
 /*
  * Buttons.
  * ============================================================================
  */
+::file-selector-button,
 input[type="submit"],
 input[type="button"],
 .btn,

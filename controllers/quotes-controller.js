@@ -1,6 +1,7 @@
 const notFound = require("../errors/not-found");
 const quotesService = require("../services/quotes-service");
 const quoteCommentsService = require("../services/quote-comments-service");
+const quoteFilesService = require("../services/quote-files-service");
 const quoteViewsService = require("../services/quote-views-service");
 const tasksService = require("../services/tasks-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
@@ -165,6 +166,9 @@ module.exports = {
             // Get all comments.
             const comments = await quoteCommentsService.findOne(id);
 
+            // Get all files.
+            const files = await quoteFilesService.findOne(id);
+
             return res.render("quotes/show", {
                 title:
                     "Show " +
@@ -174,6 +178,7 @@ module.exports = {
                 quote,
                 tasks,
                 comments,
+                files,
             });
         } catch (err) {
             next(err);

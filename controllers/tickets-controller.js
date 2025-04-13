@@ -1,6 +1,7 @@
 const notFound = require("../errors/not-found");
 const ticketsService = require("../services/tickets-service");
 const ticketCommentsService = require("../services/ticket-comments-service");
+const ticketFilesService = require("../services/ticket-files-service");
 const ticketViewsService = require("../services/ticket-views-service");
 const ticketTypesService = require("../services/admin/ticket-types-service");
 const tasksService = require("../services/tasks-service");
@@ -178,6 +179,9 @@ module.exports = {
             // Get all comments.
             const comments = await ticketCommentsService.findOne(id);
 
+            // Get all files.
+            const files = await ticketFilesService.findOne(id);
+
             return res.render("tickets/show", {
                 title:
                     "Show " +
@@ -187,6 +191,7 @@ module.exports = {
                 ticket,
                 tasks,
                 comments,
+                files,
             });
         } catch (err) {
             next(err);
