@@ -27,6 +27,7 @@
         "postgres": "3.4.4",
         "pug": "3.0.3",
         "redis": "4.7.0",
+        "resend": "4.2.0",
         "serve-favicon": "2.5.0"
     },
     "devDependencies": {
