@@ -1,8 +1,24 @@
 mixin title(from)
+    - let label
+
+    case from 
+        when "companies"
+            - label = labels.module.company
+        when "contacts"
+            - label = labels.module.contact
+        when "deals"
+            - label = labels.module.deal
+        when "quotes"
+            - label = labels.module.quote
+        when "tickets"
+            - label = labels.module.ticket
+        when "tasks"
+            - label = labels.module.task
+
     .col-8 
         h1 #{title} (#{count})
     .col-4.text-end 
-        a(href=`/${from}/new`).btn New #{downcase(singular(labels.module.company))}
+        a(href=`/${from}/new`).btn New #{downcase(singular(label))}
 
 mixin search(from, placeholder)
     form(action=`/${from}`, method="get") 
