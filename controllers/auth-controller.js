@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const authService = require("../services/auth-service");
 const companyLabelsService = require("../services/admin/company-labels-service");
@@ -196,5 +197,110 @@ module.exports = {
         } catch (err) {
             next(err);
         }
+    },
+
+    showForgotPassword: (req, res, next) => {
+        res.render("auth/forgot-password", { title: "Forgot password" });
+    },
+
+    forgotPassword: async (req, res, next) => {
+        const email = req.body.email;
+
+        if (!email) {
+            req.flash("error", "Email is required.");
+            return res.redirect("/auth/forgot-password");
+        }
+
+        try {
+            const user = await authService.findUserByEmail(email);
+
+            if (!user) {
+                req.flash("error", "Email is invalid.");
+                return res.redirect("/auth/forgot-password");
+            }
+
+            if (!user.isActive) {
+                req.flash(
+                    "error",
+                    "User is de-activated. Please contact administrator."
+                );
+                return res.redirect("/auth/forgot-password");
+            }
+
+            const token = crypto.randomBytes(32).toString("hex");
+
+            const resetLink = `http://localhost:3000/auth/reset-password/${token}`;
+            const resetObj = {
+                email,
+                token,
+                expiresIn: new Date(Date.now() + 3600000).toISOString(), // 1 hour
+            };
+
+            await authService.updateResetToken(resetObj);
+
+            const { data, error } = await resend.emails.send({
+                from: `${process.env.RESEND_FROM_NAME} <${process.env.RESEND_FROM_EMAIL}>`,
+                to: email,
+                subject: "Reset Password",
+                html: `<p>Hi there,</p><p>Click the link below to reset your password:</p><a href="${resetLink}">${resetLink}</a>`,
+            });
+            if (error) {
+                return console.error(error);
+            }
+            console.log(data);
+
+            req.flash("info", "Reset password link sent to your email.");
+            return res.redirect("/auth/login");
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    showResetPassword: (req, res, next) => {
+        const token = req.params.id;
+
+        res.render("auth/reset-password", { title: "Reset password", token });
+    },
+
+    resetPassword: async (req, res, next) => {
+        const { password, confirmPassword, token } = req.body;
+
+        if (!password) {
+            req.flash("error", "New password is required.");
+            return res.redirect(`/auth/reset-password/${token}`);
+        }
+
+        if (!confirmPassword) {
+            req.flash("error", "Confirm password is required.");
+            return res.redirect(`/auth/reset-password/${token}`);
+        }
+
+        if (password !== confirmPassword) {
+            req.flash("error", "Password and Confirm password must be same.");
+            return res.redirect(`/auth/reset-password/${token}`);
+        }
+
+        // Hashing
+        const salt = bcrypt.genSaltSync();
+        const passwordHash = bcrypt.hashSync(password, salt);
+
+        try {
+            const resetObj = {
+                token,
+                password: passwordHash,
+            };
+            await authService.resetPassword(resetObj);
+
+            req.flash("info", "Password is updated.");
+            return res.redirect("/auth/password-reset-success");
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    showPasswordResetSuccess: async (req, res, next) => {
+        res.render("auth/password-reset-success", {
+            title: "Password Reset Successful",
+        });
     },
 };

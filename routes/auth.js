@@ -11,4 +11,10 @@ router.get("/logout", authController.logout);
 router.get("/reset", authController.showReset);
 router.put("/reset", authController.reset);
 
+router.get("/forgot-password", authController.showForgotPassword);
+router.put("/forgot-password", authController.forgotPassword);
+router.get("/reset-password/:id", authController.showResetPassword);
+router.put("/reset-password", authController.resetPassword);
+router.get("/password-reset-success", authController.showPasswordResetSuccess);
+
 module.exports = router;
