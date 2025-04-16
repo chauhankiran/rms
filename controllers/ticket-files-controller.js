@@ -36,8 +36,6 @@ module.exports = {
         try {
             const file = await ticketFilesService.findOneById(id);
 
-            console.log("file", file);
-
             if (!file) {
                 req.flash("error", "File not found.");
                 return res.redirect(`/tickets/${ticketId}`);

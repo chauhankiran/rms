@@ -36,8 +36,6 @@ module.exports = {
         try {
             const file = await contactFilesService.findOneById(id);
 
-            console.log("file", file);
-
             if (!file) {
                 req.flash("error", "File not found.");
                 return res.redirect(`/contacts/${contactId}`);

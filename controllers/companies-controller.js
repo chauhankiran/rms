@@ -12,6 +12,7 @@ const ticketsService = require("../services/tickets-service");
 const tasksService = require("../services/tasks-service");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
+const sql = require("../db/sql");
 
 const columnsObj = {
     id: "c.id",
@@ -21,6 +22,8 @@ const columnsObj = {
     createdAt: 'c."createdAt"',
     updatedBy: 'updater.email AS "updatedByEmail"',
     updatedAt: 'c."updatedAt"',
+    employeeSize: 'c."employeeSize"',
+    description: "c.description",
 };
 
 module.exports = {
@@ -33,33 +36,139 @@ module.exports = {
         const orderDir = req.query.orderDir || "DESC";
 
         try {
-            const companyViews = await companyViewsService.pluck(["name"]);
+            // Run the query to fetch the fields.
+            const fields = await sql`
+                SELECT
+                    id,
+                    name
+                FROM
+                    "companyViews"
+                WHERE
+                    "userId" = ${req.session.currentUser.id}
+            `;
 
-            let columns = 'c."isActive",';
-            let headers = [];
-            for (const companyView of companyViews) {
-                const column = columnsObj[companyView.name];
+            // Create SQL query based on fields.
+            let query = 'c."isActive",';
+            for (const field of fields) {
+                const column = columnsObj[field.name];
                 if (column) {
-                    columns += `${column},`;
-                    headers.push(companyView.name);
+                    query += `${column},`;
+                }
+            }
+            // TEMP: Track the issue
+            // https://github.com/porsager/postgres/issues/894
+            query = query.endsWith(",") ? query.slice(0, -1) : query;
+
+            // Create columns array.
+            const columns = [];
+            for (const field of fields) {
+                if (field.name === "id") {
+                    columns.push({
+                        header: req.session.labels.company.id,
+                        field: "id",
+                        compose: (d) => {
+                            return `<a href='/companies/${d.id}'>${d.id}</a>`;
+                        },
+                        func: (header) => {
+                            return `
+                                <a href='/companies?orderBy=id&orderDir=${orderDir === "ASC" ? "DESC" : "ASC"}${search ? `&search=${search}` : ""}'>
+                                    ${header}
+                                </a> 
+                                ${orderBy === "id" ? `<span class='order-wrapper'>${orderDir}</a>` : ""}
+                            `;
+                        },
+                    });
+                } else if (field.name === "name") {
+                    columns.push({
+                        header: req.session.labels.company.name,
+                        field: "name",
+                        compose: (d) => {
+                            return `<a href='/companies/${d.id}'>${d.name}</a>`;
+                        },
+                        func: (header) => {
+                            return `
+                                <a href='/companies?orderBy=name&orderDir=${orderDir === "ASC" ? "DESC" : "ASC"}${search ? `&search=${search}` : ""}'>
+                                    ${header}
+                                </a> 
+                                ${orderBy === "name" ? `<span class='order-wrapper'>${orderDir}</a>` : ""}
+                            `;
+                        },
+                    });
+                } else if (field.name === "companySourceId") {
+                    columns.push({
+                        header: req.session.labels.company.companySourceId,
+                        field: "companySource",
+                    });
+                } else if (field.name === "createdBy") {
+                    columns.push({
+                        header: req.session.labels.company.createdBy,
+                        field: "createdByEmail",
+                    });
+                } else if (field.name === "createdAt") {
+                    columns.push({
+                        header: req.session.labels.company.createdAt,
+                        field: "createdAt",
+                        func: (header) => {
+                            return `
+                                <a href='/companies?orderBy=createdAt&orderDir=${orderDir === "ASC" ? "DESC" : "ASC"}${search ? `&search=${search}` : ""}'>
+                                    ${header}
+                                </a> 
+                                ${orderBy === "createdAt" ? `<span class='order-wrapper'>${orderDir}</a>` : ""}
+                            `;
+                        },
+                    });
+                } else if (field.name === "updatedBy") {
+                    columns.push({
+                        header: req.session.labels.company.updatedBy,
+                        field: "updatedByEmail",
+                    });
+                } else if (field.name === "updatedAt") {
+                    columns.push({
+                        header: req.session.labels.company.updatedAt,
+                        field: "updatedAt",
+                        func: (header) => {
+                            return `
+                                <a href='/companies?orderBy=updatedAt&orderDir=${orderDir === "ASC" ? "DESC" : "ASC"}${search ? `&search=${search}` : ""}'>
+                                    ${header}
+                                </a> 
+                                ${orderBy === "updatedAt" ? `<span class='order-wrapper'>${orderDir}</a>` : ""}
+                            `;
+                        },
+                    });
+                } else if (field.name === "employeeSize") {
+                    columns.push({
+                        header: req.session.labels.company.employeeSize,
+                        field: "employeeSize",
+                        func: (header) => {
+                            return `
+                                <a href='/companies?orderBy=employeeSize&orderDir=${orderDir === "ASC" ? "DESC" : "ASC"}${search ? `&search=${search}` : ""}'>
+                                    ${header}
+                                </a> 
+                                ${orderBy === "employeeSize" ? `<span class='order-wrapper'>${orderDir}</a>` : ""}
+                            `;
+                        },
+                    });
+                } else if (field.name === "description") {
+                    columns.push({
+                        header: req.session.labels.company.description,
+                        field: "description",
+                    });
                 }
             }
 
-            // TEMP: Track the issue
-            // https://github.com/porsager/postgres/issues/894
-            columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
-
+            // Fetch companies.
             const optionsObj = {
                 search,
                 limit,
                 skip,
                 orderBy,
                 orderDir,
-                columns,
+                query,
             };
             const companies = await companiesService.find(optionsObj);
             const { count } = await companiesService.count(optionsObj);
 
+            // Generate pagination links for buttons.
             const pages = Math.ceil(count / limit);
 
             const paginationLinks = generatePaginationLinks({
@@ -72,6 +181,21 @@ module.exports = {
                 orderDir,
             });
 
+            // TEMP.
+            // select all view fields to support "view change".
+            // TODO: Move this somewhere else.
+            const viewFields = await sql`
+                SELECT
+                    id,
+                    name,
+                    "displayName"
+                FROM
+                    "companyLabels"
+                WHERE
+                    "isActive" = TRUE
+            `;
+
+            // Render
             return res.render("companies/index", {
                 title: capitalize(req.session.labels.module.company),
                 companies,
@@ -80,7 +204,8 @@ module.exports = {
                 count,
                 orderBy,
                 orderDir,
-                headers,
+                columns,
+                viewFields,
             });
         } catch (err) {
             next(err);
@@ -368,5 +493,27 @@ module.exports = {
         } catch (err) {
             next(err);
         }
+    },
+
+    viewFields: async (req, res, next) => {
+        const fields = req.body.fields || [];
+
+        await sql`
+            DELETE FROM
+                "companyViews"
+            WHERE
+                "userId" = ${req.session.currentUser.id}
+        `;
+
+        for (const field of fields) {
+            await sql`
+                INSERT INTO
+                    "companyViews" ("userId", "name")
+                VALUES
+                    (${req.session.currentUser.id}, ${field})
+            `;
+        }
+
+        res.redirect("/companies");
     },
 };

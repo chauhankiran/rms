@@ -1,19 +1,32 @@
-mixin cell(company)
-    if labels.company.id
+mixin cell(company, header)
+    //- id
+    if header == "id" && labels.company.id
         td
             a(href=`/companies/${company.id}`) #{company.id}
 
-    if labels.company.name
+    //- name
+    if header == "name" && labels.company.name
         td 
             a(href=`/companies/${company.id}`) #{company.name}
             if (!company.isActive)
                 span.archive-status (archived)
                 
-    if labels.company.companySourceId
+    //- companySourceId
+    if header == "companySourceId" && labels.company.companySourceId
         td #{company.companySource || "-" }
 
-    if labels.company.updatedBy
+    //- updatedBy
+    if header == "updatedBy" && labels.company.updatedBy
         td #{company.updatedByEmail || "-" }
                 
-    if labels.company.updatedAt
+    //- updatedAt
+    if header == "updatedAt" && labels.company.updatedAt
         td #{company.updatedAt || "-" } 
+
+    //- createdBy
+    if header == "createdBy" && labels.company.createdBy
+        td #{company.createdByEmail || "-" }
+    
+    //- createdAt
+    if header == "createdAt" && labels.company.createdAt
+        td #{company.createdAt || "-" }

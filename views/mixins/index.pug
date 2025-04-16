@@ -18,6 +18,7 @@ mixin title(from)
     .col-8 
         h1 #{title} (#{count})
     .col-4.text-end 
+        button(data-modal="change-view-modal").btn.open-modal.mr-2 Change View
         a(href=`/${from}/new`).btn New #{downcase(singular(label))}
 
 mixin search(from, placeholder)

@@ -1,8 +1,6 @@
 extends ../layout
 include ../mixins/index
 include ../mixins/pagination
-include ./mixins/head
-include ./mixins/cell
 
 block content
     .row.align-items-center 
@@ -12,21 +10,41 @@ block content
             +search("companies", "Type name and press Enter")
 
             include ../partials/flash
-        
-            table
+
+            table 
                 thead 
-                    tr
-                        each header in headers
-                            +head(header)
-                
+                    tr 
+                        each column in columns 
+                            if column.func 
+                                th!= column.func(column.header)
+                            else
+                                th= column.header 
+                    
                 tbody 
                     if companies.length > 0
                         each company in companies 
-                            tr
-                                +cell(company)
+                            tr 
+                                each column in columns 
+                                    if column.compose 
+                                        td!= column.compose(company)
+                                    else
+                                        td= company[column.field]
                     else 
                         tr 
-                            td(colspan=7).text-center No #{downcase(labels.module.company)} found.
+                            td(colspan=`${columns.length}`).text-center No #{downcase(labels.module.company)} found. 
 
         .col-12 
             +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)
+        
+        //- modal to change the view
+        .modal(id="change-view-modal")
+          .modal-content
+            p Let's change the view
+            form(action="/companies/views/fields", method="post")
+                label(for="fields") Select fields
+                select#fields(name="fields" class="mb-4" multiple) 
+                    each field in viewFields
+                        option(value=field.name)= field.displayName
+                
+                button(type="submit").mr-2 Submit
+                button(type="button" class="cancel-modal") Cancel

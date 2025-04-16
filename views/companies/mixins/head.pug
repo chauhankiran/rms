@@ -1,4 +1,5 @@
 mixin head(header)
+    //- id
     if header === "id" && labels.company.id
         th
             if orderDir === 'ASC'
@@ -9,6 +10,7 @@ mixin head(header)
             if orderBy === 'id'
                 span.order-wrapper= orderDir
                 
+    //- name
     if header === "name" && labels.company.name
         th
             if orderDir === 'ASC'
@@ -19,12 +21,15 @@ mixin head(header)
             if orderBy === 'name'
                 span.order-wrapper= orderDir
 
+    //- companySourceId
     if header === "companySourceId" && labels.company.companySourceId
         th #{labels.company[header]}
                 
+    //- updatedBy
     if header === "updatedBy" && labels.company.updatedBy
         th #{labels.company[header]}
 
+    //- updatedAt
     if header === "updatedAt" && labels.company.updatedAt
         th
             if orderDir === 'ASC'
@@ -33,4 +38,19 @@ mixin head(header)
                 a(href=`/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
                     
             if orderBy === 'updatedAt'
+                span.order-wrapper= orderDir
+
+    //- createdBy
+    if header === "createdBy" && labels.company.createdBy
+        th #{labels.company[header]}
+
+    //- createdAt
+    if header === "createdAt" && labels.company.createdAt
+        th
+            if orderDir === 'ASC'
+                a(href=`/companies?orderBy=createdAt&orderDir=DESC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
+            else 
+                a(href=`/companies?orderBy=createdAt&orderDir=ASC${search ? `&search=${search}` : ''}`) #{labels.company[header]}
+                    
+            if orderBy === 'createdAt'
                 span.order-wrapper= orderDir

@@ -28,4 +28,6 @@ router.post(
 router.delete("/:companyId/files/:id", companyFilesController.destroy);
 router.get("/:companyId/files/:id", companyFilesController.download);
 
+router.post("/views/fields", companiesController.viewFields);
+
 module.exports = router;

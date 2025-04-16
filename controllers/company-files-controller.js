@@ -36,8 +36,6 @@ module.exports = {
         try {
             const file = await companyFilesService.findOneById(id);
 
-            console.log("file", file);
-
             if (!file) {
                 req.flash("error", "File not found.");
                 return res.redirect(`/companies/${companyId}`);

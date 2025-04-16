@@ -2,32 +2,32 @@ const sql = require("../db/sql");
 
 module.exports = {
     find: async (optionsObj) => {
-        const { skip, limit, search, orderBy, orderDir, columns } = optionsObj;
+        const { skip, limit, search, orderBy, orderDir, query } = optionsObj;
 
         const whereClause = search
             ? sql` WHERE c.name iLIKE ${"%" + search + "%"}`
             : sql``;
 
         return await sql`
-      SELECT
-        ${sql.unsafe(columns)}
-      FROM
-        companies c
-      LEFT JOIN
-        users creator ON c."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON c."updatedBy" = updater.id
-      LEFT JOIN
-        "companySources" cs ON c."companySourceId" = cs.id
-      ${whereClause}
-      ORDER BY
-        ${sql(orderBy)}
-        ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
-      LIMIT
-        ${limit}
-      OFFSET
-        ${skip}
-    `;
+            SELECT
+                ${sql.unsafe(query)}
+            FROM
+                companies c
+            LEFT JOIN
+                users creator ON c."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON c."updatedBy" = updater.id
+            LEFT JOIN
+                "companySources" cs ON c."companySourceId" = cs.id
+                ${whereClause}
+            ORDER BY
+                ${sql(orderBy)}
+                ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
+            LIMIT
+                ${limit}
+            OFFSET
+                ${skip}
+        `;
     },
 
     count: async (optionsObj) => {
