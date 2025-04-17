@@ -64,35 +64,12 @@ module.exports = {
             for (const field of fields) {
                 if (field.name === "id") {
                     columns.push({
-                        header: req.session.labels.company.id,
                         field: "id",
-                        compose: (d) => {
-                            return `<a href='/companies/${d.id}'>${d.id}</a>`;
-                        },
-                        func: (header) => {
-                            return `
-                                <a href='/companies?orderBy=id&orderDir=${orderDir === "ASC" ? "DESC" : "ASC"}${search ? `&search=${search}` : ""}'>
-                                    ${header}
-                                </a> 
-                                ${orderBy === "id" ? `<span class='order-wrapper'>${orderDir}</a>` : ""}
-                            `;
-                        },
                     });
                 } else if (field.name === "name") {
                     columns.push({
                         header: req.session.labels.company.name,
                         field: "name",
-                        compose: (d) => {
-                            return `<a href='/companies/${d.id}'>${d.name}</a>`;
-                        },
-                        func: (header) => {
-                            return `
-                                <a href='/companies?orderBy=name&orderDir=${orderDir === "ASC" ? "DESC" : "ASC"}${search ? `&search=${search}` : ""}'>
-                                    ${header}
-                                </a> 
-                                ${orderBy === "name" ? `<span class='order-wrapper'>${orderDir}</a>` : ""}
-                            `;
-                        },
                     });
                 } else if (field.name === "companySourceId") {
                     columns.push({
@@ -108,14 +85,6 @@ module.exports = {
                     columns.push({
                         header: req.session.labels.company.createdAt,
                         field: "createdAt",
-                        func: (header) => {
-                            return `
-                                <a href='/companies?orderBy=createdAt&orderDir=${orderDir === "ASC" ? "DESC" : "ASC"}${search ? `&search=${search}` : ""}'>
-                                    ${header}
-                                </a> 
-                                ${orderBy === "createdAt" ? `<span class='order-wrapper'>${orderDir}</a>` : ""}
-                            `;
-                        },
                     });
                 } else if (field.name === "updatedBy") {
                     columns.push({
@@ -126,27 +95,11 @@ module.exports = {
                     columns.push({
                         header: req.session.labels.company.updatedAt,
                         field: "updatedAt",
-                        func: (header) => {
-                            return `
-                                <a href='/companies?orderBy=updatedAt&orderDir=${orderDir === "ASC" ? "DESC" : "ASC"}${search ? `&search=${search}` : ""}'>
-                                    ${header}
-                                </a> 
-                                ${orderBy === "updatedAt" ? `<span class='order-wrapper'>${orderDir}</a>` : ""}
-                            `;
-                        },
                     });
                 } else if (field.name === "employeeSize") {
                     columns.push({
                         header: req.session.labels.company.employeeSize,
                         field: "employeeSize",
-                        func: (header) => {
-                            return `
-                                <a href='/companies?orderBy=employeeSize&orderDir=${orderDir === "ASC" ? "DESC" : "ASC"}${search ? `&search=${search}` : ""}'>
-                                    ${header}
-                                </a> 
-                                ${orderBy === "employeeSize" ? `<span class='order-wrapper'>${orderDir}</a>` : ""}
-                            `;
-                        },
                     });
                 } else if (field.name === "description") {
                     columns.push({

@@ -15,8 +15,51 @@ block content
                 thead 
                     tr 
                         each column in columns 
-                            if column.func 
-                                th!= column.func(column.header)
+                            if column.field === "id"
+                                th 
+                                    if orderDir === 'ASC'
+                                        a(href=`/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                    else 
+                                        a(href=`/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                        
+                                    if orderBy === 'id'
+                                        span.order-wrapper= orderDir
+                            else if column.field === "name"
+                                th
+                                    if orderDir === 'ASC'
+                                        a(href=`/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                    else 
+                                        a(href=`/companies?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                            
+                                    if orderBy === 'name'
+                                        span.order-wrapper= orderDir
+                            else if column.field === "createdAt"
+                                th
+                                    if orderDir === 'ASC'
+                                        a(href=`/companies?orderBy=createdAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                    else 
+                                        a(href=`/companies?orderBy=createdAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                            
+                                    if orderBy === 'createdAt'
+                                        span.order-wrapper= orderDir
+                            else if column.field === "updatedAt"
+                                th
+                                    if orderDir === 'ASC'
+                                        a(href=`/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                    else 
+                                        a(href=`/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                            
+                                    if orderBy === 'updatedAt'
+                                        span.order-wrapper= orderDir
+                            else if column.field === "employeeSize"
+                                th
+                                    if orderDir === 'ASC'
+                                        a(href=`/companies?orderBy=employeeSize&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                    else 
+                                        a(href=`/companies?orderBy=employeeSize&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                            
+                                    if orderBy === 'employeeSize'
+                                        span.order-wrapper= orderDir
                             else
                                 th= column.header 
                     
@@ -25,8 +68,12 @@ block content
                         each company in companies 
                             tr 
                                 each column in columns 
-                                    if column.compose 
-                                        td!= column.compose(company)
+                                    if column.field === "id"
+                                        td 
+                                            a(href=`/companies/${company.id}`)= company[column.field]
+                                    else if column.field === "name"
+                                        td 
+                                            a(href=`/companies/${company.id}`)= company[column.field]
                                     else
                                         td= company[column.field]
                     else 
