@@ -14,16 +14,47 @@ const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
 const sql = require("../db/sql");
 
+// columnsObj contains list of field companies can have.
+// key in object is name of the field (used to fetch label).
+// as is for selecting that field value in SQL SELECT statement.
+// alias is for selecting the field value that is returned by SQL SELECT statement.
 const columnsObj = {
-    id: "c.id",
-    name: "c.name",
-    companySourceId: 'cs.name AS "companySource"',
-    createdBy: 'creator.email AS "createdByEmail"',
-    createdAt: 'c."createdAt"',
-    updatedBy: 'updater.email AS "updatedByEmail"',
-    updatedAt: 'c."updatedAt"',
-    employeeSize: 'c."employeeSize"',
-    description: "c.description",
+    id: {
+        as: "c.id",
+        alias: "id",
+    },
+    name: {
+        as: "c.name",
+        alias: "name",
+    },
+    companySourceId: {
+        as: 'cs.name AS "companySource"',
+        alias: "companySource",
+    },
+    createdBy: {
+        as: 'creator.email AS "createdByEmail"',
+        alias: "createdByEmail",
+    },
+    createdAt: {
+        as: 'c."createdAt"',
+        alias: "createdAt",
+    },
+    updatedBy: {
+        as: 'updater.email AS "updatedByEmail"',
+        alias: "updatedByEmail",
+    },
+    updatedAt: {
+        as: 'c."updatedAt"',
+        alias: "updatedAt",
+    },
+    employeeSize: {
+        as: 'c."employeeSize"',
+        alias: "employeeSize",
+    },
+    description: {
+        as: "c.description",
+        alias: "description",
+    },
 };
 
 module.exports = {
@@ -47,67 +78,22 @@ module.exports = {
                     "userId" = ${req.session.currentUser.id}
             `;
 
-            // Create SQL query based on fields.
+            // Create SQL query and columns array based on fields.
             let query = 'c."isActive",';
+            const columns = [];
             for (const field of fields) {
                 const column = columnsObj[field.name];
                 if (column) {
-                    query += `${column},`;
+                    query += `${column.as},`;
+                    columns.push({
+                        header: req.session.labels.company[field.name],
+                        field: column.alias,
+                    });
                 }
             }
             // TEMP: Track the issue
             // https://github.com/porsager/postgres/issues/894
             query = query.endsWith(",") ? query.slice(0, -1) : query;
-
-            // Create columns array.
-            const columns = [];
-            for (const field of fields) {
-                if (field.name === "id") {
-                    columns.push({
-                        field: "id",
-                    });
-                } else if (field.name === "name") {
-                    columns.push({
-                        header: req.session.labels.company.name,
-                        field: "name",
-                    });
-                } else if (field.name === "companySourceId") {
-                    columns.push({
-                        header: req.session.labels.company.companySourceId,
-                        field: "companySource",
-                    });
-                } else if (field.name === "createdBy") {
-                    columns.push({
-                        header: req.session.labels.company.createdBy,
-                        field: "createdByEmail",
-                    });
-                } else if (field.name === "createdAt") {
-                    columns.push({
-                        header: req.session.labels.company.createdAt,
-                        field: "createdAt",
-                    });
-                } else if (field.name === "updatedBy") {
-                    columns.push({
-                        header: req.session.labels.company.updatedBy,
-                        field: "updatedByEmail",
-                    });
-                } else if (field.name === "updatedAt") {
-                    columns.push({
-                        header: req.session.labels.company.updatedAt,
-                        field: "updatedAt",
-                    });
-                } else if (field.name === "employeeSize") {
-                    columns.push({
-                        header: req.session.labels.company.employeeSize,
-                        field: "employeeSize",
-                    });
-                } else if (field.name === "description") {
-                    columns.push({
-                        header: req.session.labels.company.description,
-                        field: "description",
-                    });
-                }
-            }
 
             // Fetch companies.
             const optionsObj = {
