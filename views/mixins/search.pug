@@ -1,6 +1,0 @@
-mixin search(from, placeholder)
-    form(action=`/${from}`, method="get") 
-        .form-group 
-            input(type="hidden", name="orderBy", value=orderBy)
-            input(type="hidden", name="orderDir", value=orderDir)
-            input(type="text", name="search", value=search, autofocus=true, placeholder=placeholder)
