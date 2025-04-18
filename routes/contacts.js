@@ -28,4 +28,6 @@ router.post(
 router.delete("/:contactId/files/:id", contactFilesController.destroy);
 router.get("/:contactId/files/:id", contactFilesController.download);
 
+router.post("/views/fields", contactsController.viewFields);
+
 module.exports = router;

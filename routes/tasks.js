@@ -28,4 +28,6 @@ router.post(
 router.delete("/:taskId/files/:id", taskFilesController.destroy);
 router.get("/:taskId/files/:id", taskFilesController.download);
 
+router.post("/views/fields", tasksController.viewFields);
+
 module.exports = router;

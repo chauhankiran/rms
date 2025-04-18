@@ -11,19 +11,57 @@ const tasksService = require("../services/tasks-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
+const sql = require("../db/sql");
 
+// columnsObj contains list of field companies can have.
+// key in object is name of the field (used to fetch label).
+// as is for selecting that field value in SQL SELECT statement.
+// alias is for selecting the field value that is returned by SQL SELECT statement.
 const columnsObj = {
-    id: "c.id",
-    name: 'c.prefix, c."firstName", c."lastName"',
-    prefix: "c.prefix",
-    firstName: 'c."firstName"',
-    lastName: 'c."lastName"',
-    contactIndustryId: 'ci.name AS "contactIndustry"',
-    annualRevenue: 'c."annualRevenue"',
-    createdBy: 'creator.email AS "createdByEmail"',
-    createdAt: 'c."createdAt"',
-    updatedBy: 'updater.email AS "updatedByEmail"',
-    updatedAt: 'c."updatedAt"',
+    id: {
+        as: "c.id",
+        alias: "id",
+    },
+    name: {
+        as: 'c.prefix, c."firstName", c."lastName"',
+        alias: "name",
+    },
+    prefix: {
+        as: "c.prefix",
+        alias: "prefix",
+    },
+    firstName: {
+        as: 'c."firstName"',
+        alias: "firstName",
+    },
+    lastName: {
+        as: 'c."lastName"',
+        alias: "lastName",
+    },
+    contactIndustryId: {
+        as: 'ci.name AS "contactIndustry"',
+        alias: "contactIndustry",
+    },
+    annualRevenue: {
+        as: 'c."annualRevenue"',
+        alias: "annualRevenue",
+    },
+    createdBy: {
+        as: 'creator.email AS "createdByEmail"',
+        alias: "createdByEmail",
+    },
+    createdAt: {
+        as: 'c."createdAt"',
+        alias: "createdAt",
+    },
+    updatedBy: {
+        as: 'updater.email AS "updatedByEmail"',
+        alias: "updatedByEmail",
+    },
+    updatedAt: {
+        as: 'c."updatedAt"',
+        alias: "updatedAt",
+    },
 };
 
 module.exports = {
@@ -36,35 +74,49 @@ module.exports = {
         const orderDir = req.query.orderDir || "DESC";
 
         try {
-            const contactViews = await contactViewsService.pluck(["name"]);
+            // Run the query to fetch the fields.
+            const fields = await sql`
+                SELECT
+                    id,
+                    name
+                FROM
+                    "contactViews"
+                WHERE
+                    "userId" = ${req.session.currentUser.id}
+            `;
 
-            let columns = 'c."isActive",';
-            let headers = [];
-            for (const contactView of contactViews) {
-                const column = columnsObj[contactView.name];
+            // Create SQL query based on fields.
+            let query = 'c."isActive",';
+            const columns = [];
+            for (const field of fields) {
+                const column = columnsObj[field.name];
                 if (column) {
-                    columns += `${column},`;
-                    headers.push(contactView.name);
+                    query += `${column.as},`;
+                    columns.push({
+                        header: req.session.labels.contact[field.name],
+                        field: column.alias,
+                    });
                 }
             }
-
             // TEMP: Track the issue
             // https://github.com/porsager/postgres/issues/894
-            columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
+            query = query.endsWith(",") ? query.slice(0, -1) : query;
 
+            // Fetch contacts.
             const optionsObj = {
                 search,
                 limit,
                 skip,
                 orderBy,
                 orderDir,
-                columns,
+                query,
             };
             const contacts = await contactsService.find(optionsObj);
             const { count } = await contactsService.count(optionsObj);
 
             const pages = Math.ceil(count / limit);
 
+            // Generate pagination links for buttons.
             const paginationLinks = generatePaginationLinks({
                 link: "/contacts",
                 page,
@@ -75,6 +127,20 @@ module.exports = {
                 orderDir,
             });
 
+            // TEMP.
+            // select all view fields to support "view change".
+            // TODO: Move this somewhere else.
+            const viewFields = await sql`
+                SELECT
+                    id,
+                    name,
+                    "displayName"
+                FROM
+                    "contactLabels"
+                WHERE
+                    "isActive" = TRUE
+            `;
+
             return res.render("contacts/index", {
                 title: capitalize(req.session.labels.module.contact),
                 contacts,
@@ -83,7 +149,8 @@ module.exports = {
                 count,
                 orderBy,
                 orderDir,
-                headers,
+                viewFields,
+                columns,
             });
         } catch (err) {
             next(err);
@@ -392,5 +459,27 @@ module.exports = {
         } catch (err) {
             next(err);
         }
+    },
+
+    viewFields: async (req, res, next) => {
+        const fields = req.body.fields || [];
+
+        await sql`
+            DELETE FROM
+                "contactViews"
+            WHERE
+                "userId" = ${req.session.currentUser.id}
+        `;
+
+        for (const field of fields) {
+            await sql`
+                INSERT INTO
+                    "contactViews" ("userId", "name")
+                VALUES
+                    (${req.session.currentUser.id}, ${field})
+            `;
+        }
+
+        res.redirect("/contacts");
     },
 };

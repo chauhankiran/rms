@@ -8,7 +8,7 @@ module.exports = {
             search,
             orderBy,
             orderDir,
-            columns,
+            query,
             companyId,
             contactId,
         } = optionsObj;
@@ -27,7 +27,7 @@ module.exports = {
 
         return await sql`
             SELECT
-                ${sql.unsafe(columns)}
+                ${sql.unsafe(query)}
             FROM
                 deals d
             LEFT JOIN

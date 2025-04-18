@@ -9,16 +9,45 @@ const tasksService = require("../services/tasks-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
+const sql = require("../db/sql");
 
+// columnsObj contains list of field companies can have.
+// key in object is name of the field (used to fetch label).
+// as is for selecting that field value in SQL SELECT statement.
+// alias is for selecting the field value that is returned by SQL SELECT statement.
 const columnsObj = {
-    id: "d.id",
-    name: "d.name",
-    total: "d.total",
-    dealSourceId: 'ds.name AS "dealSource"',
-    createdBy: 'creator.email AS "createdByEmail"',
-    createdAt: 'd."createdAt"',
-    updatedBy: 'updater.email AS "updatedByEmail"',
-    updatedAt: 'd."updatedAt"',
+    id: {
+        as: "d.id",
+        alias: "id",
+    },
+    name: {
+        as: "d.name",
+        alias: "name",
+    },
+    total: {
+        as: "d.total",
+        alias: "total",
+    },
+    dealSourceId: {
+        as: 'ds.name AS "dealSource"',
+        alias: "dealSource",
+    },
+    createdBy: {
+        as: 'creator.email AS "createdByEmail"',
+        alias: "createdByEmail",
+    },
+    createdAt: {
+        as: 'd."createdAt"',
+        alias: "createdAt",
+    },
+    updatedBy: {
+        as: 'updater.email AS "updatedByEmail"',
+        alias: "updatedByEmail",
+    },
+    updatedAt: {
+        as: 'd."updatedAt"',
+        alias: "updatedAt",
+    },
 };
 
 module.exports = {
@@ -31,35 +60,49 @@ module.exports = {
         const orderDir = req.query.orderDir || "DESC";
 
         try {
-            const dealViews = await dealViewsService.pluck(["name"]);
+            // Run the query to fetch the fields.
+            const fields = await sql`
+                SELECT
+                    id,
+                    name
+                FROM
+                    "dealViews"
+                WHERE
+                    "userId" = ${req.session.currentUser.id}
+            `;
 
-            let columns = 'd."isActive",';
-            let headers = [];
-            for (const dealView of dealViews) {
-                const column = columnsObj[dealView.name];
+            // Create SQL query based on fields.
+            let query = 'd."isActive",';
+            const columns = [];
+            for (const field of fields) {
+                const column = columnsObj[field.name];
                 if (column) {
-                    columns += `${column},`;
-                    headers.push(dealView.name);
+                    query += `${column.as},`;
+                    columns.push({
+                        header: req.session.labels.deal[field.name],
+                        field: column.alias,
+                    });
                 }
             }
-
             // TEMP: Track the issue
             // https://github.com/porsager/postgres/issues/894
-            columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
+            query = query.endsWith(",") ? query.slice(0, -1) : query;
 
+            // Fetch deals.
             const optionsObj = {
                 search,
                 limit,
                 skip,
                 orderBy,
                 orderDir,
-                columns,
+                query,
             };
             const deals = await dealsService.find(optionsObj);
             const { count } = await dealsService.count(optionsObj);
 
             const pages = Math.ceil(count / limit);
 
+            // Generate pagination links for buttons.
             const paginationLinks = generatePaginationLinks({
                 link: "/deals",
                 page,
@@ -70,6 +113,20 @@ module.exports = {
                 orderDir,
             });
 
+            // TEMP.
+            // select all view fields to support "view change".
+            // TODO: Move this somewhere else.
+            const viewFields = await sql`
+                SELECT
+                    id,
+                    name,
+                    "displayName"
+                FROM
+                    "dealLabels"
+                WHERE
+                    "isActive" = TRUE
+            `;
+
             return res.render("deals/index", {
                 title: capitalize(req.session.labels.module.deal),
                 deals,
@@ -78,7 +135,8 @@ module.exports = {
                 count,
                 orderBy,
                 orderDir,
-                headers,
+                viewFields,
+                columns,
             });
         } catch (err) {
             next(err);
@@ -337,5 +395,27 @@ module.exports = {
         } catch (err) {
             next(err);
         }
+    },
+
+    viewFields: async (req, res, next) => {
+        const fields = req.body.fields || [];
+
+        await sql`
+            DELETE FROM
+                "dealViews"
+            WHERE
+                "userId" = ${req.session.currentUser.id}
+        `;
+
+        for (const field of fields) {
+            await sql`
+                INSERT INTO
+                    "dealViews" ("userId", "name")
+                VALUES
+                    (${req.session.currentUser.id}, ${field})
+            `;
+        }
+
+        res.redirect("/deals");
     },
 };

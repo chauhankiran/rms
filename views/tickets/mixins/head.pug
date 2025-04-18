@@ -20,15 +20,7 @@ mixin head(header)
             
             if orderBy === 'name'
                 span.order-wrapper= orderDir
-
-    //- ticketTypeId
-    if header === "ticketTypeId" && labels.ticket.ticketTypeId
-        th #{labels.ticket[header]}
-              
-    //- updatedBy
-    if header === "updatedBy" && labels.ticket.updatedBy
-        th #{labels.ticket[header]}
-              
+    
     //- updatedAt
     if header === "updatedAt" && labels.ticket.updatedAt
         th
@@ -39,3 +31,13 @@ mixin head(header)
             
             if orderBy === 'updatedAt'
                 span.order-wrapper= orderDir
+
+    //- ticketTypeId
+    if header === "ticketTypeId" && labels.ticket.ticketTypeId
+        th #{labels.ticket[header]}
+              
+    //- updatedBy
+    if header === "updatedBy" && labels.ticket.updatedBy
+        th #{labels.ticket[header]}
+              
+    

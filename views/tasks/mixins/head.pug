@@ -20,15 +20,7 @@ mixin head(header)
                   
             if orderBy === 'name'
                 span.order-wrapper= orderDir
-
-    //- taskTypeId
-    if header === "taskTypeId" && labels.task.taskTypeId
-        th #{labels.task[header]}
-              
-    //- updatedBy
-    if header === "updatedBy" && labels.task.updatedBy
-        th #{labels.task[header]}
-              
+    
     //- updatedAt
     if header === "updatedAt" && labels.task.updatedAt
         th
@@ -39,3 +31,13 @@ mixin head(header)
                   
             if orderBy === 'updatedAt'
                 span.order-wrapper= orderDir
+
+    //- taskTypeId
+    if header === "taskTypeId" && labels.task.taskTypeId
+        th #{labels.task[header]}
+              
+    //- updatedBy
+    if header === "updatedBy" && labels.task.updatedBy
+        th #{labels.task[header]}
+              
+    

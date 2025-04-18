@@ -8,7 +8,7 @@ module.exports = {
             search,
             orderBy,
             orderDir,
-            columns,
+            query,
             companyId,
             contactId,
             dealId,
@@ -30,7 +30,7 @@ module.exports = {
 
         return await sql`
       SELECT
-        ${sql.unsafe(columns)}
+        ${sql.unsafe(query)}
       FROM
         tickets t
       LEFT JOIN

@@ -7,15 +7,41 @@ const tasksService = require("../services/tasks-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
+const sql = require("../db/sql");
 
+// columnsObj contains list of field companies can have.
+// key in object is name of the field (used to fetch label).
+// as is for selecting that field value in SQL SELECT statement.
+// alias is for selecting the field value that is returned by SQL SELECT statement.
 const columnsObj = {
-    id: "q.id",
-    name: "q.name",
-    total: "q.total",
-    createdBy: 'creator.email AS "createdByEmail"',
-    createdAt: 'q."createdAt"',
-    updatedBy: 'updater.email AS "updatedByEmail"',
-    updatedAt: 'q."updatedAt"',
+    id: {
+        as: "q.id",
+        alias: "id",
+    },
+    name: {
+        as: "q.name",
+        alias: "name",
+    },
+    total: {
+        as: "q.total",
+        alias: "total",
+    },
+    createdBy: {
+        as: 'creator.email AS "createdByEmail"',
+        alias: "createdByEmail",
+    },
+    createdAt: {
+        as: 'q."createdAt"',
+        alias: "createdAt",
+    },
+    updatedBy: {
+        as: 'updater.email AS "updatedByEmail"',
+        alias: "updatedByEmail",
+    },
+    updatedAt: {
+        as: 'q."updatedAt"',
+        alias: "updatedAt",
+    },
 };
 
 module.exports = {
@@ -28,35 +54,49 @@ module.exports = {
         const orderDir = req.query.orderDir || "DESC";
 
         try {
-            const quoteViews = await quoteViewsService.pluck(["name"]);
+            // Run the query to fetch the fields.
+            const fields = await sql`
+                SELECT
+                    id,
+                    name
+                FROM
+                    "quoteViews"
+                WHERE
+                    "userId" = ${req.session.currentUser.id}
+            `;
 
-            let columns = 'q."isActive",';
-            let headers = [];
-            for (const quoteView of quoteViews) {
-                const column = columnsObj[quoteView.name];
+            // Create SQL query based on fields.
+            let query = 'q."isActive",';
+            const columns = [];
+            for (const field of fields) {
+                const column = columnsObj[field.name];
                 if (column) {
-                    columns += `${column},`;
-                    headers.push(quoteView.name);
+                    query += `${column.as},`;
+                    columns.push({
+                        header: req.session.labels.quote[field.name],
+                        field: column.alias,
+                    });
                 }
             }
-
             // TEMP: Track the issue
             // https://github.com/porsager/postgres/issues/894
-            columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
+            query = query.endsWith(",") ? query.slice(0, -1) : query;
 
+            // Fetch quotes.
             const optionsObj = {
                 search,
                 limit,
                 skip,
                 orderBy,
                 orderDir,
-                columns,
+                query,
             };
             const quotes = await quotesService.find(optionsObj);
             const { count } = await quotesService.count(optionsObj);
 
             const pages = Math.ceil(count / limit);
 
+            // Generate pagination links for buttons.
             const paginationLinks = generatePaginationLinks({
                 link: "/quotes",
                 page,
@@ -67,6 +107,20 @@ module.exports = {
                 orderDir,
             });
 
+            // TEMP.
+            // select all view fields to support "view change".
+            // TODO: Move this somewhere else.
+            const viewFields = await sql`
+                SELECT
+                    id,
+                    name,
+                    "displayName"
+                FROM
+                    "quoteLabels"
+                WHERE
+                    "isActive" = TRUE
+            `;
+
             return res.render("quotes/index", {
                 title: capitalize(req.session.labels.module.quote),
                 quotes,
@@ -75,7 +129,8 @@ module.exports = {
                 count,
                 orderBy,
                 orderDir,
-                headers,
+                viewFields,
+                columns,
             });
         } catch (err) {
             next(err);
@@ -297,5 +352,27 @@ module.exports = {
         } catch (err) {
             next(err);
         }
+    },
+
+    viewFields: async (req, res, next) => {
+        const fields = req.body.fields || [];
+
+        await sql`
+            DELETE FROM
+                "quoteViews"
+            WHERE
+                "userId" = ${req.session.currentUser.id}
+        `;
+
+        for (const field of fields) {
+            await sql`
+                INSERT INTO
+                    "quoteViews" ("userId", "name")
+                VALUES
+                    (${req.session.currentUser.id}, ${field})
+            `;
+        }
+
+        res.redirect("/quotes");
     },
 };

@@ -17,17 +17,78 @@ block content
             table 
                 thead 
                     tr 
-                        each header in headers
-                            +head(header)
+                        each column in columns
+                            //- id
+                            if column.field === "id"
+                                th
+                                    if orderDir === 'ASC'
+                                        a(href=`/tickets?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                    else 
+                                        a(href=`/tickets?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                    
+                                    if orderBy === 'id'
+                                        span.order-wrapper= orderDir
+                                    
+                            //- name
+                            else if column.field === "name"
+                                th
+                                    if orderDir === 'ASC'
+                                        a(href=`/tickets?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                    else 
+                                        a(href=`/tickets?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                    
+                                    if orderBy === 'name'
+                                        span.order-wrapper= orderDir
+                            
+                            //- updatedAt
+                            else if column.field === "updatedAt"
+                                th
+                                    if orderDir === 'ASC'
+                                        a(href=`/tickets?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                    else 
+                                        a(href=`/tickets?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                    
+                                    if orderBy === 'updatedAt'
+                                        span.order-wrapper= orderDir
+
+                            //- ticketTypeId
+                            else
+                                th= column.header
 
                     tbody 
                         if tickets.length > 0
                             each ticket in tickets 
                                 tr
-                                    +cell(ticket)
+                                    each column in columns
+                                            if column.field === "id"
+                                                td
+                                                    a(href=`/tickets/${ticket.id}`) #{ticket.id}
+                                                        
+                                            else if column.field === "name"
+                                                td 
+                                                    a(href=`/tickets/${ticket.id}`) #{ticket.name}
+                                                    if (!ticket.isActive)
+                                                        span.archive-status (archived)
+
+                                            else
+                                                td= ticket[column.field]
+
                         else 
                             tr 
                                 td(colspan=7).text-center No #{downcase(labels.module.ticket)} found.
         
         .col-12 
             +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)
+
+        //- modal to change the view
+        .modal(id="change-view-modal")
+          .modal-content
+            p Let's change the view
+            form(action="/tickets/views/fields", method="post")
+                label(for="fields") Select fields
+                select#fields(name="fields" class="mb-4" multiple) 
+                    each field in viewFields
+                        option(value=field.name)= field.displayName
+                
+                button(type="submit").mr-2 Submit
+                button(type="button" class="cancel-modal") Cancel

@@ -31,4 +31,6 @@ router.delete(
 );
 router.get("/:ticketFilesController/files/:id", ticketFilesController.download);
 
+router.post("/views/fields", ticketsController.viewFields);
+
 module.exports = router;

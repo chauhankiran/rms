@@ -2,7 +2,7 @@ const sql = require("../db/sql");
 
 module.exports = {
     find: async (optionsObj) => {
-        const { skip, limit, search, orderBy, orderDir, columns, companyId } =
+        const { skip, limit, search, orderBy, orderDir, query, companyId } =
             optionsObj;
 
         const whereClause = search
@@ -13,9 +13,11 @@ module.exports = {
             ? sql` WHERE "companyId" = ${companyId}`
             : sql``;
 
+        console.log("query:", query);
+
         return await sql`
       SELECT
-        ${sql.unsafe(columns)}
+        ${sql.unsafe(query)}
       FROM
         contacts c
       LEFT JOIN

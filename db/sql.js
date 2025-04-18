@@ -6,7 +6,7 @@ const sql = postgres({
     database: process.env.DB_NAME,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
-    // debug: console.log,
+    debug: console.log,
     types: {
         date: {
             to: 1114,

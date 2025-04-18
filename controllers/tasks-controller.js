@@ -7,15 +7,41 @@ const taskTypesService = require("../services/admin/task-types-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
+const sql = require("../db/sql");
 
+// columnsObj contains list of field companies can have.
+// key in object is name of the field (used to fetch label).
+// as is for selecting that field value in SQL SELECT statement.
+// alias is for selecting the field value that is returned by SQL SELECT statement.
 const columnsObj = {
-    id: "t.id",
-    name: "t.name",
-    taskTypeId: 'tt.name AS "taskType"',
-    createdBy: 'creator.email AS "createdByEmail"',
-    createdAt: 't."createdAt"',
-    updatedBy: 'updater.email AS "updatedByEmail"',
-    updatedAt: 't."updatedAt"',
+    id: {
+        as: "t.id",
+        alias: "id",
+    },
+    name: {
+        as: "t.name",
+        alias: "name",
+    },
+    taskTypeId: {
+        as: 'tt.name AS "taskType"',
+        alias: "taskType",
+    },
+    createdBy: {
+        as: 'creator.email AS "createdByEmail"',
+        alias: "createdByEmail",
+    },
+    createdAt: {
+        as: 't."createdAt"',
+        alias: "createdAt",
+    },
+    updatedBy: {
+        as: 'updater.email AS "updatedByEmail"',
+        alias: "updatedByEmail",
+    },
+    updatedAt: {
+        as: 't."updatedAt"',
+        alias: "updatedAt",
+    },
 };
 
 module.exports = {
@@ -28,35 +54,49 @@ module.exports = {
         const orderDir = req.query.orderDir || "DESC";
 
         try {
-            const taskViews = await taskViewsService.pluck(["name"]);
+            // Run the query to fetch the fields.
+            const fields = await sql`
+                SELECT
+                    id,
+                    name
+                FROM
+                    "taskViews"
+                WHERE
+                    "userId" = ${req.session.currentUser.id}
+            `;
 
-            let columns = 't."isActive",';
-            let headers = [];
-            for (const taskView of taskViews) {
-                const column = columnsObj[taskView.name];
+            // Create SQL query based on fields.
+            let query = 't."isActive",';
+            const columns = [];
+            for (const field of fields) {
+                const column = columnsObj[field.name];
                 if (column) {
-                    columns += `${column},`;
-                    headers.push(taskView.name);
+                    query += `${column.as},`;
+                    columns.push({
+                        header: req.session.labels.task[field.name],
+                        field: column.alias,
+                    });
                 }
             }
-
             // TEMP: Track the issue
             // https://github.com/porsager/postgres/issues/894
-            columns = columns.endsWith(",") ? columns.slice(0, -1) : columns;
+            query = query.endsWith(",") ? query.slice(0, -1) : query;
 
+            // Fetch tasks.
             const optionsObj = {
                 search,
                 limit,
                 skip,
                 orderBy,
                 orderDir,
-                columns,
+                query,
             };
             const tasks = await tasksService.find(optionsObj);
             const { count } = await tasksService.count(optionsObj);
 
             const pages = Math.ceil(count / limit);
 
+            // Generate pagination links for buttons.
             const paginationLinks = generatePaginationLinks({
                 link: "/tasks",
                 page,
@@ -67,6 +107,20 @@ module.exports = {
                 orderDir,
             });
 
+            // TEMP.
+            // select all view fields to support "view change".
+            // TODO: Move this somewhere else.
+            const viewFields = await sql`
+                SELECT
+                    id,
+                    name,
+                    "displayName"
+                FROM
+                    "taskLabels"
+                WHERE
+                    "isActive" = TRUE
+            `;
+
             return res.render("tasks/index", {
                 title: capitalize(req.session.labels.module.task),
                 tasks,
@@ -75,7 +129,8 @@ module.exports = {
                 count,
                 orderBy,
                 orderDir,
-                headers,
+                viewFields,
+                columns,
             });
         } catch (err) {
             next(err);
@@ -313,5 +368,27 @@ module.exports = {
         } catch (err) {
             next(err);
         }
+    },
+
+    viewFields: async (req, res, next) => {
+        const fields = req.body.fields || [];
+
+        await sql`
+            DELETE FROM
+                "taskViews"
+            WHERE
+                "userId" = ${req.session.currentUser.id}
+        `;
+
+        for (const field of fields) {
+            await sql`
+                INSERT INTO
+                    "taskViews" ("userId", "name")
+                VALUES
+                    (${req.session.currentUser.id}, ${field})
+            `;
+        }
+
+        res.redirect("/tasks");
     },
 };
