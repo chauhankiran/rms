@@ -748,3 +748,9 @@ button.dropdown-item {
         transform: translateY(0);
     }
 }
+
+.list-item {
+    border: 1px solid #767676;
+    padding: 0.5rem;
+    margin-bottom: 4px;
+}

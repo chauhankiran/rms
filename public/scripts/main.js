@@ -610,3 +610,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+function saveTaskView() {
+    const selected = document.querySelector("#selected");
+    const elements = Array.from(selected.children).map((el) => el.id);
+
+    document.querySelector("#task-view-fields").value = elements;
+
+    document.saveTaskViewForm.submit();
+}

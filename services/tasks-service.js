@@ -55,30 +55,30 @@ module.exports = {
             : sql``;
 
         return await sql`
-      SELECT
-        ${sql.unsafe(query)}
-      FROM
-        tasks t
-      LEFT JOIN
-        users creator ON t."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON t."updatedBy" = updater.id
-      LEFT JOIN
-        "taskTypes" tt ON t."taskTypeId" = tt.id
-      ${whereClause}
-      ${whereClause2}
-      ${whereClause3} 
-      ${whereClause4}
-      ${whereClause5}
-      ${whereClause6}
-      ORDER BY
-        ${sql(orderBy)}
-        ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
-      LIMIT
-        ${limit}
-      OFFSET
-        ${skip}
-    `;
+            SELECT
+                ${sql.unsafe(query)}
+            FROM
+                tasks t
+            LEFT JOIN
+                users creator ON t."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON t."updatedBy" = updater.id
+            LEFT JOIN
+                "taskTypes" tt ON t."taskTypeId" = tt.id
+            ${whereClause}
+            ${whereClause2}
+            ${whereClause3} 
+            ${whereClause4}
+            ${whereClause5}
+            ${whereClause6}
+            ORDER BY
+                ${sql(orderBy)}
+                ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
+            LIMIT
+                ${limit}
+            OFFSET
+                ${skip}
+        `;
     },
 
     count: async (optionsObj) => {
@@ -89,12 +89,12 @@ module.exports = {
             : sql``;
 
         return await sql`
-      SELECT
-        COUNT(id)
-      FROM
-        tasks
-      ${whereClause}
-    `.then(([x]) => x);
+            SELECT
+                COUNT(id)
+            FROM
+                tasks
+            ${whereClause}
+        `.then(([x]) => x);
     },
 
     create: async (taskObj) => {
@@ -143,32 +143,32 @@ module.exports = {
 
     findOne: async (id) => {
         return await sql`
-      SELECT
-        t.id,
-        t.name,
-        t.phone,
-        t.location,
-        t.description,
-        t."isActive",
-        t."taskTypeId",
-        tt."name" AS "taskType",
-        t."createdAt",
-        t."updatedAt",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
-      FROM
-        tasks t
-      LEFT JOIN
-        users creator ON t."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON t."updatedBy" = updater.id
-      LEFT JOIN
-        "taskTypes" tt ON t."taskTypeId" = tt.id
-      WHERE
-        t.id = ${id}
-    `.then(([x]) => x);
+            SELECT
+                t.id,
+                t.name,
+                t.phone,
+                t.location,
+                t.description,
+                t."isActive",
+                t."taskTypeId",
+                tt."name" AS "taskType",
+                t."createdAt",
+                t."updatedAt",
+                creator.id AS "createdById",
+                creator.email AS "createdByEmail",
+                updater.id AS "updatedById",
+                updater.email AS "updatedByEmail"
+            FROM
+                tasks t
+            LEFT JOIN
+                users creator ON t."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON t."updatedBy" = updater.id
+            LEFT JOIN
+                "taskTypes" tt ON t."taskTypeId" = tt.id
+            WHERE
+                t.id = ${id}
+        `.then(([x]) => x);
     },
 
     update: async (taskObj) => {
@@ -201,12 +201,12 @@ module.exports = {
 
     destroy: async (id) => {
         return await sql`
-      DELETE FROM
-        tasks
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            DELETE FROM
+                tasks
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     archive: async (taskObj) => {
