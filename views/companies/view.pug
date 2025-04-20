@@ -1,0 +1,36 @@
+extends ../layout
+
+block content
+    link(rel="stylesheet", href="/styles/dragula.min.css")
+    script(src="/scripts/dragula.min.js") 
+
+    .row
+        .col-8 
+            h1= title
+        .col-4.text-end 
+            button(onclick="saveCompanyView()") Save
+
+        .col-12
+            include ../partials/flash
+
+        .col-6 
+            h4 Available fields 
+        .col-6 
+            h4 Selected fields 
+    
+        .col-6#available 
+            each field in availableFields 
+                div(id=`${field}`, class="list-item")= labels.company[field]
+        .col-6#selected 
+            each field in selectedFields 
+                div(id=`${field.name}`, class="list-item")= labels.company[field.name]
+        
+        form(action=`/companies/view?_method=PUT`, name="saveCompanyViewForm", method="post")
+            input(type="hidden", name="fields", id="company-view-fields" value="")
+    
+    script. 
+        // Layout drag-n-drop code.
+        dragula([
+            document.querySelector("#available"),
+            document.querySelector("#selected"),
+        ]);

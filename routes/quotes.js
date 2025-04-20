@@ -8,6 +8,8 @@ const upload = multer({ dest: "uploads/" });
 const router = express.Router();
 
 router.get("/", quotesController.index);
+router.get("/view", quotesController.showView); // change view
+router.put("/view", quotesController.view); // change view
 router.get("/new", quotesController.new);
 router.post("/", quotesController.create);
 router.get("/:id", quotesController.show);
@@ -27,7 +29,5 @@ router.post(
 );
 router.delete("/:quoteId/files/:id", quoteFilesController.destroy);
 router.get("/:quoteId/files/:id", quoteFilesController.download);
-
-router.post("/views/fields", quotesController.viewFields);
 
 module.exports = router;

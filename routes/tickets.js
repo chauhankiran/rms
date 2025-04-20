@@ -8,6 +8,8 @@ const upload = multer({ dest: "uploads/" });
 const router = express.Router();
 
 router.get("/", ticketsController.index);
+router.get("/view", ticketsController.showView); // change view
+router.put("/view", ticketsController.view); // change view
 router.get("/new", ticketsController.new);
 router.post("/", ticketsController.create);
 router.get("/:id", ticketsController.show);
@@ -30,7 +32,5 @@ router.delete(
     ticketFilesController.destroy
 );
 router.get("/:ticketFilesController/files/:id", ticketFilesController.download);
-
-router.post("/views/fields", ticketsController.viewFields);
 
 module.exports = router;

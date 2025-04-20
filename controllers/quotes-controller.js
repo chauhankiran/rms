@@ -3,11 +3,11 @@ const quotesService = require("../services/quotes-service");
 const quoteCommentsService = require("../services/quote-comments-service");
 const quoteFilesService = require("../services/quote-files-service");
 const quoteViewsService = require("../services/quote-views-service");
+const quoteLabelsService = require("../services/quote-labels-service");
 const tasksService = require("../services/tasks-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
-const sql = require("../db/sql");
 
 // columnsObj contains list of field companies can have.
 // key in object is name of the field (used to fetch label).
@@ -55,15 +55,9 @@ module.exports = {
 
         try {
             // Run the query to fetch the fields.
-            const fields = await sql`
-                SELECT
-                    id,
-                    name
-                FROM
-                    "quoteViews"
-                WHERE
-                    "userId" = ${req.session.currentUser.id}
-            `;
+            const fields = await quoteViewsService.find(
+                req.session.currentUser.id
+            );
 
             // Create SQL query based on fields.
             let query = 'q."isActive",';
@@ -107,20 +101,7 @@ module.exports = {
                 orderDir,
             });
 
-            // TEMP.
-            // select all view fields to support "view change".
-            // TODO: Move this somewhere else.
-            const viewFields = await sql`
-                SELECT
-                    id,
-                    name,
-                    "displayName"
-                FROM
-                    "quoteLabels"
-                WHERE
-                    "isActive" = TRUE
-            `;
-
+            // Render.
             return res.render("quotes/index", {
                 title: capitalize(req.session.labels.module.quote),
                 quotes,
@@ -129,7 +110,6 @@ module.exports = {
                 count,
                 orderBy,
                 orderDir,
-                viewFields,
                 columns,
             });
         } catch (err) {
@@ -354,25 +334,56 @@ module.exports = {
         }
     },
 
-    viewFields: async (req, res, next) => {
-        const fields = req.body.fields || [];
+    showView: async (req, res, next) => {
+        // Get all active fields.
+        const allFields = await quoteLabelsService.find();
+        const all = allFields.map((field) => field.name);
 
-        await sql`
-            DELETE FROM
-                "quoteViews"
-            WHERE
-                "userId" = ${req.session.currentUser.id}
-        `;
+        // Get selected fields.
+        const selectedFields = await quoteViewsService.find(
+            req.session.currentUser.id
+        );
+        const selected = selectedFields.map((field) => field.name);
 
-        for (const field of fields) {
-            await sql`
-                INSERT INTO
-                    "quoteViews" ("userId", "name")
-                VALUES
-                    (${req.session.currentUser.id}, ${field})
-            `;
+        // Get available fields (all - selected).
+        const availableFields = all.filter((item) => !selected.includes(item));
+
+        return res.render("quotes/view", {
+            title: "Change view for quotes",
+            availableFields,
+            selectedFields,
+        });
+    },
+
+    view: async (req, res, next) => {
+        let fields = req.body.fields;
+        if (fields) {
+            fields = fields.split(",");
         }
 
-        res.redirect("/quotes");
+        try {
+            //
+            // Create a view for given user by
+            //   1. Delete all the fields
+            //   2. Insert selected fields.
+
+            // 1. Delete all the fields.
+            await quoteViewsService.destroy(req.session.currentUser.id);
+
+            // 2. Insert selected fields.
+            for (const [index, field] of fields.entries()) {
+                await quoteViewsService.create({
+                    userId: req.session.currentUser.id,
+                    field,
+                    seq: index + 1,
+                });
+            }
+
+            req.flash("info", "View is updated for quotes.");
+            res.redirect("/quotes");
+            return;
+        } catch (err) {
+            next(err);
+        }
     },
 };

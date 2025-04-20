@@ -109,6 +109,7 @@ module.exports = {
                 orderDir,
             });
 
+            // Render.
             return res.render("tasks/index", {
                 title: capitalize(req.session.labels.module.task),
                 tasks,
@@ -402,7 +403,9 @@ module.exports = {
                 });
             }
 
+            req.flash("info", "View is updated for tasks.");
             res.redirect("/tasks");
+            return;
         } catch (err) {
             next(err);
         }

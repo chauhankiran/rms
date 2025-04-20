@@ -8,8 +8,8 @@ const upload = multer({ dest: "uploads/" });
 const router = express.Router();
 
 router.get("/", tasksController.index);
-router.get("/view", tasksController.showView);
-router.put("/view", tasksController.view);
+router.get("/view", tasksController.showView); // change view
+router.put("/view", tasksController.view); // change view
 router.get("/new", tasksController.new);
 router.post("/", tasksController.create);
 router.get("/:id", tasksController.show);

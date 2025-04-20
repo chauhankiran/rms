@@ -4,6 +4,7 @@ const companyCommentsService = require("../services/company-comments-service");
 const companyFilesService = require("../services/company-files-service");
 const contactsService = require("../services/contacts-service");
 const companyViewsService = require("../services/company-views-service");
+const companyLabelsService = require("../services/company-labels-service");
 const companySourcesService = require("../services/admin/company-sources-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const dealsService = require("../services/deals-service");
@@ -12,7 +13,6 @@ const ticketsService = require("../services/tickets-service");
 const tasksService = require("../services/tasks-service");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
-const sql = require("../db/sql");
 
 // columnsObj contains list of field companies can have.
 // key in object is name of the field (used to fetch label).
@@ -68,15 +68,9 @@ module.exports = {
 
         try {
             // Run the query to fetch the fields.
-            const fields = await sql`
-                SELECT
-                    id,
-                    name
-                FROM
-                    "companyViews"
-                WHERE
-                    "userId" = ${req.session.currentUser.id}
-            `;
+            const fields = await companyViewsService.find(
+                req.session.currentUser.id
+            );
 
             // Create SQL query and columns array based on fields.
             let query = 'c."isActive",';
@@ -120,20 +114,6 @@ module.exports = {
                 orderDir,
             });
 
-            // TEMP.
-            // select all view fields to support "view change".
-            // TODO: Move this somewhere else.
-            const viewFields = await sql`
-                SELECT
-                    id,
-                    name,
-                    "displayName"
-                FROM
-                    "companyLabels"
-                WHERE
-                    "isActive" = TRUE
-            `;
-
             // Render
             return res.render("companies/index", {
                 title: capitalize(req.session.labels.module.company),
@@ -144,7 +124,6 @@ module.exports = {
                 orderBy,
                 orderDir,
                 columns,
-                viewFields,
             });
         } catch (err) {
             next(err);
@@ -434,25 +413,56 @@ module.exports = {
         }
     },
 
-    viewFields: async (req, res, next) => {
-        const fields = req.body.fields || [];
+    showView: async (req, res, next) => {
+        // Get all active fields.
+        const allFields = await companyLabelsService.find();
+        const all = allFields.map((field) => field.name);
 
-        await sql`
-            DELETE FROM
-                "companyViews"
-            WHERE
-                "userId" = ${req.session.currentUser.id}
-        `;
+        // Get selected fields.
+        const selectedFields = await companyViewsService.find(
+            req.session.currentUser.id
+        );
+        const selected = selectedFields.map((field) => field.name);
 
-        for (const field of fields) {
-            await sql`
-                INSERT INTO
-                    "companyViews" ("userId", "name")
-                VALUES
-                    (${req.session.currentUser.id}, ${field})
-            `;
+        // Get available fields (all - selected).
+        const availableFields = all.filter((item) => !selected.includes(item));
+
+        return res.render("companies/view", {
+            title: "Change view for companies",
+            availableFields,
+            selectedFields,
+        });
+    },
+
+    view: async (req, res, next) => {
+        let fields = req.body.fields;
+        if (fields) {
+            fields = fields.split(",");
         }
 
-        res.redirect("/companies");
+        try {
+            //
+            // Create a view for given user by
+            //   1. Delete all the fields
+            //   2. Insert selected fields.
+
+            // 1. Delete all the fields.
+            await companyViewsService.destroy(req.session.currentUser.id);
+
+            // 2. Insert selected fields.
+            for (const [index, field] of fields.entries()) {
+                await companyViewsService.create({
+                    userId: req.session.currentUser.id,
+                    field,
+                    seq: index + 1,
+                });
+            }
+
+            req.flash("info", "View is updated for companies.");
+            res.redirect("/companies");
+            return;
+        } catch (err) {
+            next(err);
+        }
     },
 };

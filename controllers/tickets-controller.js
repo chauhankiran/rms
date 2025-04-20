@@ -3,12 +3,12 @@ const ticketsService = require("../services/tickets-service");
 const ticketCommentsService = require("../services/ticket-comments-service");
 const ticketFilesService = require("../services/ticket-files-service");
 const ticketViewsService = require("../services/ticket-views-service");
+const ticketLabelsService = require("../services/ticket-labels-service");
 const ticketTypesService = require("../services/admin/ticket-types-service");
 const tasksService = require("../services/tasks-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
-const sql = require("../db/sql");
 
 // columnsObj contains list of field companies can have.
 // key in object is name of the field (used to fetch label).
@@ -56,15 +56,9 @@ module.exports = {
 
         try {
             // Run the query to fetch the fields.
-            const fields = await sql`
-                SELECT
-                    id,
-                    name
-                FROM
-                    "ticketViews"
-                WHERE
-                    "userId" = ${req.session.currentUser.id}
-            `;
+            const fields = await ticketViewsService.find(
+                req.session.currentUser.id
+            );
 
             // Create SQL query based on fields.
             let query = 't."isActive",';
@@ -108,20 +102,7 @@ module.exports = {
                 orderDir,
             });
 
-            // TEMP.
-            // select all view fields to support "view change".
-            // TODO: Move this somewhere else.
-            const viewFields = await sql`
-                SELECT
-                    id,
-                    name,
-                    "displayName"
-                FROM
-                    "ticketLabels"
-                WHERE
-                    "isActive" = TRUE
-            `;
-
+            // Render.
             return res.render("tickets/index", {
                 title: capitalize(req.session.labels.module.ticket),
                 tickets,
@@ -130,7 +111,6 @@ module.exports = {
                 count,
                 orderBy,
                 orderDir,
-                viewFields,
                 columns,
             });
         } catch (err) {
@@ -370,25 +350,56 @@ module.exports = {
         }
     },
 
-    viewFields: async (req, res, next) => {
-        const fields = req.body.fields || [];
+    showView: async (req, res, next) => {
+        // Get all active fields.
+        const allFields = await ticketLabelsService.find();
+        const all = allFields.map((field) => field.name);
 
-        await sql`
-            DELETE FROM
-                "ticketViews"
-            WHERE
-                "userId" = ${req.session.currentUser.id}
-        `;
+        // Get selected fields.
+        const selectedFields = await ticketViewsService.find(
+            req.session.currentUser.id
+        );
+        const selected = selectedFields.map((field) => field.name);
 
-        for (const field of fields) {
-            await sql`
-                INSERT INTO
-                    "ticketViews" ("userId", "name")
-                VALUES
-                    (${req.session.currentUser.id}, ${field})
-            `;
+        // Get available fields (all - selected).
+        const availableFields = all.filter((item) => !selected.includes(item));
+
+        return res.render("tickets/view", {
+            title: "Change view for tickets",
+            availableFields,
+            selectedFields,
+        });
+    },
+
+    view: async (req, res, next) => {
+        let fields = req.body.fields;
+        if (fields) {
+            fields = fields.split(",");
         }
 
-        res.redirect("/tickets");
+        try {
+            //
+            // Create a view for given user by
+            //   1. Delete all the fields
+            //   2. Insert selected fields.
+
+            // 1. Delete all the fields.
+            await ticketViewsService.destroy(req.session.currentUser.id);
+
+            // 2. Insert selected fields.
+            for (const [index, field] of fields.entries()) {
+                await ticketViewsService.create({
+                    userId: req.session.currentUser.id,
+                    field,
+                    seq: index + 1,
+                });
+            }
+
+            req.flash("info", "View is updated for tickets.");
+            res.redirect("/tickets");
+            return;
+        } catch (err) {
+            next(err);
+        }
     },
 };

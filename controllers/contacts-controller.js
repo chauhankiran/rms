@@ -3,6 +3,7 @@ const contactsService = require("../services/contacts-service");
 const contactCommentsService = require("../services/contact-comments-service");
 const contactFilesService = require("../services/contact-files-service");
 const contactViewsService = require("../services/contact-views-service");
+const contactLabelsService = require("../services/contact-labels-service");
 const contactIndustriesService = require("../services/admin/contact-industries-service");
 const dealsService = require("../services/deals-service");
 const quotesService = require("../services/quotes-service");
@@ -11,7 +12,6 @@ const tasksService = require("../services/tasks-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
-const sql = require("../db/sql");
 
 // columnsObj contains list of field companies can have.
 // key in object is name of the field (used to fetch label).
@@ -75,15 +75,9 @@ module.exports = {
 
         try {
             // Run the query to fetch the fields.
-            const fields = await sql`
-                SELECT
-                    id,
-                    name
-                FROM
-                    "contactViews"
-                WHERE
-                    "userId" = ${req.session.currentUser.id}
-            `;
+            const fields = await contactViewsService.find(
+                req.session.currentUser.id
+            );
 
             // Create SQL query based on fields.
             let query = 'c."isActive",';
@@ -127,20 +121,7 @@ module.exports = {
                 orderDir,
             });
 
-            // TEMP.
-            // select all view fields to support "view change".
-            // TODO: Move this somewhere else.
-            const viewFields = await sql`
-                SELECT
-                    id,
-                    name,
-                    "displayName"
-                FROM
-                    "contactLabels"
-                WHERE
-                    "isActive" = TRUE
-            `;
-
+            // Render.
             return res.render("contacts/index", {
                 title: capitalize(req.session.labels.module.contact),
                 contacts,
@@ -149,7 +130,6 @@ module.exports = {
                 count,
                 orderBy,
                 orderDir,
-                viewFields,
                 columns,
             });
         } catch (err) {
@@ -461,25 +441,56 @@ module.exports = {
         }
     },
 
-    viewFields: async (req, res, next) => {
-        const fields = req.body.fields || [];
+    showView: async (req, res, next) => {
+        // Get all active fields.
+        const allFields = await contactLabelsService.find();
+        const all = allFields.map((field) => field.name);
 
-        await sql`
-            DELETE FROM
-                "contactViews"
-            WHERE
-                "userId" = ${req.session.currentUser.id}
-        `;
+        // Get selected fields.
+        const selectedFields = await contactViewsService.find(
+            req.session.currentUser.id
+        );
+        const selected = selectedFields.map((field) => field.name);
 
-        for (const field of fields) {
-            await sql`
-                INSERT INTO
-                    "contactViews" ("userId", "name")
-                VALUES
-                    (${req.session.currentUser.id}, ${field})
-            `;
+        // Get available fields (all - selected).
+        const availableFields = all.filter((item) => !selected.includes(item));
+
+        return res.render("contacts/view", {
+            title: "Change view for contacts",
+            availableFields,
+            selectedFields,
+        });
+    },
+
+    view: async (req, res, next) => {
+        let fields = req.body.fields;
+        if (fields) {
+            fields = fields.split(",");
         }
 
-        res.redirect("/contacts");
+        try {
+            //
+            // Create a view for given user by
+            //   1. Delete all the fields
+            //   2. Insert selected fields.
+
+            // 1. Delete all the fields.
+            await contactViewsService.destroy(req.session.currentUser.id);
+
+            // 2. Insert selected fields.
+            for (const [index, field] of fields.entries()) {
+                await contactViewsService.create({
+                    userId: req.session.currentUser.id,
+                    field,
+                    seq: index + 1,
+                });
+            }
+
+            req.flash("info", "View is updated for contacts.");
+            res.redirect("/contacts");
+            return;
+        } catch (err) {
+            next(err);
+        }
     },
 };

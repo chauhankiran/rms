@@ -76,16 +76,3 @@ block content
         
         .col-12 
             +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)
-
-        //- modal to change the view
-        .modal(id="change-view-modal")
-          .modal-content
-            p Let's change the view
-            form(action="/deals/views/fields", method="post")
-                label(for="fields") Select fields
-                select#fields(name="fields" class="mb-4" multiple) 
-                    each field in viewFields
-                        option(value=field.name)= field.displayName
-                
-                button(type="submit").mr-2 Submit
-                button(type="button" class="cancel-modal") Cancel

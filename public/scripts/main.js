@@ -611,6 +611,51 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+function saveCompanyView() {
+    const selected = document.querySelector("#selected");
+    const elements = Array.from(selected.children).map((el) => el.id);
+
+    document.querySelector("#company-view-fields").value = elements;
+
+    document.saveCompanyViewForm.submit();
+}
+
+function saveContactView() {
+    const selected = document.querySelector("#selected");
+    const elements = Array.from(selected.children).map((el) => el.id);
+
+    document.querySelector("#contact-view-fields").value = elements;
+
+    document.saveContactViewForm.submit();
+}
+
+function saveDealView() {
+    const selected = document.querySelector("#selected");
+    const elements = Array.from(selected.children).map((el) => el.id);
+
+    document.querySelector("#deal-view-fields").value = elements;
+
+    document.saveDealViewForm.submit();
+}
+
+function saveQuoteView() {
+    const selected = document.querySelector("#selected");
+    const elements = Array.from(selected.children).map((el) => el.id);
+
+    document.querySelector("#quote-view-fields").value = elements;
+
+    document.saveQuoteViewForm.submit();
+}
+
+function saveTicketView() {
+    const selected = document.querySelector("#selected");
+    const elements = Array.from(selected.children).map((el) => el.id);
+
+    document.querySelector("#ticket-view-fields").value = elements;
+
+    document.saveTicketViewForm.submit();
+}
+
 function saveTaskView() {
     const selected = document.querySelector("#selected");
     const elements = Array.from(selected.children).map((el) => el.id);
