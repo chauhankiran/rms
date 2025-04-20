@@ -1,6 +1,10 @@
 CREATE TABLE "companyViews" (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255) UNIQUE NOT NULL,
+  name VARCHAR(255),
+
+  "seq" INT,
+  "userId" INT,
+
   "createdBy" INT,
   "updatedBy" INT,
   "createdAt" timestamp NOT NULL DEFAULT NOW(),

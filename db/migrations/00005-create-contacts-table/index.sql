@@ -2,8 +2,8 @@ CREATE TABLE contacts (
   id SERIAL PRIMARY KEY,
 
   prefix VARCHAR(255),
-  "firstName" VARCHAR(255) NOT NULL,
-  "lastName" VARCHAR(255) NOT NULL,
+  "firstName" VARCHAR(255),
+  "lastName" VARCHAR(255),
 
   "annualRevenue" INT,
   description TEXT,

@@ -1,48 +1,58 @@
 const ticketViews = async (sql) => {
-  // id
-  const result1 = await sql`
+    // id
+    const result1 = await sql`
     INSERT INTO "ticketViews" (
-      name
+      name,
+      "userId"
     ) VALUES (
-      'id'
+      'id',
+      1
     ) returning name`.then(([x]) => x);
-  console.log("1:", result1);
+    console.log("1:", result1);
 
-  // name
-  const result2 = await sql`
+    // name
+    const result2 = await sql`
     INSERT INTO "ticketViews" (
-      name
+      name,
+      "userId"
     ) VALUES (
-      'name'
+      'name',
+      1
     ) returning name`.then(([x]) => x);
-  console.log("2:", result2);
+    console.log("2:", result2);
 
-  // ticketTypeId
-  const result3 = await sql`
+    // ticketTypeId
+    const result3 = await sql`
     INSERT INTO "ticketViews" (
-      name
+      name,
+      "userId"
     ) VALUES (
-      'ticketTypeId'
+      'ticketTypeId',
+      1
     ) returning name`.then(([x]) => x);
-  console.log("3:", result3);
+    console.log("3:", result3);
 
-  // updatedBy
-  const result4 = await sql`
+    // updatedBy
+    const result4 = await sql`
     INSERT INTO "ticketViews" (
-      name
+      name,
+      "userId"
     ) VALUES (
-      'updatedBy'
+      'updatedBy',
+      1
     ) returning name`.then(([x]) => x);
-  console.log("4:", result4);
+    console.log("4:", result4);
 
-  // updatedAt
-  const result5 = await sql`
+    // updatedAt
+    const result5 = await sql`
     INSERT INTO "ticketViews" (
-      name
+      name,
+      "userId"
     ) VALUES (
-      'updatedAt'
+      'updatedAt',
+      1
     ) returning name`.then(([x]) => x);
-  console.log("5:", result5);
+    console.log("5:", result5);
 };
 
 module.exports = ticketViews;

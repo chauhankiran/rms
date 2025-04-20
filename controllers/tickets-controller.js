@@ -56,9 +56,19 @@ module.exports = {
 
         try {
             // Run the query to fetch the fields.
-            const fields = await ticketViewsService.find(
+            let fields = await ticketViewsService.find(
                 req.session.currentUser.id
             );
+
+            // If somehow, view is not set for the user, go with these fields.
+            if (fields.length === 0) {
+                fields = [
+                    { name: "id" },
+                    { name: "name" },
+                    { name: "createdBy" },
+                    { name: "createdAt" },
+                ];
+            }
 
             // Create SQL query based on fields.
             let query = 't."isActive",';
@@ -202,7 +212,7 @@ module.exports = {
                 orderBy: "id",
                 orderDir: "DESC",
                 ticketId: ticket.id,
-                columns: [
+                query: [
                     "t.id",
                     "t.name",
                     'updater.email AS "updatedByEmail"',

@@ -1,7 +1,7 @@
 CREATE TABLE companies (
   id SERIAL PRIMARY KEY,
 
-  name VARCHAR(255) UNIQUE NOT NULL,
+  name VARCHAR(255),
   "employeeSize" INT,
   description TEXT,
   "companySourceId" INT,

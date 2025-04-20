@@ -30,29 +30,42 @@ module.exports = {
             dealId,
             quoteId,
             ticketId,
+            isActiveOnly,
         } = optionsObj;
 
-        const whereClause = search
-            ? sql` WHERE t."name" iLIKE ${"%" + search + "%"}`
-            : sql``;
+        const whereClauses = [];
 
-        const whereClause2 = companyId
-            ? sql` WHERE "companyId" = ${companyId}`
-            : sql``;
+        if (search) {
+            whereClauses.push(sql`t."name" iLIKE ${"%" + search + "%"}`);
+        }
 
-        const whereClause3 = contactId
-            ? sql` WHERE "contactId" = ${contactId}`
-            : sql``;
+        if (companyId) {
+            whereClauses.push(sql`"companyId" = ${companyId}`);
+        }
 
-        const whereClause4 = dealId ? sql` WHERE "dealId" = ${dealId}` : sql``;
+        if (contactId) {
+            whereClauses.push(sql`"contactId" = ${contactId}`);
+        }
 
-        const whereClause5 = quoteId
-            ? sql` WHERE "quoteId" = ${quoteId}`
-            : sql``;
+        if (dealId) {
+            whereClauses.push(sql`"dealId" = ${dealId}`);
+        }
 
-        const whereClause6 = ticketId
-            ? sql` WHERE "ticketId" = ${ticketId}`
-            : sql``;
+        if (quoteId) {
+            whereClauses.push(sql`"quoteId" = ${quoteId}`);
+        }
+
+        if (ticketId) {
+            whereClauses.push(sql`"ticketId" = ${ticketId}`);
+        }
+
+        if (isActiveOnly) {
+            whereClauses.push(sql`t."isActive" = TRUE`);
+        }
+
+        const whereClause = whereClauses.flatMap((x, i) =>
+            i ? [sql`and`, x] : x
+        );
 
         return await sql`
             SELECT
@@ -65,12 +78,7 @@ module.exports = {
                 users updater ON t."updatedBy" = updater.id
             LEFT JOIN
                 "taskTypes" tt ON t."taskTypeId" = tt.id
-            ${whereClause}
-            ${whereClause2}
-            ${whereClause3} 
-            ${whereClause4}
-            ${whereClause5}
-            ${whereClause6}
+            ${whereClause.length > 0 ? sql`WHERE ${whereClause}` : sql``}
             ORDER BY
                 ${sql(orderBy)}
                 ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}

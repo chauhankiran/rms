@@ -1,9 +1,12 @@
 CREATE TABLE tasks (
   id SERIAL PRIMARY KEY,
 
-  name VARCHAR(255) UNIQUE NOT NULL,
+  name VARCHAR(255),
   description TEXT,
   "taskTypeId" INT,
+
+  phone varchar(255),
+  location varchar(255),
 
   "companyId" INT,
   "contactId" INT,

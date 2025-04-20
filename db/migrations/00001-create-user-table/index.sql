@@ -8,6 +8,9 @@ CREATE TABLE users (
 
   "isRequiredToChangePassword" BOOLEAN NOT NULL DEFAULT false, 
 
+  "resetToken" varchar(255),
+  "resetTokenExpiresIn" timestamp,
+
   "isActive" BOOLEAN NOT NULL DEFAULT true, 
   "createdBy" INT,
   "updatedBy" INT,

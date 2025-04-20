@@ -75,9 +75,19 @@ module.exports = {
 
         try {
             // Run the query to fetch the fields.
-            const fields = await contactViewsService.find(
+            let fields = await contactViewsService.find(
                 req.session.currentUser.id
             );
+
+            // If somehow, view is not set for the user, go with these fields.
+            if (fields.length === 0) {
+                fields = [
+                    { name: "id" },
+                    { name: "name" },
+                    { name: "createdBy" },
+                    { name: "createdAt" },
+                ];
+            }
 
             // Create SQL query based on fields.
             let query = 'c."isActive",';
@@ -224,7 +234,7 @@ module.exports = {
                 orderBy: "id",
                 orderDir: "DESC",
                 contactId: contact.id,
-                columns: [
+                query: [
                     "d.id",
                     "d.name",
                     'updater.email AS "updatedByEmail"',
@@ -240,7 +250,7 @@ module.exports = {
                 orderBy: "id",
                 orderDir: "DESC",
                 contactId: contact.id,
-                columns: [
+                query: [
                     "q.id",
                     "q.name",
                     'updater.email AS "updatedByEmail"',
@@ -256,7 +266,7 @@ module.exports = {
                 orderBy: "id",
                 orderDir: "DESC",
                 contactId: contact.id,
-                columns: [
+                query: [
                     "t.id",
                     "t.name",
                     'updater.email AS "updatedByEmail"',
@@ -272,7 +282,7 @@ module.exports = {
                 orderBy: "id",
                 orderDir: "DESC",
                 contactId: contact.id,
-                columns: [
+                query: [
                     "t.id",
                     "t.name",
                     'updater.email AS "updatedByEmail"',

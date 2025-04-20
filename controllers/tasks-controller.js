@@ -63,9 +63,19 @@ module.exports = {
 
         try {
             // Run the query to fetch the fields.
-            const fields = await taskViewsService.find(
+            let fields = await taskViewsService.find(
                 req.session.currentUser.id
             );
+
+            // If somehow, view is not set for the user, go with these fields.
+            if (fields.length === 0) {
+                fields = [
+                    { name: "id" },
+                    { name: "name" },
+                    { name: "createdBy" },
+                    { name: "createdAt" },
+                ];
+            }
 
             // Create SQL query based on fields.
             let query = 't."isActive",';
@@ -84,6 +94,11 @@ module.exports = {
             // https://github.com/porsager/postgres/issues/894
             query = query.endsWith(",") ? query.slice(0, -1) : query;
 
+            // Check user type. If type == "user" only fetch active tasks.
+            // If type === "admin", then show all the tasks.
+            const isActiveOnly =
+                req.session.currentUser.type === "user" ? true : false;
+
             // Fetch tasks.
             const optionsObj = {
                 search,
@@ -92,6 +107,7 @@ module.exports = {
                 orderBy,
                 orderDir,
                 query,
+                isActiveOnly,
             };
             const tasks = await tasksService.find(optionsObj);
             const { count } = await tasksService.count(optionsObj);

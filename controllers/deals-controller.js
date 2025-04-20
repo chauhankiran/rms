@@ -1,6 +1,7 @@
 const notFound = require("../errors/not-found");
 const dealsService = require("../services/deals-service");
 const dealCommentsService = require("../services/deal-comments-service");
+const dealFilesService = require("../services/deal-files-service");
 const dealViewsService = require("../services/deal-views-service");
 const dealLabelsService = require("../services/deal-labels-service");
 const dealSourcesService = require("../services/admin/deal-sources-service");
@@ -61,9 +62,19 @@ module.exports = {
 
         try {
             // Run the query to fetch the fields.
-            const fields = await dealViewsService.find(
+            let fields = await dealViewsService.find(
                 req.session.currentUser.id
             );
+
+            // If somehow, view is not set for the user, go with these fields.
+            if (fields.length === 0) {
+                fields = [
+                    { name: "id" },
+                    { name: "name" },
+                    { name: "createdBy" },
+                    { name: "createdAt" },
+                ];
+            }
 
             // Create SQL query based on fields.
             let query = 'd."isActive",';
@@ -197,7 +208,7 @@ module.exports = {
                 orderBy: "id",
                 orderDir: "DESC",
                 dealId: deal.id,
-                columns: [
+                query: [
                     "q.id",
                     "q.name",
                     'updater.email AS "updatedByEmail"',
@@ -213,7 +224,7 @@ module.exports = {
                 orderBy: "id",
                 orderDir: "DESC",
                 dealId: deal.id,
-                columns: [
+                query: [
                     "t.id",
                     "t.name",
                     'updater.email AS "updatedByEmail"',
@@ -229,7 +240,7 @@ module.exports = {
                 orderBy: "id",
                 orderDir: "DESC",
                 dealId: deal.id,
-                columns: [
+                query: [
                     "t.id",
                     "t.name",
                     'updater.email AS "updatedByEmail"',
@@ -240,6 +251,9 @@ module.exports = {
 
             // Get all comments.
             const comments = await dealCommentsService.findOne(id);
+
+            // Get all files.
+            const files = await dealFilesService.findOne(id);
 
             return res.render("deals/show", {
                 title:
@@ -252,6 +266,7 @@ module.exports = {
                 tickets,
                 tasks,
                 comments,
+                files,
             });
         } catch (err) {
             next(err);
