@@ -12,61 +12,81 @@ module.exports = {
             companyId,
             contactId,
             dealId,
+            isActiveOnly,
         } = optionsObj;
 
-        const whereClause = search
-            ? sql` WHERE t."name" iLIKE ${"%" + search + "%"}`
-            : sql``;
+        const whereClauses = [];
 
-        const whereClause2 = companyId
-            ? sql` WHERE "companyId" = ${companyId}`
-            : sql``;
+        if (search) {
+            whereClauses.push(sql`t."name" iLIKE ${"%" + search + "%"}`);
+        }
 
-        const whereClause3 = contactId
-            ? sql` WHERE "contactId" = ${contactId}`
-            : sql``;
+        if (companyId) {
+            whereClauses.push(sql`"companyId" = ${companyId}`);
+        }
 
-        const whereClause4 = dealId ? sql` WHERE "dealId" = ${dealId}` : sql``;
+        if (contactId) {
+            whereClauses.push(sql`"contactId" = ${contactId}`);
+        }
+
+        if (dealId) {
+            whereClauses.push(sql`"dealId" = ${dealId}`);
+        }
+
+        if (isActiveOnly) {
+            whereClauses.push(sql`t."isActive" = TRUE`);
+        }
+
+        const whereClause = whereClauses.flatMap((x, i) =>
+            i ? [sql`and`, x] : x
+        );
 
         return await sql`
-      SELECT
-        ${sql.unsafe(query)}
-      FROM
-        tickets t
-      LEFT JOIN
-        users creator ON t."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON t."updatedBy" = updater.id
-      LEFT JOIN
-        "ticketTypes" tt ON t."ticketTypeId" = tt.id
-      ${whereClause}
-      ${whereClause2}
-      ${whereClause3} 
-      ${whereClause4}
-      ORDER BY
-        ${sql(orderBy)}
-        ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
-      LIMIT
-        ${limit}
-      OFFSET
-        ${skip}
-    `;
+            SELECT
+                ${sql.unsafe(query)}
+            FROM
+                tickets t
+            LEFT JOIN
+                users creator ON t."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON t."updatedBy" = updater.id
+            LEFT JOIN
+                "ticketTypes" tt ON t."ticketTypeId" = tt.id
+            ${whereClause.length > 0 ? sql`WHERE ${whereClause}` : sql``}
+            ORDER BY
+                ${sql(orderBy)}
+                ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
+            LIMIT
+                ${limit}
+            OFFSET
+                ${skip}
+        `;
     },
 
     count: async (optionsObj) => {
-        const { search } = optionsObj;
+        const { search, isActiveOnly } = optionsObj;
 
-        const whereClause = search
-            ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
-            : sql``;
+        const whereClauses = [];
+
+        if (search) {
+            whereClauses.push(sql`t."name" iLIKE ${"%" + search + "%"}`);
+        }
+
+        if (isActiveOnly) {
+            whereClauses.push(sql`t."isActive" = TRUE`);
+        }
+
+        const whereClause = whereClauses.flatMap((x, i) =>
+            i ? [sql`and`, x] : x
+        );
 
         return await sql`
-      SELECT
-        COUNT(id)
-      FROM
-        tickets
-      ${whereClause}
-    `.then(([x]) => x);
+            SELECT
+                COUNT(id)
+            FROM
+                tickets t
+            ${whereClause.length > 0 ? sql`WHERE ${whereClause}` : sql``}
+        `.then(([x]) => x);
     },
 
     create: async (ticketObj) => {

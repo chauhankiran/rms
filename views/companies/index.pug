@@ -74,6 +74,9 @@ block content
                                     else if column.field === "name"
                                         td 
                                             a(href=`/companies/${company.id}`)= company[column.field]
+
+                                            if (!company.isActive)
+                                                span.archive-status (archived)
                                     else
                                         td= company[column.field]
                     else 

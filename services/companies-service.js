@@ -2,11 +2,22 @@ const sql = require("../db/sql");
 
 module.exports = {
     find: async (optionsObj) => {
-        const { skip, limit, search, orderBy, orderDir, query } = optionsObj;
+        const { skip, limit, search, orderBy, orderDir, query, isActiveOnly } =
+            optionsObj;
 
-        const whereClause = search
-            ? sql` WHERE c.name iLIKE ${"%" + search + "%"}`
-            : sql``;
+        const whereClauses = [];
+
+        if (search) {
+            whereClauses.push(sql`c."name" iLIKE ${"%" + search + "%"}`);
+        }
+
+        if (isActiveOnly) {
+            whereClauses.push(sql`c."isActive" = TRUE`);
+        }
+
+        const whereClause = whereClauses.flatMap((x, i) =>
+            i ? [sql`and`, x] : x
+        );
 
         return await sql`
             SELECT
@@ -19,7 +30,7 @@ module.exports = {
                 users updater ON c."updatedBy" = updater.id
             LEFT JOIN
                 "companySources" cs ON c."companySourceId" = cs.id
-                ${whereClause}
+            ${whereClause.length > 0 ? sql`WHERE ${whereClause}` : sql``}
             ORDER BY
                 ${sql(orderBy)}
                 ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
@@ -31,19 +42,29 @@ module.exports = {
     },
 
     count: async (optionsObj) => {
-        const { search } = optionsObj;
+        const { search, isActiveOnly } = optionsObj;
 
-        const whereClause = search
-            ? sql` WHERE name iLIKE ${"%" + search + "%"}`
-            : sql``;
+        const whereClauses = [];
+
+        if (search) {
+            whereClauses.push(sql`c."name" iLIKE ${"%" + search + "%"}`);
+        }
+
+        if (isActiveOnly) {
+            whereClauses.push(sql`c."isActive" = TRUE`);
+        }
+
+        const whereClause = whereClauses.flatMap((x, i) =>
+            i ? [sql`and`, x] : x
+        );
 
         return await sql`
-      SELECT
-        COUNT(id)
-      FROM
-        companies
-      ${whereClause}
-    `.then(([x]) => x);
+            SELECT
+                COUNT(id)
+            FROM
+                companies c
+            ${whereClause.length > 0 ? sql`WHERE ${whereClause}` : sql``}
+        `.then(([x]) => x);
     },
 
     create: async (companyObj) => {

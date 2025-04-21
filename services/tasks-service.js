@@ -90,18 +90,28 @@ module.exports = {
     },
 
     count: async (optionsObj) => {
-        const { search } = optionsObj;
+        const { search, isActiveOnly } = optionsObj;
 
-        const whereClause = search
-            ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
-            : sql``;
+        const whereClauses = [];
+
+        if (search) {
+            whereClauses.push(sql`t."name" iLIKE ${"%" + search + "%"}`);
+        }
+
+        if (isActiveOnly) {
+            whereClauses.push(sql`t."isActive" = TRUE`);
+        }
+
+        const whereClause = whereClauses.flatMap((x, i) =>
+            i ? [sql`and`, x] : x
+        );
 
         return await sql`
             SELECT
                 COUNT(id)
             FROM
-                tasks
-            ${whereClause}
+                tasks t
+            ${whereClause.length > 0 ? sql`WHERE ${whereClause}` : sql``}
         `.then(([x]) => x);
     },
 

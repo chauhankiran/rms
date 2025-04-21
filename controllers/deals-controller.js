@@ -93,6 +93,11 @@ module.exports = {
             // https://github.com/porsager/postgres/issues/894
             query = query.endsWith(",") ? query.slice(0, -1) : query;
 
+            // Check user type. If type == "user" only fetch active tasks.
+            // If type === "admin", then show all the tasks.
+            const isActiveOnly =
+                req.session.currentUser.type === "user" ? true : false;
+
             // Fetch deals.
             const optionsObj = {
                 search,
@@ -101,6 +106,7 @@ module.exports = {
                 orderBy,
                 orderDir,
                 query,
+                isActiveOnly,
             };
             const deals = await dealsService.find(optionsObj);
             const { count } = await dealsService.count(optionsObj);

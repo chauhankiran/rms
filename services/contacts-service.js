@@ -2,56 +2,85 @@ const sql = require("../db/sql");
 
 module.exports = {
     find: async (optionsObj) => {
-        const { skip, limit, search, orderBy, orderDir, query, companyId } =
-            optionsObj;
+        const {
+            skip,
+            limit,
+            search,
+            orderBy,
+            orderDir,
+            query,
+            companyId,
+            isActiveOnly,
+        } = optionsObj;
 
-        const whereClause = search
-            ? sql` WHERE "firstName" iLIKE ${"%" + search + "%"} OR "lastName" iLIKE ${"%" + search + "%"}`
-            : sql``;
+        const whereClauses = [];
 
-        const whereClause2 = companyId
-            ? sql` WHERE "companyId" = ${companyId}`
-            : sql``;
+        if (search) {
+            whereClauses.push(
+                sql`"firstName" iLIKE ${"%" + search + "%"} OR "lastName" iLIKE ${"%" + search + "%"}`
+            );
+        }
 
-        console.log("query:", query);
+        if (companyId) {
+            whereClauses.push(sql`"companyId" = ${companyId}`);
+        }
+
+        if (isActiveOnly) {
+            whereClauses.push(sql`c."isActive" = TRUE`);
+        }
+
+        const whereClause = whereClauses.flatMap((x, i) =>
+            i ? [sql`and`, x] : x
+        );
 
         return await sql`
-      SELECT
-        ${sql.unsafe(query)}
-      FROM
-        contacts c
-      LEFT JOIN
-        users creator ON c."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON c."updatedBy" = updater.id
-      LEFT JOIN
-        "contactIndustries" ci ON c."contactIndustryId" = ci.id
-      ${whereClause}
-      ${whereClause2}
-      ORDER BY
-        ${sql(orderBy)}
-        ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
-      LIMIT
-        ${limit}
-      OFFSET
-        ${skip}
-    `;
+            SELECT
+                ${sql.unsafe(query)}
+            FROM
+                contacts c
+            LEFT JOIN
+                users creator ON c."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON c."updatedBy" = updater.id
+            LEFT JOIN
+                "contactIndustries" ci ON c."contactIndustryId" = ci.id
+            ${whereClause.length > 0 ? sql`WHERE ${whereClause}` : sql``}
+            ORDER BY
+                ${sql(orderBy)}
+                ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
+            LIMIT
+                ${limit}
+            OFFSET
+                ${skip}
+        `;
     },
 
     count: async (optionsObj) => {
-        const { search } = optionsObj;
+        const { search, isActiveOnly } = optionsObj;
 
-        const whereClause = search
-            ? sql` WHERE "lastName" iLIKE ${"%" + search + "%"}`
-            : sql``;
+        const whereClauses = [];
+
+        if (search) {
+            whereClauses.push(
+                sql`"firstName" iLIKE ${"%" + search + "%"} OR "lastName" iLIKE ${"%" + search + "%"}`
+            );
+        }
+
+        if (isActiveOnly) {
+            whereClauses.push(sql`c."isActive" = TRUE`);
+        }
+
+        const whereClause = whereClauses.flatMap((x, i) =>
+            i ? [sql`and`, x] : x
+        );
 
         return await sql`
-      SELECT
-        COUNT(id)
-      FROM
-        contacts
-      ${whereClause}
-    `.then(([x]) => x);
+            SELECT
+                COUNT(id)
+            FROM
+                contacts c
+            ${whereClause.length > 0 ? sql`WHERE ${whereClause}` : sql``}
+        `.then(([x]) => x);
     },
 
     create: async (contactObj) => {
