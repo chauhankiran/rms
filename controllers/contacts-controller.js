@@ -227,6 +227,8 @@ module.exports = {
         const id = req.params.id;
 
         try {
+            let deals, quotes, tickets, tasks;
+
             const contact = await contactsService.findOne(id);
 
             if (!contact) {
@@ -234,68 +236,76 @@ module.exports = {
             }
 
             // Get all associated deals.
-            const optionsObj = {
-                skip: 0,
-                limit: 100,
-                orderBy: "id",
-                orderDir: "DESC",
-                contactId: contact.id,
-                query: [
-                    "d.id",
-                    "d.name",
-                    'updater.email AS "updatedByEmail"',
-                    'd."updatedAt"',
-                ],
-            };
-            const deals = await dealsService.find(optionsObj);
+            if (req.session.modules.contact) {
+                const optionsObj = {
+                    skip: 0,
+                    limit: 100,
+                    orderBy: "id",
+                    orderDir: "DESC",
+                    contactId: contact.id,
+                    query: [
+                        "d.id",
+                        "d.name",
+                        'updater.email AS "updatedByEmail"',
+                        'd."updatedAt"',
+                    ],
+                };
+                deals = await dealsService.find(optionsObj);
+            }
 
             // Get all associated quotes.
-            const optionsObj2 = {
-                skip: 0,
-                limit: 100,
-                orderBy: "id",
-                orderDir: "DESC",
-                contactId: contact.id,
-                query: [
-                    "q.id",
-                    "q.name",
-                    'updater.email AS "updatedByEmail"',
-                    'q."updatedAt"',
-                ],
-            };
-            const quotes = await quotesService.find(optionsObj2);
+            if (req.session.modules.quote) {
+                const optionsObj2 = {
+                    skip: 0,
+                    limit: 100,
+                    orderBy: "id",
+                    orderDir: "DESC",
+                    contactId: contact.id,
+                    query: [
+                        "q.id",
+                        "q.name",
+                        'updater.email AS "updatedByEmail"',
+                        'q."updatedAt"',
+                    ],
+                };
+                quotes = await quotesService.find(optionsObj2);
+            }
 
             // Get all associated tickets.
-            const optionsObj3 = {
-                skip: 0,
-                limit: 100,
-                orderBy: "id",
-                orderDir: "DESC",
-                contactId: contact.id,
-                query: [
-                    "t.id",
-                    "t.name",
-                    'updater.email AS "updatedByEmail"',
-                    't."updatedAt"',
-                ],
-            };
-            const tickets = await ticketsService.find(optionsObj3);
+            if (req.session.modules.ticket) {
+                const optionsObj3 = {
+                    skip: 0,
+                    limit: 100,
+                    orderBy: "id",
+                    orderDir: "DESC",
+                    contactId: contact.id,
+                    query: [
+                        "t.id",
+                        "t.name",
+                        'updater.email AS "updatedByEmail"',
+                        't."updatedAt"',
+                    ],
+                };
+                tickets = await ticketsService.find(optionsObj3);
+            }
 
             // Get all associated tasks.
-            const optionsObj4 = {
-                skip: 0,
-                limit: 100,
-                orderBy: "id",
-                orderDir: "DESC",
-                contactId: contact.id,
-                query: [
-                    "t.id",
-                    "t.name",
-                    'updater.email AS "updatedByEmail"',
-                    't."updatedAt"',
-                ],
-            };
-            const tasks = await tasksService.find(optionsObj4);
+            if (req.session.modules.task) {
+                const optionsObj4 = {
+                    skip: 0,
+                    limit: 100,
+                    orderBy: "id",
+                    orderDir: "DESC",
+                    contactId: contact.id,
+                    query: [
+                        "t.id",
+                        "t.name",
+                        'updater.email AS "updatedByEmail"',
+                        't."updatedAt"',
+                    ],
+                };
+                tasks = await tasksService.find(optionsObj4);
+            }
 
             // Get all comments.
             const comments = await contactCommentsService.findOne(id);

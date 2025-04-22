@@ -1,30 +1,33 @@
 mixin inlineContacts(from, id)
-    .row.mb-4.mt-4.align-items-center
-        .col-6 
-            h3 #{plural(capitalize(labels.module.contact))}
-        .col-6.text-end
-            if from == "company"
-                a(href=`/contacts/new?companyId=${id}`).btn New #{singular(capitalize(labels.module.contact))}
+    if modules.contact 
+        hr
 
-    .row
-        .col-12 
-            table 
-                thead 
-                    tr 
-                        th Id 
-                        th Name 
-                        th Updated at 
-                        th Updated by 
-                tbody 
-                    if contacts.length > 0
-                        for contact in contacts  
-                            tr 
-                                td 
-                                    a(href=`/contacts/${contact.id}`) #{contact.id}
-                                td
-                                    a(href=`/contacts/${contact.id}`) #{contact.firstName + " " + contact.lastName}
-                                td #{contact.updatedAt || "-"}
-                                td #{contact.updatedByEmail || "-"}
-                    else 
+        .row.mb-4.mt-4.align-items-center
+            .col-6 
+                h3 #{plural(capitalize(labels.module.contact))}
+            .col-6.text-end
+                if from == "company"
+                    a(href=`/contacts/new?companyId=${id}`).btn New #{singular(capitalize(labels.module.contact))}
+
+        .row
+            .col-12 
+                table 
+                    thead 
                         tr 
-                            td(colspan=4).text-center No #{plural(downcase(labels.module.contact))} found.
+                            th Id 
+                            th Name 
+                            th Updated at 
+                            th Updated by 
+                    tbody 
+                        if contacts.length > 0
+                            for contact in contacts  
+                                tr 
+                                    td 
+                                        a(href=`/contacts/${contact.id}`) #{contact.id}
+                                    td
+                                        a(href=`/contacts/${contact.id}`) #{contact.firstName + " " + contact.lastName}
+                                    td #{contact.updatedAt || "-"}
+                                    td #{contact.updatedByEmail || "-"}
+                        else 
+                            tr 
+                                td(colspan=4).text-center No #{plural(downcase(labels.module.contact))} found.

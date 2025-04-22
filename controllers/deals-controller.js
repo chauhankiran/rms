@@ -201,6 +201,8 @@ module.exports = {
         const id = req.params.id;
 
         try {
+            let quotes, tickets, tasks;
+
             const deal = await dealsService.findOne(id);
 
             if (!deal) {
@@ -208,52 +210,58 @@ module.exports = {
             }
 
             // Get all associated quotes.
-            const optionsObj = {
-                skip: 0,
-                limit: 100,
-                orderBy: "id",
-                orderDir: "DESC",
-                dealId: deal.id,
-                query: [
-                    "q.id",
-                    "q.name",
-                    'updater.email AS "updatedByEmail"',
-                    'q."updatedAt"',
-                ],
-            };
-            const quotes = await quotesService.find(optionsObj);
+            if (req.session.modules.quote) {
+                const optionsObj = {
+                    skip: 0,
+                    limit: 100,
+                    orderBy: "id",
+                    orderDir: "DESC",
+                    dealId: deal.id,
+                    query: [
+                        "q.id",
+                        "q.name",
+                        'updater.email AS "updatedByEmail"',
+                        'q."updatedAt"',
+                    ],
+                };
+                quotes = await quotesService.find(optionsObj);
+            }
 
             // Get all associated tickets.
-            const optionsObj2 = {
-                skip: 0,
-                limit: 100,
-                orderBy: "id",
-                orderDir: "DESC",
-                dealId: deal.id,
-                query: [
-                    "t.id",
-                    "t.name",
-                    'updater.email AS "updatedByEmail"',
-                    't."updatedAt"',
-                ],
-            };
-            const tickets = await ticketsService.find(optionsObj2);
+            if (req.session.modules.ticket) {
+                const optionsObj2 = {
+                    skip: 0,
+                    limit: 100,
+                    orderBy: "id",
+                    orderDir: "DESC",
+                    dealId: deal.id,
+                    query: [
+                        "t.id",
+                        "t.name",
+                        'updater.email AS "updatedByEmail"',
+                        't."updatedAt"',
+                    ],
+                };
+                tickets = await ticketsService.find(optionsObj2);
+            }
 
             // Get all associated tasks.
-            const optionsObj3 = {
-                skip: 0,
-                limit: 100,
-                orderBy: "id",
-                orderDir: "DESC",
-                dealId: deal.id,
-                query: [
-                    "t.id",
-                    "t.name",
-                    'updater.email AS "updatedByEmail"',
-                    't."updatedAt"',
-                ],
-            };
-            const tasks = await tasksService.find(optionsObj3);
+            if (req.session.modules.task) {
+                const optionsObj3 = {
+                    skip: 0,
+                    limit: 100,
+                    orderBy: "id",
+                    orderDir: "DESC",
+                    dealId: deal.id,
+                    query: [
+                        "t.id",
+                        "t.name",
+                        'updater.email AS "updatedByEmail"',
+                        't."updatedAt"',
+                    ],
+                };
+                tasks = await tasksService.find(optionsObj3);
+            }
 
             // Get all comments.
             const comments = await dealCommentsService.findOne(id);

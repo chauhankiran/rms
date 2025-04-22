@@ -1,18 +1,38 @@
 nav.nav
-  .nav-start
-    a(href="/").nav-brand Home
-    if currentUser
-      a(href="/companies").nav-item #{capitalize(labels.module.company)}
-      a(href="/contacts").nav-item #{capitalize(labels.module.contact)}
-      a(href="/deals").nav-item #{capitalize(labels.module.deal)}
-      a(href="/quotes").nav-item #{capitalize(labels.module.quote)}
-      a(href="/tickets").nav-item #{capitalize(labels.module.ticket)}
-      a(href="/tasks").nav-item #{capitalize(labels.module.task)}
-  .nav-end
-    if currentUser
-      if currentUser.type == 'admin'
-        a(href="/admin").nav-item Admin
-      a(href="/auth/logout").nav-item Logout
-    else
-      a(href="/auth/login").nav-item Login
-      a(href="/auth/register").nav-item Register
+    .nav-start
+        a(href="/").nav-brand Home
+        if currentUser
+            //- company.
+            if modules.company
+                a(href="/companies").nav-item #{capitalize(labels.module.company)}
+
+            //- contact.
+            if modules.contact
+                a(href="/contacts").nav-item #{capitalize(labels.module.contact)}
+
+      
+            //- deal.
+            if modules.deal
+                a(href="/deals").nav-item #{capitalize(labels.module.deal)}
+
+            //- quote
+            if modules.quote
+                a(href="/quotes").nav-item #{capitalize(labels.module.quote)}
+
+            //- ticket
+            if modules.ticket
+                a(href="/tickets").nav-item #{capitalize(labels.module.ticket)}
+
+            //- task
+            if modules.task
+                a(href="/tasks").nav-item #{capitalize(labels.module.task)}
+    .nav-end
+        if currentUser
+            //- admin
+            if currentUser.type == 'admin'
+                a(href="/admin").nav-item Admin
+            
+            a(href="/auth/logout").nav-item Logout
+        else
+            a(href="/auth/login").nav-item Login
+            a(href="/auth/register").nav-item Register

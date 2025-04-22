@@ -10,6 +10,8 @@ const taskLabelsService = require("../services/admin/task-labels-service");
 const moduleLabelsService = require("../services/admin/module-labels-service");
 
 const { Resend } = require("resend");
+const sql = require("../db/sql");
+const modulesService = require("../services/admin/modules-service");
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const transformLabels = (labels) => {
@@ -68,6 +70,15 @@ module.exports = {
             if (user.isRequiredToChangePassword) {
                 req.flash("info", "Please change the password.");
                 return res.redirect("/auth/reset");
+            }
+
+            /**
+             * Module
+             */
+            req.session.modules = req.session.modules || {};
+            const modules = await modulesService.find(true);
+            for (const module of modules) {
+                req.session.modules[module.name] = true;
             }
 
             /**

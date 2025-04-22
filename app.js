@@ -13,6 +13,7 @@ const methodOverride = require("method-override");
 const pluralize = require("pluralize");
 
 const checkAuth = require("./middleware/check-auth");
+const checkModule = require("./middleware/check-module");
 
 const homeRoutes = require("./routes/home");
 const authRoutes = require("./routes/auth");
@@ -68,6 +69,7 @@ app.use((req, res, next) => {
     res.locals.info = req.flash("info");
     res.locals.error = req.flash("error");
     res.locals.currentUser = req.session.currentUser;
+    res.locals.modules = req.session.modules || {};
 
     res.locals.labels = res.locals.labels || {};
     res.locals.labels.company = req.session.labels?.company;
@@ -89,12 +91,12 @@ app.post("/submit", (req, res) => {
 
 app.use("/", homeRoutes);
 app.use("/auth", authRoutes);
-app.use("/companies", checkAuth, companiesRoutes);
-app.use("/contacts", checkAuth, contactsRoutes);
-app.use("/deals", checkAuth, dealsRoutes);
-app.use("/quotes", checkAuth, quotesRoutes);
-app.use("/tickets", checkAuth, ticketsRoutes);
-app.use("/tasks", checkAuth, tasksRoutes);
+app.use("/companies", checkAuth, checkModule("company"), companiesRoutes);
+app.use("/contacts", checkAuth, checkModule("contact"), contactsRoutes);
+app.use("/deals", checkAuth, checkModule("deal"), dealsRoutes);
+app.use("/quotes", checkAuth, checkModule("quote"), quotesRoutes);
+app.use("/tickets", checkAuth, checkModule("ticket"), ticketsRoutes);
+app.use("/tasks", checkAuth, checkModule("task"), tasksRoutes);
 app.use("/admin", checkAuth, adminRoutes);
 
 // 404 Error

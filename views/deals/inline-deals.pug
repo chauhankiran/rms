@@ -1,37 +1,40 @@
 mixin inlineDeals(from, id)
-    - let queryParam;
+    if modules.deal
+        hr
 
-    case from
-        when "company"
-            - queryParam = `companyId=${id}`;
-        when "contact"
-            - queryParam = `contactId=${id}`;
+        - let queryParam;
 
-    .row.mb-4.mt-4.align-items-center
-        .col-6 
-            h3 #{plural(capitalize(labels.module.deal))}
-        .col-6.text-end
-            a(href=`/deals/new?${queryString}`).btn New #{singular(capitalize(labels.module.deal))}
+        case from
+            when "company"
+                - queryParam = `companyId=${id}`;
+            when "contact"
+                - queryParam = `contactId=${id}`;
 
-    .row
-        .col-12 
-            table 
-                thead 
-                    tr 
-                        th Id 
-                        th Name 
-                        th Updated at 
-                        th Updated by 
-                tbody 
-                    if deals.length > 0
-                        for deal in deals  
-                            tr 
-                                td 
-                                    a(href=`/deals/${deal.id}`) #{deal.id}
-                                td 
-                                    a(href=`/deals/${deal.id}`) #{deal.name}
-                                td #{deal.updatedAt || "-"}
-                                td #{deal.updatedByEmail || "-"}
-                    else 
+        .row.mb-4.mt-4.align-items-center
+            .col-6 
+                h3 #{plural(capitalize(labels.module.deal))}
+            .col-6.text-end
+                a(href=`/deals/new?${queryString}`).btn New #{singular(capitalize(labels.module.deal))}
+
+        .row
+            .col-12 
+                table 
+                    thead 
                         tr 
-                            td(colspan=4).text-center No #{plural(downcase(labels.module.deal))} found.
+                            th Id 
+                            th Name 
+                            th Updated at 
+                            th Updated by 
+                    tbody 
+                        if deals.length > 0
+                            for deal in deals  
+                                tr 
+                                    td 
+                                        a(href=`/deals/${deal.id}`) #{deal.id}
+                                    td 
+                                        a(href=`/deals/${deal.id}`) #{deal.name}
+                                    td #{deal.updatedAt || "-"}
+                                    td #{deal.updatedByEmail || "-"}
+                        else 
+                            tr 
+                                td(colspan=4).text-center No #{plural(downcase(labels.module.deal))} found.

@@ -1,40 +1,43 @@
 mixin inlineQuotes(from, id)
-    - let queryParam;
+    if modules.quote
+        hr
 
-    case from
-        when "company"
-            - queryParam = `companyId=${id}`;
-        when "contact"
-            - queryParam = `contactId=${id}`;
-        when "deal"
-            - queryParam = `dealId=${id}`;
+        - let queryParam;
+
+        case from
+            when "company"
+                - queryParam = `companyId=${id}`;
+            when "contact"
+                - queryParam = `contactId=${id}`;
+            when "deal"
+                - queryParam = `dealId=${id}`;
 
 
-    .row.mb-4.mt-4.align-items-center
-        .col-6 
-            h3 #{plural(capitalize(labels.module.quote))}
-        .col-6.text-end
-            a(href=`/quotes/new?${queryParam}`).btn New #{singular(capitalize(labels.module.quote))}
+        .row.mb-4.mt-4.align-items-center
+            .col-6 
+                h3 #{plural(capitalize(labels.module.quote))}
+            .col-6.text-end
+                a(href=`/quotes/new?${queryParam}`).btn New #{singular(capitalize(labels.module.quote))}
 
-    .row
-        .col-12 
-            table 
-                thead 
-                    tr 
-                        th Id 
-                        th Name 
-                        th Updated at 
-                        th Updated by 
-                tbody 
-                    if quotes.length > 0
-                        for quote in quotes  
-                            tr 
-                                td 
-                                    a(href=`/quotes/${quote.id}`) #{quote.id}
-                                td 
-                                    a(href=`/quotes/${quote.id}`) #{quote.name}
-                                td #{quote.updatedAt || "-"}
-                                td #{quote.updatedByEmail || "-"}
-                    else 
+        .row
+            .col-12 
+                table 
+                    thead 
                         tr 
-                            td(colspan=4).text-center No #{plural(downcase(labels.module.quote))} found.
+                            th Id 
+                            th Name 
+                            th Updated at 
+                            th Updated by 
+                    tbody 
+                        if quotes.length > 0
+                            for quote in quotes  
+                                tr 
+                                    td 
+                                        a(href=`/quotes/${quote.id}`) #{quote.id}
+                                    td 
+                                        a(href=`/quotes/${quote.id}`) #{quote.name}
+                                    td #{quote.updatedAt || "-"}
+                                    td #{quote.updatedByEmail || "-"}
+                        else 
+                            tr 
+                                td(colspan=4).text-center No #{plural(downcase(labels.module.quote))} found.

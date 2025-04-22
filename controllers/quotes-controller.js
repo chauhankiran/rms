@@ -186,6 +186,8 @@ module.exports = {
         const id = req.params.id;
 
         try {
+            let tasks;
+
             const quote = await quotesService.findOne(id);
 
             if (!quote) {
@@ -193,20 +195,22 @@ module.exports = {
             }
 
             // Get all associated tasks.
-            const optionsObj = {
-                skip: 0,
-                limit: 100,
-                orderBy: "id",
-                orderDir: "DESC",
-                quoteId: quote.id,
-                query: [
-                    "t.id",
-                    "t.name",
-                    'updater.email AS "updatedByEmail"',
-                    't."updatedAt"',
-                ],
-            };
-            const tasks = await tasksService.find(optionsObj);
+            if (req.session.modules.task) {
+                const optionsObj = {
+                    skip: 0,
+                    limit: 100,
+                    orderBy: "id",
+                    orderDir: "DESC",
+                    quoteId: quote.id,
+                    query: [
+                        "t.id",
+                        "t.name",
+                        'updater.email AS "updatedByEmail"',
+                        't."updatedAt"',
+                    ],
+                };
+                tasks = await tasksService.find(optionsObj);
+            }
 
             // Get all comments.
             const comments = await quoteCommentsService.findOne(id);
