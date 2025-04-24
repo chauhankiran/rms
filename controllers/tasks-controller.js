@@ -85,8 +85,8 @@ module.exports = {
                 if (column) {
                     query += `${column.as},`;
                     columns.push({
-                        header: req.session.labels.task[field.name],
-                        field: column.alias,
+                        field: field.name,
+                        alias: column.alias,
                     });
                 }
             }

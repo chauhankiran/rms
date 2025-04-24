@@ -16,40 +16,41 @@ block content
                     tr 
                         each column in columns
                             //- id
-                            if column.field === "id"
+                            if column.field === "id" && labels.deal[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/deals?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/deals?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.deal[column.field]
                                     else 
-                                        a(href=`/deals?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/deals?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.deal[column.field]
                                         
                                     if orderBy === 'id'
                                         span.order-wrapper= orderDir
                                     
                             //- name
-                            else if column.field === "name"
+                            else if column.field === "name" && labels.deal[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/deals?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/deals?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.deal[column.field]
                                     else 
-                                        a(href=`/deals?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/deals?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.deal[column.field]
                                     
                                     if orderBy === 'name'
                                         span.order-wrapper= orderDir
 
                             //- updatedAt
-                            else if column.field === "updatedAt"
+                            else if column.field === "updatedAt" && labels.deal[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/deals?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/deals?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.deal[column.field]
                                     else 
-                                        a(href=`/deals?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/deals?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.deal[column.field]
                                         
                                     if orderBy === 'updatedAt'
                                         span.order-wrapper= orderDir
 
                             else 
-                                th= column.header
+                                if labels.deal[column.field]
+                                    th= labels.deal[column.field]
             
     
 
@@ -58,21 +59,22 @@ block content
                         each deal in deals 
                             tr
                                 each column in columns
-                                    if column.field === "id"
+                                    if column.field === "id" && labels.deal[column.field]
                                         td
                                             a(href=`/deals/${deal.id}`) #{deal.id}
                 
-                                    else if column.field === "name"
+                                    else if column.field === "name" && labels.deal[column.field]
                                         td 
                                             a(href=`/deals/${deal.id}`) #{deal.name}
                                             if (!deal.isActive)
                                                 span.archive-status (archived)
                                     
                                     else 
-                                        td= deal[column.field]
+                                        if labels.deal[column.field]
+                                            td= deal[column.alias]
                     else 
                         tr 
-                            td(colspan=7).text-center No #{downcase(labels.module.deal)} found.
+                            td(colspan=`${columns.length}`).text-center No #{downcase(labels.module.deal)} found.
         
         .col-12 
             +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

@@ -1,14 +1,14 @@
 const sql = require("../../db/sql");
 
 module.exports = {
-  find: async (optionsObj) => {
-    const { skip, limit, search, orderBy, orderDir } = optionsObj;
+    find: async (optionsObj) => {
+        const { skip, limit, search, orderBy, orderDir } = optionsObj;
 
-    const whereClause = search
-      ? sql` WHERE name iLIKE ${"%" + search + "%"}`
-      : sql``;
+        const whereClause = search
+            ? sql` WHERE name iLIKE ${"%" + search + "%"}`
+            : sql``;
 
-    return await sql`
+        return await sql`
       SELECT
         tf.id,
         tf.name,
@@ -35,26 +35,26 @@ module.exports = {
       OFFSET
         ${skip}
     `;
-  },
+    },
 
-  count: async (optionsObj) => {
-    const { search } = optionsObj;
+    count: async (optionsObj) => {
+        const { search } = optionsObj;
 
-    const whereClause = search
-      ? sql` WHERE name iLIKE ${"%" + search + "%"}`
-      : sql``;
+        const whereClause = search
+            ? sql` WHERE name iLIKE ${"%" + search + "%"}`
+            : sql``;
 
-    return await sql`
+        return await sql`
       SELECT
         COUNT(id)
       FROM
         "taskLabels"
       ${whereClause}
     `.then(([x]) => x);
-  },
+    },
 
-  findOne: async (id) => {
-    return await sql`
+    findOne: async (id) => {
+        return await sql`
       SELECT
         tf.id,
         tf.name,
@@ -75,12 +75,12 @@ module.exports = {
       WHERE
         tf.id = ${id}
     `.then(([x]) => x);
-  },
+    },
 
-  update: async (taskLabelObj) => {
-    const { id, displayName, updatedBy } = taskLabelObj;
+    update: async (taskLabelObj) => {
+        const { id, displayName, updatedBy } = taskLabelObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         "taskLabels"
       SET
@@ -91,12 +91,12 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  archive: async (taskLabelObj) => {
-    const { id, updatedBy } = taskLabelObj;
+    archive: async (taskLabelObj) => {
+        const { id, updatedBy } = taskLabelObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         "taskLabels"
       SET
@@ -107,12 +107,12 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  active: async (taskLabelObj) => {
-    const { id, updatedBy } = taskLabelObj;
+    active: async (taskLabelObj) => {
+        const { id, updatedBy } = taskLabelObj;
 
-    return await sql`
+        return await sql`
       UPDATE
         "taskLabels"
       SET
@@ -123,10 +123,10 @@ module.exports = {
         id = ${id}
       returning id
     `.then(([x]) => x);
-  },
+    },
 
-  findActive: async () => {
-    return await sql`
+    findActive: async () => {
+        return await sql`
       SELECT
         name,
         "displayName"
@@ -135,14 +135,16 @@ module.exports = {
       WHERE
         "isActive" = true
     `;
-  },
+    },
 
-  pluck: async (columns) => {
-    return await sql`
+    pluck: async (columns) => {
+        return await sql`
       SELECT
         ${sql(columns)}
       FROM
         "taskLabels"
+      WHERE
+        "isActive" = true
     `;
-  },
+    },
 };

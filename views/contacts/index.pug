@@ -15,48 +15,49 @@ block content
                 thead 
                     tr
                         each column in columns
-                            if column.field === "id"
+                            if column.field === "id" && labels.contact[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/contacts?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/contacts?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.contact[column.field]
                                     else 
-                                        a(href=`/contacts?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/contacts?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.contact[column.field]
                                         
                                     if orderBy === 'id'
                                         span.order-wrapper= orderDir
         
-                            else if column.field === "name"
+                            else if column.field === "name" && labels.contact[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/contacts?orderBy=lastName&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/contacts?orderBy=lastName&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.contact[column.field]
                                     else 
-                                        a(href=`/contacts?orderBy=lastName&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/contacts?orderBy=lastName&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.contact[column.field]
                                     
                                     if orderBy === 'lastName'
                                         span.order-wrapper= orderDir
 
-                            else if column.field === "updatedAt"
+                            else if column.field === "updatedAt" && labels.contact[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/contacts?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/contacts?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.contact[column.field]
                                     else 
-                                        a(href=`/contacts?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/contacts?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.contact[column.field]
                                         
                                     if orderBy === 'updatedAt'
                                         span.order-wrapper= orderDir
                             else 
-                                th= column.header
+                                if labels.contact[column.field]
+                                    th= labels.contact[column.field]
             
                 tbody 
                     if contacts.length > 0
                         each contact in contacts 
                             tr
                                 each column in columns
-                                    if column.field === "id"
+                                    if column.field === "id" && labels.contact[column.field]
                                         td
                                             a(href=`/contacts/${contact.id}`)= contact[column.field]
 
-                                    else if column.field === "firstName" || column.field === "lastName" || column.field === "name"
+                                    else if (column.field === "firstName" || column.field === "lastName" || column.field === "name")  && labels.contact[column.field]
                                         td 
                                             a(href=`/contacts/${contact.id}`) #{contact.firstName + " " + contact.lastName}
             
@@ -64,10 +65,11 @@ block content
                                                 span.archive-status (archived)
                                     
                                     else
-                                        td= contact[column.field]
+                                        if labels.contact[column.field]
+                                            td= contact[column.alias]
                     else 
                         tr 
-                            td(colspan=6).text-center No #{downcase(labels.module.contact)} found.
+                            td(colspan=`${columns.length}`).text-center No #{downcase(labels.module.contact)} found.
 
         .col-12 
             +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

@@ -20,10 +20,12 @@ block content
     
         .col-6#available 
             each field in availableFields 
-                div(id=`${field}`, class="list-item")= labels.ticket[field]
+                if labels.ticket[field]
+                    div(id=`${field}`, class="list-item")= labels.ticket[field]
         .col-6#selected 
             each field in selectedFields 
-                div(id=`${field.name}`, class="list-item")= labels.ticket[field.name]
+                if labels.ticket[field.name]
+                    div(id=`${field.name}`, class="list-item")= labels.ticket[field.name]
         
         form(action=`/tickets/view?_method=PUT`, name="saveTicketViewForm", method="post")
             input(type="hidden", name="fields", id="ticket-view-fields" value="")

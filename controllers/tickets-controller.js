@@ -78,8 +78,8 @@ module.exports = {
                 if (column) {
                     query += `${column.as},`;
                     columns.push({
-                        header: req.session.labels.ticket[field.name],
-                        field: column.alias,
+                        field: field.name,
+                        alias: column.alias,
                     });
                 }
             }

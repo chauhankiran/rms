@@ -20,10 +20,12 @@ block content
     
         .col-6#available 
             each field in availableFields 
-                div(id=`${field}`, class="list-item")= labels.contact[field]
+                if labels.contact[field]
+                    div(id=`${field}`, class="list-item")= labels.contact[field]
         .col-6#selected 
             each field in selectedFields 
-                div(id=`${field.name}`, class="list-item")= labels.contact[field.name]
+                if labels.contact[field.name]
+                    div(id=`${field.name}`, class="list-item")= labels.contact[field.name]
         
         form(action=`/contacts/view?_method=PUT`, name="saveContactViewForm", method="post")
             input(type="hidden", name="fields", id="contact-view-fields" value="")

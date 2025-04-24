@@ -2,77 +2,71 @@ extends ../../../layout
 include ../../../mixins/pagination
 
 block content
-  .row.align-items-center 
-    .col-8 
-      h1 #{title} (#{count})
-    .col-4.text-end 
-      a(href="/admin/labels/companies/new").btn New company label
+    .row.align-items-center 
+        .col-8 
+            h1 #{title} (#{count})
+        .col-4.text-end 
+            a(href="/admin/labels/companies/new").btn New company label
 
-    .col-12
-      form(action="/admin/labels/companies", method="get") 
-        .form-group 
-          input(type="hidden", name="orderBy", value=orderBy)
-          input(type="hidden", name="orderDir", value=orderDir)
-          input(type="text", name="search", value=search, autofocus=true, placeholder="Type name and press Enter")
+        .col-12
+            form(action="/admin/labels/companies", method="get") 
+                .form-group 
+                    input(type="hidden", name="orderBy", value=orderBy)
+                    input(type="hidden", name="orderDir", value=orderDir)
+                    input(type="text", name="search", value=search, autofocus=true, placeholder="Type name and press Enter")
 
-      include ../../../partials/flash
+            include ../../../partials/flash
 
-      table
-        thead 
-          tr  
-            th
-              if orderDir === 'ASC'
-                a(href=`/admin/labels/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) Id
-              else 
-                a(href=`/admin/labels/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) Id
-              
-              if orderBy === 'id'
-                span.order-wrapper= orderDir
+            table
+                thead 
+                    tr  
+                        th
+                            if orderDir === 'ASC'
+                                a(href=`/admin/labels/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) Id
+                            else 
+                                a(href=`/admin/labels/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) Id
+                            
+                            if orderBy === 'id'
+                                span.order-wrapper= orderDir
+                
+                        th
+                            if orderDir === 'ASC'
+                                a(href=`/admin/labels/companies?orderBy=displayName&orderDir=DESC${search ? `&search=${search}` : ''}`) Display name
+                            else 
+                                a(href=`/admin/labels/companies?orderBy=displayName&orderDir=ASC${search ? `&search=${search}` : ''}`) Display name
+                            
+                            if orderBy === 'displayName'
+                                span.order-wrapper= orderDir
 
-            th
-              if orderDir === 'ASC'
-                a(href=`/admin/labels/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`) Name
-              else 
-                a(href=`/admin/labels/companies?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`) Name
-              
-              if orderBy === 'name'
-                span.order-wrapper= orderDir
-            
-            th
-              if orderDir === 'ASC'
-                a(href=`/admin/labels/companies?orderBy=displayName&orderDir=DESC${search ? `&search=${search}` : ''}`) Display name
-              else 
-                a(href=`/admin/labels/companies?orderBy=displayName&orderDir=ASC${search ? `&search=${search}` : ''}`) Display name
-              
-              if orderBy === 'displayName'
-                span.order-wrapper= orderDir
+                        th Updated by
 
-            th Updated by
+                        th
+                            if orderDir === 'ASC'
+                                a(href=`/admin/labels/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) Updated at
+                            else 
+                                a(href=`/admin/labels/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) Updated at
+                        
+                            if orderBy === 'updatedAt'
+                                span.order-wrapper= orderDir
+                
+                    tbody 
+                        if companyLabels.length > 0
+                            each companyLabel in companyLabels 
+                                tr
+                                    td
+                                        a(href=`/admin/labels/companies/${companyLabel.id}`) #{companyLabel.id}
+                                    td 
+                                        a(href=`/admin/labels/companies/${companyLabel.id}`) #{companyLabel.displayName || "-" }
+                    
+                                        if (!companyLabel.isActive)
+                                            span.archive-status (not active)
+                    
+                                    td #{companyLabel.updatedByEmail || "-" }
+                                    
+                                    td #{companyLabel.updatedAt || "-" } 
+                        else 
+                            tr 
+                                td(colspan=7).text-center No company labels found.
 
-            th
-              if orderDir === 'ASC'
-                a(href=`/admin/labels/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) Updated at
-              else 
-                a(href=`/admin/labels/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) Updated at
-              
-              if orderBy === 'updatedAt'
-                span.order-wrapper= orderDir
-            
-        tbody 
-          if companyLabels.length > 0
-            each companyLabel in companyLabels 
-              tr
-                td
-                  a(href=`/admin/labels/companies/${companyLabel.id}`) #{companyLabel.id}
-                td #{companyLabel.name}
-                  if (!companyLabel.isActive)
-                    span.archive-status (archived)
-                td #{companyLabel.displayName || "-" }
-                td #{companyLabel.updatedByEmail || "-" }
-                td #{companyLabel.updatedAt || "-" } 
-          else 
-            tr 
-              td(colspan=7).text-center No company labels found.
-
-    .col-12 
-      +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)
+        .col-12 
+            +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

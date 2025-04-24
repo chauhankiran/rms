@@ -20,10 +20,12 @@ block content
     
         .col-6#available 
             each field in availableFields 
-                div(id=`${field}`, class="list-item")= labels.deal[field]
+                if labels.deal[field]
+                    div(id=`${field}`, class="list-item")= labels.deal[field]
         .col-6#selected 
             each field in selectedFields 
-                div(id=`${field.name}`, class="list-item")= labels.deal[field.name]
+                if labels.deal[field.name]
+                    div(id=`${field.name}`, class="list-item")= labels.deal[field.name]
         
         form(action=`/deals/view?_method=PUT`, name="saveDealViewForm", method="post")
             input(type="hidden", name="fields", id="deal-view-fields" value="")

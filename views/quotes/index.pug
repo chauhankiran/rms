@@ -16,61 +16,63 @@ block content
                     tr 
                         each column in columns
                             //- id
-                            if column.field === "id"
+                            if column.field === "id" && labels.quote[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/quotes?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/quotes?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.quote[column.field]
                                     else 
-                                        a(href=`/quotes?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/quotes?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.quote[column.field]
                                     
                                     if orderBy === 'id'
                                         span.order-wrapper= orderDir
                                     
                             //- name
-                            else if column.field === "name"
+                            else if column.field === "name" && labels.quote[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/quotes?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/quotes?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.quote[column.field]
                                     else 
-                                        a(href=`/quotes?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/quotes?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.quote[column.field]
                                     
                                     if orderBy === 'name'
                                         span.order-wrapper= orderDir
                                     
                             //- updatedAt
-                            else if column.field === "updatedAt"
+                            else if column.field === "updatedAt" && labels.quote[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/quotes?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/quotes?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.quote[column.field]
                                     else 
-                                        a(href=`/quotes?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/quotes?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.quote[column.field]
                                     
                                     if orderBy === 'updatedAt'
                                         span.order-wrapper= orderDir
                             
                             else 
-                                th= column.header
+                                if labels.quote[column.field]
+                                    th= labels.quote[column.field]
 
                 tbody 
                     if quotes.length > 0
                         each quote in quotes 
                             tr
                                 each column in columns
-                                    if column.field === "id"
+                                    if column.field === "id" && labels.quote[column.field]
                                         td
                                             a(href=`/quotes/${quote.id}`) #{quote.id}
 
-                                    else if column.field === "name"
+                                    else if column.field === "name" && labels.quote[column.field]
                                         td 
                                             a(href=`/quotes/${quote.id}`) #{quote.name}
                                             if (!quote.isActive)
                                                 span.archive-status (archived)
 
-                                    else if labels.quote.updatedBy
-                                        td= quote[column.field]
+                                    else
+                                        if labels.quote[column.field]
+                                            td= quote[column.alias]
                     else 
                         tr 
-                            td(colspan=7).text-center No #{downcase(labels.module.quote)} found.
+                            td(colspan=`${columns.length}`).text-center No #{downcase(labels.module.quote)} found.
 
         .col-12 
             +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

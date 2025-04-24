@@ -16,63 +16,64 @@ block content
                     tr 
                         each column in columns
                             //- id
-                            if column.field === "id"
+                            if column.field === "id" && labels.ticket[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/tickets?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/tickets?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.ticket[column.field]
                                     else 
-                                        a(href=`/tickets?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/tickets?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.ticket[column.field]
                                     
                                     if orderBy === 'id'
                                         span.order-wrapper= orderDir
                                     
                             //- name
-                            else if column.field === "name"
+                            else if column.field === "name" && labels.ticket[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/tickets?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/tickets?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.ticket[column.field]
                                     else 
-                                        a(href=`/tickets?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/tickets?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.ticket[column.field]
                                     
                                     if orderBy === 'name'
                                         span.order-wrapper= orderDir
                             
                             //- updatedAt
-                            else if column.field === "updatedAt"
+                            else if column.field === "updatedAt" && labels.ticket[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/tickets?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/tickets?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.ticket[column.field]
                                     else 
-                                        a(href=`/tickets?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/tickets?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.ticket[column.field]
                                     
                                     if orderBy === 'updatedAt'
                                         span.order-wrapper= orderDir
 
-                            //- ticketTypeId
                             else
-                                th= column.header
+                                if labels.ticket[column.field]
+                                    th= labels.ticket[column.field]
 
                     tbody 
                         if tickets.length > 0
                             each ticket in tickets 
                                 tr
                                     each column in columns
-                                            if column.field === "id"
+                                            if column.field === "id" && labels.ticket[column.field]
                                                 td
                                                     a(href=`/tickets/${ticket.id}`) #{ticket.id}
                                                         
-                                            else if column.field === "name"
+                                            else if column.field === "name" && labels.ticket[column.field]
                                                 td 
                                                     a(href=`/tickets/${ticket.id}`) #{ticket.name}
                                                     if (!ticket.isActive)
                                                         span.archive-status (archived)
 
                                             else
-                                                td= ticket[column.field]
+                                                if labels.ticket[column.field]
+                                                    td= ticket[column.alias]
 
                         else 
                             tr 
-                                td(colspan=7).text-center No #{downcase(labels.module.ticket)} found.
+                                td(colspan=`${columns.length}`).text-center No #{downcase(labels.module.ticket)} found.
         
         .col-12 
             +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

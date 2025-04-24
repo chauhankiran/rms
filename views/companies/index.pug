@@ -15,70 +15,72 @@ block content
                 thead 
                     tr 
                         each column in columns 
-                            if column.field === "id"
+                            if column.field === "id" && labels.company[column.field]
                                 th 
                                     if orderDir === 'ASC'
-                                        a(href=`/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.company[column.field]
                                     else 
-                                        a(href=`/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.company[column.field]
                         
                                     if orderBy === 'id'
                                         span.order-wrapper= orderDir
-                            else if column.field === "name"
+                            else if column.field === "name" && labels.company[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.company[column.field]
                                     else 
-                                        a(href=`/companies?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/companies?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.company[column.field]
                                             
                                     if orderBy === 'name'
                                         span.order-wrapper= orderDir
-                            else if column.field === "createdAt"
+                            else if column.field === "createdAt" && labels.company[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/companies?orderBy=createdAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/companies?orderBy=createdAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.company[column.field]
                                     else 
-                                        a(href=`/companies?orderBy=createdAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/companies?orderBy=createdAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.company[column.field]
                                             
                                     if orderBy === 'createdAt'
                                         span.order-wrapper= orderDir
-                            else if column.field === "updatedAt"
+                            else if column.field === "updatedAt" && labels.company[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.company[column.field]
                                     else 
-                                        a(href=`/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.company[column.field]
                                             
                                     if orderBy === 'updatedAt'
                                         span.order-wrapper= orderDir
-                            else if column.field === "employeeSize"
+                            else if column.field === "employeeSize" && labels.company[column.field]
                                 th
                                     if orderDir === 'ASC'
-                                        a(href=`/companies?orderBy=employeeSize&orderDir=DESC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/companies?orderBy=employeeSize&orderDir=DESC${search ? `&search=${search}` : ''}`)= labels.company[column.field]
                                     else 
-                                        a(href=`/companies?orderBy=employeeSize&orderDir=ASC${search ? `&search=${search}` : ''}`)= column.header
+                                        a(href=`/companies?orderBy=employeeSize&orderDir=ASC${search ? `&search=${search}` : ''}`)= labels.company[column.field]
                                             
                                     if orderBy === 'employeeSize'
                                         span.order-wrapper= orderDir
                             else
-                                th= column.header 
+                                if labels.company[column.field]
+                                    th= labels.company[column.field] 
                     
                 tbody 
                     if companies.length > 0
                         each company in companies 
                             tr 
                                 each column in columns 
-                                    if column.field === "id"
+                                    if column.field === "id" && labels.company[column.field]
                                         td 
-                                            a(href=`/companies/${company.id}`)= company[column.field]
-                                    else if column.field === "name"
+                                            a(href=`/companies/${company.id}`)= company[column.alias]
+                                    else if column.field === "name" && labels.company[column.field]
                                         td 
-                                            a(href=`/companies/${company.id}`)= company[column.field]
+                                            a(href=`/companies/${company.id}`)= company[column.alias]
 
                                             if (!company.isActive)
                                                 span.archive-status (archived)
                                     else
-                                        td= company[column.field]
+                                        if labels.company[column.field]
+                                            td= company[column.alias] || "-"
                     else 
                         tr 
                             td(colspan=`${columns.length}`).text-center No #{downcase(labels.module.company)} found. 
