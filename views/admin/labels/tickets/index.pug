@@ -3,10 +3,8 @@ include ../../../mixins/pagination
 
 block content
   .row.align-items-center 
-    .col-8 
+    .col-12 
       h1 #{title} (#{count})
-    .col-4.text-end 
-      a(href="/admin/labels/tickets/new").btn New ticket label
 
     .col-12
       form(action="/admin/labels/tickets", method="get") 
