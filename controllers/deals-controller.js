@@ -270,11 +270,7 @@ module.exports = {
             const files = await dealFilesService.findOne(id);
 
             return res.render("deals/show", {
-                title:
-                    "Show " +
-                    pluralize.singular(
-                        req.session.labels.module.deal.toLowerCase()
-                    ),
+                title: `#${deal.id}. ${deal.name}`,
                 deal,
                 quotes,
                 tickets,

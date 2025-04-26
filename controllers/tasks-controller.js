@@ -241,11 +241,7 @@ module.exports = {
             const files = await taskFilesService.findOne(id);
 
             return res.render("tasks/show", {
-                title:
-                    "Show " +
-                    pluralize.singular(
-                        req.session.labels.module.task.toLowerCase()
-                    ),
+                title: `#${task.id}. ${task.name}`,
                 task,
                 comments,
                 files,

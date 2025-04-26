@@ -1,6 +1,5 @@
 const notFound = require("../errors/not-found");
 const companiesService = require("../services/companies-service");
-const companyCommentsService = require("../services/company-comments-service");
 const companyFilesService = require("../services/company-files-service");
 const contactsService = require("../services/contacts-service");
 const companyViewsService = require("../services/company-views-service");
@@ -295,17 +294,13 @@ module.exports = {
             }
 
             // Get all comments.
-            const comments = await companyCommentsService.findOne(id);
+            const comments = await companiesService.findComments(id);
 
             // Get all files.
             const files = await companyFilesService.findOne(id);
 
             return res.render("companies/show", {
-                title:
-                    "Show " +
-                    pluralize.singular(
-                        req.session.labels.module.company.toLowerCase()
-                    ),
+                title: `#${company.id}. ${company.name}`,
                 company,
                 contacts,
                 deals,
@@ -488,6 +483,44 @@ module.exports = {
 
             req.flash("info", "View is updated for companies.");
             return res.redirect("/companies");
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    createComment: async (req, res, next) => {
+        const id = req.params.id;
+        const comment = req.body.comment;
+
+        if (!comment) {
+            req.flash("error", "Comment is required.");
+            return res.redirect(`/companies/${id}`);
+        }
+
+        try {
+            const commentObj = {
+                comment,
+                companyId: id || null,
+                createdBy: req.session.currentUser.id,
+            };
+            await companiesService.createComment(commentObj);
+
+            req.flash("info", "Comment is created.");
+            return res.redirect(`/companies/${id}`);
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    destroyComment: async (req, res, next) => {
+        const id = req.params.id;
+        const companyId = req.params.companyId;
+
+        try {
+            await companiesService.destroyComment(id);
+
+            req.flash("info", "Comment is deleted.");
+            return res.redirect(`/companies/${companyId}`);
         } catch (err) {
             next(err);
         }

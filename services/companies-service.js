@@ -20,6 +20,7 @@ const updateCompanyStatus = async (companyObj, status) => {
 };
 
 module.exports = {
+    // Return many companies.
     find: async (optionsObj) => {
         const { skip, limit, search, orderBy, orderDir, query, isActiveOnly } =
             optionsObj;
@@ -60,6 +61,7 @@ module.exports = {
         `;
     },
 
+    // Return many companies count.
     count: async (optionsObj) => {
         const { search, isActiveOnly } = optionsObj;
 
@@ -86,27 +88,7 @@ module.exports = {
         `.then(([x]) => x);
     },
 
-    create: async (companyObj) => {
-        const { name, employeeSize, description, companySourceId, createdBy } =
-            companyObj;
-
-        return await sql`
-            INSERT INTO companies (
-                name,
-                "employeeSize",
-                description,
-                "companySourceId",
-                "createdBy"
-            ) VALUES (
-                ${name},
-                ${employeeSize},
-                ${description},
-                ${companySourceId},
-                ${createdBy}
-            ) returning id, name
-        `.then(([x]) => x);
-    },
-
+    // Find one by id.
     findOne: async (id) => {
         return await sql`
             SELECT
@@ -136,6 +118,29 @@ module.exports = {
         `.then(([x]) => x);
     },
 
+    // Create a new company.
+    create: async (companyObj) => {
+        const { name, employeeSize, description, companySourceId, createdBy } =
+            companyObj;
+
+        return await sql`
+            INSERT INTO companies (
+                name,
+                "employeeSize",
+                description,
+                "companySourceId",
+                "createdBy"
+            ) VALUES (
+                ${name},
+                ${employeeSize},
+                ${description},
+                ${companySourceId},
+                ${createdBy}
+            ) returning id, name
+        `.then(([x]) => x);
+    },
+
+    // Update an existing company.
     update: async (companyObj) => {
         const {
             id,
@@ -162,6 +167,7 @@ module.exports = {
         `.then(([x]) => x);
     },
 
+    // Delete a company by id.
     destroy: async (id) => {
         return await sql`
             DELETE FROM
@@ -172,10 +178,12 @@ module.exports = {
         `.then(([x]) => x);
     },
 
+    // Soft-delete an existing company.
     archive: async (companyObj) => {
         return await updateCompanyStatus(companyObj, false);
     },
 
+    // Undo soft-delete an existing company.
     active: async (companyObj) => {
         return await updateCompanyStatus(companyObj, true);
     },
@@ -189,6 +197,71 @@ module.exports = {
                 companies
             WHERE
                 id = ${id}
+        `.then(([x]) => x);
+    },
+
+    // Find many comments by company id.
+    findComments: async (companyId) => {
+        return await sql`
+            SELECT
+                tc.id,
+                tc.comment,
+                tc."isActive",
+                tc."createdAt",
+                tc."updatedAt",
+                creator.id AS "createdById",
+                creator.email AS "createdByEmail",
+                updater.id AS "updatedById",
+                updater.email AS "updatedByEmail"
+            FROM
+                "companyComments" tc
+            LEFT JOIN
+                users creator ON tc."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON tc."updatedBy" = updater.id
+            WHERE
+                tc."companyId" = ${companyId}
+        `;
+    },
+
+    // Create a new commnt.
+    createComment: async (commentObj) => {
+        const { comment, companyId, createdBy } = commentObj;
+
+        return await sql`
+            INSERT INTO "companyComments" (
+                comment,
+                "companyId",
+                "createdBy"
+            ) VALUES (
+                ${comment},
+                ${companyId},
+                ${createdBy}
+            ) returning id
+        `;
+    },
+
+    // Delete an existing comment.
+    destroyComment: async (id) => {
+        return await sql`
+            DELETE FROM 
+                "companyComments"
+            WHERE 
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
+    },
+
+    // Check if the given company comment is exist or not by id.
+    existsComment: async (id) => {
+        return await sql`
+            SELECT
+                id
+            FROM
+                "companyComments"
+            WHERE
+                id = ${id}
+            returning id
         `.then(([x]) => x);
     },
 };

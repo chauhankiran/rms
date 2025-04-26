@@ -219,11 +219,7 @@ module.exports = {
             const files = await quoteFilesService.findOne(id);
 
             return res.render("quotes/show", {
-                title:
-                    "Show " +
-                    pluralize.singular(
-                        req.session.labels.module.quote.toLowerCase()
-                    ),
+                title: `#${quote.id}. ${quote.name}`,
                 quote,
                 tasks,
                 comments,
