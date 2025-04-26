@@ -1,25 +1,12 @@
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const authService = require("../services/auth-service");
-const companyLabelsService = require("../services/admin/company-labels-service");
-const contactLabelsService = require("../services/admin/contact-labels-service");
-const dealLabelsService = require("../services/admin/deal-labels-service");
-const quoteLabelsService = require("../services/admin/quote-labels-service");
-const ticketLabelsService = require("../services/admin/ticket-labels-service");
-const taskLabelsService = require("../services/admin/task-labels-service");
-const moduleLabelsService = require("../services/admin/module-labels-service");
+const labelsService = require("../services/admin/labels-service");
+const modulesService = require("../services/admin/modules-service");
 
 const { Resend } = require("resend");
-const sql = require("../db/sql");
-const modulesService = require("../services/admin/modules-service");
-const resend = new Resend(process.env.RESEND_API_KEY);
 
-const transformLabels = (labels) => {
-    return labels.reduce((acc, { name, displayName }) => {
-        acc[name] = displayName;
-        return acc;
-    }, {});
-};
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 module.exports = {
     showLogin: (req, res, next) => {
@@ -75,45 +62,47 @@ module.exports = {
             /**
              * Module
              */
-            req.session.modules = req.session.modules || {};
+            req.session.modules = {};
             const modules = await modulesService.find(true);
             for (const module of modules) {
                 req.session.modules[module.name] = true;
             }
 
-            /**
-             * Fields
-             */
-            req.session.labels = req.session.labels || {};
-            const columns = ["name", "displayName"];
+            req.session.labels = {
+                company: {},
+                contact: {},
+                deal: {},
+                quote: {},
+                ticket: {},
+                task: {},
+                module: {},
+            };
+            const columns = ["name", "label", "module"];
+            const labels = await labelsService.pluck(columns);
 
-            // Company labels.
-            const companyLabels = await companyLabelsService.pluck(columns);
-            req.session.labels.company = transformLabels(companyLabels);
-
-            // Contact labels.
-            const contactLabels = await contactLabelsService.pluck(columns);
-            req.session.labels.contact = transformLabels(contactLabels);
-
-            // Deal labels.
-            const dealLabels = await dealLabelsService.pluck(columns);
-            req.session.labels.deal = transformLabels(dealLabels);
-
-            // Quote labels.
-            const quoteLabels = await quoteLabelsService.pluck(columns);
-            req.session.labels.quote = transformLabels(quoteLabels);
-
-            // Ticket labels.
-            const ticketLabels = await ticketLabelsService.pluck(columns);
-            req.session.labels.ticket = transformLabels(ticketLabels);
-
-            // Task labels.
-            const taskLabels = await taskLabelsService.pluck(columns);
-            req.session.labels.task = transformLabels(taskLabels);
-
-            // Module labels.
-            const moduleLabels = await moduleLabelsService.pluck(columns);
-            req.session.labels.module = transformLabels(moduleLabels);
+            for (const label of labels) {
+                if (req.session.modules.company && label.module === "company") {
+                    req.session.labels.company[label.name] = label.label;
+                }
+                if (req.session.modules.contact && label.module === "contact") {
+                    req.session.labels.contact[label.name] = label.label;
+                }
+                if (req.session.modules.deal && label.module === "deal") {
+                    req.session.labels.deal[label.name] = label.label;
+                }
+                if (req.session.modules.quote && label.module === "quote") {
+                    req.session.labels.quote[label.name] = label.label;
+                }
+                if (req.session.modules.ticket && label.module === "ticket") {
+                    req.session.labels.ticket[label.name] = label.label;
+                }
+                if (req.session.modules.task && label.module === "task") {
+                    req.session.labels.task[label.name] = label.label;
+                }
+                if (label.module === "module") {
+                    req.session.labels.module[label.name] = label.label;
+                }
+            }
 
             return res.redirect("/");
         } catch (err) {

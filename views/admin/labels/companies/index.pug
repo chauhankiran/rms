@@ -29,14 +29,16 @@ block content
                 
                         th
                             if orderDir === 'ASC'
-                                a(href=`/admin/labels/companies?orderBy=displayName&orderDir=DESC${search ? `&search=${search}` : ''}`) Display name
+                                a(href=`/admin/labels/companies?orderBy=displayName&orderDir=DESC${search ? `&search=${search}` : ''}`) Label
                             else 
-                                a(href=`/admin/labels/companies?orderBy=displayName&orderDir=ASC${search ? `&search=${search}` : ''}`) Display name
+                                a(href=`/admin/labels/companies?orderBy=displayName&orderDir=ASC${search ? `&search=${search}` : ''}`) Label
                             
                             if orderBy === 'displayName'
                                 span.order-wrapper= orderDir
 
                         th Updated by
+
+                        th Module
 
                         th
                             if orderDir === 'ASC'
@@ -54,11 +56,13 @@ block content
                                     td
                                         a(href=`/admin/labels/companies/${companyLabel.id}`) #{companyLabel.id}
                                     td 
-                                        a(href=`/admin/labels/companies/${companyLabel.id}`) #{companyLabel.displayName || "-" }
+                                        a(href=`/admin/labels/companies/${companyLabel.id}`) #{companyLabel.label || "-" }
                     
                                         if (!companyLabel.isActive)
                                             span.archive-status (not active)
-                    
+
+                                    td= companyLabel.module
+                                    
                                     td #{companyLabel.updatedByEmail || "-" }
                                     
                                     td #{companyLabel.updatedAt || "-" } 

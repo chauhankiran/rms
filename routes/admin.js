@@ -7,6 +7,8 @@ const dealSourcesController = require("../controllers/admin/deal-sources-control
 const ticketTypesController = require("../controllers/admin/ticket-types-controller");
 const taskTypesController = require("../controllers/admin/task-types-controller");
 
+const labelsController = require("../controllers/admin/labels-controller");
+
 const companyLabelsController = require("../controllers/admin/company-labels-controller");
 const contactLabelsController = require("../controllers/admin/contact-labels-controller");
 const dealLabelsController = require("../controllers/admin/deal-labels-controller");
@@ -58,12 +60,12 @@ router.get("/contact-industries/:id/edit", contactIndustriesController.edit);
 router.put("/contact-industries/:id", contactIndustriesController.update);
 router.delete("/contact-industries/:id", contactIndustriesController.destroy);
 router.put(
-  "/contact-industries/:id/archive",
-  contactIndustriesController.archive,
+    "/contact-industries/:id/archive",
+    contactIndustriesController.archive
 );
 router.put(
-  "/contact-industries/:id/active",
-  contactIndustriesController.active,
+    "/contact-industries/:id/active",
+    contactIndustriesController.active
 );
 
 /**
@@ -104,6 +106,11 @@ router.put("/task-types/:id", taskTypesController.update);
 router.delete("/task-types/:id", taskTypesController.destroy);
 router.put("/task-types/:id/archive", taskTypesController.archive);
 router.put("/task-types/:id/active", taskTypesController.active);
+
+router.get("/labels", labelsController.index);
+router.get("/labels/:id", labelsController.show);
+router.get("/labels/:id/edit", labelsController.edit);
+router.put("/labels/:id", labelsController.update);
 
 /**
  * Company labels

@@ -27,19 +27,35 @@ const adminRoutes = require("./routes/admin");
 
 const app = express();
 
-// Helper functions available in pug.
+// We need four functions.
 function capitalize(text) {
     return text
         .split(" ")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
 }
-
+app.locals.downcase = function (text) {
+    return text.toLowerCase();
+};
 app.locals.capitalize = capitalize;
 app.locals.singular = pluralize.singular;
 app.locals.plural = pluralize.plural;
-app.locals.downcase = function (text) {
-    return text.toLowerCase();
+
+// Return capitalize plural text.
+app.locals.capitalizePlural = function (text) {
+    return capitalize(pluralize.plural(text));
+};
+// Return capitalize singular text.
+app.locals.capitalizeSingular = function (text) {
+    return capitalize(pluralize.singular(text));
+};
+// Return lowercase plural text.
+app.locals.lowerPlural = function (text) {
+    return pluralize.plural(text.toLowerCase());
+};
+// Return lowercase singular text.
+app.locals.lowerSingular = function (text) {
+    return pluralize.singular(text.toLowerCase());
 };
 
 // Setup
@@ -71,14 +87,39 @@ app.use((req, res, next) => {
     res.locals.currentUser = req.session.currentUser;
     res.locals.modules = req.session.modules || {};
 
-    res.locals.labels = res.locals.labels || {};
-    res.locals.labels.company = req.session.labels?.company;
-    res.locals.labels.contact = req.session.labels?.contact;
-    res.locals.labels.deal = req.session.labels?.deal;
-    res.locals.labels.quote = req.session.labels?.quote;
-    res.locals.labels.ticket = req.session.labels?.ticket;
-    res.locals.labels.task = req.session.labels?.task;
-    res.locals.labels.module = req.session.labels?.module;
+    res.locals.labels = {
+        company: {},
+        contact: {},
+        deal: {},
+        quote: {},
+        ticket: {},
+        task: {},
+    };
+    if (req.session.labels) {
+        res.locals.labels = req.session.labels;
+    }
+    if (req.session.labels?.company) {
+        res.locals.labels.company = req.session.labels.company;
+    }
+    if (req.session.labels?.contact) {
+        res.locals.labels.contact = req.session.labels.contact;
+    }
+    if (req.session.labels?.deal) {
+        res.locals.labels.deal = req.session.labels.deal;
+    }
+    if (req.session.labels?.quote) {
+        res.locals.labels.quote = req.session.labels.quote;
+    }
+    if (req.session.labels?.ticket) {
+        res.locals.labels.ticket = req.session.labels.ticket;
+    }
+    if (req.session.labels?.task) {
+        res.locals.labels.task = req.session.labels.task;
+    }
+    if (req.session.labels?.module) {
+        res.locals.labels.module = req.session.labels.module;
+    }
+
     next();
 });
 

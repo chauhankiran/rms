@@ -1,0 +1,26 @@
+extends ../../layout
+
+block content
+    .row 
+        .col-6 
+            h1= title
+
+            include ../../partials/flash
+
+            form(action=`/admin/labels/${label.id}?_method=PUT`, method="post") 
+                .form-group 
+                    label(for="label") Label
+                    input(type="text", name="label", id="label", value=label.label, autofocus=true)
+
+                .form-group 
+                    label(for="isActive") Is active 
+                        small (Type Y or y for Yes and anything else for No)
+                    input(type="text", name="isActive", id="isActive", value=label.isActive)
+
+                .form-group 
+                    .row.align-items-center 
+                        .col-6 
+                            button(type="submit") Update label
+                        .col-6.text-end
+                            a(href=`/admin/labels/${label.id}`).btn.is-muted Cancel
+        

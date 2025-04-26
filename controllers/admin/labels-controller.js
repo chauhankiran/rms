@@ -1,0 +1,109 @@
+const labelsService = require("../../services/admin/labels-service");
+const generatePaginationLinks = require("../../helpers/generate-pagination-links");
+
+module.exports = {
+    index: async (req, res, next) => {
+        const search = req.query.search || null;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+        const orderBy = req.query.orderBy || "id";
+        const orderDir = req.query.orderDir || "DESC";
+
+        try {
+            const optionsObj = { search, limit, skip, orderBy, orderDir };
+            // _labels and not labels because it conflicts in pug with "labels" locals.
+            const _labels = await labelsService.find(optionsObj);
+            const { count } = await labelsService.count(optionsObj);
+
+            const pages = Math.ceil(count / limit);
+
+            const paginationLinks = generatePaginationLinks({
+                link: "/admin/labels",
+                page,
+                pages,
+                search,
+                limit,
+                orderBy,
+                orderDir,
+            });
+
+            return res.render("admin/labels/index", {
+                title: "Labels",
+                _labels,
+                paginationLinks,
+                search,
+                count,
+                orderBy,
+                orderDir,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    show: async (req, res, next) => {
+        const id = req.params.id;
+
+        try {
+            const label = await labelsService.findOne(id);
+
+            if (!label) {
+                return next(notFound());
+            }
+
+            return res.render("admin/labels/show", {
+                title: "Show label",
+                label,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    edit: async (req, res, next) => {
+        const id = req.params.id;
+
+        try {
+            const label = await labelsService.findOne(id);
+
+            if (!label) {
+                return next(notFound());
+            }
+
+            return res.render("admin/labels/edit", {
+                title: "Edit label",
+                label: { ...label, isActive: label.isActive ? "Y" : "N" },
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    update: async (req, res, next) => {
+        const id = req.params.id;
+        const { label, isActive } = req.body;
+
+        try {
+            const dealLabel = await labelsService.findOne(id);
+
+            if (!dealLabel) {
+                return next(notFound());
+            }
+
+            const labelObj = {
+                id,
+                label,
+                isActive: isActive === "y" || isActive === "Y" ? "t" : "f",
+                updatedBy: req.session.currentUser.id,
+            };
+
+            await labelsService.update(labelObj);
+
+            req.flash("info", "Label is updated.");
+            return res.redirect(`/admin/labels/${id}`);
+        } catch (err) {
+            next(err);
+        }
+    },
+};

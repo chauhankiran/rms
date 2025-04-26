@@ -4,28 +4,28 @@ nav.nav
         if currentUser
             //- company.
             if modules.company
-                a(href="/companies").nav-item #{capitalize(labels.module.company)}
+                a(href="/companies").nav-item #{capitalizePlural(labels.module.company)}
 
             //- contact.
             if modules.contact
-                a(href="/contacts").nav-item #{capitalize(labels.module.contact)}
+                a(href="/contacts").nav-item #{capitalizePlural(labels.module.contact)}
 
       
             //- deal.
             if modules.deal
-                a(href="/deals").nav-item #{capitalize(labels.module.deal)}
+                a(href="/deals").nav-item #{capitalizePlural(labels.module.deal)}
 
             //- quote
             if modules.quote
-                a(href="/quotes").nav-item #{capitalize(labels.module.quote)}
+                a(href="/quotes").nav-item #{capitalizePlural(labels.module.quote)}
 
             //- ticket
             if modules.ticket
-                a(href="/tickets").nav-item #{capitalize(labels.module.ticket)}
+                a(href="/tickets").nav-item #{capitalizePlural(labels.module.ticket)}
 
             //- task
             if modules.task
-                a(href="/tasks").nav-item #{capitalize(labels.module.task)}
+                a(href="/tasks").nav-item #{capitalizePlural(labels.module.task)}
     .nav-end
         if currentUser
             //- admin

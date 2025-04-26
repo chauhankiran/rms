@@ -1,0 +1,45 @@
+extends ../../layout
+
+block content 
+    .row.align-items-center 
+        .col-6 
+            h1= title
+        .col-6.text-end 
+            a(href="/admin/labels").btn.is-muted.mr-4 &larr; Back 
+            a(href=`/admin/labels/${label.id}/edit`).btn Edit
+    
+        .col-12
+            include ../../partials/flash
+
+        .col-12 
+            .row 
+                .col-12.mb-4
+                    label(for="displayName").field-name Label
+                    span.field-value #{label.label}
+
+                        if !label.isActive 
+                            span.archive-status (not being used)
+                
+                .col-12.mb-4
+                    label(for="module").field-name Module 
+                    span.field-value #{label.module}
+                
+                .col-12.mb-4
+                    label(for="name").field-name Name 
+                    span.field-value #{label.name}
+
+                .col-6.mb-4
+                    label(for="createdAt").field-name Created at
+                    span.field-value #{label.createdAt || "-"}
+        
+                .col-6.mb-4 
+                    label(for="updatedAt").field-name Updated at
+                    span.field-value #{label.updatedAt || "-"}
+
+                .col-6.mb-4
+                    label(for="createdBy").field-name Created by
+                    span.field-value #{label.createdByEmail || "-"}
+                    
+                .col-6.mb-4
+                    label(for="updatedBy").field-name Updated by
+                    span.field-value #{label.updatedByEmail || "-"}
