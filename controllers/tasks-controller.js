@@ -290,7 +290,7 @@ module.exports = {
         }
 
         try {
-            const task = await tasksService.findOne(id);
+            const task = await tasksService.exists(id);
 
             if (!task) {
                 req.flash("error", "Task not found.");
@@ -319,7 +319,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const task = await tasksService.findOne(id);
+            const task = await tasksService.exists(id);
 
             if (!task) {
                 return next(notFound());
@@ -338,7 +338,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const task = await tasksService.findOne(id);
+            const task = await tasksService.exists(id);
 
             if (!task) {
                 return next(notFound());
@@ -358,7 +358,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const task = await tasksService.findOne(id);
+            const task = await tasksService.exists(id);
 
             if (!task) {
                 return next(notFound());
@@ -420,8 +420,7 @@ module.exports = {
             }
 
             req.flash("info", "View is updated for tasks.");
-            res.redirect("/tasks");
-            return;
+            return res.redirect("/tasks");
         } catch (err) {
             next(err);
         }

@@ -383,7 +383,7 @@ module.exports = {
         }
 
         try {
-            const contact = await contactsService.findOne(id);
+            const contact = await contactsService.exists(id);
 
             if (!contact) {
                 return next(notFound());
@@ -412,7 +412,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const contact = await contactsService.findOne(id);
+            const contact = await contactsService.exists(id);
 
             if (!contact) {
                 return next(notFound());
@@ -431,7 +431,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const contact = await contactsService.findOne(id);
+            const contact = await contactsService.exists(id);
 
             if (!contact) {
                 return next(notFound());
@@ -451,7 +451,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const contact = await contactsService.findOne(id);
+            const contact = await contactsService.exists(id);
 
             if (!contact) {
                 return next(notFound());
@@ -513,8 +513,7 @@ module.exports = {
             }
 
             req.flash("info", "View is updated for contacts.");
-            res.redirect("/contacts");
-            return;
+            return res.redirect("/contacts");
         } catch (err) {
             next(err);
         }

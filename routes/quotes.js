@@ -3,7 +3,7 @@ const quotesController = require("../controllers/quotes-controller");
 const quoteCommentsController = require("../controllers/quote-comments-controller");
 const quoteFilesController = require("../controllers/quote-files-controller");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: process.env.FILE_UPLOAD_DEST });
 
 const router = express.Router();
 

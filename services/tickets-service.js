@@ -1,5 +1,24 @@
 const sql = require("../db/sql");
 
+// Update the status of ticket to
+//      - isActive = false
+//      - isActive = true
+const updateTicketStatus = async (ticketObj, status) => {
+    const { id, updatedBy } = ticketObj;
+
+    return await sql`
+        UPDATE
+            tickets
+        SET
+            "isActive" = ${status},
+            "updatedBy" = ${updatedBy},
+            "updatedAt" = ${sql`now()`}
+        WHERE
+            id = ${id}
+        returning id
+    `.then(([x]) => x);
+};
+
 module.exports = {
     find: async (optionsObj) => {
         const {
@@ -123,89 +142,77 @@ module.exports = {
 
     findOne: async (id) => {
         return await sql`
-      SELECT
-        t.id,
-        t.name,
-        t.description,
-        t."isActive",
-        t."ticketTypeId",
-        tt."name" AS "ticketType",
-        t."createdAt",
-        t."updatedAt",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
-      FROM
-        tickets t
-      LEFT JOIN
-        users creator ON t."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON t."updatedBy" = updater.id
-      LEFT JOIN
-        "ticketTypes" tt ON t."ticketTypeId" = tt.id
-      WHERE
-        t.id = ${id}
-    `.then(([x]) => x);
+            SELECT
+                t.id,
+                t.name,
+                t.description,
+                t."isActive",
+                t."ticketTypeId",
+                tt."name" AS "ticketType",
+                t."createdAt",
+                t."updatedAt",
+                creator.id AS "createdById",
+                creator.email AS "createdByEmail",
+                updater.id AS "updatedById",
+                updater.email AS "updatedByEmail"
+            FROM
+                tickets t
+            LEFT JOIN
+                users creator ON t."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON t."updatedBy" = updater.id
+            LEFT JOIN
+                "ticketTypes" tt ON t."ticketTypeId" = tt.id
+            WHERE
+                t.id = ${id}
+        `.then(([x]) => x);
     },
 
     update: async (ticketObj) => {
         const { id, name, description, ticketTypeId, updatedBy } = ticketObj;
 
         return await sql`
-      UPDATE
-        tickets
-      SET
-        name = ${name},
-        description = ${description},
-        "ticketTypeId" = ${ticketTypeId},
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                tickets
+            SET
+                name = ${name},
+                description = ${description},
+                "ticketTypeId" = ${ticketTypeId},
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     destroy: async (id) => {
         return await sql`
-      DELETE FROM
-        tickets
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            DELETE FROM
+                tickets
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     archive: async (ticketObj) => {
-        const { id, updatedBy } = ticketObj;
-
-        return await sql`
-      UPDATE
-        tickets
-      SET
-        "isActive" = false,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+        return await updateTicketStatus(ticketObj, false);
     },
 
     active: async (ticketObj) => {
-        const { id, updatedBy } = ticketObj;
+        return await updateTicketStatus(ticketObj, true);
+    },
 
+    // Check if the given ticket is exist or not by id.
+    exists: async (id) => {
         return await sql`
-      UPDATE
-        tickets
-      SET
-        "isActive" = true,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            SELECT
+                id
+            FROM
+                tickets
+            WHERE
+                id = ${id}
+        `.then(([x]) => x);
     },
 };

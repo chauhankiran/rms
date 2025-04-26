@@ -3,7 +3,7 @@ const companiesController = require("../controllers/companies-controller");
 const companyCommentsController = require("../controllers/company-comments-controller");
 const companyFilesController = require("../controllers/company-files-controller");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: process.env.FILE_UPLOAD_DEST });
 
 const router = express.Router();
 

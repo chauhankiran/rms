@@ -3,7 +3,7 @@ const ticketsController = require("../controllers/tickets-controller");
 const ticketCommentsController = require("../controllers/ticket-comments-controller");
 const ticketFilesController = require("../controllers/ticket-files-controller");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: process.env.FILE_UPLOAD_DEST });
 
 const router = express.Router();
 

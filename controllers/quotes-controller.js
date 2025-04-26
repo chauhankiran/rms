@@ -267,7 +267,7 @@ module.exports = {
         }
 
         try {
-            const quote = await quotesService.findOne(id);
+            const quote = await quotesService.exists(id);
 
             if (!quote) {
                 return next(notFound());
@@ -293,7 +293,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const quote = await quotesService.findOne(id);
+            const quote = await quotesService.exists(id);
 
             if (!quote) {
                 return next(notFound());
@@ -312,7 +312,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const quote = await quotesService.findOne(id);
+            const quote = await quotesService.exists(id);
 
             if (!quote) {
                 return next(notFound());
@@ -332,7 +332,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const quote = await quotesService.findOne(id);
+            const quote = await quotesService.exists(id);
 
             if (!quote) {
                 return next(notFound());
@@ -394,8 +394,7 @@ module.exports = {
             }
 
             req.flash("info", "View is updated for quotes.");
-            res.redirect("/quotes");
-            return;
+            return res.redirect("/quotes");
         } catch (err) {
             next(err);
         }

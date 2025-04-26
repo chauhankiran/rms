@@ -289,7 +289,7 @@ module.exports = {
         }
 
         try {
-            const ticket = await ticketsService.findOne(id);
+            const ticket = await ticketsService.exists(id);
 
             if (!ticket) {
                 return next(notFound());
@@ -315,7 +315,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const ticket = await ticketsService.findOne(id);
+            const ticket = await ticketsService.exists(id);
 
             if (!ticket) {
                 return next(notFound());
@@ -334,7 +334,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const ticket = await ticketsService.findOne(id);
+            const ticket = await ticketsService.exists(id);
 
             if (!ticket) {
                 return next(notFound());
@@ -354,7 +354,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const ticket = await ticketsService.findOne(id);
+            const ticket = await ticketsService.exists(id);
 
             if (!ticket) {
                 return next(notFound());
@@ -416,8 +416,7 @@ module.exports = {
             }
 
             req.flash("info", "View is updated for tickets.");
-            res.redirect("/tickets");
-            return;
+            return res.redirect("/tickets");
         } catch (err) {
             next(err);
         }

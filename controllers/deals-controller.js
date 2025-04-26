@@ -323,7 +323,7 @@ module.exports = {
         }
 
         try {
-            const deal = await dealsService.findOne(id);
+            const deal = await dealsService.exists(id);
 
             if (!deal) {
                 return next(notFound());
@@ -350,7 +350,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const deal = await dealsService.findOne(id);
+            const deal = await dealsService.exists(id);
 
             if (!deal) {
                 return next(notFound());
@@ -369,7 +369,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const deal = await dealsService.findOne(id);
+            const deal = await dealsService.exists(id);
 
             if (!deal) {
                 req.flash("error", "Deal not found.");
@@ -390,7 +390,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const deal = await dealsService.findOne(id);
+            const deal = await dealsService.exists(id);
 
             if (!deal) {
                 return next(notFound());
@@ -452,8 +452,7 @@ module.exports = {
             }
 
             req.flash("info", "View is updated for deals.");
-            res.redirect("/deals");
-            return;
+            return res.redirect("/deals");
         } catch (err) {
             next(err);
         }

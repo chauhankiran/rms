@@ -1,5 +1,24 @@
 const sql = require("../db/sql");
 
+// Update the status of contact to
+//      - isActive = false
+//      - isActive = true
+const updateContactStatus = async (contactObj, status) => {
+    const { id, updatedBy } = contactObj;
+
+    return await sql`
+        UPDATE
+            contacts
+        SET
+            "isActive" = ${status},
+            "updatedBy" = ${updatedBy},
+            "updatedAt" = ${sql`now()`}
+        WHERE
+            id = ${id}
+        returning id
+    `.then(([x]) => x);
+};
+
 module.exports = {
     find: async (optionsObj) => {
         const {
@@ -120,33 +139,33 @@ module.exports = {
 
     findOne: async (id) => {
         return await sql`
-      SELECT
-        c.id,
-        c.prefix,
-        c."firstName",
-        c."lastName",
-        c."annualRevenue",
-        c.description,
-        c."isActive",
-        c."contactIndustryId",
-        ci."name" AS "contactIndustry",
-        c."createdAt",
-        c."updatedAt",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
-      FROM
-        contacts c
-      LEFT JOIN
-        users creator ON c."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON c."updatedBy" = updater.id
-      LEFT JOIN
-        "contactIndustries" ci ON c."contactIndustryId" = ci.id
-      WHERE
-        c.id = ${id}
-    `.then(([x]) => x);
+            SELECT
+                c.id,
+                c.prefix,
+                c."firstName",
+                c."lastName",
+                c."annualRevenue",
+                c.description,
+                c."isActive",
+                c."contactIndustryId",
+                ci."name" AS "contactIndustry",
+                c."createdAt",
+                c."updatedAt",
+                creator.id AS "createdById",
+                creator.email AS "createdByEmail",
+                updater.id AS "updatedById",
+                updater.email AS "updatedByEmail"
+            FROM
+                contacts c
+            LEFT JOIN
+                users creator ON c."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON c."updatedBy" = updater.id
+            LEFT JOIN
+                "contactIndustries" ci ON c."contactIndustryId" = ci.id
+            WHERE
+                c.id = ${id}
+        `.then(([x]) => x);
     },
 
     update: async (contactObj) => {
@@ -162,62 +181,50 @@ module.exports = {
         } = contactObj;
 
         return await sql`
-      UPDATE
-        contacts
-      SET
-        prefix = ${prefix},
-        "firstName" = ${firstName},
-        "lastName" = ${lastName},
-        "annualRevenue" = ${annualRevenue},
-        description = ${description},
-        "contactIndustryId" = ${contactIndustryId},
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                contacts
+            SET
+                prefix = ${prefix},
+                "firstName" = ${firstName},
+                "lastName" = ${lastName},
+                "annualRevenue" = ${annualRevenue},
+                description = ${description},
+                "contactIndustryId" = ${contactIndustryId},
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     destroy: async (id) => {
         return await sql`
-      DELETE FROM
-        contacts
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            DELETE FROM
+                contacts
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     archive: async (contactObj) => {
-        const { id, updatedBy } = contactObj;
-
-        return await sql`
-      UPDATE
-        contacts
-      SET
-        "isActive" = false,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+        return await updateContactStatus(contactObj, false);
     },
 
     active: async (contactObj) => {
-        const { id, updatedBy } = contactObj;
+        return await updateContactStatus(contactObj, true);
+    },
 
+    // Check if the given contact is exist or not by id.
+    exists: async (id) => {
         return await sql`
-      UPDATE
-        contacts
-      SET
-        "isActive" = true,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            SELECT
+                id
+            FROM
+                contacts
+            WHERE
+                id = ${id}
+        `.then(([x]) => x);
     },
 };

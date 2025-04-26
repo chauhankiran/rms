@@ -3,7 +3,7 @@ const dealsController = require("../controllers/deals-controller");
 const dealCommentsController = require("../controllers/deal-comments-controller");
 const dealFilesController = require("../controllers/deal-files-controller");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: process.env.FILE_UPLOAD_DEST });
 
 const router = express.Router();
 

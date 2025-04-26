@@ -1,5 +1,24 @@
 const sql = require("../db/sql");
 
+// Update the status of deal to
+//      - isActive = false
+//      - isActive = true
+const updateDealStatus = async (dealObj, status) => {
+    const { id, updatedBy } = dealObj;
+
+    return await sql`
+        UPDATE
+            deals
+        SET
+            "isActive" = ${status},
+            "updatedBy" = ${updatedBy},
+            "updatedAt" = ${sql`now()`}
+        WHERE
+            id = ${id}
+        returning id
+    `.then(([x]) => x);
+};
+
 module.exports = {
     find: async (optionsObj) => {
         const {
@@ -176,34 +195,22 @@ module.exports = {
     },
 
     archive: async (dealObj) => {
-        const { id, updatedBy } = dealObj;
-
-        return await sql`
-            UPDATE
-                deals
-            SET
-                "isActive" = false,
-                "updatedBy" = ${updatedBy},
-                "updatedAt" = ${sql`now()`}
-            WHERE
-                id = ${id}
-            returning id
-        `.then(([x]) => x);
+        return await updateDealStatus(dealObj, false);
     },
 
     active: async (dealObj) => {
-        const { id, updatedBy } = dealObj;
+        return await updateDealStatus(dealObj, true);
+    },
 
+    // Check if the given deal is exist or not by id.
+    exists: async (id) => {
         return await sql`
-            UPDATE
+            SELECT
+                id
+            FROM
                 deals
-            SET
-                "isActive" = true,
-                "updatedBy" = ${updatedBy},
-                "updatedAt" = ${sql`now()`}
             WHERE
                 id = ${id}
-            returning id
         `.then(([x]) => x);
     },
 };

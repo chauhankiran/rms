@@ -359,7 +359,7 @@ module.exports = {
         }
 
         try {
-            const company = await companiesService.findOne(id);
+            const company = await companiesService.exists(id);
 
             if (!company) {
                 return next(notFound());
@@ -386,7 +386,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const company = await companiesService.findOne(id);
+            const company = await companiesService.exists(id);
 
             if (!company) {
                 return next(notFound());
@@ -405,7 +405,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const company = await companiesService.findOne(id);
+            const company = await companiesService.exists(id);
 
             if (!company) {
                 return next(notFound());
@@ -425,7 +425,7 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const company = await companiesService.findOne(id);
+            const company = await companiesService.exists(id);
 
             if (!company) {
                 return next(notFound());
@@ -487,8 +487,7 @@ module.exports = {
             }
 
             req.flash("info", "View is updated for companies.");
-            res.redirect("/companies");
-            return;
+            return res.redirect("/companies");
         } catch (err) {
             next(err);
         }

@@ -1,19 +1,22 @@
 const sql = require("../db/sql");
 
+// Update the status of task to
+//      - isActive = false
+//      - isActive = true
 const updateTaskStatus = async (taskObj, status) => {
     const { id, updatedBy } = taskObj;
 
     return await sql`
-    UPDATE
-      tasks
-    SET
-      "isActive" = ${status},
-      "updatedBy" = ${updatedBy},
-      "updatedAt" = ${sql`now()`}
-    WHERE
-      id = ${id}
-    returning id
-  `.then(([x]) => x);
+        UPDATE
+            tasks
+        SET
+            "isActive" = ${status},
+            "updatedBy" = ${updatedBy},
+            "updatedAt" = ${sql`now()`}
+        WHERE
+            id = ${id}
+        returning id
+    `.then(([x]) => x);
 };
 
 module.exports = {
@@ -233,5 +236,17 @@ module.exports = {
 
     active: async (taskObj) => {
         return await updateTaskStatus(taskObj, true);
+    },
+
+    // Check if the given tasks is exist or not by id.
+    exists: async (id) => {
+        return await sql`
+            SELECT
+                id
+            FROM
+                tasks
+            WHERE
+                id = ${id}
+        `.then(([x]) => x);
     },
 };

@@ -1,5 +1,24 @@
 const sql = require("../db/sql");
 
+// Update the status of company to
+//      - isActive = false
+//      - isActive = true
+const updateCompanyStatus = async (companyObj, status) => {
+    const { id, updatedBy } = companyObj;
+
+    return await sql`
+        UPDATE
+            companies
+        SET
+            "isActive" = ${status},
+            "updatedBy" = ${updatedBy},
+            "updatedAt" = ${sql`now()`}
+        WHERE
+            id = ${id}
+        returning id
+    `.then(([x]) => x);
+};
+
 module.exports = {
     find: async (optionsObj) => {
         const { skip, limit, search, orderBy, orderDir, query, isActiveOnly } =
@@ -90,31 +109,31 @@ module.exports = {
 
     findOne: async (id) => {
         return await sql`
-      SELECT
-        c.id,
-        c.name,
-        c."employeeSize",
-        c.description,
-        c."isActive",
-        c."companySourceId",
-        cs."name" AS "companySource",
-        c."createdAt",
-        c."updatedAt",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
-      FROM
-        companies c
-      LEFT JOIN
-        users creator ON c."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON c."updatedBy" = updater.id
-      LEFT JOIN
-        "companySources" cs ON c."companySourceId" = cs.id
-      WHERE
-        c.id = ${id}
-    `.then(([x]) => x);
+            SELECT
+                c.id,
+                c.name,
+                c."employeeSize",
+                c.description,
+                c."isActive",
+                c."companySourceId",
+                cs."name" AS "companySource",
+                c."createdAt",
+                c."updatedAt",
+                creator.id AS "createdById",
+                creator.email AS "createdByEmail",
+                updater.id AS "updatedById",
+                updater.email AS "updatedByEmail"
+            FROM
+                companies c
+            LEFT JOIN
+                users creator ON c."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON c."updatedBy" = updater.id
+            LEFT JOIN
+                "companySources" cs ON c."companySourceId" = cs.id
+            WHERE
+                c.id = ${id}
+        `.then(([x]) => x);
     },
 
     update: async (companyObj) => {
@@ -128,60 +147,48 @@ module.exports = {
         } = companyObj;
 
         return await sql`
-      UPDATE
-        companies
-      SET
-        name = ${name},
-        "employeeSize" = ${employeeSize},
-        description = ${description},
-        "companySourceId" = ${companySourceId},
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                companies
+            SET
+                name = ${name},
+                "employeeSize" = ${employeeSize},
+                description = ${description},
+                "companySourceId" = ${companySourceId},
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     destroy: async (id) => {
         return await sql`
-      DELETE FROM
-        companies
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            DELETE FROM
+                companies
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     archive: async (companyObj) => {
-        const { id, updatedBy } = companyObj;
-
-        return await sql`
-      UPDATE
-        companies
-      SET
-        "isActive" = false,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+        return await updateCompanyStatus(companyObj, false);
     },
 
     active: async (companyObj) => {
-        const { id, updatedBy } = companyObj;
+        return await updateCompanyStatus(companyObj, true);
+    },
 
+    // Check if the given company is exist or not by id.
+    exists: async (id) => {
         return await sql`
-      UPDATE
-        companies
-      SET
-        "isActive" = true,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            SELECT
+                id
+            FROM
+                companies
+            WHERE
+                id = ${id}
+        `.then(([x]) => x);
     },
 };
