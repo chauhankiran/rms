@@ -4,9 +4,8 @@ const authService = require("../services/auth-service");
 const labelsService = require("../services/admin/labels-service");
 const modulesService = require("../services/admin/modules-service");
 
-const { Resend } = require("resend");
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+// const { Resend } = require("resend");
+// const resend = new Resend(process.env.RESEND_API_KEY);
 
 module.exports = {
     showLogin: (req, res, next) => {
@@ -140,17 +139,17 @@ module.exports = {
                 return res.redirect("/auth/register");
             }
 
-            const { data, error } = await resend.emails.send({
-                from: `${process.env.RESEND_FROM_NAME} <${process.env.RESEND_FROM_EMAIL}>`,
-                to: email,
-                subject: "Welcome to our application!",
-                html: `<p>Hi there,</p><p>Thank you for registering. Your account has been created successfully.</p>`,
-            });
+            // const { data, error } = await resend.emails.send({
+            //     from: `${process.env.RESEND_FROM_NAME} <${process.env.RESEND_FROM_EMAIL}>`,
+            //     to: email,
+            //     subject: "Welcome to our application!",
+            //     html: `<p>Hi there,</p><p>Thank you for registering. Your account has been created successfully.</p>`,
+            // });
 
-            if (error) {
-                return console.error(error);
-            }
-            console.log(data);
+            // if (error) {
+            //     return console.error(error);
+            // }
+            // console.log(data);
 
             req.flash("info", "User is created.");
             return res.redirect("/auth/login");
@@ -229,25 +228,25 @@ module.exports = {
 
             const token = crypto.randomBytes(32).toString("hex");
 
-            const resetLink = `http://localhost:3000/auth/reset-password/${token}`;
-            const resetObj = {
-                email,
-                token,
-                expiresIn: new Date(Date.now() + 3600000).toISOString(), // 1 hour
-            };
+            // const resetLink = `http://localhost:3000/auth/reset-password/${token}`;
+            // const resetObj = {
+            //     email,
+            //     token,
+            //     expiresIn: new Date(Date.now() + 3600000).toISOString(), // 1 hour
+            // };
 
-            await authService.updateResetToken(resetObj);
+            // await authService.updateResetToken(resetObj);
 
-            const { data, error } = await resend.emails.send({
-                from: `${process.env.RESEND_FROM_NAME} <${process.env.RESEND_FROM_EMAIL}>`,
-                to: email,
-                subject: "Reset Password",
-                html: `<p>Hi there,</p><p>Click the link below to reset your password:</p><a href="${resetLink}">${resetLink}</a>`,
-            });
-            if (error) {
-                return console.error(error);
-            }
-            console.log(data);
+            // const { data, error } = await resend.emails.send({
+            //     from: `${process.env.RESEND_FROM_NAME} <${process.env.RESEND_FROM_EMAIL}>`,
+            //     to: email,
+            //     subject: "Reset Password",
+            //     html: `<p>Hi there,</p><p>Click the link below to reset your password:</p><a href="${resetLink}">${resetLink}</a>`,
+            // });
+            // if (error) {
+            //     return console.error(error);
+            // }
+            // console.log(data);
 
             req.flash("info", "Reset password link sent to your email.");
             return res.redirect("/auth/login");
