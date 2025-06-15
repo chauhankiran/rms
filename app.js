@@ -17,6 +17,7 @@ const checkModule = require("./middleware/check-module");
 
 const homeRoutes = require("./routes/home");
 const authRoutes = require("./routes/auth");
+const dashboardRoutes = require("./routes/dashboard");
 const companiesRoutes = require("./routes/companies");
 const contactsRoutes = require("./routes/contacts");
 const dealsRoutes = require("./routes/deals");
@@ -76,7 +77,7 @@ app.use(
         resave: false,
         saveUninitialized: true,
         cookie: { secure: false },
-    })
+    }),
 );
 app.use(flash());
 
@@ -132,6 +133,7 @@ app.post("/submit", (req, res) => {
 
 app.use("/", homeRoutes);
 app.use("/auth", authRoutes);
+app.use("/dashboard", checkAuth, dashboardRoutes);
 app.use("/companies", checkAuth, checkModule("company"), companiesRoutes);
 app.use("/contacts", checkAuth, checkModule("contact"), contactsRoutes);
 app.use("/deals", checkAuth, checkModule("deal"), dealsRoutes);

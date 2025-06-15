@@ -42,7 +42,7 @@ module.exports = {
             if (!user.isActive) {
                 req.flash(
                     "error",
-                    "User is de-activated. Please contact administrator."
+                    "User is de-activated. Please contact administrator.",
                 );
                 return res.redirect("/auth/login");
             }
@@ -103,7 +103,7 @@ module.exports = {
                 }
             }
 
-            return res.redirect("/");
+            return res.redirect("/dashboard");
         } catch (err) {
             next(err);
         }
@@ -221,7 +221,7 @@ module.exports = {
             if (!user.isActive) {
                 req.flash(
                     "error",
-                    "User is de-activated. Please contact administrator."
+                    "User is de-activated. Please contact administrator.",
                 );
                 return res.redirect("/auth/forgot-password");
             }
