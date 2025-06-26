@@ -167,7 +167,32 @@ module.exports = {
     },
 
     create: async (req, res, next) => {
-        const { name, employeeSize, description, companySourceId } = req.body;
+        const {
+            name,
+            employeeSize,
+            website,
+            email,
+            phone,
+            mobile,
+            fax,
+            address1,
+            address2,
+            city,
+            stateId,
+            zip,
+            countryId,
+            sourceId,
+            statusId,
+            stageId,
+            industryId,
+            closeDate,
+            closeReason,
+            assigneeId,
+            revenue,
+            typeId,
+            description,
+            companySourceId,
+        } = req.body;
 
         if (!name) {
             req.flash("error", "Name is required.");
@@ -180,6 +205,26 @@ module.exports = {
                 employeeSize,
                 description,
                 companySourceId,
+                website,
+                email,
+                phone,
+                mobile,
+                fax,
+                address1,
+                address2,
+                city,
+                stateId,
+                zip,
+                countryId,
+                sourceId,
+                statusId,
+                stageId,
+                industryId,
+                closeDate,
+                closeReason,
+                assigneeId,
+                revenue,
+                typeId,
                 createdBy: req.session.currentUser.id,
             };
             const resp = await companiesService.create(companyObj);
@@ -351,7 +396,32 @@ module.exports = {
 
     update: async (req, res, next) => {
         const id = req.params.id;
-        const { name, employeeSize, description, companySourceId } = req.body;
+        const {
+            name,
+            employeeSize,
+            description,
+            companySourceId,
+            website,
+            email,
+            phone,
+            mobile,
+            fax,
+            address1,
+            address2,
+            city,
+            stateId,
+            zip,
+            countryId,
+            sourceId,
+            statusId,
+            stageId,
+            industryId,
+            closeDate,
+            closeReason,
+            assigneeId,
+            revenue,
+            typeId,
+        } = req.body;
 
         if (!name) {
             req.flash("error", "Name is required.");
@@ -371,6 +441,26 @@ module.exports = {
                 employeeSize,
                 description,
                 companySourceId,
+                website,
+                email,
+                phone,
+                mobile,
+                fax,
+                address1,
+                address2,
+                city,
+                stateId,
+                zip,
+                countryId,
+                sourceId,
+                statusId,
+                stageId,
+                industryId,
+                closeDate,
+                closeReason,
+                assigneeId,
+                revenue,
+                typeId,
                 updatedBy: req.session.currentUser.id,
             };
             await companiesService.update(companyObj);

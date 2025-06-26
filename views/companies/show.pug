@@ -11,11 +11,11 @@ block content
       h1= title
     .col-6.text-end 
       a(href="/companies").btn.is-muted.mr-4 &larr; Back 
+      a(href=`/companies/${company.id}/edit`, title=`Edit ${singular(downcase(labels.module.company))}`).btn.mr-4 &#9998; Edit
       .dropdown
         button.dropdown-trigger Actions
         .dropdown-menu
           .dropdown-content 
-            a(href=`/companies/${company.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.company))}
             if company.isActive 
               button.dropdown-item(onclick="archiveCompany()") Archive #{singular(downcase(labels.module.company))}
             if !company.isActive && currentUser.type == 'admin'
@@ -37,12 +37,112 @@ block content
         if labels.company.companySourceId
           .col-12.mb-4
             label(for="companySourceId").field-name #{labels.company.companySourceId}
-            span.field-value #{company.companySource}
+            span.field-value #{company.companySource || "-"}
 
         if labels.company.employeeSize
           .col-12.mb-4
             label(for="employeeSize").field-name #{labels.company.employeeSize}
-            span.field-value #{company.employeeSize}
+            span.field-value #{company.employeeSize || "-"}
+        
+        if labels.company.website
+            .col-12.mb-4
+                label(for="website").field-name #{labels.company.website}
+                span.field-value #{company.website || "-"}
+        
+        if labels.company.email
+            .col-12.mb-4
+                label(for="email").field-name #{labels.company.email}
+                span.field-value #{company.email || "-"}
+        
+        if labels.company.phone
+            .col-12.mb-4
+                label(for="phone").field-name #{labels.company.phone}
+                span.field-value #{company.phone || "-"}
+        
+        if labels.company.mobile
+            .col-12.mb-4
+                label(for="mobile").field-name #{labels.company.mobile}
+                span.field-value #{company.mobile || "-"}
+        
+        if labels.company.fax
+            .col-12.mb-4
+                label(for="fax").field-name #{labels.company.fax}
+                span.field-value #{company.fax || "-"}
+        
+        if labels.company.address1
+            .col-12.mb-4
+                label(for="address1").field-name #{labels.company.address1}
+                span.field-value #{company.address1 || "-"}
+        
+        if labels.company.address2
+            .col-12.mb-4
+                label(for="address2").field-name #{labels.company.address2}
+                span.field-value #{company.address2 || "-"}
+        
+        if labels.company.city
+            .col-12.mb-4
+                label(for="city").field-name #{labels.company.city}
+                span.field-value #{company.city || "-"}
+        
+        if labels.company.stateId
+            .col-12.mb-4
+                label(for="stateId").field-name #{labels.company.stateId}
+                span.field-value #{company.stateId || "-"}
+        
+        if labels.company.zip
+            .col-12.mb-4
+                label(for="zip").field-name #{labels.company.zip}
+                span.field-value #{company.zip || "-"}
+        
+        if labels.company.countryId
+            .col-12.mb-4
+                label(for="countryId").field-name #{labels.company.countryId}
+                span.field-value #{company.countryId || "-"}
+        
+        if labels.company.sourceId 
+            .col-12.mb-4
+                label(for="sourceId").field-name #{labels.company.sourceId}
+                span.field-value #{company.sourceId || "-"}
+        
+        if labels.company.statusId 
+            .col-12.mb-4
+                label(for="statusId").field-name #{labels.company.statusId}
+                span.field-value #{company.statusId || "-"}
+        
+        if labels.company.stageId 
+            .col-12.mb-4
+                label(for="stageId").field-name #{labels.company.stageId}
+                span.field-value #{company.stageId || "-"}
+        
+        if labels.company.industryId 
+            .col-12.mb-4
+                label(for="industryId").field-name #{labels.company.industryId}
+                span.field-value #{company.industryId || "-"}
+        
+        if labels.company.closeDate
+            .col-12.mb-4
+                label(for="closeDate").field-name #{labels.company.closeDate}
+                span.field-value #{company.closeDate || "-"}
+        
+        if labels.company.closeReason
+            .col-12.mb-4
+                label(for="closeDate").field-name #{labels.company.closeDate}
+                span.field-value #{company.closeDate || "-"}
+        
+        if labels.company.assigneeId 
+            .col-12.mb-4
+                label(for="assigneeId").field-name #{labels.company.assigneeId}
+                span.field-value #{company.assigneeId || "-"}
+        
+        if labels.company.revenue
+            .col-12.mb-4
+                label(for="revenue").field-name #{labels.company.revenue}
+                span.field-value #{company.revenue || "-"}
+        
+        if labels.company.typeId 
+            .col-12.mb-4
+                label(for="typeId").field-name #{labels.company.typeId}
+                span.field-value #{company.typeId || "-"}
 
         if labels.company.description
           .col-12.mb-4

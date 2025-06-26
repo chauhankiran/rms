@@ -7,11 +7,11 @@ block content
       h1= title
     .col-6.text-end 
       a(href="/quotes").btn.is-muted.mr-4 &larr; Back 
+      a(href=`/quotes/${quote.id}/edit`, title=`Edit ${singular(downcase(labels.module.quote))}`).btn.mr-4 &#9998; Edit
       .dropdown
         button.dropdown-trigger Actions
         .dropdown-menu
           .dropdown-content 
-            a(href=`/quotes/${quote.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.quote))}
             if quote.isActive
               button.dropdown-item(onclick="archiveQuote()") Archive #{singular(downcase(labels.module.quote))} 
             if !quote.isActive && currentUser.type == 'admin'

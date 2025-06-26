@@ -10,11 +10,11 @@ block content
       h1= title
     .col-6.text-end 
       a(href="/contacts").btn.is-muted.mr-4 &larr; Back 
+      a(href=`/contacts/${contact.id}/edit`, title=`Edit ${singular(downcase(labels.module.contact))}`).btn.mr-4 &#9998; Edit
       .dropdown
         button.dropdown-trigger Actions
         .dropdown-menu
           .dropdown-content 
-            a(href=`/contacts/${contact.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.contact))}
             if contact.isActive
               button.dropdown-item(onclick="archiveContact()") Archive #{singular(downcase(labels.module.contact))}
             if !contact.isActive && currentUser.type == 'admin'

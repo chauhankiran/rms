@@ -6,11 +6,11 @@ block content
       h1= title
     .col-6.text-end 
       a(href="/tasks").btn.is-muted.mr-4 &larr; Back 
+      a(href=`/tasks/${task.id}/edit`, title=`Edit ${singular(downcase(labels.module.task))}`).btn.mr-4 &#9998; Edit
       .dropdown
         button.dropdown-trigger Actions
         .dropdown-menu
           .dropdown-content 
-            a(href=`/tasks/${task.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.task))}
             if task.isActive 
               button.dropdown-item(onclick="archiveTask()") Archive #{singular(downcase(labels.module.task))}
             if !task.isActive && currentUser.type == 'admin'

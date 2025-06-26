@@ -9,11 +9,11 @@ block content
       h1= title
     .col-6.text-end 
       a(href="/deals").btn.is-muted.mr-4 &larr; Back 
+      a(href=`/deals/${deal.id}/edit`, title=`Edit ${singular(downcase(labels.module.deal))}`).btn.mr-4 &#9998; Edit
       .dropdown
         button.dropdown-trigger Actions
         .dropdown-menu
           .dropdown-content 
-            a(href=`/deals/${deal.id}/edit`).dropdown-item Edit #{singular(downcase(labels.module.deal))}
             if deal.isActive
               button.dropdown-item(onclick="archiveDeal()") Archive #{singular(downcase(labels.module.deal))} 
             if !deal.isActive && currentUser.type == 'admin'

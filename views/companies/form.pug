@@ -1,25 +1,145 @@
 //- name
 if labels.company.name
-  .form-group 
-    label(for="name") #{labels.company.name}
-    input(type="text", name="name", id="name", value=company ? company.name : "", placeholder="Google, Inc.", autofocus=true)
+    .form-group 
+        label(for="name") #{labels.company.name}
+        input(type="text", name="name", id="name", value=company ? company.name : "", placeholder="Google, Inc.", autofocus=true)
+
+//- website
+if labels.company.website
+    .form-group 
+        label(for="website") #{labels.company.website}
+        input(type="text", name="website", id="website", value=company ? company.website : "", placeholder="https://google.com", autofocus=true)
+
+//- email
+if labels.company.email
+    .form-group 
+        label(for="email") #{labels.company.email}
+        input(type="text", name="email", id="email", value=company ? company.email : "", placeholder="kai@doe.com", autofocus=true)
+
+//- phone
+if labels.company.phone
+    .form-group 
+        label(for="phone") #{labels.company.phone}
+        input(type="text", name="phone", id="phone", value=company ? company.phone : "", placeholder="+91 9876543210", autofocus=true)
+
+//- mobile
+if labels.company.mobile
+    .form-group 
+        label(for="mobile") #{labels.company.mobile}
+        input(type="text", name="mobile", id="mobile", value=company ? company.mobile : "", placeholder="+91 0123456789", autofocus=true)
+
+//- fax
+if labels.company.fax
+    .form-group 
+        label(for="fax") #{labels.company.fax}
+        input(type="text", name="fax", id="fax", value=company ? company.fax : "", placeholder="+91 1234567890", autofocus=true)
+
+//- address1
+if labels.company.address1
+    .form-group 
+        label(for="address1") #{labels.company.address1}
+        input(type="text", name="address1", id="address1", value=company ? company.address1 : "", placeholder="A-101 Gandhi Street", autofocus=true)
+
+//- address2
+if labels.company.address2
+    .form-group 
+        label(for="address2") #{labels.company.address2}
+        input(type="text", name="address2", id="address2", value=company ? company.address2 : "", placeholder="Nr. Mahatma Statue", autofocus=true)
+
+//- city
+if labels.company.city
+    .form-group 
+        label(for="city") #{labels.company.city}
+        input(type="text", name="city", id="city", value=company ? company.address2 : "", placeholder="Old City", autofocus=true)
+
+//- stateId
+if labels.company.stateId
+    .form-group 
+        label(for="stateId") #{labels.company.stateId}
+        input(type="text", name="stateId", id="stateId", value=company ? company.stateId : "", placeholder="New State", autofocus=true)
+
+//- zip
+if labels.company.zip
+    .form-group 
+        label(for="zip") #{labels.company.zip}
+        input(type="text", name="zip", id="zip", value=company ? company.zip : "", placeholder="300 000", autofocus=true)
+
+//- countryId
+if labels.company.countryId
+    .form-group 
+        label(for="countryId") #{labels.company.countryId}
+        input(type="text", name="countryId", id="countryId", value=company ? company.countryId : "", placeholder="Remote", autofocus=true)
+
+//- sourceId
+if labels.company.sourceId
+    .form-group 
+        label(for="sourceId") #{labels.company.sourceId}
+        input(type="text", name="sourceId", id="sourceId", value=company ? company.sourceId : "", placeholder="Direct Lead", autofocus=true)
+
+//- statusId
+if labels.company.statusId
+    .form-group 
+        label(for="statusId") #{labels.company.statusId}
+        input(type="text", name="statusId", id="statusId", value=company ? company.statusId : "", placeholder="Green", autofocus=true)
+
+//- stageId
+if labels.company.stageId
+    .form-group 
+        label(for="stageId") #{labels.company.stageId}
+        input(type="text", name="stageId", id="stageId", value=company ? company.stageId : "", placeholder="Accepted", autofocus=true)
+
+//- industryId
+if labels.company.industryId
+    .form-group 
+        label(for="industryId") #{labels.company.industryId}
+        input(type="text", name="industryId", id="industryId", value=company ? company.industryId : "", placeholder="Health care", autofocus=true)
+
+//- closeDate
+if labels.company.closeDate
+    .form-group 
+        label(for="closeDate") #{labels.company.closeDate}
+        input(type="text", name="closeDate", id="closeDate", value=company ? company.closeDate : "", placeholder="01/01/2022", autofocus=true)
+
+//- closeReason
+if labels.company.closeReason
+    .form-group 
+        label(for="closeReason") #{labels.company.closeReason}
+        input(type="text", name="closeReason", id="closeReason", value=company ? company.closeReason : "", placeholder="Found another company", autofocus=true)
+
+//- assigneeId
+if labels.company.assigneeId
+    .form-group 
+        label(for="assigneeId") #{labels.company.assigneeId}
+        input(type="text", name="assigneeId", id="assigneeId", value=company ? company.assigneeId : "", placeholder="Kai Doe", autofocus=true)
+
+//- revenue
+if labels.company.revenue
+    .form-group 
+        label(for="revenue") #{labels.company.revenue}
+        input(type="text", name="revenue", id="revenue", value=company ? company.assigneeId : "", placeholder="$100,000,000", autofocus=true)
+
+//- typeId
+if labels.company.typeId
+    .form-group 
+        label(for="typeId") #{labels.company.typeId}
+        input(type="text", name="typeId", id="typeId", value=company ? company.typeId : "", placeholder="Lead", autofocus=true)
 
 //- employeeSize
 if labels.company.employeeSize
-  .form-group 
-    label(for="employeeSize") #{labels.company.employeeSize}
-    input(type="text", name="employeeSize", id="employeeSize", value=company ? company.employeeSize : "", placeholder="1200", autofocus=true)
+    .form-group 
+        label(for="employeeSize") #{labels.company.employeeSize}
+        input(type="text", name="employeeSize", id="employeeSize", value=company ? company.employeeSize : "", placeholder="1200", autofocus=true)
 
 //- companySourceId
 if labels.company.companySourceId
-  .form-group 
-    label(for="companySourceId") #{labels.company.companySourceId}
-    select(name="companySourceId", id="companySourceId")
-      for companySource in companySources
-        option(value=companySource.id, selected=company && companySource.id == company.companySourceId) #{companySource.name}
+    .form-group 
+        label(for="companySourceId") #{labels.company.companySourceId}
+        select(name="companySourceId", id="companySourceId")
+            for companySource in companySources
+                option(value=companySource.id, selected=company && companySource.id == company.companySourceId) #{companySource.name}
 
 //- description
 if labels.company.description
-  .form-group 
-    label(for="description") #{labels.company.description}
-    textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{company ? company.description : ""}
+    .form-group 
+        label(for="description") #{labels.company.description}
+        textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{company ? company.description : ""}
