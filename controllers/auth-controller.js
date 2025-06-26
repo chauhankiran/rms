@@ -115,7 +115,7 @@ module.exports = {
             const moduleLabels = await moduleLabelsService.pluck(columns);
             req.session.labels.module = transformLabels(moduleLabels);
 
-            return res.redirect("/");
+            return res.redirect("/dashboard");
         } catch (err) {
             next(err);
         }
