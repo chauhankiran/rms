@@ -42,7 +42,7 @@ router.put("/users/mass-actions/deactive", usersController.massActionsDeActive);
 router.delete("/users/mass-actions/delete", usersController.massActionsDelete);
 
 /**
- * Company sources
+ * Ref. Table: Company sources
  */
 router.get("/company-sources", companySourcesController.index);
 router.get("/company-sources/new", companySourcesController.new);
@@ -55,7 +55,7 @@ router.put("/company-sources/:id/archive", companySourcesController.archive);
 router.put("/company-sources/:id/active", companySourcesController.active);
 
 /**
- * Contact industries
+ * Ref. Table: Contact industries
  */
 router.get("/contact-industries", contactIndustriesController.index);
 router.get("/contact-industries/new", contactIndustriesController.new);
@@ -74,7 +74,7 @@ router.put(
 );
 
 /**
- * Deal sources
+ * Ref. Table: Deal sources
  */
 router.get("/deal-sources", dealSourcesController.index);
 router.get("/deal-sources/new", dealSourcesController.new);
@@ -87,7 +87,7 @@ router.put("/deal-sources/:id/archive", dealSourcesController.archive);
 router.put("/deal-sources/:id/active", dealSourcesController.active);
 
 /**
- * Ticket types
+ * Ref. Table: Ticket types
  */
 router.get("/ticket-types", ticketTypesController.index);
 router.get("/ticket-types/new", ticketTypesController.new);
@@ -100,7 +100,7 @@ router.put("/ticket-types/:id/archive", ticketTypesController.archive);
 router.put("/ticket-types/:id/active", ticketTypesController.active);
 
 /**
- * Task types
+ * Ref. Table: Task types
  */
 router.get("/task-types", taskTypesController.index);
 router.get("/task-types/new", taskTypesController.new);
@@ -113,7 +113,7 @@ router.put("/task-types/:id/archive", taskTypesController.archive);
 router.put("/task-types/:id/active", taskTypesController.active);
 
 /**
- * Sources
+ * Ref. Table: Sources
  */
 router.get("/sources", sourcesController.index);
 router.get("/sources/new", sourcesController.new);
@@ -126,7 +126,7 @@ router.put("/sources/:id/archive", sourcesController.archive);
 router.put("/sources/:id/active", sourcesController.active);
 
 /**
- * Statues
+ * Ref. Table: Statues
  */
 router.get("/statuses", statusesController.index);
 router.get("/statuses/new", statusesController.new);
@@ -139,7 +139,7 @@ router.put("/statuses/:id/archive", statusesController.archive);
 router.put("/statuses/:id/active", statusesController.active);
 
 /**
- * Stages
+ * Ref. Table: Stages
  */
 router.get("/stages", stagesController.index);
 router.get("/stages/new", stagesController.new);
@@ -152,7 +152,7 @@ router.put("/stages/:id/archive", stagesController.archive);
 router.put("/stages/:id/active", stagesController.active);
 
 /**
- * Industries
+ * Ref. Table: Industries
  */
 router.get("/industries", industriesController.index);
 router.get("/industries/new", industriesController.new);
@@ -165,7 +165,7 @@ router.put("/industries/:id/archive", industriesController.archive);
 router.put("/industries/:id/active", industriesController.active);
 
 /**
- * Countries
+ * Ref. Table: Countries
  */
 router.get("/countries", countriesController.index);
 router.get("/countries/new", countriesController.new);
@@ -178,7 +178,7 @@ router.put("/countries/:id/archive", countriesController.archive);
 router.put("/countries/:id/active", countriesController.active);
 
 /**
- * States
+ * Ref. Table: States
  */
 router.get("/states", statesController.index);
 router.get("/states/new", statesController.new);
@@ -191,7 +191,7 @@ router.put("/states/:id/archive", statesController.archive);
 router.put("/states/:id/active", statesController.active);
 
 /**
- * Types
+ * Ref. Table: Types
  */
 router.get("/types", typesController.index);
 router.get("/types/new", typesController.new);

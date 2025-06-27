@@ -10,9 +10,9 @@ CREATE TABLE "states" (
 	"isActive"	 	BOOLEAN NOT NULL DEFAULT TRUE
 );
 
-INSERT INTO "countries" ("name") VALUES ('None');
-INSERT INTO "countries" ("name") VALUES ('Gujarat');
-INSERT INTO "countries" ("name") VALUES ('Goa');
-INSERT INTO "countries" ("name") VALUES ('New York');
-INSERT INTO "countries" ("name") VALUES ('California');
-INSERT INTO "countries" ("name") VALUES ('Texas');
+INSERT INTO "states" ("name") VALUES ('None');
+INSERT INTO "states" ("name") VALUES ('Gujarat');
+INSERT INTO "states" ("name") VALUES ('Goa');
+INSERT INTO "states" ("name") VALUES ('New York');
+INSERT INTO "states" ("name") VALUES ('California');
+INSERT INTO "states" ("name") VALUES ('Texas');
