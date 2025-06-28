@@ -9,6 +9,8 @@ const tasksService = require("../services/tasks-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
+const locales = require("../locales/en");
+const message = require("../helpers/message");
 
 // columnsObj contains list of field companies can have.
 // key in object is name of the field (used to fetch label).
@@ -169,10 +171,9 @@ module.exports = {
         } = req.body;
 
         if (!name) {
-            req.flash("error", "Name is required.");
+            req.flash("error", locales.ticket.nameRequired);
             return res.redirect(`/tickets/new`);
         }
-
         try {
             const ticketObj = {
                 name,
@@ -185,7 +186,10 @@ module.exports = {
             };
 
             const resp = await ticketsService.create(ticketObj);
-            req.flash("info", `${resp.name} is created.`);
+            req.flash(
+                "info",
+                message(locales.ticket.created, { name: resp.name })
+            );
 
             if (companyId) {
                 return res.redirect(`/companies/${companyId}`);
@@ -284,10 +288,9 @@ module.exports = {
         const { name, description, ticketTypeId } = req.body;
 
         if (!name) {
-            req.flash("error", "Name is required.");
+            req.flash("error", locales.ticket.nameRequired);
             return res.redirect(`/tickets/${id}/edit`);
         }
-
         try {
             const ticket = await ticketsService.findOne(id);
 
@@ -304,7 +307,7 @@ module.exports = {
             };
             await ticketsService.update(ticketObj);
 
-            req.flash("info", "Ticket is updated.");
+            req.flash("info", locales.ticket.updated);
             return res.redirect(`/tickets/${id}`);
         } catch (err) {
             next(err);
@@ -323,7 +326,7 @@ module.exports = {
 
             await ticketsService.destroy(id);
 
-            req.flash("info", "Ticket is deleted.");
+            req.flash("info", locales.ticket.deleted);
             return res.redirect("/tickets");
         } catch (err) {
             next(err);
@@ -343,7 +346,7 @@ module.exports = {
             const ticketObj = { id, updatedBy: req.session.currentUser.id };
             await ticketsService.archive(ticketObj);
 
-            req.flash("info", "Ticket is archived.");
+            req.flash("info", locales.ticket.archived);
             return res.redirect(`/tickets/${id}`);
         } catch (err) {
             next(err);
@@ -363,7 +366,7 @@ module.exports = {
             const ticketObj = { id, updatedBy: req.session.currentUser.id };
             await ticketsService.active(ticketObj);
 
-            req.flash("info", "Ticket is activated.");
+            req.flash("info", locales.ticket.activated);
             return res.redirect(`/tickets/${id}`);
         } catch (err) {
             next(err);
@@ -415,7 +418,7 @@ module.exports = {
                 });
             }
 
-            req.flash("info", "View is updated for tickets.");
+            req.flash("info", locales.view.updatedTickets);
             res.redirect("/tickets");
             return;
         } catch (err) {

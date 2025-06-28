@@ -1,0 +1,16 @@
+ALTER TABLE deals
+ADD COLUMN "sourceId" INT,
+ADD COLUMN "stageId" INT,
+ADD COLUMN "statusId" INT,
+ADD COLUMN discount DECIMAL,
+ADD COLUMN tax DECIMAL,
+ADD COLUMN "probabilityId" INT,
+ADD COLUMN "assigneeId" INT,
+ADD COLUMN "typeId" INT,
+ADD COLUMN "closeDate" DATE,
+ADD COLUMN "closeReason" TEXT,
+ADD COLUMN "wonDate" DATE,
+ADD COLUMN "wonReason" TEXT;
+
+ALTER TABLE deals
+    ALTER COLUMN total TYPE DECIMAL;

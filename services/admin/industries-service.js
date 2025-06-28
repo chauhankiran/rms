@@ -152,6 +152,8 @@ module.exports = {
                 ${sql(columns)}
             FROM
                 "industries"
+            WHERE
+                "isActive" = true
         `;
     },
 };

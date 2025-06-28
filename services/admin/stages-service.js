@@ -152,6 +152,8 @@ module.exports = {
                 ${sql(columns)}
             FROM
                 stages
+            WHERE
+                "isActive" = true
         `;
     },
 };

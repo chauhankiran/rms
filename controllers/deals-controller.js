@@ -11,6 +11,8 @@ const tasksService = require("../services/tasks-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
+const locales = require("../locales/en");
+const message = require("../helpers/message");
 
 // columnsObj contains list of field companies can have.
 // key in object is name of the field (used to fetch label).
@@ -167,10 +169,9 @@ module.exports = {
             req.body;
 
         if (!name) {
-            req.flash("error", "Name is required.");
+            req.flash("error", locales.deal.nameRequired);
             return res.redirect(`/deals/new`);
         }
-
         try {
             const dealObj = {
                 name,
@@ -183,7 +184,10 @@ module.exports = {
             };
 
             const resp = await dealsService.create(dealObj);
-            req.flash("info", `${resp.name} is created.`);
+            req.flash(
+                "info",
+                message(locales.deal.created, { name: resp.name })
+            );
 
             if (companyId) {
                 return res.redirect(`/companies/${companyId}`);
@@ -318,10 +322,9 @@ module.exports = {
         const { name, total, description, dealSourceId } = req.body;
 
         if (!name) {
-            req.flash("error", "Name is required.");
+            req.flash("error", locales.deal.nameRequired);
             return res.redirect(`/deals/${id}/edit`);
         }
-
         try {
             const deal = await dealsService.findOne(id);
 
@@ -339,7 +342,7 @@ module.exports = {
             };
             await dealsService.update(dealObj);
 
-            req.flash("info", "Deal is updated.");
+            req.flash("info", locales.deal.updated);
             return res.redirect(`/deals/${id}`);
         } catch (err) {
             next(err);
@@ -358,7 +361,7 @@ module.exports = {
 
             await dealsService.destroy(id);
 
-            req.flash("info", "Deal is deleted.");
+            req.flash("info", locales.deal.deleted);
             return res.redirect("/deals");
         } catch (err) {
             next(err);
@@ -379,7 +382,7 @@ module.exports = {
             const dealObj = { id, updatedBy: req.session.currentUser.id };
             await dealsService.archive(dealObj);
 
-            req.flash("info", "Deal is archived.");
+            req.flash("info", locales.deal.archived);
             return res.redirect(`/deals/${id}`);
         } catch (err) {
             next(err);
@@ -399,7 +402,7 @@ module.exports = {
             const dealObj = { id, updatedBy: req.session.currentUser.id };
             await dealsService.active(dealObj);
 
-            req.flash("info", "Deal is activated.");
+            req.flash("info", locales.deal.activated);
             return res.redirect(`/deals/${id}`);
         } catch (err) {
             next(err);
@@ -451,7 +454,7 @@ module.exports = {
                 });
             }
 
-            req.flash("info", "View is updated for deals.");
+            req.flash("info", locales.view.updatedDeals);
             res.redirect("/deals");
             return;
         } catch (err) {

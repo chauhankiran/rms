@@ -8,6 +8,8 @@ const taskLabelsService = require("../services/task-labels-services");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
+const locales = require("../locales/en");
+const message = require("../helpers/message");
 
 // columnsObj contains list of field companies can have.
 // key in object is name of the field (used to fetch label).
@@ -184,10 +186,9 @@ module.exports = {
         } = req.body;
 
         if (!name) {
-            req.flash("error", "Name is required.");
+            req.flash("error", locales.task.nameRequired);
             return res.redirect(`/tasks/new`);
         }
-
         try {
             const taskObj = {
                 name,
@@ -204,7 +205,10 @@ module.exports = {
             };
 
             const resp = await tasksService.create(taskObj);
-            req.flash("info", `${resp.name} is created.`);
+            req.flash(
+                "info",
+                message(locales.task.created, { name: resp.name })
+            );
 
             if (companyId) {
                 return res.redirect(`/companies/${companyId}`);
@@ -286,9 +290,9 @@ module.exports = {
         const { name, phone, location, description, taskTypeId } = req.body;
 
         if (!name) {
-            return next(notFound());
+            req.flash("error", locales.task.nameRequired);
+            return res.redirect(`/tasks/${id}/edit`);
         }
-
         try {
             const task = await tasksService.findOne(id);
 
@@ -306,9 +310,12 @@ module.exports = {
                 taskTypeId,
                 updatedBy: req.session.currentUser.id,
             };
-            await tasksService.update(taskObj);
+            const resp = await tasksService.update(taskObj);
 
-            req.flash("info", "Task is updated.");
+            req.flash(
+                "info",
+                message(locales.task.updated, { name: resp.name })
+            );
             return res.redirect(`/tasks/${id}`);
         } catch (err) {
             next(err);
@@ -325,9 +332,12 @@ module.exports = {
                 return next(notFound());
             }
 
-            await tasksService.destroy(id);
+            const resp = await tasksService.destroy(id);
 
-            req.flash("info", "Task is deleted.");
+            req.flash(
+                "info",
+                message(locales.task.deleted, { name: resp.name })
+            );
             return res.redirect("/tasks");
         } catch (err) {
             next(err);
@@ -345,9 +355,12 @@ module.exports = {
             }
 
             const taskObj = { id, updatedBy: req.session.currentUser.id };
-            await tasksService.archive(taskObj);
+            const resp = await tasksService.archive(taskObj);
 
-            req.flash("info", "Task is archived.");
+            req.flash(
+                "info",
+                message(locales.task.archived, { name: resp.name })
+            );
             return res.redirect(`/tasks/${id}`);
         } catch (err) {
             next(err);
@@ -365,9 +378,12 @@ module.exports = {
             }
 
             const taskObj = { id, updatedBy: req.session.currentUser.id };
-            await tasksService.active(taskObj);
+            const resp = await tasksService.active(taskObj);
 
-            req.flash("info", "Task is activated.");
+            req.flash(
+                "info",
+                message(locales.task.activated, { name: resp.name })
+            );
             return res.redirect(`/tasks/${id}`);
         } catch (err) {
             next(err);
@@ -419,7 +435,7 @@ module.exports = {
                 });
             }
 
-            req.flash("info", "View is updated for tasks.");
+            req.flash("info", locales.view.updatedTasks);
             res.redirect("/tasks");
             return;
         } catch (err) {

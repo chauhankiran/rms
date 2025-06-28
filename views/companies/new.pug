@@ -1,19 +1,20 @@
 extends ../layout
 
 block content
-  .row 
-    .col-6 
-      h1= title
+    .row 
+        .col-12 
+            h1= title
 
-      include ../partials/flash
+        .col-12
+            include ../partials/flash
 
-      form(action="/companies", method="post") 
-        include ./form
+        .col-6
+            form(action="/companies", method="post") 
+                include ./form
         
-        .form-group 
-          .row.align-items-center 
-            .col-6 
-              button(type="submit") Create #{singular(downcase(labels.module.company))}
-            .col-6.text-end
-              a(href="/companies").btn.is-muted Cancel
-        
+                .form-group 
+                    .row.align-items-center 
+                        .col-6 
+                            button(type="submit") Create #{singular(downcase(labels.module.company))}
+                        .col-6.text-end
+                            a(href="/companies").btn.is-muted Cancel

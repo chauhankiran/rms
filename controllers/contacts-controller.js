@@ -12,6 +12,8 @@ const tasksService = require("../services/tasks-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
+const locales = require("../locales/en");
+const message = require("../helpers/message");
 
 // columnsObj contains list of field companies can have.
 // key in object is name of the field (used to fetch label).
@@ -188,13 +190,13 @@ module.exports = {
         } = req.body;
 
         if (!firstName) {
-            req.flash("error", "First name is required.");
+            req.flash("error", locales.contact.firstNameRequired);
             res.redirect(`/contacts/new`);
             return;
         }
 
         if (!lastName) {
-            req.flash("error", "Last name is required.");
+            req.flash("error", locales.contact.lastNameRequired);
             res.redirect(`/contacts/new`);
             return;
         }
@@ -211,7 +213,13 @@ module.exports = {
                 createdBy: req.session.currentUser.id,
             };
             const resp = await contactsService.create(contactObj);
-            req.flash("info", `${resp.firstName} ${resp.lastName} is created.`);
+            req.flash(
+                "info",
+                message(locales.contact.created, {
+                    firstName: resp.firstName,
+                    lastName: resp.lastName,
+                })
+            );
 
             if (companyId) {
                 return res.redirect(`/companies/${companyId}`);
@@ -373,12 +381,12 @@ module.exports = {
         } = req.body;
 
         if (!firstName) {
-            req.flash("error", "First name is required.");
+            req.flash("error", locales.contact.firstNameRequired);
             return res.redirect(`/contacts/${id}/edit`);
         }
 
         if (!lastName) {
-            req.flash("error", "Last name is required.");
+            req.flash("error", locales.contact.lastNameRequired);
             return res.redirect(`/contacts/${id}/edit`);
         }
 
@@ -401,7 +409,7 @@ module.exports = {
             };
             await contactsService.update(contactObj);
 
-            req.flash("info", "Contact is updated.");
+            req.flash("info", locales.contact.updated);
             return res.redirect(`/contacts/${id}`);
         } catch (err) {
             next(err);
@@ -420,7 +428,7 @@ module.exports = {
 
             await contactsService.destroy(id);
 
-            req.flash("info", "Contact is deleted.");
+            req.flash("info", locales.contact.deleted);
             return res.redirect("/contacts");
         } catch (err) {
             next(err);
@@ -440,7 +448,7 @@ module.exports = {
             const contactObj = { id, updatedBy: req.session.currentUser.id };
             await contactsService.archive(contactObj);
 
-            req.flash("info", "Contact is archived.");
+            req.flash("info", locales.contact.archived);
             return res.redirect(`/contacts/${id}`);
         } catch (err) {
             next(err);
@@ -460,7 +468,7 @@ module.exports = {
             const contactObj = { id, updatedBy: req.session.currentUser.id };
             await contactsService.active(contactObj);
 
-            req.flash("info", "Contact is activated.");
+            req.flash("info", locales.contact.activated);
             return res.redirect(`/contacts/${id}`);
         } catch (err) {
             next(err);
@@ -512,7 +520,7 @@ module.exports = {
                 });
             }
 
-            req.flash("info", "View is updated for contacts.");
+            req.flash("info", locales.view.updatedContacts);
             res.redirect("/contacts");
             return;
         } catch (err) {

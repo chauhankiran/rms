@@ -29,26 +29,26 @@ module.exports = {
         const whereClause4 = dealId ? sql` WHERE "dealId" = ${dealId}` : sql``;
 
         return await sql`
-      SELECT
-        ${sql.unsafe(query)}
-      FROM
-        quotes q
-      LEFT JOIN
-        users creator ON q."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON q."updatedBy" = updater.id
-      ${whereClause}
-      ${whereClause2}
-      ${whereClause3} 
-      ${whereClause4}
-      ORDER BY
-        ${sql(orderBy)}
-        ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
-      LIMIT
-        ${limit}
-      OFFSET
-        ${skip}
-    `;
+            SELECT
+                ${sql.unsafe(query)}
+            FROM
+                quotes q
+            LEFT JOIN
+                users creator ON q."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON q."updatedBy" = updater.id
+            ${whereClause}
+            ${whereClause2}
+            ${whereClause3} 
+            ${whereClause4}
+            ORDER BY
+                ${sql(orderBy)}
+                ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
+            LIMIT
+                ${limit}
+            OFFSET
+                ${skip}
+        `;
     },
 
     count: async (optionsObj) => {
@@ -59,12 +59,12 @@ module.exports = {
             : sql``;
 
         return await sql`
-      SELECT
-        COUNT(id)
-      FROM
-        quotes
-      ${whereClause}
-    `.then(([x]) => x);
+            SELECT
+                COUNT(id)
+            FROM
+                quotes
+            ${whereClause}
+        `.then(([x]) => x);
     },
 
     create: async (quoteObj) => {
@@ -101,55 +101,55 @@ module.exports = {
 
     findOne: async (id) => {
         return await sql`
-      SELECT
-        q.id,
-        q.name,
-        q.total,
-        q.description,
-        q."isActive",
-        q."createdAt",
-        q."updatedAt",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
-      FROM
-        quotes q
-      LEFT JOIN
-        users creator ON q."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON q."updatedBy" = updater.id
-      WHERE
-        q.id = ${id}
-    `.then(([x]) => x);
+            SELECT
+                q.id,
+                q.name,
+                q.total,
+                q.description,
+                q."isActive",
+                q."createdAt",
+                q."updatedAt",
+                creator.id AS "createdById",
+                creator.email AS "createdByEmail",
+                updater.id AS "updatedById",
+                updater.email AS "updatedByEmail"
+            FROM
+                quotes q
+            LEFT JOIN
+                users creator ON q."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON q."updatedBy" = updater.id
+            WHERE
+                q.id = ${id}
+        `.then(([x]) => x);
     },
 
     update: async (quoteObj) => {
         const { id, name, total, description, updatedBy } = quoteObj;
 
         return await sql`
-      UPDATE
-        quotes
-      SET
-        name = ${name},
-        total = ${total},
-        description = ${description},
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                quotes
+            SET
+                name = ${name},
+                total = ${total},
+                description = ${description},
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id, name
+            `.then(([x]) => x);
     },
 
     destroy: async (id) => {
         return await sql`
-      DELETE FROM
-        quotes
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            DELETE FROM
+                quotes
+            WHERE
+                id = ${id}
+            returning id, name
+        `.then(([x]) => x);
     },
 
     archive: async (quoteObj) => {
@@ -164,7 +164,7 @@ module.exports = {
         "updatedAt" = ${sql`now()`}
       WHERE
         id = ${id}
-      returning id
+      returning id, name
     `.then(([x]) => x);
     },
 
@@ -180,7 +180,7 @@ module.exports = {
         "updatedAt" = ${sql`now()`}
       WHERE
         id = ${id}
-      returning id
+      returning id, name
     `.then(([x]) => x);
     },
 };

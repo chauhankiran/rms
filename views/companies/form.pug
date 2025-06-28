@@ -56,7 +56,9 @@ if labels.company.city
 if labels.company.stateId
     .form-group 
         label(for="stateId") #{labels.company.stateId}
-        input(type="text", name="stateId", id="stateId", value=company ? company.stateId : "", placeholder="New State", autofocus=true)
+        select(name="stateId", id="stateId")
+            for state in states
+                option(value=state.id, selected=company && state.id == company.stateId) #{state.name}
 
 //- zip
 if labels.company.zip
@@ -68,31 +70,41 @@ if labels.company.zip
 if labels.company.countryId
     .form-group 
         label(for="countryId") #{labels.company.countryId}
-        input(type="text", name="countryId", id="countryId", value=company ? company.countryId : "", placeholder="Remote", autofocus=true)
+        select(name="countryId", id="countryId")
+            for country in countries
+                option(value=country.id, selected=company && country.id == company.countryId) #{country.name}
 
 //- sourceId
 if labels.company.sourceId
     .form-group 
         label(for="sourceId") #{labels.company.sourceId}
-        input(type="text", name="sourceId", id="sourceId", value=company ? company.sourceId : "", placeholder="Direct Lead", autofocus=true)
+        select(name="sourceId", id="sourceId")
+            for source in sources
+                option(value=source.id, selected=company && source.id == company.sourceId) #{source.name}
 
 //- statusId
 if labels.company.statusId
     .form-group 
         label(for="statusId") #{labels.company.statusId}
-        input(type="text", name="statusId", id="statusId", value=company ? company.statusId : "", placeholder="Green", autofocus=true)
+        select(name="statusId", id="statusId")
+            for status in statuses
+                option(value=status.id, selected=company && status.id == company.statusId) #{status.name}
 
 //- stageId
 if labels.company.stageId
     .form-group 
         label(for="stageId") #{labels.company.stageId}
-        input(type="text", name="stageId", id="stageId", value=company ? company.stageId : "", placeholder="Accepted", autofocus=true)
+        select(name="stageId", id="stageId")
+            for stage in stages
+                option(value=stage.id, selected=company && stage.id == company.stageId) #{stage.name}
 
 //- industryId
 if labels.company.industryId
     .form-group 
         label(for="industryId") #{labels.company.industryId}
-        input(type="text", name="industryId", id="industryId", value=company ? company.industryId : "", placeholder="Health care", autofocus=true)
+        select(name="industryId", id="industryId")
+            for industry in industries
+                option(value=industry.id, selected=company && industry.id == company.industryId) #{industry.name}
 
 //- closeDate
 if labels.company.closeDate
@@ -122,7 +134,9 @@ if labels.company.revenue
 if labels.company.typeId
     .form-group 
         label(for="typeId") #{labels.company.typeId}
-        input(type="text", name="typeId", id="typeId", value=company ? company.typeId : "", placeholder="Lead", autofocus=true)
+        select(name="typeId", id="typeId")
+            for type in types
+                option(value=type.id, selected=company && type.id == company.typeId) #{type.name}
 
 //- employeeSize
 if labels.company.employeeSize

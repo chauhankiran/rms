@@ -152,6 +152,8 @@ module.exports = {
                 ${sql(columns)}
             FROM
                 sources
+            WHERE
+                "isActive" = true
         `;
     },
 };

@@ -8,6 +8,8 @@ const tasksService = require("../services/tasks-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
+const locales = require("../locales/en");
+const message = require("../helpers/message");
 
 // columnsObj contains list of field companies can have.
 // key in object is name of the field (used to fetch label).
@@ -149,11 +151,10 @@ module.exports = {
             req.body;
 
         if (!name) {
-            req.flash("error", "Name is required.");
+            req.flash("error", locales.quote.nameRequired);
             res.redirect(`/quotes/new`);
             return;
         }
-
         try {
             const quoteObj = {
                 name,
@@ -166,7 +167,10 @@ module.exports = {
             };
 
             const resp = await quotesService.create(quoteObj);
-            req.flash("info", `${resp.name} is created.`);
+            req.flash(
+                "info",
+                message(locales.quote.created, { name: resp.name })
+            );
 
             if (companyId) {
                 return res.redirect(`/companies/${companyId}`);
@@ -262,10 +266,9 @@ module.exports = {
         const { name, total, description } = req.body;
 
         if (!name) {
-            req.flash("error", "Name is required.");
+            req.flash("error", locales.quote.nameRequired);
             return res.redirect(`/quotes/${id}/edit`);
         }
-
         try {
             const quote = await quotesService.findOne(id);
 
@@ -282,7 +285,7 @@ module.exports = {
             };
             await quotesService.update(quoteObj);
 
-            req.flash("info", "Quote is updated.");
+            req.flash("info", locales.quote.updated);
             return res.redirect(`/quotes/${id}`);
         } catch (err) {
             next(err);
@@ -301,7 +304,7 @@ module.exports = {
 
             await quotesService.destroy(id);
 
-            req.flash("info", "Quote is deleted.");
+            req.flash("info", locales.quote.deleted);
             return res.redirect("/quotes");
         } catch (err) {
             next(err);
@@ -321,7 +324,7 @@ module.exports = {
             const quoteObj = { id, updatedBy: req.session.currentUser.id };
             await quotesService.archive(quoteObj);
 
-            req.flash("info", "Quote is archived.");
+            req.flash("info", locales.quote.archived);
             return res.redirect(`/quotes/${id}`);
         } catch (err) {
             next(err);
@@ -341,7 +344,7 @@ module.exports = {
             const quoteObj = { id, updatedBy: req.session.currentUser.id };
             await quotesService.active(quoteObj);
 
-            req.flash("info", "Quote is activated.");
+            req.flash("info", locales.quote.activated);
             return res.redirect(`/quotes/${id}`);
         } catch (err) {
             next(err);
@@ -393,7 +396,7 @@ module.exports = {
                 });
             }
 
-            req.flash("info", "View is updated for quotes.");
+            req.flash("info", locales.view.updatedQuotes);
             res.redirect("/quotes");
             return;
         } catch (err) {

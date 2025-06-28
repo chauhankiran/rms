@@ -161,7 +161,7 @@ module.exports = {
                 "updatedAt" = ${sql`now()`}
             WHERE
                 id = ${id}
-            returning id
+            returning id, name
         `.then(([x]) => x);
     },
 
@@ -171,7 +171,7 @@ module.exports = {
                 deals
             WHERE
                 id = ${id}
-            returning id
+            returning id, name
         `.then(([x]) => x);
     },
 
@@ -187,7 +187,7 @@ module.exports = {
                 "updatedAt" = ${sql`now()`}
             WHERE
                 id = ${id}
-            returning id
+            returning id, name
         `.then(([x]) => x);
     },
 
@@ -203,7 +203,7 @@ module.exports = {
                 "updatedAt" = ${sql`now()`}
             WHERE
                 id = ${id}
-            returning id
+            returning id, name
         `.then(([x]) => x);
     },
 };

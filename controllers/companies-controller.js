@@ -13,6 +13,16 @@ const ticketsService = require("../services/tickets-service");
 const tasksService = require("../services/tasks-service");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
+const locales = require("../locales/en");
+const message = require("../helpers/message");
+
+const statesService = require("../services/admin/states-service");
+const countriesService = require("../services/admin/countries-service");
+const industriesService = require("../services/admin/industries-service");
+const sourcesService = require("../services/admin/sources-service");
+const statusesService = require("../services/admin/statuses-service");
+const stagesService = require("../services/admin/stages-service");
+const typesService = require("../services/admin/types-service");
 
 // columnsObj contains list of field companies can have.
 // key in object is name of the field (used to fetch label).
@@ -152,6 +162,13 @@ module.exports = {
                 "id",
                 "name",
             ]);
+            const states = await statesService.pluck(["id", "name"]);
+            const countries = await countriesService.pluck(["id", "name"]);
+            const industries = await industriesService.pluck(["id", "name"]);
+            const sources = await sourcesService.pluck(["id", "name"]);
+            const statuses = await statusesService.pluck(["id", "name"]);
+            const stages = await stagesService.pluck(["id", "name"]);
+            const types = await typesService.pluck(["id", "name"]);
 
             return res.render("companies/new", {
                 title:
@@ -160,6 +177,13 @@ module.exports = {
                         req.session.labels.module.company.toLowerCase()
                     ),
                 companySources,
+                states,
+                countries,
+                industries,
+                sources,
+                statuses,
+                stages,
+                types,
             });
         } catch (err) {
             next(err);
@@ -195,10 +219,9 @@ module.exports = {
         } = req.body;
 
         if (!name) {
-            req.flash("error", "Name is required.");
+            req.flash("error", locales.company.nameRequired);
             return res.redirect(`/companies/new`);
         }
-
         try {
             const companyObj = {
                 name,
@@ -228,8 +251,10 @@ module.exports = {
                 createdBy: req.session.currentUser.id,
             };
             const resp = await companiesService.create(companyObj);
-            req.flash("info", `${resp.name} is created.`);
-
+            req.flash(
+                "info",
+                message(locales.company.created, { name: resp.name })
+            );
             return res.redirect("/companies");
         } catch (err) {
             next(err);
@@ -379,6 +404,13 @@ module.exports = {
                 "id",
                 "name",
             ]);
+            const states = await statesService.pluck(["id", "name"]);
+            const countries = await countriesService.pluck(["id", "name"]);
+            const industries = await industriesService.pluck(["id", "name"]);
+            const sources = await sourcesService.pluck(["id", "name"]);
+            const statuses = await statusesService.pluck(["id", "name"]);
+            const stages = await stagesService.pluck(["id", "name"]);
+            const types = await typesService.pluck(["id", "name"]);
 
             return res.render("companies/edit", {
                 title:
@@ -388,6 +420,13 @@ module.exports = {
                     ),
                 company,
                 companySources,
+                states,
+                countries,
+                industries,
+                sources,
+                statuses,
+                stages,
+                types,
             });
         } catch (err) {
             next(err);
@@ -424,10 +463,9 @@ module.exports = {
         } = req.body;
 
         if (!name) {
-            req.flash("error", "Name is required.");
+            req.flash("error", locales.company.nameRequired);
             return res.redirect(`/companies/${id}/edit`);
         }
-
         try {
             const company = await companiesService.findOne(id);
 
@@ -465,7 +503,7 @@ module.exports = {
             };
             await companiesService.update(companyObj);
 
-            req.flash("info", "Company is updated.");
+            req.flash("info", locales.company.updated);
             return res.redirect(`/companies/${id}`);
         } catch (err) {
             next(err);
@@ -484,7 +522,7 @@ module.exports = {
 
             await companiesService.destroy(id);
 
-            req.flash("info", "Company is deleted.");
+            req.flash("info", locales.company.deleted);
             return res.redirect("/companies");
         } catch (err) {
             next(err);
@@ -504,7 +542,7 @@ module.exports = {
             const companyObj = { id, updatedBy: req.session.currentUser.id };
             await companiesService.archive(companyObj);
 
-            req.flash("info", "Company is archived.");
+            req.flash("info", locales.company.archived);
             return res.redirect(`/companies/${id}`);
         } catch (err) {
             next(err);
@@ -524,7 +562,7 @@ module.exports = {
             const companyObj = { id, updatedBy: req.session.currentUser.id };
             await companiesService.active(companyObj);
 
-            req.flash("info", "Company is activated.");
+            req.flash("info", locales.company.activated);
             return res.redirect(`/companies/${id}`);
         } catch (err) {
             next(err);
@@ -576,7 +614,7 @@ module.exports = {
                 });
             }
 
-            req.flash("info", "View is updated for companies.");
+            req.flash("info", locales.view.updated);
             res.redirect("/companies");
             return;
         } catch (err) {

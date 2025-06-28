@@ -4,16 +4,16 @@ const updateTaskStatus = async (taskObj, status) => {
     const { id, updatedBy } = taskObj;
 
     return await sql`
-    UPDATE
-      tasks
-    SET
-      "isActive" = ${status},
-      "updatedBy" = ${updatedBy},
-      "updatedAt" = ${sql`now()`}
-    WHERE
-      id = ${id}
-    returning id
-  `.then(([x]) => x);
+        UPDATE
+            tasks
+        SET
+            "isActive" = ${status},
+            "updatedBy" = ${updatedBy},
+            "updatedAt" = ${sql`now()`}
+        WHERE
+            id = ${id}
+        returning id, name
+    `.then(([x]) => x);
 };
 
 module.exports = {
@@ -213,7 +213,7 @@ module.exports = {
                 "updatedAt" = ${sql`now()`}
             WHERE
                 id = ${id}
-            returning id
+            returning id, name
         `.then(([x]) => x);
     },
 
@@ -223,7 +223,7 @@ module.exports = {
                 tasks
             WHERE
                 id = ${id}
-            returning id
+            returning id, name
         `.then(([x]) => x);
     },
 
