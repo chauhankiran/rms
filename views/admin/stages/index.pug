@@ -67,7 +67,8 @@ block content
                             tr
                                 td
                                     a(href=`/admin/stages/${stage.id}`) #{stage.id}
-                                td #{stage.name}
+                                td
+                                    a(href=`/admin/stages/${stage.id}`) #{stage.name}
                                     if (!stage.isActive)
                                         span.archive-status (archived)
                                 td #{stage.createdByEmail || "-"}

@@ -67,7 +67,8 @@ block content
                             tr
                                 td
                                     a(href=`/admin/sources/${source.id}`) #{source.id}
-                                td #{source.name}
+                                td
+                                    a(href=`/admin/sources/${source.id}`) #{source.name}
                                     if (!source.isActive)
                                         span.archive-status (archived)
                                 td #{source.createdByEmail || "-"}

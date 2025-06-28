@@ -7,13 +7,12 @@ block content
 
       include ../../partials/flash
 
-      form(action=`/admin/ticket-types/${ticketType.id}?_method=PUT`, method="post") 
+      form(action=`/admin/countries/${country.id}?_method=PUT`, method="post") 
         include ./form
 
         .form-group 
           .row.align-items-center 
             .col-6 
-              button(type="submit") Update ticket type
+              button(type="submit") Update country
             .col-6.text-end
-              a(href=`/admin/ticket-types/${ticketType.id}`).btn.is-muted Cancel
-        
+              a(href=`/admin/countries/${country.id}`).btn.is-muted Cancel

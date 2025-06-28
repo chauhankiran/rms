@@ -7,13 +7,13 @@ block content
 
       include ../../partials/flash
 
-      form(action="/admin/ticket-types", method="post") 
+      form(action="/admin/countries", method="post") 
         include ./form
         
         .form-group 
           .row.align-items-center 
             .col-6 
-              button(type="submit") Create ticket type
+              button(type="submit") Create country
             .col-6.text-end
-              a(href="/admin/ticket-types").btn.is-muted Cancel
+              a(href="/admin/countries").btn.is-muted Cancel
         

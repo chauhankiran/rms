@@ -9,7 +9,7 @@ module.exports = {
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
         const orderBy = req.query.orderBy || "id";
-        const orderDir = req.query.orderDir || "DESC";
+        const orderDir = req.query.orderDir || "ASC";
 
         try {
             const optionsObj = { search, limit, skip, orderBy, orderDir };

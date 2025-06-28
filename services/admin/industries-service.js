@@ -9,31 +9,31 @@ module.exports = {
             : sql``;
 
         return await sql`
-      SELECT
-        i.id,
-        i.name,
-        i."createdAt",
-        i."updatedAt",
-        i."isActive",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
-      FROM
-        "industries" i
-      LEFT JOIN
-        users creator ON i."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON i."updatedBy" = updater.id
-      ${whereClause}
-      ORDER BY
-        ${sql(orderBy)}
-        ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
-      LIMIT
-        ${limit}
-      OFFSET
-        ${skip}
-    `;
+            SELECT
+                i.id,
+                i.name,
+                i."createdAt",
+                i."updatedAt",
+                i."isActive",
+                creator.id AS "createdById",
+                creator.email AS "createdByEmail",
+                updater.id AS "updatedById",
+                updater.email AS "updatedByEmail"
+            FROM
+                "industries" i
+            LEFT JOIN
+                users creator ON i."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON i."updatedBy" = updater.id
+            ${whereClause}
+            ORDER BY
+                ${sql(orderBy)}
+                ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
+            LIMIT
+                ${limit}
+            OFFSET
+                ${skip}
+        `;
     },
 
     count: async (optionsObj) => {
@@ -44,79 +44,79 @@ module.exports = {
             : sql``;
 
         return await sql`
-      SELECT
-        COUNT(id)
-      FROM
-        "industries"
-      ${whereClause}
-    `.then(([x]) => x);
+            SELECT
+                COUNT(id)
+            FROM
+                "industries"
+            ${whereClause}
+        `.then(([x]) => x);
     },
 
-    create: async (contactIndustryObj) => {
-        const { name, createdBy } = contactIndustryObj;
+    create: async (industryObj) => {
+        const { name, createdBy } = industryObj;
 
         return await sql`
-        INSERT INTO "industries"
-          name,
-          "createdBy"
-        ) VALUES (
-          ${name},
-          ${createdBy}
-        ) returning id
-      `;
+            INSERT INTO "industries"
+                name,
+                "createdBy"
+            ) VALUES (
+                ${name},
+                ${createdBy}
+            ) returning id
+        `;
     },
 
     findOne: async (id) => {
         return await sql`
-      SELECT
-        i.id,
-        i.name,
-        i."createdAt",
-        i."updatedAt",
-        i."isActive",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
-      FROM
-        "industries" i
-      LEFT JOIN
-        users creator ON i."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON i."updatedBy" = updater.id
-      WHERE
-        i.id = ${id}
-    `.then(([x]) => x);
+            SELECT
+                i.id,
+                i.name,
+                i."createdAt",
+                i."updatedAt",
+                i."isActive",
+                creator.id AS "createdById",
+                creator.email AS "createdByEmail",
+                updater.id AS "updatedById",
+                updater.email AS "updatedByEmail"
+            FROM
+                "industries" i
+            LEFT JOIN
+                users creator ON i."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON i."updatedBy" = updater.id
+            WHERE
+                i.id = ${id}
+        `.then(([x]) => x);
     },
 
     update: async (userObj) => {
         const { id, name, updatedBy } = userObj;
 
         return await sql`
-      UPDATE
-        "industries"
-      SET
-        name = ${name},
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                "industries"
+            SET
+                name = ${name},
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     destroy: async (id) => {
         return await sql`
-      DELETE FROM
-        "industries"
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            DELETE FROM
+                "industries"
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
-    archive: async (contactIndustryObj) => {
-        const { id, updatedBy } = contactIndustryObj;
+    archive: async (industryObj) => {
+        const { id, updatedBy } = industryObj;
 
         return await sql`
             UPDATE
@@ -130,8 +130,8 @@ module.exports = {
             returning id
         `.then(([x]) => x);
     },
-    active: async (contactIndustryObj) => {
-        const { id, updatedBy } = contactIndustryObj;
+    active: async (industryObj) => {
+        const { id, updatedBy } = industryObj;
 
         return await sql`
             UPDATE

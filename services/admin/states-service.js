@@ -44,26 +44,26 @@ module.exports = {
             : sql``;
 
         return await sql`
-      SELECT
-        COUNT(id)
-      FROM
-        states
-      ${whereClause}
-    `.then(([x]) => x);
+            SELECT
+                COUNT(id)
+            FROM
+                states
+            ${whereClause}
+        `.then(([x]) => x);
     },
 
-    create: async (contactIndustryObj) => {
-        const { name, createdBy } = contactIndustryObj;
+    create: async (stateObj) => {
+        const { name, createdBy } = stateObj;
 
         return await sql`
-        INSERT INTO states (
-          name,
-          "createdBy"
-        ) VALUES (
-          ${name},
-          ${createdBy}
-        ) returning id
-      `;
+            INSERT INTO states (
+                name,
+                "createdBy"
+            ) VALUES (
+                ${name},
+                ${createdBy}
+            ) returning id
+        `;
     },
 
     findOne: async (id) => {
@@ -93,65 +93,65 @@ module.exports = {
         const { id, name, updatedBy } = userObj;
 
         return await sql`
-      UPDATE
-        states
-      SET
-        name = ${name},
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                states
+            SET
+                name = ${name},
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     destroy: async (id) => {
         return await sql`
-      DELETE FROM
-        states
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            DELETE FROM
+                states
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
-    archive: async (contactIndustryObj) => {
-        const { id, updatedBy } = contactIndustryObj;
+    archive: async (stateObj) => {
+        const { id, updatedBy } = stateObj;
 
         return await sql`
-      UPDATE
-        states
-      SET
-        "isActive" = false,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                states
+            SET
+                "isActive" = false,
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
-    active: async (contactIndustryObj) => {
-        const { id, updatedBy } = contactIndustryObj;
+    active: async (stateObj) => {
+        const { id, updatedBy } = stateObj;
 
         return await sql`
-      UPDATE
-        states
-      SET
-        "isActive" = true,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                states
+            SET
+                "isActive" = true,
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     pluck: async (columns) => {
         return await sql`
-      SELECT
-        ${sql(columns)}
-      FROM
-        states
-    `;
+            SELECT
+                ${sql(columns)}
+            FROM
+                states
+        `;
     },
 };

@@ -67,7 +67,8 @@ block content
                             tr
                                 td
                                     a(href=`/admin/countries/${country.id}`) #{country.id}
-                                td #{country.name}
+                                td
+                                    a(href=`/admin/countries/${country.id}`) #{country.name}
                                     if (!country.isActive)
                                         span.archive-status (archived)
                                 td #{country.createdByEmail || "-"}

@@ -44,16 +44,16 @@ module.exports = {
             : sql``;
 
         return await sql`
-      SELECT
-        COUNT(id)
-      FROM
-        stages
-      ${whereClause}
-    `.then(([x]) => x);
+            SELECT
+                COUNT(id)
+            FROM
+                stages
+            ${whereClause}
+        `.then(([x]) => x);
     },
 
-    create: async (contactIndustryObj) => {
-        const { name, createdBy } = contactIndustryObj;
+    create: async (stateObj) => {
+        const { name, createdBy } = stateObj;
 
         return await sql`
             INSERT INTO stages (
@@ -107,51 +107,51 @@ module.exports = {
 
     destroy: async (id) => {
         return await sql`
-      DELETE FROM
-        stages
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            DELETE FROM
+                stages
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
-    archive: async (contactIndustryObj) => {
-        const { id, updatedBy } = contactIndustryObj;
+    archive: async (stateObj) => {
+        const { id, updatedBy } = stateObj;
 
         return await sql`
-      UPDATE
-        stages
-      SET
-        "isActive" = false,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                stages
+            SET
+                "isActive" = false,
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
-    active: async (contactIndustryObj) => {
-        const { id, updatedBy } = contactIndustryObj;
+    active: async (stateObj) => {
+        const { id, updatedBy } = stateObj;
 
         return await sql`
-      UPDATE
-        stages
-      SET
-        "isActive" = true,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                stages
+            SET
+                "isActive" = true,
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     pluck: async (columns) => {
         return await sql`
-      SELECT
-        ${sql(columns)}
-      FROM
-        stages
-    `;
+            SELECT
+                ${sql(columns)}
+            FROM
+                stages
+        `;
     },
 };

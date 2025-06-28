@@ -52,18 +52,18 @@ module.exports = {
     `.then(([x]) => x);
     },
 
-    create: async (contactIndustryObj) => {
-        const { name, createdBy } = contactIndustryObj;
+    create: async (sourceObj) => {
+        const { name, createdBy } = sourceObj;
 
         return await sql`
-        INSERT INTO sources (
-          name,
-          "createdBy"
-        ) VALUES (
-          ${name},
-          ${createdBy}
-        ) returning id
-      `;
+            INSERT INTO sources (
+                name,
+                "createdBy"
+            ) VALUES (
+                ${name},
+                ${createdBy}
+            ) returning id
+        `;
     },
 
     findOne: async (id) => {
@@ -115,8 +115,8 @@ module.exports = {
         `.then(([x]) => x);
     },
 
-    archive: async (contactIndustryObj) => {
-        const { id, updatedBy } = contactIndustryObj;
+    archive: async (sourceObj) => {
+        const { id, updatedBy } = sourceObj;
 
         return await sql`
             UPDATE
@@ -130,8 +130,8 @@ module.exports = {
             returning id
         `.then(([x]) => x);
     },
-    active: async (contactIndustryObj) => {
-        const { id, updatedBy } = contactIndustryObj;
+    active: async (sourceObj) => {
+        const { id, updatedBy } = sourceObj;
 
         return await sql`
             UPDATE

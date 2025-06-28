@@ -9,31 +9,31 @@ module.exports = {
             : sql``;
 
         return await sql`
-      SELECT
-        c.id,
-        c.name,
-        c."createdAt",
-        c."updatedAt",
-        c."isActive",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
-      FROM
-        "countries" c
-      LEFT JOIN
-        users creator ON c."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON c."updatedBy" = updater.id
-      ${whereClause}
-      ORDER BY
-        ${sql(orderBy)}
-        ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
-      LIMIT
-        ${limit}
-      OFFSET
-        ${skip}
-    `;
+            SELECT
+                c.id,
+                c.name,
+                c."createdAt",
+                c."updatedAt",
+                c."isActive",
+                creator.id AS "createdById",
+                creator.email AS "createdByEmail",
+                updater.id AS "updatedById",
+                updater.email AS "updatedByEmail"
+            FROM
+                "countries" c
+            LEFT JOIN
+                users creator ON c."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON c."updatedBy" = updater.id
+            ${whereClause}
+            ORDER BY
+                ${sql(orderBy)}
+                ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
+            LIMIT
+                ${limit}
+            OFFSET
+                ${skip}
+        `;
     },
 
     count: async (optionsObj) => {
@@ -44,106 +44,106 @@ module.exports = {
             : sql``;
 
         return await sql`
-      SELECT
-        COUNT(id)
-      FROM
-        "countries"
-      ${whereClause}
-    `.then(([x]) => x);
+            SELECT
+                COUNT(id)
+            FROM
+                "countries"
+            ${whereClause}
+        `.then(([x]) => x);
     },
 
-    create: async (contactIndustryObj) => {
-        const { name, createdBy } = contactIndustryObj;
+    create: async (countryObj) => {
+        const { name, createdBy } = countryObj;
 
         return await sql`
-        INSERT INTO "countries" (
-          name,
-          "createdBy"
-        ) VALUES (
-          ${name},
-          ${createdBy}
-        ) returning id
-      `;
+            INSERT INTO "countries" (
+                name,
+                "createdBy"
+            ) VALUES (
+                ${name},
+                ${createdBy}
+            ) returning id
+        `;
     },
 
     findOne: async (id) => {
         return await sql`
-      SELECT
-        c.id,
-        c.name,
-        c."createdAt",
-        c."updatedAt",
-        c."isActive",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
-      FROM
-        "countries" c
-      LEFT JOIN
-        users creator ON c."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON c."updatedBy" = updater.id
-      WHERE
-        c.id = ${id}
-    `.then(([x]) => x);
+            SELECT
+                c.id,
+                c.name,
+                c."createdAt",
+                c."updatedAt",
+                c."isActive",
+                creator.id AS "createdById",
+                creator.email AS "createdByEmail",
+                updater.id AS "updatedById",
+                updater.email AS "updatedByEmail"
+            FROM
+                "countries" c
+            LEFT JOIN
+                users creator ON c."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON c."updatedBy" = updater.id
+            WHERE
+                c.id = ${id}
+        `.then(([x]) => x);
     },
 
     update: async (userObj) => {
         const { id, name, updatedBy } = userObj;
 
         return await sql`
-      UPDATE
-        "countries"
-      SET
-        name = ${name},
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                "countries"
+            SET
+                name = ${name},
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     destroy: async (id) => {
         return await sql`
-      DELETE FROM
-        "countries"
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            DELETE FROM
+                "countries"
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
-    archive: async (contactIndustryObj) => {
-        const { id, updatedBy } = contactIndustryObj;
+    archive: async (countryObj) => {
+        const { id, updatedBy } = countryObj;
 
         return await sql`
-      UPDATE
-        "countries"
-      SET
-        "isActive" = false,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                "countries"
+            SET
+                "isActive" = false,
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
-    active: async (contactIndustryObj) => {
-        const { id, updatedBy } = contactIndustryObj;
+    active: async (countryObj) => {
+        const { id, updatedBy } = countryObj;
 
         return await sql`
-      UPDATE
-        "countries"
-      SET
-        "isActive" = true,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                "countries"
+            SET
+                "isActive" = true,
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     pluck: async (columns) => {

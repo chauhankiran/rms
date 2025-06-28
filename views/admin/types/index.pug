@@ -67,7 +67,8 @@ block content
                             tr
                                 td
                                     a(href=`/admin/types/${type.id}`) #{type.id}
-                                td #{type.name}
+                                td
+                                    a(href=`/admin/types/${type.id}`) #{type.name}
                                     if (!type.isActive)
                                         span.archive-status (archived)
                                 td #{type.createdByEmail || "-"}

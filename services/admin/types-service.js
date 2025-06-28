@@ -9,31 +9,31 @@ module.exports = {
             : sql``;
 
         return await sql`
-      SELECT
-        t.id,
-        t.name,
-        t."createdAt",
-        t."updatedAt",
-        t."isActive",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
-      FROM
-        types t
-      LEFT JOIN
-        users creator ON t."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON t."updatedBy" = updater.id
-      ${whereClause}
-      ORDER BY
-        ${sql(orderBy)}
-        ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
-      LIMIT
-        ${limit}
-      OFFSET
-        ${skip}
-    `;
+            SELECT
+                t.id,
+                t.name,
+                t."createdAt",
+                t."updatedAt",
+                t."isActive",
+                creator.id AS "createdById",
+                creator.email AS "createdByEmail",
+                updater.id AS "updatedById",
+                updater.email AS "updatedByEmail"
+            FROM
+                types t
+            LEFT JOIN
+                users creator ON t."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON t."updatedBy" = updater.id
+            ${whereClause}
+            ORDER BY
+                ${sql(orderBy)}
+                ${orderDir === "ASC" ? sql`ASC` : sql`DESC`}
+            LIMIT
+                ${limit}
+            OFFSET
+                ${skip}
+        `;
     },
 
     count: async (optionsObj) => {
@@ -44,49 +44,49 @@ module.exports = {
             : sql``;
 
         return await sql`
-      SELECT
-        COUNT(id)
-      FROM
-        types
-      ${whereClause}
-    `.then(([x]) => x);
+            SELECT
+                COUNT(id)
+            FROM
+                types
+            ${whereClause}
+        `.then(([x]) => x);
     },
 
-    create: async (contactIndustryObj) => {
-        const { name, createdBy } = contactIndustryObj;
+    create: async (typeObj) => {
+        const { name, createdBy } = typeObj;
 
         return await sql`
-        INSERT INTO types (
-          name,
-          "createdBy"
-        ) VALUES (
-          ${name},
-          ${createdBy}
-        ) returning id
-      `;
+            INSERT INTO types (
+                name,
+                "createdBy"
+            ) VALUES (
+                ${name},
+                ${createdBy}
+            ) returning id
+        `;
     },
 
     findOne: async (id) => {
         return await sql`
-      SELECT
-        t.id,
-        t.name,
-        t."createdAt",
-        t."updatedAt",
-        t."isActive",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
-      FROM
-        types t
-      LEFT JOIN
-        users creator ON t."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON t."updatedBy" = updater.id
-      WHERE
-        t.id = ${id}
-    `.then(([x]) => x);
+            SELECT
+                t.id,
+                t.name,
+                t."createdAt",
+                t."updatedAt",
+                t."isActive",
+                creator.id AS "createdById",
+                creator.email AS "createdByEmail",
+                updater.id AS "updatedById",
+                updater.email AS "updatedByEmail"
+            FROM
+                types t
+            LEFT JOIN
+                users creator ON t."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON t."updatedBy" = updater.id
+            WHERE
+                t.id = ${id}
+        `.then(([x]) => x);
     },
 
     update: async (userObj) => {
@@ -115,8 +115,8 @@ module.exports = {
         `.then(([x]) => x);
     },
 
-    archive: async (contactIndustryObj) => {
-        const { id, updatedBy } = contactIndustryObj;
+    archive: async (typeObj) => {
+        const { id, updatedBy } = typeObj;
 
         return await sql`
             UPDATE
@@ -130,8 +130,8 @@ module.exports = {
             returning id
         `.then(([x]) => x);
     },
-    active: async (contactIndustryObj) => {
-        const { id, updatedBy } = contactIndustryObj;
+    active: async (typeObj) => {
+        const { id, updatedBy } = typeObj;
 
         return await sql`
             UPDATE

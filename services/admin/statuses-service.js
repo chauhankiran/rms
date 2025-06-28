@@ -52,8 +52,8 @@ module.exports = {
     `.then(([x]) => x);
     },
 
-    create: async (contactIndustryObj) => {
-        const { name, createdBy } = contactIndustryObj;
+    create: async (statusObj) => {
+        const { name, createdBy } = statusObj;
 
         return await sql`
         INSERT INTO statuses (
@@ -93,65 +93,65 @@ module.exports = {
         const { id, name, updatedBy } = userObj;
 
         return await sql`
-      UPDATE
-        statuses
-      SET
-        name = ${name},
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                statuses
+            SET
+                name = ${name},
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     destroy: async (id) => {
         return await sql`
-      DELETE FROM
-        statuses
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            DELETE FROM
+                statuses
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
-    archive: async (contactIndustryObj) => {
-        const { id, updatedBy } = contactIndustryObj;
+    archive: async (statusObj) => {
+        const { id, updatedBy } = statusObj;
 
         return await sql`
-      UPDATE
-        statuses
-      SET
-        "isActive" = false,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                statuses
+            SET
+                "isActive" = false,
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
-    active: async (contactIndustryObj) => {
-        const { id, updatedBy } = contactIndustryObj;
+    active: async (statusObj) => {
+        const { id, updatedBy } = statusObj;
 
         return await sql`
-      UPDATE
-        statuses
-      SET
-        "isActive" = true,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                statuses
+            SET
+                "isActive" = true,
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     pluck: async (columns) => {
         return await sql`
-      SELECT
-        ${sql(columns)}
-      FROM
-        statuses
-    `;
+            SELECT
+                ${sql(columns)}
+            FROM
+                statuses
+        `;
     },
 };
