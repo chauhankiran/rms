@@ -1,4 +1,5 @@
 const sql = require("../../db/sql");
+const updateStatus = require("../_base/update-status");
 
 module.exports = {
     find: async (optionsObj) => {
@@ -116,34 +117,12 @@ module.exports = {
     },
 
     archive: async (countryObj) => {
-        const { id, updatedBy } = countryObj;
-
-        return await sql`
-            UPDATE
-                "countries"
-            SET
-                "isActive" = false,
-                "updatedBy" = ${updatedBy},
-                "updatedAt" = ${sql`now()`}
-            WHERE
-                id = ${id}
-            returning id
-        `.then(([x]) => x);
+        const obj = { ...countryObj, isActive: false };
+        return await updateStatus("countries", obj);
     },
     active: async (countryObj) => {
-        const { id, updatedBy } = countryObj;
-
-        return await sql`
-            UPDATE
-                "countries"
-            SET
-                "isActive" = true,
-                "updatedBy" = ${updatedBy},
-                "updatedAt" = ${sql`now()`}
-            WHERE
-                id = ${id}
-            returning id
-        `.then(([x]) => x);
+        const obj = { ...countryObj, isActive: true };
+        return await updateStatus("countries", obj);
     },
 
     pluck: async (columns) => {

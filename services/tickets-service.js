@@ -1,4 +1,5 @@
 const sql = require("../db/sql");
+const updateStatus = require("./_base/update-status");
 
 module.exports = {
     find: async (optionsObj) => {
@@ -123,89 +124,67 @@ module.exports = {
 
     findOne: async (id) => {
         return await sql`
-      SELECT
-        t.id,
-        t.name,
-        t.description,
-        t."isActive",
-        t."ticketTypeId",
-        tt."name" AS "ticketType",
-        t."createdAt",
-        t."updatedAt",
-        creator.id AS "createdById",
-        creator.email AS "createdByEmail",
-        updater.id AS "updatedById",
-        updater.email AS "updatedByEmail"
-      FROM
-        tickets t
-      LEFT JOIN
-        users creator ON t."createdBy" = creator.id
-      LEFT JOIN
-        users updater ON t."updatedBy" = updater.id
-      LEFT JOIN
-        "ticketTypes" tt ON t."ticketTypeId" = tt.id
-      WHERE
-        t.id = ${id}
-    `.then(([x]) => x);
+            SELECT
+                t.id,
+                t.name,
+                t.description,
+                t."isActive",
+                t."ticketTypeId",
+                tt."name" AS "ticketType",
+                t."createdAt",
+                t."updatedAt",
+                creator.id AS "createdById",
+                creator.email AS "createdByEmail",
+                updater.id AS "updatedById",
+                updater.email AS "updatedByEmail"
+            FROM
+                tickets t
+            LEFT JOIN
+                users creator ON t."createdBy" = creator.id
+            LEFT JOIN
+                users updater ON t."updatedBy" = updater.id
+            LEFT JOIN
+                "ticketTypes" tt ON t."ticketTypeId" = tt.id
+            WHERE
+                t.id = ${id}
+        `.then(([x]) => x);
     },
 
     update: async (ticketObj) => {
         const { id, name, description, ticketTypeId, updatedBy } = ticketObj;
 
         return await sql`
-      UPDATE
-        tickets
-      SET
-        name = ${name},
-        description = ${description},
-        "ticketTypeId" = ${ticketTypeId},
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            UPDATE
+                tickets
+            SET
+                name = ${name},
+                description = ${description},
+                "ticketTypeId" = ${ticketTypeId},
+                "updatedBy" = ${updatedBy},
+                "updatedAt" = ${sql`now()`}
+            WHERE
+                id = ${id}
+            returning id
+            `.then(([x]) => x);
     },
 
     destroy: async (id) => {
         return await sql`
-      DELETE FROM
-        tickets
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+            DELETE FROM
+                tickets
+            WHERE
+                id = ${id}
+            returning id
+        `.then(([x]) => x);
     },
 
     archive: async (ticketObj) => {
-        const { id, updatedBy } = ticketObj;
-
-        return await sql`
-      UPDATE
-        tickets
-      SET
-        "isActive" = false,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+        const obj = { ...ticketObj, isActive: false };
+        return await updateStatus("tickets", obj);
     },
 
     active: async (ticketObj) => {
-        const { id, updatedBy } = ticketObj;
-
-        return await sql`
-      UPDATE
-        tickets
-      SET
-        "isActive" = true,
-        "updatedBy" = ${updatedBy},
-        "updatedAt" = ${sql`now()`}
-      WHERE
-        id = ${id}
-      returning id
-    `.then(([x]) => x);
+        const obj = { ...ticketObj, isActive: true };
+        return await updateStatus("tickets", obj);
     },
 };
