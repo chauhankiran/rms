@@ -1,50 +1,49 @@
 extends ../../layout
 
 block content 
-  .row.align-items-center 
-    .col-6 
-      h1= title
-    .col-6.text-end 
-      a(href="/admin/ticket-types").btn.is-muted.mr-4 &larr; Back 
-      .dropdown
-        button.dropdown-trigger Actions
-        .dropdown-menu 
-          .dropdown-content 
-            a(href=`/admin/ticket-types/${ticketType.id}/edit`).dropdown-item Edit ticket type
-            button(type="button", onClick="activeTicketType()").dropdown-item Active ticket type
-            button(type="button", onClick="archiveTicketType()").dropdown-item Archive ticket type
-            button(type="button", onClick="deleteTicketType()").dropdown-item Delete ticket type
+    .row.align-items-center 
+        .col-6 
+            h1= title
+        .col-6.text-end 
+            a(href="/admin/industries").btn.is-muted.mr-4 &larr; Back 
+            a(href=`/admin/industries/${industry.id}/edit`, title="Edit industry").btn.mr-4 &#9998; Edit
+            .dropdown
+                button.dropdown-trigger Actions
+                .dropdown-menu 
+                    .dropdown-content 
+                        button(type="button", onClick="activateIndustry()" ).dropdown-item Activate industry
+                        button(type="button", onClick="archiveIndustry()" ).dropdown-item Archive industry
+                        button(type="button", onClick="deleteIndustry()" ).dropdown-item Delete industry
 
-    .col-12
-      include ../../partials/flash
+        .col-12
+            include ../../partials/flash
 
-    .col-12 
-      .row 
-        .col-12.mb-4
-          label(for="name").field-name Name 
-          span.field-value #{ticketType.name}
-            if !ticketType.isActive 
-              span.archive-status (archived)
+        .col-12 
+            .row 
+                .col-12.mb-4
+                    label(for="name").field-name Name 
+                    span.field-value #{industry.name}
+                    if !industry.isActive 
+                        span.archive-stage (archived)
 
-        .col-6.mb-4
-          label(for="createdAt").field-name Created at
-          span.field-value #{ticketType.createdAt || "-"}
-        
-        .col-6.mb-4
-          label(for="updatedAt").field-name Updated at
-          span.field-value #{ticketType.updatedAt || "-"}
+                .col-6.mb-4
+                    label(for="createdAt").field-name Created at
+                    span.field-value #{industry.createdAt || "-"}
+                
+                .col-6.mb-4
+                    label(for="updatedAt").field-name Updated at
+                    span.field-value #{industry.updatedAt || "-"}
 
-        .col-6.mb-4
-          label(for="createdBy").field-name Created by
-          span.field-value #{ticketType.createdByEmail || "-"}
-        
-        .col-6.mb-4
-          label(for="updatedBy").field-name Updated by
-          span.field-value #{ticketType.updatedByEmail || "-"}
+                .col-6.mb-4
+                    label(for="createdBy").field-name Created by
+                    span.field-value #{industry.createdByEmail || "-"}
+                
+                .col-6.mb-4
+                    label(for="updatedBy").field-name Updated by
+                    span.field-value #{industry.updatedByEmail || "-"}
 
+            form(action=`/admin/industries/${industry.id}?_method=DELETE`, name="deleteIndustryForm", method="post") 
 
-      form(action=`/admin/ticket-types/${ticketType.id}?_method=DELETE`, name="deleteTicketTypeForm", method="post") 
+            form(action=`/admin/industries/${industry.id}/activate?_method=PUT`, name="activateIndustryForm", method="post") 
 
-      form(action=`/admin/ticket-types/${ticketType.id}/active?_method=PUT`, name="activeTicketTypeForm", method="post") 
-
-      form(action=`/admin/ticket-types/${ticketType.id}/archive?_method=PUT`, name="archiveTicketTypeForm", method="post") 
+            form(action=`/admin/industries/${industry.id}/archive?_method=PUT`, name="archiveIndustryForm", method="post")

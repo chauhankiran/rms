@@ -1,50 +1,49 @@
 extends ../../layout
 
 block content 
-  .row.align-items-center 
-    .col-6 
-      h1= title
-    .col-6.text-end 
-      a(href="/admin/ticket-types").btn.is-muted.mr-4 &larr; Back 
-      .dropdown
-        button.dropdown-trigger Actions
-        .dropdown-menu 
-          .dropdown-content 
-            a(href=`/admin/ticket-types/${ticketType.id}/edit`).dropdown-item Edit ticket type
-            button(type="button", onClick="activeTicketType()").dropdown-item Active ticket type
-            button(type="button", onClick="archiveTicketType()").dropdown-item Archive ticket type
-            button(type="button", onClick="deleteTicketType()").dropdown-item Delete ticket type
+    .row.align-items-center 
+        .col-6 
+            h1= title
+        .col-6.text-end 
+            a(href="/admin/types").btn.is-muted.mr-4 &larr; Back 
+            a(href=`/admin/types/${type.id}/edit`, title="Edit type").btn.mr-4 &#9998; Edit
+            .dropdown
+                button.dropdown-trigger Actions
+                .dropdown-menu 
+                    .dropdown-content 
+                        button(type="button", onClick="activateType()" ).dropdown-item Activate type
+                        button(type="button", onClick="archiveType()" ).dropdown-item Archive type
+                        button(type="button", onClick="deleteType()" ).dropdown-item Delete type
 
-    .col-12
-      include ../../partials/flash
+        .col-12
+            include ../../partials/flash
 
-    .col-12 
-      .row 
-        .col-12.mb-4
-          label(for="name").field-name Name 
-          span.field-value #{ticketType.name}
-            if !ticketType.isActive 
-              span.archive-status (archived)
+        .col-12 
+            .row 
+                .col-12.mb-4
+                    label(for="name").field-name Name 
+                    span.field-value #{type.name}
+                    if !type.isActive 
+                        span.archive-stage (archived)
+                
+                .col-6.mb-4
+                    label(for="createdAt").field-name Created at
+                    span.field-value #{type.createdAt || "-"}
+                
+                .col-6.mb-4
+                    label(for="updatedAt").field-name Updated at
+                    span.field-value #{type.updatedAt || "-"}
 
-        .col-6.mb-4
-          label(for="createdAt").field-name Created at
-          span.field-value #{ticketType.createdAt || "-"}
-        
-        .col-6.mb-4
-          label(for="updatedAt").field-name Updated at
-          span.field-value #{ticketType.updatedAt || "-"}
+                .col-6.mb-4
+                    label(for="createdBy").field-name Created by
+                    span.field-value #{type.createdByEmail || "-"}
+                
+                .col-6.mb-4
+                    label(for="updatedBy").field-name Updated by
+                    span.field-value #{type.updatedByEmail || "-"}
 
-        .col-6.mb-4
-          label(for="createdBy").field-name Created by
-          span.field-value #{ticketType.createdByEmail || "-"}
-        
-        .col-6.mb-4
-          label(for="updatedBy").field-name Updated by
-          span.field-value #{ticketType.updatedByEmail || "-"}
+            form(action=`/admin/types/${type.id}?_method=DELETE`, name="deleteTypeForm", method="post") 
 
+            form(action=`/admin/types/${type.id}/activate?_method=PUT`, name="activateTypeForm", method="post") 
 
-      form(action=`/admin/ticket-types/${ticketType.id}?_method=DELETE`, name="deleteTicketTypeForm", method="post") 
-
-      form(action=`/admin/ticket-types/${ticketType.id}/active?_method=PUT`, name="activeTicketTypeForm", method="post") 
-
-      form(action=`/admin/ticket-types/${ticketType.id}/archive?_method=PUT`, name="archiveTicketTypeForm", method="post") 
+            form(action=`/admin/types/${type.id}/archive?_method=PUT`, name="archiveTypeForm", method="post")
