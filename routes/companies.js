@@ -5,6 +5,8 @@ const companyFilesController = require("../controllers/company-files-controller"
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 
+const checkExists = require("../middleware/check-exists");
+
 const router = express.Router();
 
 router.get("/", companiesController.index);
@@ -14,19 +16,15 @@ router.get("/new", companiesController.new);
 router.post("/", companiesController.create);
 router.get("/:id", companiesController.show);
 router.get("/:id/edit", companiesController.edit);
-router.put("/:id", companiesController.update);
-router.delete("/:id", companiesController.destroy);
-router.put("/:id/archive", companiesController.archive);
-router.put("/:id/active", companiesController.active);
+router.put("/:id", checkExists("companies"), companiesController.update);
+router.delete("/:id", checkExists("companies"), companiesController.destroy);
+router.put("/:id/archive", checkExists("companies"), companiesController.archive);
+router.put("/:id/active", checkExists("companies"), companiesController.active);
 
 router.post("/:id/comments", companyCommentsController.create);
 router.delete("/:companyId/comments/:id", companyCommentsController.destroy);
 
-router.post(
-    "/:id/files",
-    upload.single("displayName"),
-    companyFilesController.create
-);
+router.post("/:id/files", upload.single("displayName"), companyFilesController.create);
 router.delete("/:companyId/files/:id", companyFilesController.destroy);
 router.get("/:companyId/files/:id", companyFilesController.download);
 

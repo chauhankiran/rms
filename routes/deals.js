@@ -5,6 +5,8 @@ const dealFilesController = require("../controllers/deal-files-controller");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 
+const checkExists = require("../middleware/check-exists");
+
 const router = express.Router();
 
 router.get("/", dealsController.index);
@@ -14,19 +16,15 @@ router.get("/new", dealsController.new);
 router.post("/", dealsController.create);
 router.get("/:id", dealsController.show);
 router.get("/:id/edit", dealsController.edit);
-router.put("/:id", dealsController.update);
-router.delete("/:id", dealsController.destroy);
-router.put("/:id/archive", dealsController.archive);
-router.put("/:id/active", dealsController.active);
+router.put("/:id", checkExists("deals"), dealsController.update);
+router.delete("/:id", checkExists("deals"), dealsController.destroy);
+router.put("/:id/archive", checkExists("deals"), dealsController.archive);
+router.put("/:id/active", checkExists("deals"), dealsController.active);
 
 router.post("/:id/comments", dealCommentsController.create);
 router.delete("/:dealId/comments/:id", dealCommentsController.destroy);
 
-router.post(
-    "/:id/files",
-    upload.single("displayName"),
-    dealFilesController.create
-);
+router.post("/:id/files", upload.single("displayName"), dealFilesController.create);
 router.delete("/:dealId/files/:id", dealFilesController.destroy);
 router.get("/:dealId/files/:id", dealFilesController.download);
 

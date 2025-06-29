@@ -65,9 +65,7 @@ module.exports = {
 
         try {
             // Run the query to fetch the fields.
-            let fields = await taskViewsService.find(
-                req.session.currentUser.id
-            );
+            let fields = await taskViewsService.find(req.session.currentUser.id);
 
             // If somehow, view is not set for the user, go with these fields.
             if (fields.length === 0) {
@@ -98,8 +96,7 @@ module.exports = {
 
             // Check user type. If type == "user" only fetch active tasks.
             // If type === "admin", then show all the tasks.
-            const isActiveOnly =
-                req.session.currentUser.type === "user" ? true : false;
+            const isActiveOnly = req.session.currentUser.type === "user" ? true : false;
 
             // Fetch tasks.
             const optionsObj = {
@@ -151,17 +148,10 @@ module.exports = {
         const ticketId = req.query.ticketId;
 
         try {
-            const taskTypes = await refsService.pluck("taskTypes", [
-                "id",
-                "name",
-            ]);
+            const taskTypes = await refsService.pluck("taskTypes", ["id", "name"]);
 
             return res.render("tasks/new", {
-                title:
-                    "New " +
-                    pluralize.singular(
-                        req.session.labels.module.task.toLowerCase()
-                    ),
+                title: "New " + pluralize.singular(req.session.labels.module.task.toLowerCase()),
                 taskTypes,
                 companyId,
                 contactId,
@@ -208,10 +198,7 @@ module.exports = {
             };
 
             const resp = await tasksService.create(taskObj);
-            req.flash(
-                "info",
-                message(locales.task.created, { name: resp.name })
-            );
+            req.flash("info", message(locales.task.created, { name: resp.name }));
 
             if (companyId) {
                 return res.redirect(`/companies/${companyId}`);
@@ -248,11 +235,7 @@ module.exports = {
             const files = await taskFilesService.findOne(id);
 
             return res.render("tasks/show", {
-                title:
-                    "Show " +
-                    pluralize.singular(
-                        req.session.labels.module.task.toLowerCase()
-                    ),
+                title: "Show " + pluralize.singular(req.session.labels.module.task.toLowerCase()),
                 task,
                 comments,
                 files,
@@ -272,17 +255,10 @@ module.exports = {
                 return next(notFound());
             }
 
-            const taskTypes = await refsService.pluck("taskTypes", [
-                "id",
-                "name",
-            ]);
+            const taskTypes = await refsService.pluck("taskTypes", ["id", "name"]);
 
             return res.render("tasks/edit", {
-                title:
-                    "Edit " +
-                    pluralize.singular(
-                        req.session.labels.module.task.toLowerCase()
-                    ),
+                title: "Edit " + pluralize.singular(req.session.labels.module.task.toLowerCase()),
                 task,
                 taskTypes,
             });
@@ -300,13 +276,6 @@ module.exports = {
             return res.redirect(`/tasks/${id}/edit`);
         }
         try {
-            const task = await tasksService.findOne(id);
-
-            if (!task) {
-                req.flash("error", "Task not found.");
-                return res.redirect("/tasks");
-            }
-
             const taskObj = {
                 id,
                 name,
@@ -318,10 +287,7 @@ module.exports = {
             };
             const resp = await tasksService.update(taskObj);
 
-            req.flash(
-                "info",
-                message(locales.task.updated, { name: resp.name })
-            );
+            req.flash("info", message(locales.task.updated, { name: resp.name }));
             return res.redirect(`/tasks/${id}`);
         } catch (err) {
             next(err);
@@ -332,18 +298,9 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const task = await tasksService.findOne(id);
-
-            if (!task) {
-                return next(notFound());
-            }
-
             const resp = await tasksService.destroy(id);
 
-            req.flash(
-                "info",
-                message(locales.task.deleted, { name: resp.name })
-            );
+            req.flash("info", message(locales.task.deleted, { name: resp.name }));
             return res.redirect("/tasks");
         } catch (err) {
             next(err);
@@ -354,19 +311,10 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const task = await tasksService.findOne(id);
-
-            if (!task) {
-                return next(notFound());
-            }
-
             const taskObj = { id, updatedBy: req.session.currentUser.id };
             const resp = await tasksService.archive(taskObj);
 
-            req.flash(
-                "info",
-                message(locales.task.archived, { name: resp.name })
-            );
+            req.flash("info", message(locales.task.archived, { name: resp.name }));
             return res.redirect(`/tasks/${id}`);
         } catch (err) {
             next(err);
@@ -377,19 +325,10 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const task = await tasksService.findOne(id);
-
-            if (!task) {
-                return next(notFound());
-            }
-
             const taskObj = { id, updatedBy: req.session.currentUser.id };
             const resp = await tasksService.active(taskObj);
 
-            req.flash(
-                "info",
-                message(locales.task.activated, { name: resp.name })
-            );
+            req.flash("info", message(locales.task.activated, { name: resp.name }));
             return res.redirect(`/tasks/${id}`);
         } catch (err) {
             next(err);
@@ -402,9 +341,7 @@ module.exports = {
         const all = allFields.map((field) => field.name);
 
         // Get selected fields.
-        const selectedFields = await taskViewsService.find(
-            req.session.currentUser.id
-        );
+        const selectedFields = await taskViewsService.find(req.session.currentUser.id);
         const selected = selectedFields.map((field) => field.name);
 
         // Get available fields (all - selected).

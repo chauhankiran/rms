@@ -64,9 +64,7 @@ module.exports = {
 
         try {
             // Run the query to fetch the fields.
-            let fields = await dealViewsService.find(
-                req.session.currentUser.id
-            );
+            let fields = await dealViewsService.find(req.session.currentUser.id);
 
             // If somehow, view is not set for the user, go with these fields.
             if (fields.length === 0) {
@@ -97,8 +95,7 @@ module.exports = {
 
             // Check user type. If type == "user" only fetch active tasks.
             // If type === "admin", then show all the tasks.
-            const isActiveOnly =
-                req.session.currentUser.type === "user" ? true : false;
+            const isActiveOnly = req.session.currentUser.type === "user" ? true : false;
 
             // Fetch deals.
             const optionsObj = {
@@ -147,17 +144,10 @@ module.exports = {
         const contactId = req.query.contactId;
 
         try {
-            const dealSources = await refsService.pluck("dealSources", [
-                "id",
-                "name",
-            ]);
+            const dealSources = await refsService.pluck("dealSources", ["id", "name"]);
 
             return res.render("deals/new", {
-                title:
-                    "New " +
-                    pluralize.singular(
-                        req.session.labels.module.deal.toLowerCase()
-                    ),
+                title: "New " + pluralize.singular(req.session.labels.module.deal.toLowerCase()),
                 dealSources,
                 companyId,
                 contactId,
@@ -168,8 +158,7 @@ module.exports = {
     },
 
     create: async (req, res, next) => {
-        const { name, total, description, dealSourceId, companyId, contactId } =
-            req.body;
+        const { name, total, description, dealSourceId, companyId, contactId } = req.body;
 
         if (!name) {
             req.flash("error", locales.deal.nameRequired);
@@ -187,10 +176,7 @@ module.exports = {
             };
 
             const resp = await dealsService.create(dealObj);
-            req.flash(
-                "info",
-                message(locales.deal.created, { name: resp.name })
-            );
+            req.flash("info", message(locales.deal.created, { name: resp.name }));
 
             if (companyId) {
                 return res.redirect(`/companies/${companyId}`);
@@ -224,12 +210,7 @@ module.exports = {
                     orderBy: "id",
                     orderDir: "DESC",
                     dealId: deal.id,
-                    query: [
-                        "q.id",
-                        "q.name",
-                        'updater.email AS "updatedByEmail"',
-                        'q."updatedAt"',
-                    ],
+                    query: ["q.id", "q.name", 'updater.email AS "updatedByEmail"', 'q."updatedAt"'],
                 };
                 quotes = await quotesService.find(optionsObj);
             }
@@ -242,12 +223,7 @@ module.exports = {
                     orderBy: "id",
                     orderDir: "DESC",
                     dealId: deal.id,
-                    query: [
-                        "t.id",
-                        "t.name",
-                        'updater.email AS "updatedByEmail"',
-                        't."updatedAt"',
-                    ],
+                    query: ["t.id", "t.name", 'updater.email AS "updatedByEmail"', 't."updatedAt"'],
                 };
                 tickets = await ticketsService.find(optionsObj2);
             }
@@ -260,12 +236,7 @@ module.exports = {
                     orderBy: "id",
                     orderDir: "DESC",
                     dealId: deal.id,
-                    query: [
-                        "t.id",
-                        "t.name",
-                        'updater.email AS "updatedByEmail"',
-                        't."updatedAt"',
-                    ],
+                    query: ["t.id", "t.name", 'updater.email AS "updatedByEmail"', 't."updatedAt"'],
                 };
                 tasks = await tasksService.find(optionsObj3);
             }
@@ -277,11 +248,7 @@ module.exports = {
             const files = await dealFilesService.findOne(id);
 
             return res.render("deals/show", {
-                title:
-                    "Show " +
-                    pluralize.singular(
-                        req.session.labels.module.deal.toLowerCase()
-                    ),
+                title: "Show " + pluralize.singular(req.session.labels.module.deal.toLowerCase()),
                 deal,
                 quotes,
                 tickets,
@@ -304,17 +271,10 @@ module.exports = {
                 return next(notFound());
             }
 
-            const dealSources = await refsService.pluck("dealSources", [
-                "id",
-                "name",
-            ]);
+            const dealSources = await refsService.pluck("dealSources", ["id", "name"]);
 
             return res.render("deals/edit", {
-                title:
-                    "Edit " +
-                    pluralize.singular(
-                        req.session.labels.module.deal.toLowerCase()
-                    ),
+                title: "Edit " + pluralize.singular(req.session.labels.module.deal.toLowerCase()),
                 deal,
                 dealSources,
             });
@@ -332,12 +292,6 @@ module.exports = {
             return res.redirect(`/deals/${id}/edit`);
         }
         try {
-            const deal = await dealsService.findOne(id);
-
-            if (!deal) {
-                return next(notFound());
-            }
-
             const dealObj = {
                 id,
                 name,
@@ -359,18 +313,9 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const deal = await dealsService.findOne(id);
-
-            if (!deal) {
-                return next(notFound());
-            }
-
             const resp = await dealsService.destroy(id);
 
-            req.flash(
-                "info",
-                message(locales.deal.deleted, { name: resp.name })
-            );
+            req.flash("info", message(locales.deal.deleted, { name: resp.name }));
             return res.redirect("/deals");
         } catch (err) {
             next(err);
@@ -381,13 +326,6 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const deal = await dealsService.findOne(id);
-
-            if (!deal) {
-                req.flash("error", "Deal not found.");
-                return res.redirect("/deals");
-            }
-
             const dealObj = { id, updatedBy: req.session.currentUser.id };
             await dealsService.archive(dealObj);
 
@@ -402,12 +340,6 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const deal = await dealsService.findOne(id);
-
-            if (!deal) {
-                return next(notFound());
-            }
-
             const dealObj = { id, updatedBy: req.session.currentUser.id };
             await dealsService.active(dealObj);
 
@@ -424,9 +356,7 @@ module.exports = {
         const all = allFields.map((field) => field.name);
 
         // Get selected fields.
-        const selectedFields = await dealViewsService.find(
-            req.session.currentUser.id
-        );
+        const selectedFields = await dealViewsService.find(req.session.currentUser.id);
         const selected = selectedFields.map((field) => field.name);
 
         // Get available fields (all - selected).

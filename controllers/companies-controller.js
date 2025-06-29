@@ -477,12 +477,6 @@ module.exports = {
             return res.redirect(`/companies/${id}/edit`);
         }
         try {
-            const company = await companiesService.findOne(id);
-
-            if (!company) {
-                return next(notFound());
-            }
-
             const companyObj = {
                 id,
                 name,
@@ -524,12 +518,6 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const company = await companiesService.findOne(id);
-
-            if (!company) {
-                return next(notFound());
-            }
-
             const resp = await companiesService.destroy(id);
 
             req.flash(
@@ -546,16 +534,16 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const company = await companiesService.findOne(id);
+            const companyObj = {
+                id,
+                updatedBy: req.session.currentUser.id,
+            };
+            const resp = await companiesService.archive(companyObj);
 
-            if (!company) {
-                return next(notFound());
-            }
-
-            const companyObj = { id, updatedBy: req.session.currentUser.id };
-            await companiesService.archive(companyObj);
-
-            req.flash("info", locales.company.archived);
+            req.flash(
+                "info",
+                message(locales.company.archived, { name: resp.name })
+            );
             return res.redirect(`/companies/${id}`);
         } catch (err) {
             next(err);
@@ -566,16 +554,16 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const company = await companiesService.findOne(id);
+            const companyObj = {
+                id,
+                updatedBy: req.session.currentUser.id,
+            };
+            const resp = await companiesService.active(companyObj);
 
-            if (!company) {
-                return next(notFound());
-            }
-
-            const companyObj = { id, updatedBy: req.session.currentUser.id };
-            await companiesService.active(companyObj);
-
-            req.flash("info", locales.company.activated);
+            req.flash(
+                "info",
+                message(locales.company.activated, { name: resp.name })
+            );
             return res.redirect(`/companies/${id}`);
         } catch (err) {
             next(err);

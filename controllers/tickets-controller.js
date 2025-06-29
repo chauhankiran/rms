@@ -58,9 +58,7 @@ module.exports = {
 
         try {
             // Run the query to fetch the fields.
-            let fields = await ticketViewsService.find(
-                req.session.currentUser.id
-            );
+            let fields = await ticketViewsService.find(req.session.currentUser.id);
 
             // If somehow, view is not set for the user, go with these fields.
             if (fields.length === 0) {
@@ -91,8 +89,7 @@ module.exports = {
 
             // Check user type. If type == "user" only fetch active tasks.
             // If type === "admin", then show all the tasks.
-            const isActiveOnly =
-                req.session.currentUser.type === "user" ? true : false;
+            const isActiveOnly = req.session.currentUser.type === "user" ? true : false;
 
             // Fetch deals.
             const optionsObj = {
@@ -142,17 +139,10 @@ module.exports = {
         const dealId = req.query.dealId;
 
         try {
-            const ticketTypes = await refsService.pluck("ticketTypes", [
-                "id",
-                "name",
-            ]);
+            const ticketTypes = await refsService.pluck("ticketTypes", ["id", "name"]);
 
             return res.render("tickets/new", {
-                title:
-                    "New " +
-                    pluralize.singular(
-                        req.session.labels.module.ticket.toLowerCase()
-                    ),
+                title: "New " + pluralize.singular(req.session.labels.module.ticket.toLowerCase()),
                 ticketTypes,
                 companyId,
                 contactId,
@@ -164,14 +154,7 @@ module.exports = {
     },
 
     create: async (req, res, next) => {
-        const {
-            name,
-            description,
-            ticketTypeId,
-            companyId,
-            contactId,
-            dealId,
-        } = req.body;
+        const { name, description, ticketTypeId, companyId, contactId, dealId } = req.body;
 
         if (!name) {
             req.flash("error", locales.ticket.nameRequired);
@@ -189,10 +172,7 @@ module.exports = {
             };
 
             const resp = await ticketsService.create(ticketObj);
-            req.flash(
-                "info",
-                message(locales.ticket.created, { name: resp.name })
-            );
+            req.flash("info", message(locales.ticket.created, { name: resp.name }));
 
             if (companyId) {
                 return res.redirect(`/companies/${companyId}`);
@@ -228,12 +208,7 @@ module.exports = {
                     orderBy: "id",
                     orderDir: "DESC",
                     ticketId: ticket.id,
-                    query: [
-                        "t.id",
-                        "t.name",
-                        'updater.email AS "updatedByEmail"',
-                        't."updatedAt"',
-                    ],
+                    query: ["t.id", "t.name", 'updater.email AS "updatedByEmail"', 't."updatedAt"'],
                 };
                 tasks = await tasksService.find(optionsObj);
             }
@@ -245,11 +220,7 @@ module.exports = {
             const files = await ticketFilesService.findOne(id);
 
             return res.render("tickets/show", {
-                title:
-                    "Show " +
-                    pluralize.singular(
-                        req.session.labels.module.ticket.toLowerCase()
-                    ),
+                title: "Show " + pluralize.singular(req.session.labels.module.ticket.toLowerCase()),
                 ticket,
                 tasks,
                 comments,
@@ -270,17 +241,10 @@ module.exports = {
                 return next(notFound());
             }
 
-            const ticketTypes = await refsService.pluck("ticketTypes", [
-                "id",
-                "name",
-            ]);
+            const ticketTypes = await refsService.pluck("ticketTypes", ["id", "name"]);
 
             return res.render("tickets/edit", {
-                title:
-                    "Edit " +
-                    pluralize.singular(
-                        req.session.labels.module.ticket.toLowerCase()
-                    ),
+                title: "Edit " + pluralize.singular(req.session.labels.module.ticket.toLowerCase()),
                 ticket,
                 ticketTypes,
             });
@@ -298,12 +262,6 @@ module.exports = {
             return res.redirect(`/tickets/${id}/edit`);
         }
         try {
-            const ticket = await ticketsService.findOne(id);
-
-            if (!ticket) {
-                return next(notFound());
-            }
-
             const ticketObj = {
                 id,
                 name,
@@ -324,18 +282,9 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const ticket = await ticketsService.findOne(id);
-
-            if (!ticket) {
-                return next(notFound());
-            }
-
             const resp = await ticketsService.destroy(id);
 
-            req.flash(
-                "info",
-                message(locales.ticket.deleted, { name: resp.name })
-            );
+            req.flash("info", message(locales.ticket.deleted, { name: resp.name }));
             return res.redirect("/tickets");
         } catch (err) {
             next(err);
@@ -346,12 +295,6 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const ticket = await ticketsService.findOne(id);
-
-            if (!ticket) {
-                return next(notFound());
-            }
-
             const ticketObj = { id, updatedBy: req.session.currentUser.id };
             await ticketsService.archive(ticketObj);
 
@@ -366,12 +309,6 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const ticket = await ticketsService.findOne(id);
-
-            if (!ticket) {
-                return next(notFound());
-            }
-
             const ticketObj = { id, updatedBy: req.session.currentUser.id };
             await ticketsService.active(ticketObj);
 
@@ -388,9 +325,7 @@ module.exports = {
         const all = allFields.map((field) => field.name);
 
         // Get selected fields.
-        const selectedFields = await ticketViewsService.find(
-            req.session.currentUser.id
-        );
+        const selectedFields = await ticketViewsService.find(req.session.currentUser.id);
         const selected = selectedFields.map((field) => field.name);
 
         // Get available fields (all - selected).

@@ -57,9 +57,7 @@ module.exports = {
 
         try {
             // Run the query to fetch the fields.
-            let fields = await quoteViewsService.find(
-                req.session.currentUser.id
-            );
+            let fields = await quoteViewsService.find(req.session.currentUser.id);
 
             // If somehow, view is not set for the user, go with these fields.
             if (fields.length === 0) {
@@ -135,11 +133,7 @@ module.exports = {
         const dealId = req.query.dealId;
 
         return res.render("quotes/new", {
-            title:
-                "New " +
-                pluralize.singular(
-                    req.session.labels.module.quote.toLowerCase()
-                ),
+            title: "New " + pluralize.singular(req.session.labels.module.quote.toLowerCase()),
             companyId,
             contactId,
             dealId,
@@ -147,8 +141,7 @@ module.exports = {
     },
 
     create: async (req, res, next) => {
-        const { name, total, description, companyId, contactId, dealId } =
-            req.body;
+        const { name, total, description, companyId, contactId, dealId } = req.body;
 
         if (!name) {
             req.flash("error", locales.quote.nameRequired);
@@ -167,10 +160,7 @@ module.exports = {
             };
 
             const resp = await quotesService.create(quoteObj);
-            req.flash(
-                "info",
-                message(locales.quote.created, { name: resp.name })
-            );
+            req.flash("info", message(locales.quote.created, { name: resp.name }));
 
             if (companyId) {
                 return res.redirect(`/companies/${companyId}`);
@@ -206,12 +196,7 @@ module.exports = {
                     orderBy: "id",
                     orderDir: "DESC",
                     quoteId: quote.id,
-                    query: [
-                        "t.id",
-                        "t.name",
-                        'updater.email AS "updatedByEmail"',
-                        't."updatedAt"',
-                    ],
+                    query: ["t.id", "t.name", 'updater.email AS "updatedByEmail"', 't."updatedAt"'],
                 };
                 tasks = await tasksService.find(optionsObj);
             }
@@ -223,11 +208,7 @@ module.exports = {
             const files = await quoteFilesService.findOne(id);
 
             return res.render("quotes/show", {
-                title:
-                    "Show " +
-                    pluralize.singular(
-                        req.session.labels.module.quote.toLowerCase()
-                    ),
+                title: "Show " + pluralize.singular(req.session.labels.module.quote.toLowerCase()),
                 quote,
                 tasks,
                 comments,
@@ -249,11 +230,7 @@ module.exports = {
             }
 
             return res.render("quotes/edit", {
-                title:
-                    "Edit " +
-                    pluralize.singular(
-                        req.session.labels.module.quote.toLowerCase()
-                    ),
+                title: "Edit " + pluralize.singular(req.session.labels.module.quote.toLowerCase()),
                 quote,
             });
         } catch (err) {
@@ -270,12 +247,6 @@ module.exports = {
             return res.redirect(`/quotes/${id}/edit`);
         }
         try {
-            const quote = await quotesService.findOne(id);
-
-            if (!quote) {
-                return next(notFound());
-            }
-
             const quoteObj = {
                 id,
                 name,
@@ -296,18 +267,9 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const quote = await quotesService.findOne(id);
-
-            if (!quote) {
-                return next(notFound());
-            }
-
             const resp = await quotesService.destroy(id);
 
-            req.flash(
-                "info",
-                message(locales.quote.deleted, { name: resp.name })
-            );
+            req.flash("info", message(locales.quote.deleted, { name: resp.name }));
             return res.redirect("/quotes");
         } catch (err) {
             next(err);
@@ -318,12 +280,6 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const quote = await quotesService.findOne(id);
-
-            if (!quote) {
-                return next(notFound());
-            }
-
             const quoteObj = { id, updatedBy: req.session.currentUser.id };
             await quotesService.archive(quoteObj);
 
@@ -338,12 +294,6 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const quote = await quotesService.findOne(id);
-
-            if (!quote) {
-                return next(notFound());
-            }
-
             const quoteObj = { id, updatedBy: req.session.currentUser.id };
             await quotesService.active(quoteObj);
 
@@ -360,9 +310,7 @@ module.exports = {
         const all = allFields.map((field) => field.name);
 
         // Get selected fields.
-        const selectedFields = await quoteViewsService.find(
-            req.session.currentUser.id
-        );
+        const selectedFields = await quoteViewsService.find(req.session.currentUser.id);
         const selected = selectedFields.map((field) => field.name);
 
         // Get available fields (all - selected).

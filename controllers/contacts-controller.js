@@ -77,9 +77,7 @@ module.exports = {
 
         try {
             // Run the query to fetch the fields.
-            let fields = await contactViewsService.find(
-                req.session.currentUser.id
-            );
+            let fields = await contactViewsService.find(req.session.currentUser.id);
 
             // If somehow, view is not set for the user, go with these fields.
             if (fields.length === 0) {
@@ -110,8 +108,7 @@ module.exports = {
 
             // Check user type. If type == "user" only fetch active tasks.
             // If type === "admin", then show all the tasks.
-            const isActiveOnly =
-                req.session.currentUser.type === "user" ? true : false;
+            const isActiveOnly = req.session.currentUser.type === "user" ? true : false;
 
             // Fetch contacts.
             const optionsObj = {
@@ -159,17 +156,10 @@ module.exports = {
         const companyId = req.query.companyId;
 
         try {
-            const contactIndustries = await refsService.pluck(
-                "contactIndustries",
-                ["id", "name"]
-            );
+            const contactIndustries = await refsService.pluck("contactIndustries", ["id", "name"]);
 
             return res.render("contacts/new", {
-                title:
-                    "New " +
-                    pluralize.singular(
-                        req.session.labels.module.contact.toLowerCase()
-                    ),
+                title: "New " + pluralize.singular(req.session.labels.module.contact.toLowerCase()),
                 contactIndustries,
                 companyId,
             });
@@ -218,7 +208,7 @@ module.exports = {
                 message(locales.contact.created, {
                     firstName: resp.firstName,
                     lastName: resp.lastName,
-                })
+                }),
             );
 
             if (companyId) {
@@ -251,12 +241,7 @@ module.exports = {
                     orderBy: "id",
                     orderDir: "DESC",
                     contactId: contact.id,
-                    query: [
-                        "d.id",
-                        "d.name",
-                        'updater.email AS "updatedByEmail"',
-                        'd."updatedAt"',
-                    ],
+                    query: ["d.id", "d.name", 'updater.email AS "updatedByEmail"', 'd."updatedAt"'],
                 };
                 deals = await dealsService.find(optionsObj);
             }
@@ -269,12 +254,7 @@ module.exports = {
                     orderBy: "id",
                     orderDir: "DESC",
                     contactId: contact.id,
-                    query: [
-                        "q.id",
-                        "q.name",
-                        'updater.email AS "updatedByEmail"',
-                        'q."updatedAt"',
-                    ],
+                    query: ["q.id", "q.name", 'updater.email AS "updatedByEmail"', 'q."updatedAt"'],
                 };
                 quotes = await quotesService.find(optionsObj2);
             }
@@ -287,12 +267,7 @@ module.exports = {
                     orderBy: "id",
                     orderDir: "DESC",
                     contactId: contact.id,
-                    query: [
-                        "t.id",
-                        "t.name",
-                        'updater.email AS "updatedByEmail"',
-                        't."updatedAt"',
-                    ],
+                    query: ["t.id", "t.name", 'updater.email AS "updatedByEmail"', 't."updatedAt"'],
                 };
                 tickets = await ticketsService.find(optionsObj3);
             }
@@ -305,12 +280,7 @@ module.exports = {
                     orderBy: "id",
                     orderDir: "DESC",
                     contactId: contact.id,
-                    query: [
-                        "t.id",
-                        "t.name",
-                        'updater.email AS "updatedByEmail"',
-                        't."updatedAt"',
-                    ],
+                    query: ["t.id", "t.name", 'updater.email AS "updatedByEmail"', 't."updatedAt"'],
                 };
                 tasks = await tasksService.find(optionsObj4);
             }
@@ -323,10 +293,7 @@ module.exports = {
 
             return res.render("contacts/show", {
                 title:
-                    "Show " +
-                    pluralize.singular(
-                        req.session.labels.module.contact.toLowerCase()
-                    ),
+                    "Show " + pluralize.singular(req.session.labels.module.contact.toLowerCase()),
                 contact,
                 deals,
                 quotes,
@@ -350,17 +317,11 @@ module.exports = {
                 return next(notFound());
             }
 
-            const contactIndustries = await refsService.pluck(
-                "contactIndustries",
-                ["id", "name"]
-            );
+            const contactIndustries = await refsService.pluck("contactIndustries", ["id", "name"]);
 
             return res.render("contacts/edit", {
                 title:
-                    "Edit " +
-                    pluralize.singular(
-                        req.session.labels.module.contact.toLowerCase()
-                    ),
+                    "Edit " + pluralize.singular(req.session.labels.module.contact.toLowerCase()),
                 contact,
                 contactIndustries,
             });
@@ -371,14 +332,8 @@ module.exports = {
 
     update: async (req, res, next) => {
         const id = req.params.id;
-        const {
-            prefix,
-            firstName,
-            lastName,
-            annualRevenue,
-            description,
-            contactIndustryId,
-        } = req.body;
+        const { prefix, firstName, lastName, annualRevenue, description, contactIndustryId } =
+            req.body;
 
         if (!firstName) {
             req.flash("error", locales.contact.firstNameRequired);
@@ -391,12 +346,6 @@ module.exports = {
         }
 
         try {
-            const contact = await contactsService.findOne(id);
-
-            if (!contact) {
-                return next(notFound());
-            }
-
             const contactObj = {
                 id,
                 prefix,
@@ -420,19 +369,13 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const contact = await contactsService.findOne(id);
-
-            if (!contact) {
-                return next(notFound());
-            }
-
             const resp = await contactsService.destroy(id);
 
             req.flash(
                 "info",
                 message(locales.contact.deleted, {
                     name: resp.firstName + " " + resp.lastName,
-                })
+                }),
             );
             return res.redirect("/contacts");
         } catch (err) {
@@ -444,12 +387,6 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const contact = await contactsService.findOne(id);
-
-            if (!contact) {
-                return next(notFound());
-            }
-
             const contactObj = { id, updatedBy: req.session.currentUser.id };
             await contactsService.archive(contactObj);
 
@@ -464,12 +401,6 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const contact = await contactsService.findOne(id);
-
-            if (!contact) {
-                return next(notFound());
-            }
-
             const contactObj = { id, updatedBy: req.session.currentUser.id };
             await contactsService.active(contactObj);
 
@@ -486,9 +417,7 @@ module.exports = {
         const all = allFields.map((field) => field.name);
 
         // Get selected fields.
-        const selectedFields = await contactViewsService.find(
-            req.session.currentUser.id
-        );
+        const selectedFields = await contactViewsService.find(req.session.currentUser.id);
         const selected = selectedFields.map((field) => field.name);
 
         // Get available fields (all - selected).
