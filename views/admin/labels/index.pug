@@ -1,0 +1,70 @@
+extends ../../layout
+include ../../mixins/pagination
+
+block content
+    .row.align-items-center 
+        .col-12 
+            h1 #{title} (#{count})
+
+        .col-12
+            form(action=`/admin/labels/${locals.label.key}`, method="get") 
+                .form-group 
+                    input(type="hidden", name="orderBy", value=orderBy)
+                    input(type="hidden", name="orderDir", value=orderDir)
+                    input(type="text", name="search", value=search, autofocus=true, placeholder="Type name and press Enter")
+
+            include ../../partials/flash
+
+            table
+                thead 
+                    tr  
+                        th
+                            if orderDir === 'ASC'
+                                a(href=`/admin/labels/${locals.label.key}?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`) Id
+                            else 
+                                a(href=`/admin/labels/${locals.label.key}?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`) Id
+
+                            if orderBy === 'id'
+                                span.order-wrapper= orderDir
+                
+                        th
+                            if orderDir === 'ASC'
+                                a(href=`/admin/labels/${locals.label.key}?orderBy=displayName&orderDir=DESC${search ? `&search=${search}` : ''}`) Display name
+                            else 
+                                a(href=`/admin/labels/${locals.label.key}?orderBy=displayName&orderDir=ASC${search ? `&search=${search}` : ''}`) Display name
+                            
+                            if orderBy === 'displayName'
+                                span.order-wrapper= orderDir
+
+                        th Updated by
+
+                        th
+                            if orderDir === 'ASC'
+                                a(href=`/admin/labels/${locals.label.key}?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`) Updated at
+                            else 
+                                a(href=`/admin/labels/${locals.label.key}?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`) Updated at
+                        
+                            if orderBy === 'updatedAt'
+                                span.order-wrapper= orderDir
+                
+                    tbody 
+                        if labels_.length > 0
+                            each label_ in labels_ 
+                                tr
+                                    td
+                                        a(href=`/admin/labels/${locals.label.key}/${label_.id}`) #{label_.id}
+                                    td 
+                                        a(href=`/admin/labels/${locals.label.key}/${label_.id}`) #{label_.displayName || "-" }
+
+                                        if (!label_.isActive)
+                                            span.archive-status (not active)
+
+                                    td #{label_.updatedByEmail || "-" }
+
+                                    td #{label_.updatedAt || "-" }
+                        else
+                            tr
+                                td(colspan=7).text-center No #{locals.label.pluralName} found.
+
+        .col-12 
+            +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

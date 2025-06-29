@@ -1,13 +1,7 @@
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const authService = require("../services/auth-service");
-const companyLabelsService = require("../services/admin/company-labels-service");
-const contactLabelsService = require("../services/admin/contact-labels-service");
-const dealLabelsService = require("../services/admin/deal-labels-service");
-const quoteLabelsService = require("../services/admin/quote-labels-service");
-const ticketLabelsService = require("../services/admin/ticket-labels-service");
-const taskLabelsService = require("../services/admin/task-labels-service");
-const moduleLabelsService = require("../services/admin/module-labels-service");
+const labelsService = require("../services/admin/labels-service");
 
 const { Resend } = require("resend");
 const sql = require("../db/sql");
@@ -88,31 +82,46 @@ module.exports = {
             const columns = ["name", "displayName"];
 
             // Company labels.
-            const companyLabels = await companyLabelsService.pluck(columns);
+            const companyLabels = await labelsService.pluck(
+                "companyLabels",
+                columns
+            );
             req.session.labels.company = transformLabels(companyLabels);
 
             // Contact labels.
-            const contactLabels = await contactLabelsService.pluck(columns);
+            const contactLabels = await labelsService.pluck(
+                "contactLabels",
+                columns
+            );
             req.session.labels.contact = transformLabels(contactLabels);
 
             // Deal labels.
-            const dealLabels = await dealLabelsService.pluck(columns);
+            const dealLabels = await labelsService.pluck("dealLabels", columns);
             req.session.labels.deal = transformLabels(dealLabels);
 
             // Quote labels.
-            const quoteLabels = await quoteLabelsService.pluck(columns);
+            const quoteLabels = await labelsService.pluck(
+                "quoteLabels",
+                columns
+            );
             req.session.labels.quote = transformLabels(quoteLabels);
 
             // Ticket labels.
-            const ticketLabels = await ticketLabelsService.pluck(columns);
+            const ticketLabels = await labelsService.pluck(
+                "ticketLabels",
+                columns
+            );
             req.session.labels.ticket = transformLabels(ticketLabels);
 
             // Task labels.
-            const taskLabels = await taskLabelsService.pluck(columns);
+            const taskLabels = await labelsService.pluck("taskLabels", columns);
             req.session.labels.task = transformLabels(taskLabels);
 
             // Module labels.
-            const moduleLabels = await moduleLabelsService.pluck(columns);
+            const moduleLabels = await labelsService.pluck(
+                "moduleLabels",
+                columns
+            );
             req.session.labels.module = transformLabels(moduleLabels);
 
             return res.redirect("/dashboard");

@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+    .row 
+        .col-6 
+            h1= title
+
+            include ../partials/flash
+
+            ul 
+                li Click here to manage 
+                    a(href="/admin/labels/companies") Company labels 
+                li Click here to manage 
+                    a(href="/admin/labels/contacts") Contact labels 
+                li Click here to manage 
+                    a(href="/admin/labels/deals") Deal labels 
+                li Click here to manage 
+                    a(href="/admin/labels/quotes") Quote labels 
+                li Click here to manage 
+                    a(href="/admin/labels/tickets") Ticket labels 
+                li Click here to manage 
+                    a(href="/admin/labels/tasks") Task labels 
+                li Click here to manage 
+                    a(href="/admin/labels/modules") Module labels 

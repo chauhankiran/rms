@@ -1,0 +1,53 @@
+extends ../../layout
+
+block content 
+    .row.align-items-center 
+        .col-6 
+            h1= title
+        .col-6.text-end 
+            a(href="/admin/labels/companies").btn.is-muted.mr-4 &larr; Back 
+            a(href=`/admin/labels/${locals.label.key}/${label_.id}/edit`).btn.mr-4 Edit #{locals.label.singularName}
+            .dropdown
+                button.dropdown-trigger Actions
+                .dropdown-menu 
+                    .dropdown-content 
+                        button(type="button", onClick="activeLabel()").dropdown-item Active #{locals.label.singularName}
+                        button(type="button", onClick="archiveLabel()").dropdown-item Archive #{locals.label.singularName}
+
+        .col-12
+            include ../../partials/flash
+
+        .col-12 
+            .row 
+                .col-12.mb-4
+                    label(for="name").field-name Name 
+                    span.field-value #{label_.name}
+                    if !label_.isActive 
+                        span.archive-status (archived)
+
+                .col-12.mb-4
+                    label(for="displayName").field-name Display name 
+                    span.field-value #{label_.displayName}
+
+                .col-6.mb-4
+                    label(for="createdAt").field-name Created at
+                    span.field-value #{label_.createdAt || "-"}
+                
+                .col-6.mb-4
+                    label(for="updatedAt").field-name Updated at
+                    span.field-value #{label_.updatedAt || "-"}
+
+                .col-6.mb-4
+                    label(for="createdBy").field-name Created by
+                    span.field-value #{label_.createdByEmail || "-"}
+                
+                .col-6.mb-4
+                    label(for="updatedBy").field-name Updated by
+                    span.field-value #{label_.updatedByEmail || "-"}
+
+
+        form(action=`/admin/labels/${locals.label.key}/${label_.id}?_method=DELETE`, name="deleteLabelForm", method="post") 
+
+        form(action=`/admin/labels/${locals.label.key}/${label_.id}/active?_method=PUT`, name="activeLabelForm", method="post") 
+
+        form(action=`/admin/labels/${locals.label.key}/${label_.id}/archive?_method=PUT`, name="archiveLabelForm", method="post") 
