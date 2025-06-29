@@ -4,7 +4,7 @@ const taskCommentsService = require("../services/task-comments-service");
 const taskFilesService = require("../services/task-files-service");
 const taskViewsService = require("../services/task-views-service");
 const refsService = require("../services/admin/refs-service");
-const taskLabelsService = require("../services/task-labels-services");
+const labelsService = require("../services/admin/labels-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
@@ -398,7 +398,7 @@ module.exports = {
 
     showView: async (req, res, next) => {
         // Get all active fields.
-        const allFields = await taskLabelsService.find();
+        const allFields = await labelsService.pluck("taskLabels", ["name"]);
         const all = allFields.map((field) => field.name);
 
         // Get selected fields.

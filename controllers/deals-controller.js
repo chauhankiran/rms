@@ -3,7 +3,7 @@ const dealsService = require("../services/deals-service");
 const dealCommentsService = require("../services/deal-comments-service");
 const dealFilesService = require("../services/deal-files-service");
 const dealViewsService = require("../services/deal-views-service");
-const dealLabelsService = require("../services/deal-labels-service");
+const labelsService = require("../services/admin/labels-service");
 const refsService = require("../services/admin/refs-service");
 const quotesService = require("../services/quotes-service");
 const ticketsService = require("../services/tickets-service");
@@ -365,9 +365,12 @@ module.exports = {
                 return next(notFound());
             }
 
-            await dealsService.destroy(id);
+            const resp = await dealsService.destroy(id);
 
-            req.flash("info", locales.deal.deleted);
+            req.flash(
+                "info",
+                message(locales.deal.deleted, { name: resp.name })
+            );
             return res.redirect("/deals");
         } catch (err) {
             next(err);
@@ -417,7 +420,7 @@ module.exports = {
 
     showView: async (req, res, next) => {
         // Get all active fields.
-        const allFields = await dealLabelsService.find();
+        const allFields = await labelsService.pluck("dealLabels", ["name"]);
         const all = allFields.map((field) => field.name);
 
         // Get selected fields.

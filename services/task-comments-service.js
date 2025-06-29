@@ -1,4 +1,5 @@
 const sql = require("../db/sql");
+const destroy = require("./_base/destroy");
 
 module.exports = {
     create: async (taskCommentObj) => {
@@ -41,12 +42,6 @@ module.exports = {
     },
 
     destroy: async (commentId) => {
-        return await sql`
-            DELETE FROM 
-                "taskComments"
-            WHERE 
-                id = ${commentId}
-            returning id
-        `.then(([x]) => x);
+        return await destroy("taskComments", commentId);
     },
 };

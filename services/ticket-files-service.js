@@ -1,4 +1,5 @@
 const sql = require("../db/sql");
+const destroy = require("./_base/destroy");
 
 module.exports = {
     create: async (ticketFileObj) => {
@@ -68,12 +69,6 @@ module.exports = {
     },
 
     destroy: async (fileId) => {
-        return await sql`
-            DELETE FROM 
-                "ticketFiles"
-            WHERE 
-                id = ${fileId}
-            returning id
-        `.then(([x]) => x);
+        return await destroy("ticketFiles", fileId);
     },
 };

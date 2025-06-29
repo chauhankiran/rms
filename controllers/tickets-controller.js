@@ -3,7 +3,7 @@ const ticketsService = require("../services/tickets-service");
 const ticketCommentsService = require("../services/ticket-comments-service");
 const ticketFilesService = require("../services/ticket-files-service");
 const ticketViewsService = require("../services/ticket-views-service");
-const ticketLabelsService = require("../services/ticket-labels-service");
+const labelsService = require("../services/admin/labels-service");
 const refsService = require("../services/admin/refs-service");
 const tasksService = require("../services/tasks-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
@@ -330,9 +330,12 @@ module.exports = {
                 return next(notFound());
             }
 
-            await ticketsService.destroy(id);
+            const resp = await ticketsService.destroy(id);
 
-            req.flash("info", locales.ticket.deleted);
+            req.flash(
+                "info",
+                message(locales.ticket.deleted, { name: resp.name })
+            );
             return res.redirect("/tickets");
         } catch (err) {
             next(err);
@@ -381,7 +384,7 @@ module.exports = {
 
     showView: async (req, res, next) => {
         // Get all active fields.
-        const allFields = await ticketLabelsService.find();
+        const allFields = await labelsService.pluck("ticketLabels", ["name"]);
         const all = allFields.map((field) => field.name);
 
         // Get selected fields.

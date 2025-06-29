@@ -1,5 +1,6 @@
 const sql = require("../db/sql");
 const updateStatus = require("./_base/update-status");
+const destroy = require("./_base/destroy");
 
 module.exports = {
     find: async (optionsObj) => {
@@ -181,13 +182,7 @@ module.exports = {
     },
 
     destroy: async (id) => {
-        return await sql`
-            DELETE FROM
-                contacts
-            WHERE
-                id = ${id}
-            returning id, "firstName", "lastName"
-        `.then(([x]) => x);
+        return await destroy("contacts", id);
     },
 
     archive: async (contactObj) => {

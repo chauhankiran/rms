@@ -3,7 +3,7 @@ const contactsService = require("../services/contacts-service");
 const contactCommentsService = require("../services/contact-comments-service");
 const contactFilesService = require("../services/contact-files-service");
 const contactViewsService = require("../services/contact-views-service");
-const contactLabelsService = require("../services/contact-labels-service");
+const labelsService = require("../services/admin/labels-service");
 const refsService = require("../services/admin/refs-service");
 const dealsService = require("../services/deals-service");
 const quotesService = require("../services/quotes-service");
@@ -426,9 +426,14 @@ module.exports = {
                 return next(notFound());
             }
 
-            await contactsService.destroy(id);
+            const resp = await contactsService.destroy(id);
 
-            req.flash("info", locales.contact.deleted);
+            req.flash(
+                "info",
+                message(locales.contact.deleted, {
+                    name: resp.firstName + " " + resp.lastName,
+                })
+            );
             return res.redirect("/contacts");
         } catch (err) {
             next(err);
@@ -477,7 +482,7 @@ module.exports = {
 
     showView: async (req, res, next) => {
         // Get all active fields.
-        const allFields = await contactLabelsService.find();
+        const allFields = await labelsService.pluck("contactLabels", ["name"]);
         const all = allFields.map((field) => field.name);
 
         // Get selected fields.

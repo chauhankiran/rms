@@ -4,7 +4,7 @@ const companyCommentsService = require("../services/company-comments-service");
 const companyFilesService = require("../services/company-files-service");
 const contactsService = require("../services/contacts-service");
 const companyViewsService = require("../services/company-views-service");
-const companyLabelsService = require("../services/company-labels-service");
+const labelsService = require("../services/admin/labels-service");
 const refsService = require("../services/admin/refs-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const dealsService = require("../services/deals-service");
@@ -530,9 +530,12 @@ module.exports = {
                 return next(notFound());
             }
 
-            await companiesService.destroy(id);
+            const resp = await companiesService.destroy(id);
 
-            req.flash("info", locales.company.deleted);
+            req.flash(
+                "info",
+                message(locales.company.deleted, { name: resp.name })
+            );
             return res.redirect("/companies");
         } catch (err) {
             next(err);
@@ -581,7 +584,7 @@ module.exports = {
 
     showView: async (req, res, next) => {
         // Get all active fields.
-        const allFields = await companyLabelsService.find();
+        const allFields = await labelsService.pluck("companyLabels", ["name"]);
         const all = allFields.map((field) => field.name);
 
         // Get selected fields.

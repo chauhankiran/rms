@@ -1,4 +1,5 @@
 const sql = require("../db/sql");
+const destroy = require("./_base/destroy");
 
 module.exports = {
     create: async (ticketCommentObj) => {

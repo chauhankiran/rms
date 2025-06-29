@@ -3,7 +3,7 @@ const quotesService = require("../services/quotes-service");
 const quoteCommentsService = require("../services/quote-comments-service");
 const quoteFilesService = require("../services/quote-files-service");
 const quoteViewsService = require("../services/quote-views-service");
-const quoteLabelsService = require("../services/quote-labels-service");
+const labelsService = require("../services/admin/labels-service");
 const tasksService = require("../services/tasks-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
@@ -302,9 +302,12 @@ module.exports = {
                 return next(notFound());
             }
 
-            await quotesService.destroy(id);
+            const resp = await quotesService.destroy(id);
 
-            req.flash("info", locales.quote.deleted);
+            req.flash(
+                "info",
+                message(locales.quote.deleted, { name: resp.name })
+            );
             return res.redirect("/quotes");
         } catch (err) {
             next(err);
@@ -353,7 +356,7 @@ module.exports = {
 
     showView: async (req, res, next) => {
         // Get all active fields.
-        const allFields = await quoteLabelsService.find();
+        const allFields = await labelsService.pluck("quoteLabels", ["name"]);
         const all = allFields.map((field) => field.name);
 
         // Get selected fields.

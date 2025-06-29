@@ -6,7 +6,6 @@ const labelsController = require("../controllers/admin/labels-controller");
 
 const checkRef = require("../middleware/check-ref");
 const checkLabel = require("../middleware/check-label");
-const { route } = require("./auth");
 
 const router = express.Router();
 
