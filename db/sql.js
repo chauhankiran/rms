@@ -16,13 +16,9 @@ const sql = postgres({
                 if (x) {
                     const d = new Date(x);
                     return d.toLocaleDateString(undefined, {
-                        weekday: "short",
-                        hour12: true,
                         year: "numeric",
                         month: "short",
                         day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
                     });
                 }
                 return x;

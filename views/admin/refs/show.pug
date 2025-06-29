@@ -1,0 +1,49 @@
+extends ../../layout
+
+block content 
+    .row.align-items-center 
+        .col-6 
+            h1= title
+        .col-6.text-end 
+            a(href=`/admin/refs/${locals.ref.key}`).btn.is-muted.mr-4 &larr; Back 
+            a(href=`/admin/refs/${locals.ref.key}/${ref_.id}/edit`, title="Edit").btn.mr-4 &#9998; Edit
+            .dropdown
+                button.dropdown-trigger Actions
+                .dropdown-menu 
+                    .dropdown-content                 
+                        button(type="button", onClick="activeRef()").dropdown-item Active #{locals.ref.singularName}
+                        button(type="button", onClick="archiveRef()").dropdown-item Archive #{locals.ref.singularName}
+                        button(type="button", onClick="deleteRef()").dropdown-item Delete #{locals.ref.singularName}
+
+        .col-12
+            include ../../partials/flash
+
+        .col-12 
+            .row 
+                .col-12.mb-4
+                    label(for="name").field-name Name 
+                    span.field-value #{ref_.name}
+                    if !ref_.isActive 
+                        span.archive-status (archived)
+
+                .col-6.mb-4
+                    label(for="createdAt").field-name Created at
+                    span.field-value #{ref_.createdAt || "-"}
+            
+                .col-6.mb-4
+                    label(for="updatedAt").field-name Updated at
+                    span.field-value #{ref_.updatedAt || "-"}
+
+                .col-6.mb-4
+                    label(for="createdBy").field-name Created by
+                    span.field-value #{ref_.createdByEmail || "-"}
+            
+                .col-6.mb-4
+                    label(for="updatedBy").field-name Updated by
+                    span.field-value #{ref_.updatedByEmail || "-"}
+
+    form(action=`/admin/refs/${locals.ref.key}/${ref_.id}?_method=DELETE`, name="deleteRefForm", method="post") 
+
+    form(action=`/admin/refs/${locals.ref.key}/${ref_.id}/active?_method=PUT`, name="activeRefForm", method="post") 
+
+    form(action=`/admin/refs/${locals.ref.key}/${ref_.id}/archive?_method=PUT`, name="archiveRefForm", method="post") 

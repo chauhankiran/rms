@@ -4,7 +4,7 @@ const ticketCommentsService = require("../services/ticket-comments-service");
 const ticketFilesService = require("../services/ticket-files-service");
 const ticketViewsService = require("../services/ticket-views-service");
 const ticketLabelsService = require("../services/ticket-labels-service");
-const ticketTypesService = require("../services/admin/ticket-types-service");
+const refsService = require("../services/admin/refs-service");
 const tasksService = require("../services/tasks-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
@@ -142,7 +142,10 @@ module.exports = {
         const dealId = req.query.dealId;
 
         try {
-            const ticketTypes = await ticketTypesService.pluck(["id", "name"]);
+            const ticketTypes = await refsService.pluck("ticketTypes", [
+                "id",
+                "name",
+            ]);
 
             return res.render("tickets/new", {
                 title:
@@ -267,7 +270,10 @@ module.exports = {
                 return next(notFound());
             }
 
-            const ticketTypes = await ticketTypesService.pluck(["id", "name"]);
+            const ticketTypes = await refsService.pluck("ticketTypes", [
+                "id",
+                "name",
+            ]);
 
             return res.render("tickets/edit", {
                 title:

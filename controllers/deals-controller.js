@@ -4,7 +4,7 @@ const dealCommentsService = require("../services/deal-comments-service");
 const dealFilesService = require("../services/deal-files-service");
 const dealViewsService = require("../services/deal-views-service");
 const dealLabelsService = require("../services/deal-labels-service");
-const dealSourcesService = require("../services/admin/deal-sources-service");
+const refsService = require("../services/admin/refs-service");
 const quotesService = require("../services/quotes-service");
 const ticketsService = require("../services/tickets-service");
 const tasksService = require("../services/tasks-service");
@@ -147,7 +147,10 @@ module.exports = {
         const contactId = req.query.contactId;
 
         try {
-            const dealSources = await dealSourcesService.pluck(["id", "name"]);
+            const dealSources = await refsService.pluck("dealSources", [
+                "id",
+                "name",
+            ]);
 
             return res.render("deals/new", {
                 title:
@@ -301,7 +304,10 @@ module.exports = {
                 return next(notFound());
             }
 
-            const dealSources = await dealSourcesService.pluck(["id", "name"]);
+            const dealSources = await refsService.pluck("dealSources", [
+                "id",
+                "name",
+            ]);
 
             return res.render("deals/edit", {
                 title:

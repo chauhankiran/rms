@@ -1,0 +1,18 @@
+extends ../../layout
+
+block content
+    .row 
+        .col-6 
+            h1= title
+
+            include ../../partials/flash
+
+            form(action=`/admin/refs/${locals.ref.key}/${ref_.id}?_method=PUT`, method="post") 
+                include ./form
+
+                .form-group 
+                    .row.align-items-center 
+                        .col-8 
+                            button(type="submit") Update #{locals.ref.singularName}
+                        .col-4.text-end
+                            a(href=`/admin/refs/${locals.ref.key}/${ref_.id}`).btn.is-muted Cancel

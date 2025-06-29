@@ -3,7 +3,7 @@ const tasksService = require("../services/tasks-service");
 const taskCommentsService = require("../services/task-comments-service");
 const taskFilesService = require("../services/task-files-service");
 const taskViewsService = require("../services/task-views-service");
-const taskTypesService = require("../services/admin/task-types-service");
+const refsService = require("../services/admin/refs-service");
 const taskLabelsService = require("../services/task-labels-services");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const capitalize = require("../helpers/capitalize");
@@ -151,7 +151,10 @@ module.exports = {
         const ticketId = req.query.ticketId;
 
         try {
-            const taskTypes = await taskTypesService.pluck(["id", "name"]);
+            const taskTypes = await refsService.pluck("taskTypes", [
+                "id",
+                "name",
+            ]);
 
             return res.render("tasks/new", {
                 title:
@@ -269,7 +272,10 @@ module.exports = {
                 return next(notFound());
             }
 
-            const taskTypes = await taskTypesService.pluck(["id", "name"]);
+            const taskTypes = await refsService.pluck("taskTypes", [
+                "id",
+                "name",
+            ]);
 
             return res.render("tasks/edit", {
                 title:

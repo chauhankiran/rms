@@ -4,7 +4,7 @@ const contactCommentsService = require("../services/contact-comments-service");
 const contactFilesService = require("../services/contact-files-service");
 const contactViewsService = require("../services/contact-views-service");
 const contactLabelsService = require("../services/contact-labels-service");
-const contactIndustriesService = require("../services/admin/contact-industries-service");
+const refsService = require("../services/admin/refs-service");
 const dealsService = require("../services/deals-service");
 const quotesService = require("../services/quotes-service");
 const ticketsService = require("../services/tickets-service");
@@ -159,10 +159,10 @@ module.exports = {
         const companyId = req.query.companyId;
 
         try {
-            const contactIndustries = await contactIndustriesService.pluck([
-                "id",
-                "name",
-            ]);
+            const contactIndustries = await refsService.pluck(
+                "contactIndustries",
+                ["id", "name"]
+            );
 
             return res.render("contacts/new", {
                 title:
@@ -350,10 +350,10 @@ module.exports = {
                 return next(notFound());
             }
 
-            const contactIndustries = await contactIndustriesService.pluck([
-                "id",
-                "name",
-            ]);
+            const contactIndustries = await refsService.pluck(
+                "contactIndustries",
+                ["id", "name"]
+            );
 
             return res.render("contacts/edit", {
                 title:

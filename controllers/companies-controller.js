@@ -5,7 +5,7 @@ const companyFilesService = require("../services/company-files-service");
 const contactsService = require("../services/contacts-service");
 const companyViewsService = require("../services/company-views-service");
 const companyLabelsService = require("../services/company-labels-service");
-const companySourcesService = require("../services/admin/company-sources-service");
+const refsService = require("../services/admin/refs-service");
 const generatePaginationLinks = require("../helpers/generate-pagination-links");
 const dealsService = require("../services/deals-service");
 const quotesService = require("../services/quotes-service");
@@ -15,14 +15,6 @@ const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
 const locales = require("../locales/en");
 const message = require("../helpers/message");
-
-const statesService = require("../services/admin/states-service");
-const countriesService = require("../services/admin/countries-service");
-const industriesService = require("../services/admin/industries-service");
-const sourcesService = require("../services/admin/sources-service");
-const statusesService = require("../services/admin/statuses-service");
-const stagesService = require("../services/admin/stages-service");
-const typesService = require("../services/admin/types-service");
 
 // columnsObj contains list of field companies can have.
 // key in object is name of the field (used to fetch label).
@@ -158,17 +150,26 @@ module.exports = {
 
     new: async (req, res, next) => {
         try {
-            const companySources = await companySourcesService.pluck([
+            const companySources = await refsService.pluck("companySources", [
                 "id",
                 "name",
             ]);
-            const states = await statesService.pluck(["id", "name"]);
-            const countries = await countriesService.pluck(["id", "name"]);
-            const industries = await industriesService.pluck(["id", "name"]);
-            const sources = await sourcesService.pluck(["id", "name"]);
-            const statuses = await statusesService.pluck(["id", "name"]);
-            const stages = await stagesService.pluck(["id", "name"]);
-            const types = await typesService.pluck(["id", "name"]);
+            const states = await refsService.pluck("states", ["id", "name"]);
+            const countries = await refsService.pluck("countries", [
+                "id",
+                "name",
+            ]);
+            const industries = await refsService.pluck("industries", [
+                "id",
+                "name",
+            ]);
+            const sources = await refsService.pluck("sources", ["id", "name"]);
+            const statuses = await refsService.pluck("statuses", [
+                "id",
+                "name",
+            ]);
+            const stages = await refsService.pluck("stages", ["id", "name"]);
+            const types = await refsService.pluck("types", ["id", "name"]);
 
             return res.render("companies/new", {
                 title:
@@ -400,17 +401,26 @@ module.exports = {
                 return next(notFound());
             }
 
-            const companySources = await companySourcesService.pluck([
+            const companySources = await refsService.pluck("companySources", [
                 "id",
                 "name",
             ]);
-            const states = await statesService.pluck(["id", "name"]);
-            const countries = await countriesService.pluck(["id", "name"]);
-            const industries = await industriesService.pluck(["id", "name"]);
-            const sources = await sourcesService.pluck(["id", "name"]);
-            const statuses = await statusesService.pluck(["id", "name"]);
-            const stages = await stagesService.pluck(["id", "name"]);
-            const types = await typesService.pluck(["id", "name"]);
+            const states = await refsService.pluck("states", ["id", "name"]);
+            const countries = await refsService.pluck("countries", [
+                "id",
+                "name",
+            ]);
+            const industries = await refsService.pluck("industries", [
+                "id",
+                "name",
+            ]);
+            const sources = await refsService.pluck("sources", ["id", "name"]);
+            const statuses = await refsService.pluck("statuses", [
+                "id",
+                "name",
+            ]);
+            const stages = await refsService.pluck("stages", ["id", "name"]);
+            const types = await refsService.pluck("types", ["id", "name"]);
 
             return res.render("companies/edit", {
                 title:
