@@ -14,8 +14,8 @@ router.get("/view", ticketsController.showView); // change view
 router.put("/view", ticketsController.view); // change view
 router.get("/new", ticketsController.new);
 router.post("/", ticketsController.create);
-router.get("/:id", ticketsController.show);
-router.get("/:id/edit", ticketsController.edit);
+router.get("/:id", checkExists("tickets"), ticketsController.show);
+router.get("/:id/edit", checkExists("tickets"), ticketsController.edit);
 router.put("/:id", checkExists("tickets"), ticketsController.update);
 router.delete("/:id", checkExists("tickets"), ticketsController.destroy);
 router.put("/:id/archive", checkExists("tickets"), ticketsController.archive);

@@ -228,10 +228,6 @@ module.exports = {
 
             const contact = await contactsService.findOne(id);
 
-            if (!contact) {
-                return next(notFound());
-            }
-
             // Get all associated deals.
             if (req.session.modules.contact) {
                 const optionsObj = {
@@ -311,10 +307,6 @@ module.exports = {
 
         try {
             const contact = await contactsService.findOne(id);
-
-            if (!contact) {
-                return next(notFound());
-            }
 
             const contactIndustries = await refsService.pluck("contactIndustries", ["id", "name"]);
 

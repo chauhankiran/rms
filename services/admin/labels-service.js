@@ -1,4 +1,5 @@
 const sql = require("../../db/sql");
+const updateStatus = require("../_base/update-status");
 
 module.exports = {
     find: async (table, optionsObj) => {
@@ -85,7 +86,7 @@ module.exports = {
                 "updatedAt" = ${sql`now()`}
             WHERE
                 id = ${id}
-            returning id, name
+            returning id, "displayName"
         `.then(([x]) => x);
     },
 

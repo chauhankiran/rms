@@ -1,6 +1,8 @@
 const notFound = require("../../errors/not-found");
 const labelsService = require("../../services/admin/labels-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
+const message = require("../../helpers/message");
+const locales = require("../../locales/en");
 
 module.exports = {
     index: async (req, res, next) => {
@@ -85,7 +87,7 @@ module.exports = {
         const { displayName } = req.body;
 
         if (!displayName) {
-            req.flash("error", "Display name is required.");
+            req.flash("error", message(locales.label.displayNameRequired));
             return res.redirect(`/admin/labels/${req.label.key}/${id}/edit`);
         }
 
@@ -101,9 +103,9 @@ module.exports = {
                 displayName,
                 updatedBy: req.session.currentUser.id,
             };
-            await labelsService.update(req.label.table, labelObj);
+            const resp = await labelsService.update(req.label.table, labelObj);
 
-            req.flash("info", `${req.label.singularName} is updated.`);
+            req.flash("info", message(locales.label.updated, { name: resp.displayName }));
             return res.redirect(`/admin/labels/${req.label.key}/${id}`);
         } catch (err) {
             next(err);
@@ -124,9 +126,9 @@ module.exports = {
                 id,
                 updatedBy: req.session.currentUser.id,
             };
-            await labelsService.archive(req.label.table, labelObj);
+            const resp = await labelsService.archive(req.label.table, labelObj);
 
-            req.flash("info", `${req.label.singularName} is archived.`);
+            req.flash("info", message(locales.label.archived, { name: resp.displayName }));
             return res.redirect(`/admin/labels/${req.label.key}/${id}`);
         } catch (err) {
             next(err);
@@ -147,9 +149,9 @@ module.exports = {
                 id,
                 updatedBy: req.session.currentUser.id,
             };
-            await labelsService.active(req.label.table, labelObj);
+            const resp = await labelsService.active(req.label.table, labelObj);
 
-            req.flash("info", `${req.label.singularName} is activated.`);
+            req.flash("info", message(locales.label.activated, { name: resp.displayName }));
             return res.redirect(`/admin/labels/${req.label.key}/${id}`);
         } catch (err) {
             next(err);

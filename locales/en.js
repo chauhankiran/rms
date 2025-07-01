@@ -64,6 +64,14 @@ module.exports = {
         nameRequired: "Name is required.",
     },
 
+    label: {
+        updated: "{{name}} is updated.",
+        deleted: "{{name}} is deleted.",
+        archived: "{{name}} is archived.",
+        activated: "{{name}} is activated.",
+        displayNameRequired: "Display name is required.",
+    },
+
     view: {
         updated: "View is updated for companies.",
         updatedTasks: "View is updated for tasks.",

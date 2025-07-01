@@ -196,10 +196,6 @@ module.exports = {
 
             const ticket = await ticketsService.findOne(id);
 
-            if (!ticket) {
-                return next(notFound());
-            }
-
             // Get all associated tasks.
             if (req.session.modules.task) {
                 const optionsObj = {
@@ -236,10 +232,6 @@ module.exports = {
 
         try {
             const ticket = await ticketsService.findOne(id);
-
-            if (!ticket) {
-                return next(notFound());
-            }
 
             const ticketTypes = await refsService.pluck("ticketTypes", ["id", "name"]);
 

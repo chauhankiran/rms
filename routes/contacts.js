@@ -14,8 +14,8 @@ router.get("/view", contactsController.showView); // change view
 router.put("/view", contactsController.view); // change view
 router.get("/new", contactsController.new);
 router.post("/", contactsController.create);
-router.get("/:id", contactsController.show);
-router.get("/:id/edit", contactsController.edit);
+router.get("/:id", checkExists("contacts"), contactsController.show);
+router.get("/:id/edit", checkExists("contacts"), contactsController.edit);
 router.put("/:id", checkExists("contacts"), contactsController.update);
 router.delete("/:id", checkExists("contacts"), contactsController.destroy);
 router.put("/:id/archive", checkExists("contacts"), contactsController.archive);

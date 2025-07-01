@@ -14,8 +14,8 @@ router.get("/view", companiesController.showView); // change view
 router.put("/view", companiesController.view); // change view
 router.get("/new", companiesController.new);
 router.post("/", companiesController.create);
-router.get("/:id", companiesController.show);
-router.get("/:id/edit", companiesController.edit);
+router.get("/:id", checkExists("companies"), companiesController.show);
+router.get("/:id/edit", checkExists("companies"), companiesController.edit);
 router.put("/:id", checkExists("companies"), companiesController.update);
 router.delete("/:id", checkExists("companies"), companiesController.destroy);
 router.put("/:id/archive", checkExists("companies"), companiesController.archive);

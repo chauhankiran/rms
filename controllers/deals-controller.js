@@ -198,10 +198,6 @@ module.exports = {
 
             const deal = await dealsService.findOne(id);
 
-            if (!deal) {
-                return next(notFound());
-            }
-
             // Get all associated quotes.
             if (req.session.modules.quote) {
                 const optionsObj = {
@@ -266,10 +262,6 @@ module.exports = {
 
         try {
             const deal = await dealsService.findOne(id);
-
-            if (!deal) {
-                return next(notFound());
-            }
 
             const dealSources = await refsService.pluck("dealSources", ["id", "name"]);
 

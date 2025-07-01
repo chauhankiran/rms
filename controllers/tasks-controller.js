@@ -224,10 +224,6 @@ module.exports = {
         try {
             const task = await tasksService.findOne(id);
 
-            if (!task) {
-                return next(notFound());
-            }
-
             // Get all comments.
             const comments = await taskCommentsService.findOne(id);
 
@@ -250,10 +246,6 @@ module.exports = {
 
         try {
             const task = await tasksService.findOne(id);
-
-            if (!task) {
-                return next(notFound());
-            }
 
             const taskTypes = await refsService.pluck("taskTypes", ["id", "name"]);
 

@@ -70,9 +70,7 @@ module.exports = {
 
         try {
             // Run the query to fetch the fields.
-            let fields = await companyViewsService.find(
-                req.session.currentUser.id
-            );
+            let fields = await companyViewsService.find(req.session.currentUser.id);
 
             // If somehow, view is not set for the user, go with these fields.
             if (fields.length === 0) {
@@ -103,8 +101,7 @@ module.exports = {
 
             // Check user type. If type == "user" only fetch active tasks.
             // If type === "admin", then show all the tasks.
-            const isActiveOnly =
-                req.session.currentUser.type === "user" ? true : false;
+            const isActiveOnly = req.session.currentUser.type === "user" ? true : false;
 
             // Fetch companies.
             const optionsObj = {
@@ -150,33 +147,17 @@ module.exports = {
 
     new: async (req, res, next) => {
         try {
-            const companySources = await refsService.pluck("companySources", [
-                "id",
-                "name",
-            ]);
+            const companySources = await refsService.pluck("companySources", ["id", "name"]);
             const states = await refsService.pluck("states", ["id", "name"]);
-            const countries = await refsService.pluck("countries", [
-                "id",
-                "name",
-            ]);
-            const industries = await refsService.pluck("industries", [
-                "id",
-                "name",
-            ]);
+            const countries = await refsService.pluck("countries", ["id", "name"]);
+            const industries = await refsService.pluck("industries", ["id", "name"]);
             const sources = await refsService.pluck("sources", ["id", "name"]);
-            const statuses = await refsService.pluck("statuses", [
-                "id",
-                "name",
-            ]);
+            const statuses = await refsService.pluck("statuses", ["id", "name"]);
             const stages = await refsService.pluck("stages", ["id", "name"]);
             const types = await refsService.pluck("types", ["id", "name"]);
 
             return res.render("companies/new", {
-                title:
-                    "New " +
-                    pluralize.singular(
-                        req.session.labels.module.company.toLowerCase()
-                    ),
+                title: "New " + pluralize.singular(req.session.labels.module.company.toLowerCase()),
                 companySources,
                 states,
                 countries,
@@ -252,10 +233,7 @@ module.exports = {
                 createdBy: req.session.currentUser.id,
             };
             const resp = await companiesService.create(companyObj);
-            req.flash(
-                "info",
-                message(locales.company.created, { name: resp.name })
-            );
+            req.flash("info", message(locales.company.created, { name: resp.name }));
             return res.redirect("/companies");
         } catch (err) {
             next(err);
@@ -269,10 +247,6 @@ module.exports = {
             let contacts, deals, quotes, tickets, tasks;
 
             const company = await companiesService.findOne(id);
-
-            if (!company) {
-                return next(notFound());
-            }
 
             // Get all associated contacts.
             if (req.session.modules.contact) {
@@ -301,12 +275,7 @@ module.exports = {
                     orderBy: "id",
                     orderDir: "DESC",
                     companyId: company.id,
-                    query: [
-                        "d.id",
-                        "d.name",
-                        'updater.email AS "updatedByEmail"',
-                        'd."updatedAt"',
-                    ],
+                    query: ["d.id", "d.name", 'updater.email AS "updatedByEmail"', 'd."updatedAt"'],
                 };
                 deals = await dealsService.find(optionsObj2);
             }
@@ -319,12 +288,7 @@ module.exports = {
                     orderBy: "id",
                     orderDir: "DESC",
                     companyId: company.id,
-                    query: [
-                        "q.id",
-                        "q.name",
-                        'updater.email AS "updatedByEmail"',
-                        'q."updatedAt"',
-                    ],
+                    query: ["q.id", "q.name", 'updater.email AS "updatedByEmail"', 'q."updatedAt"'],
                 };
                 quotes = await quotesService.find(optionsObj3);
             }
@@ -337,12 +301,7 @@ module.exports = {
                     orderBy: "id",
                     orderDir: "DESC",
                     companyId: company.id,
-                    query: [
-                        "t.id",
-                        "t.name",
-                        'updater.email AS "updatedByEmail"',
-                        't."updatedAt"',
-                    ],
+                    query: ["t.id", "t.name", 'updater.email AS "updatedByEmail"', 't."updatedAt"'],
                 };
                 tickets = await ticketsService.find(optionsObj4);
             }
@@ -355,12 +314,7 @@ module.exports = {
                     orderBy: "id",
                     orderDir: "DESC",
                     companyId: company.id,
-                    query: [
-                        "t.id",
-                        "t.name",
-                        'updater.email AS "updatedByEmail"',
-                        't."updatedAt"',
-                    ],
+                    query: ["t.id", "t.name", 'updater.email AS "updatedByEmail"', 't."updatedAt"'],
                 };
                 tasks = await tasksService.find(optionsObj5);
             }
@@ -373,10 +327,7 @@ module.exports = {
 
             return res.render("companies/show", {
                 title:
-                    "Show " +
-                    pluralize.singular(
-                        req.session.labels.module.company.toLowerCase()
-                    ),
+                    "Show " + pluralize.singular(req.session.labels.module.company.toLowerCase()),
                 company,
                 contacts,
                 deals,
@@ -397,37 +348,18 @@ module.exports = {
         try {
             const company = await companiesService.findOne(id);
 
-            if (!company) {
-                return next(notFound());
-            }
-
-            const companySources = await refsService.pluck("companySources", [
-                "id",
-                "name",
-            ]);
+            const companySources = await refsService.pluck("companySources", ["id", "name"]);
             const states = await refsService.pluck("states", ["id", "name"]);
-            const countries = await refsService.pluck("countries", [
-                "id",
-                "name",
-            ]);
-            const industries = await refsService.pluck("industries", [
-                "id",
-                "name",
-            ]);
+            const countries = await refsService.pluck("countries", ["id", "name"]);
+            const industries = await refsService.pluck("industries", ["id", "name"]);
             const sources = await refsService.pluck("sources", ["id", "name"]);
-            const statuses = await refsService.pluck("statuses", [
-                "id",
-                "name",
-            ]);
+            const statuses = await refsService.pluck("statuses", ["id", "name"]);
             const stages = await refsService.pluck("stages", ["id", "name"]);
             const types = await refsService.pluck("types", ["id", "name"]);
 
             return res.render("companies/edit", {
                 title:
-                    "Edit " +
-                    pluralize.singular(
-                        req.session.labels.module.company.toLowerCase()
-                    ),
+                    "Edit " + pluralize.singular(req.session.labels.module.company.toLowerCase()),
                 company,
                 companySources,
                 states,
@@ -520,10 +452,7 @@ module.exports = {
         try {
             const resp = await companiesService.destroy(id);
 
-            req.flash(
-                "info",
-                message(locales.company.deleted, { name: resp.name })
-            );
+            req.flash("info", message(locales.company.deleted, { name: resp.name }));
             return res.redirect("/companies");
         } catch (err) {
             next(err);
@@ -540,10 +469,7 @@ module.exports = {
             };
             const resp = await companiesService.archive(companyObj);
 
-            req.flash(
-                "info",
-                message(locales.company.archived, { name: resp.name })
-            );
+            req.flash("info", message(locales.company.archived, { name: resp.name }));
             return res.redirect(`/companies/${id}`);
         } catch (err) {
             next(err);
@@ -560,10 +486,7 @@ module.exports = {
             };
             const resp = await companiesService.active(companyObj);
 
-            req.flash(
-                "info",
-                message(locales.company.activated, { name: resp.name })
-            );
+            req.flash("info", message(locales.company.activated, { name: resp.name }));
             return res.redirect(`/companies/${id}`);
         } catch (err) {
             next(err);
@@ -576,9 +499,7 @@ module.exports = {
         const all = allFields.map((field) => field.name);
 
         // Get selected fields.
-        const selectedFields = await companyViewsService.find(
-            req.session.currentUser.id
-        );
+        const selectedFields = await companyViewsService.find(req.session.currentUser.id);
         const selected = selectedFields.map((field) => field.name);
 
         // Get available fields (all - selected).

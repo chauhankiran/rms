@@ -14,8 +14,8 @@ router.get("/view", dealsController.showView); // change view
 router.put("/view", dealsController.view); // change view
 router.get("/new", dealsController.new);
 router.post("/", dealsController.create);
-router.get("/:id", dealsController.show);
-router.get("/:id/edit", dealsController.edit);
+router.get("/:id", checkExists("deals"), dealsController.show);
+router.get("/:id/edit", checkExists("deals"), dealsController.edit);
 router.put("/:id", checkExists("deals"), dealsController.update);
 router.delete("/:id", checkExists("deals"), dealsController.destroy);
 router.put("/:id/archive", checkExists("deals"), dealsController.archive);

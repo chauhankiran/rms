@@ -184,10 +184,6 @@ module.exports = {
 
             const quote = await quotesService.findOne(id);
 
-            if (!quote) {
-                return next(notFound());
-            }
-
             // Get all associated tasks.
             if (req.session.modules.task) {
                 const optionsObj = {
@@ -224,10 +220,6 @@ module.exports = {
 
         try {
             const quote = await quotesService.findOne(id);
-
-            if (!quote) {
-                return next(notFound());
-            }
 
             return res.render("quotes/edit", {
                 title: "Edit " + pluralize.singular(req.session.labels.module.quote.toLowerCase()),

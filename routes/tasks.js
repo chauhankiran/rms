@@ -14,8 +14,8 @@ router.get("/view", tasksController.showView); // change view
 router.put("/view", tasksController.view); // change view
 router.get("/new", tasksController.new);
 router.post("/", tasksController.create);
-router.get("/:id", tasksController.show);
-router.get("/:id/edit", tasksController.edit);
+router.get("/:id", checkExists("tasks"), tasksController.show);
+router.get("/:id/edit", checkExists("tasks"), tasksController.edit);
 router.put("/:id", checkExists("tasks"), tasksController.update);
 router.delete("/:id", checkExists("tasks"), tasksController.destroy);
 router.put("/:id/archive", checkExists("tasks"), tasksController.archive);

@@ -14,8 +14,8 @@ router.get("/view", quotesController.showView); // change view
 router.put("/view", quotesController.view); // change view
 router.get("/new", quotesController.new);
 router.post("/", quotesController.create);
-router.get("/:id", quotesController.show);
-router.get("/:id/edit", quotesController.edit);
+router.get("/:id", checkExists("quotes"), quotesController.show);
+router.get("/:id/edit", checkExists("quotes"), quotesController.edit);
 router.put("/:id", checkExists("quotes"), quotesController.update);
 router.delete("/:id", checkExists("quotes"), quotesController.destroy);
 router.put("/:id/archive", checkExists("quotes"), quotesController.archive);
