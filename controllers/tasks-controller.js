@@ -60,7 +60,7 @@ module.exports = {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
-        const orderBy = req.query.orderBy || "id";
+        const orderBy = req.query.orderBy || "t.id";
         const orderDir = req.query.orderDir || "DESC";
 
         try {

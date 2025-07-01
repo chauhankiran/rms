@@ -1,4 +1,5 @@
 extends ../layout
+include ../_components/buttons
 include ../tasks/inline-tasks
 
 block content
@@ -7,7 +8,7 @@ block content
       h1= title
     .col-6.text-end 
       a(href="/quotes").btn.is-muted.mr-4 &larr; Back 
-      a(href=`/quotes/${quote.id}/edit`, title=`Edit ${singular(downcase(labels.module.quote))}`).btn.mr-4 &#9998; Edit
+      +edit-button(`/quotes/${quote.id}/edit`, `Edit ${singular(downcase(labels.module.quote))}`, "Edit")
       .dropdown
         button.dropdown-trigger Actions
         .dropdown-menu
@@ -17,9 +18,6 @@ block content
             if !quote.isActive && currentUser.type == 'admin'
               button.dropdown-item(onclick="activeQuote()") Active #{singular(downcase(labels.module.quote))} 
             button.dropdown-item(onclick="deleteQuote()") Delete #{singular(downcase(labels.module.quote))} 
-
-    .col-12
-      include ../partials/flash
 
     .col-12 
       .row 

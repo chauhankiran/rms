@@ -1,4 +1,5 @@
 extends ../../layout
+include ../../_components/buttons
 
 block content 
     .row.align-items-center 
@@ -6,7 +7,7 @@ block content
             h1= title
         .col-6.text-end 
             a(href=`/admin/refs/${locals.ref.key}`).btn.is-muted.mr-4 &larr; Back 
-            a(href=`/admin/refs/${locals.ref.key}/${ref_.id}/edit`, title="Edit").btn.mr-4 &#9998; Edit
+            +edit-button(`/admin/refs/${locals.ref.key}/${ref_.id}/edit`, `Edit ${locals.ref.singularName}`, "Edit")
             .dropdown
                 button.dropdown-trigger Actions
                 .dropdown-menu 
@@ -15,16 +16,13 @@ block content
                         button(type="button", onClick="archiveRef()").dropdown-item Archive #{locals.ref.singularName}
                         button(type="button", onClick="deleteRef()").dropdown-item Delete #{locals.ref.singularName}
 
-        .col-12
-            include ../../partials/flash
-
         .col-12 
             .row 
                 .col-12.mb-4
                     label(for="name").field-name Name 
                     span.field-value #{ref_.name}
-                    if !ref_.isActive 
-                        span.archive-status (archived)
+                        if !ref_.isActive 
+                            span.archive-status (archived)
 
                 .col-6.mb-4
                     label(for="createdAt").field-name Created at
@@ -47,3 +45,22 @@ block content
     form(action=`/admin/refs/${locals.ref.key}/${ref_.id}/active?_method=PUT`, name="activeRefForm", method="post") 
 
     form(action=`/admin/refs/${locals.ref.key}/${ref_.id}/archive?_method=PUT`, name="archiveRefForm", method="post") 
+
+    script.
+        function deleteRef() {
+            if (confirm("Are you sure you want to delete this reference?")) {
+                document.deleteRefForm.submit();
+            }
+        }
+
+        function activeRef() {
+            if (confirm("Are you sure you want to activate this reference?")) {
+                document.activeRefForm.submit();
+            }
+        }
+
+        function archiveRef() {
+            if (confirm("Are you sure you want to archive this reference?")) {
+                document.archiveRefForm.submit();
+            }
+        }

@@ -1,15 +1,19 @@
 doctype html
 html
-  head
-    meta(charset="utf-8")
-    link(rel="shortcut icon", href="/favicon.ico")
-    title= title
+    head
+        meta(charset="utf-8")
+        link(rel="shortcut icon", href="/favicon.ico")
+        title= title
 
-    link(rel="stylesheet", href="/styles/main.css")
-  body
-    include ./partials/nav
+        link(rel="stylesheet", href="/styles/main.css")
+    body
+        include ./partials/nav
 
-    .container.mt-4
-      block content
+        .container.mt-4.mb-4
+            .row
+                .col-12
+                    include ./partials/flash
 
-    script(src="/scripts/main.js")
+            block content
+
+        script(src="/scripts/main.js")

@@ -2,6 +2,7 @@ extends ../layout
 include ../quotes/inline-quotes
 include ../tickets/inline-tickets
 include ../tasks/inline-tasks
+include ../_components/buttons
 
 block content
   .row.align-items-center 
@@ -9,7 +10,7 @@ block content
       h1= title
     .col-6.text-end 
       a(href="/deals").btn.is-muted.mr-4 &larr; Back 
-      a(href=`/deals/${deal.id}/edit`, title=`Edit ${singular(downcase(labels.module.deal))}`).btn.mr-4 &#9998; Edit
+      +edit-button(`/deals/${deal.id}/edit`, `Edit ${singular(downcase(labels.module.deal))}`, "Edit")
       .dropdown
         button.dropdown-trigger Actions
         .dropdown-menu
@@ -19,9 +20,6 @@ block content
             if !deal.isActive && currentUser.type == 'admin'
               button.dropdown-item(onclick="activeDeal()") Active #{singular(downcase(labels.module.deal))} 
             button.dropdown-item(onclick="deleteDeal()") Delete #{singular(downcase(labels.module.deal))} 
-
-    .col-12
-      include ../partials/flash
 
     .col-12 
       .row 

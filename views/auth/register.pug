@@ -1,24 +1,22 @@
 extends ../layout
 
 block content
-  .row 
-    .col-6 
-      h1= title
+    .row 
+        .col-6 
+            h1= title
 
-      include ../partials/flash
-
-      form(action="/auth/register", method="post") 
-        .form-group 
-          label(for="email") Email
-          input(type="text", name="email", placeholder="kai@doe.com", autofocus=true)#email
+            form(action="/auth/register", method="post") 
+                .form-group 
+                    label(for="email") Email
+                    input(type="text", name="email", placeholder="kai@doe.com", autofocus=true)#email
         
-        .form-group 
-          label(for="password") Password
-          input(type="password", name="password", placeholder="******")#password
+                .form-group 
+                    label(for="password") Password
+                    input(type="password", name="password", placeholder="******")#password
         
-        .form-group 
-          button(type="submit") Register
+                .form-group 
+                    button(type="submit") Register
         
-        .form-group
-          p 
-            a(href="/auth/login") Already have an account?
+                .form-group
+                    p 
+                        a(href="/auth/login") Already have an account?

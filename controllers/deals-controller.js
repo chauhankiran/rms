@@ -300,9 +300,9 @@ module.exports = {
                 dealSourceId,
                 updatedBy: req.session.currentUser.id,
             };
-            await dealsService.update(dealObj);
+            const resp = await dealsService.update(dealObj);
 
-            req.flash("info", locales.deal.updated);
+            req.flash("info", message(locales.deal.updated, { name: resp.name }));
             return res.redirect(`/deals/${id}`);
         } catch (err) {
             next(err);
@@ -327,9 +327,9 @@ module.exports = {
 
         try {
             const dealObj = { id, updatedBy: req.session.currentUser.id };
-            await dealsService.archive(dealObj);
+            const resp = await dealsService.archive(dealObj);
 
-            req.flash("info", locales.deal.archived);
+            req.flash("info", message(locales.deal.archived, { name: resp.name }));
             return res.redirect(`/deals/${id}`);
         } catch (err) {
             next(err);
@@ -341,9 +341,9 @@ module.exports = {
 
         try {
             const dealObj = { id, updatedBy: req.session.currentUser.id };
-            await dealsService.active(dealObj);
+            const resp = await dealsService.active(dealObj);
 
-            req.flash("info", locales.deal.activated);
+            req.flash("info", message(locales.deal.activated, { name: resp.name }));
             return res.redirect(`/deals/${id}`);
         } catch (err) {
             next(err);

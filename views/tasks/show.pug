@@ -1,4 +1,5 @@
 extends ../layout
+include ../_components/buttons
 
 block content
   .row.align-items-center 
@@ -6,7 +7,7 @@ block content
       h1= title
     .col-6.text-end 
       a(href="/tasks").btn.is-muted.mr-4 &larr; Back 
-      a(href=`/tasks/${task.id}/edit`, title=`Edit ${singular(downcase(labels.module.task))}`).btn.mr-4 &#9998; Edit
+      +edit-button(`/tasks/${task.id}/edit`, `Edit ${singular(downcase(labels.module.task))}`, "Edit")
       .dropdown
         button.dropdown-trigger Actions
         .dropdown-menu
@@ -16,9 +17,6 @@ block content
             if !task.isActive && currentUser.type == 'admin'
               button.dropdown-item(onclick="activeTask()") Active #{singular(downcase(labels.module.task))}
             button.dropdown-item(onclick="deleteTask()") Delete #{singular(downcase(labels.module.task))}
-
-    .col-12
-      include ../partials/flash
 
     .col-12 
       .row 

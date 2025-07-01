@@ -18,7 +18,7 @@ function activeCompany() {
 function archiveCompany() {
     if (
         confirm(
-            "Are you sure you want to archive this company? This action CAN NOT be undone by YOU."
+            "Are you sure you want to archive this company? This action CAN NOT be undone by YOU.",
         )
     ) {
         document.archiveCompanyForm.submit();
@@ -54,7 +54,7 @@ function activeContact() {
 function archiveContact() {
     if (
         confirm(
-            "Are you sure you want to archive this contact? This action CAN NOT be undone by YOU."
+            "Are you sure you want to archive this contact? This action CAN NOT be undone by YOU.",
         )
     ) {
         document.archiveContactForm.submit();
@@ -89,9 +89,7 @@ function activeDeal() {
 }
 function archiveDeal() {
     if (
-        confirm(
-            "Are you sure you want to archive this deal? This action CAN NOT be undone by YOU."
-        )
+        confirm("Are you sure you want to archive this deal? This action CAN NOT be undone by YOU.")
     ) {
         document.archiveDealForm.submit();
     } else {
@@ -126,7 +124,7 @@ function activeQuote() {
 function archiveQuote() {
     if (
         confirm(
-            "Are you sure you want to archive this quote? This action CAN NOT be undone by YOU."
+            "Are you sure you want to archive this quote? This action CAN NOT be undone by YOU.",
         )
     ) {
         document.archiveQuoteForm.submit();
@@ -162,7 +160,7 @@ function activeTicket() {
 function archiveTicket() {
     if (
         confirm(
-            "Are you sure you want to archive this ticket? This action CAN NOT be undone by YOU."
+            "Are you sure you want to archive this ticket? This action CAN NOT be undone by YOU.",
         )
     ) {
         document.archiveTicketForm.submit();
@@ -197,9 +195,7 @@ function activeTask() {
 }
 function archiveTask() {
     if (
-        confirm(
-            "Are you sure you want to archive this task? This action CAN NOT be undone by YOU."
-        )
+        confirm("Are you sure you want to archive this task? This action CAN NOT be undone by YOU.")
     ) {
         document.archiveTaskForm.submit();
     } else {
@@ -236,131 +232,6 @@ function deleteUser() {
 function archiveUser() {
     if (confirm("Are you sure you want to change the user status?")) {
         document.archiveUserForm.submit();
-    } else {
-        return false;
-    }
-}
-
-/**
- * Company source
- */
-function activeCompanySource() {
-    if (confirm("Are you sure you want to active company source?")) {
-        document.activeCompanySourceForm.submit();
-    } else {
-        return false;
-    }
-}
-function archiveCompanySource() {
-    if (confirm("Are you sure you want to archive company source?")) {
-        document.archiveCompanySourceForm.submit();
-    } else {
-        return false;
-    }
-}
-function deleteCompanySource() {
-    if (confirm("Are you sure you want to delete company source?")) {
-        document.deleteCompanySourceForm.submit();
-    } else {
-        return false;
-    }
-}
-
-/**
- * Contact industry
- */
-function activeContactIndustry() {
-    if (confirm("Are you sure you want to active contact industry?")) {
-        document.activeContactIndustryForm.submit();
-    } else {
-        return false;
-    }
-}
-function archiveContactIndustry() {
-    if (confirm("Are you sure you want to archive contact industry?")) {
-        document.archiveContactIndustryForm.submit();
-    } else {
-        return false;
-    }
-}
-function deleteContactIndustry() {
-    if (confirm("Are you sure you want to delete contact industry?")) {
-        document.deleteContactIndustryForm.submit();
-    } else {
-        return false;
-    }
-}
-
-/**
- * Deal source
- */
-function activeDealSource() {
-    if (confirm("Are you sure you want to active deal source?")) {
-        document.activeDealSourceForm.submit();
-    } else {
-        return false;
-    }
-}
-function archiveDealSource() {
-    if (confirm("Are you sure you want to archive deal source?")) {
-        document.archiveDealSourceForm.submit();
-    } else {
-        return false;
-    }
-}
-function deleteDealSource() {
-    if (confirm("Are you sure you want to delete deal source?")) {
-        document.deleteDealSourceForm.submit();
-    } else {
-        return false;
-    }
-}
-
-/**
- * Ticket type
- */
-function activeTicketType() {
-    if (confirm("Are you sure you want to active ticket type?")) {
-        document.activeTicketTypeForm.submit();
-    } else {
-        return false;
-    }
-}
-function archiveTicketType() {
-    if (confirm("Are you sure you want to archive ticket type?")) {
-        document.archiveTicketTypeForm.submit();
-    } else {
-        return false;
-    }
-}
-function deleteTicketType() {
-    if (confirm("Are you sure you want to delete ticket type?")) {
-        document.deleteTicketTypeForm.submit();
-    } else {
-        return false;
-    }
-}
-
-/**
- * Task type
- */
-function activeTaskType() {
-    if (confirm("Are you sure you want to active task type?")) {
-        document.activeTaskTypeForm.submit();
-    } else {
-        return false;
-    }
-}
-function archiveTaskType() {
-    if (confirm("Are you sure you want to archive task type?")) {
-        document.archiveTaskTypeForm.submit();
-    } else {
-        return false;
-    }
-}
-function deleteTaskType() {
-    if (confirm("Are you sure you want to delete task type?")) {
-        document.deleteTaskTypeForm.submit();
     } else {
         return false;
     }
@@ -493,9 +364,7 @@ function archiveModuleLabel() {
 }
 
 function activeMultipleUsers() {
-    const checkboxes = document.querySelectorAll(
-        "input[name='userId']:checked"
-    );
+    const checkboxes = document.querySelectorAll("input[name='userId']:checked");
     const selectedUserIds = [];
 
     checkboxes.forEach((checkbox) => {
@@ -518,9 +387,7 @@ function activeMultipleUsers() {
 }
 
 function deActiveMultipleUsers() {
-    const checkboxes = document.querySelectorAll(
-        "input[name='userId']:checked"
-    );
+    const checkboxes = document.querySelectorAll("input[name='userId']:checked");
     const selectedUserIds = [];
 
     checkboxes.forEach((checkbox) => {
@@ -534,9 +401,7 @@ function deActiveMultipleUsers() {
         return;
     }
 
-    if (
-        confirm(`Are you sure you want to archived ${count} selected user(s)?`)
-    ) {
+    if (confirm(`Are you sure you want to archived ${count} selected user(s)?`)) {
         document.querySelector("#toDeActiveUserIds").value = selectedUserIds;
         document.massUserDeActiveForm.submit();
     } else {
@@ -545,9 +410,7 @@ function deActiveMultipleUsers() {
 }
 
 function deleteMultipleUsers() {
-    const checkboxes = document.querySelectorAll(
-        "input[name='userId']:checked"
-    );
+    const checkboxes = document.querySelectorAll("input[name='userId']:checked");
     const selectedUserIds = [];
 
     checkboxes.forEach((checkbox) => {
@@ -572,9 +435,7 @@ function deleteMultipleUsers() {
 document.addEventListener("DOMContentLoaded", () => {
     // Get all elements needed
     const openModalBtns = document.querySelectorAll(".open-modal");
-    const closeModalBtns = document.querySelectorAll(
-        ".close-modal, .cancel-modal"
-    );
+    const closeModalBtns = document.querySelectorAll(".close-modal, .cancel-modal");
     const modals = document.querySelectorAll(".modal");
 
     // Open modal function

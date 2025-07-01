@@ -13,14 +13,8 @@ module.exports = {
 
         try {
             const optionsObj = { search, limit, skip, orderBy, orderDir };
-            const labels = await labelsService.find(
-                req.label.table,
-                optionsObj
-            );
-            const { count } = await labelsService.count(
-                req.label.table,
-                optionsObj
-            );
+            const labels = await labelsService.find(req.label.table, optionsObj);
+            const { count } = await labelsService.count(req.label.table, optionsObj);
 
             const pages = Math.ceil(count / limit);
 
@@ -157,23 +151,6 @@ module.exports = {
 
             req.flash("info", `${req.label.singularName} is activated.`);
             return res.redirect(`/admin/labels/${req.label.key}/${id}`);
-        } catch (err) {
-            next(err);
-        }
-    },
-
-    findActive: async (req, next) => {
-        try {
-            const companyLabels = await labelsService.findActive(
-                req.label.table
-            );
-
-            let sessionCompanyLabels = {};
-            for (const companyLabel of companyLabels) {
-                sessionCompanyLabels[companyLabel.name] =
-                    companyLabel.displayName;
-            }
-            req.session.companyLabels = sessionCompanyLabels;
         } catch (err) {
             next(err);
         }

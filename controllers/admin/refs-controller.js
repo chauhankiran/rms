@@ -1,6 +1,8 @@
 const notFound = require("../../errors/not-found");
 const refsService = require("../../services/admin/refs-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
+const locales = require("../../locales/en");
+const message = require("../../helpers/message");
 
 module.exports = {
     index: async (req, res, next) => {
@@ -14,10 +16,7 @@ module.exports = {
         try {
             const optionsObj = { search, limit, skip, orderBy, orderDir };
             const refs = await refsService.find(req.ref.table, optionsObj);
-            const { count } = await refsService.count(
-                req.ref.table,
-                optionsObj
-            );
+            const { count } = await refsService.count(req.ref.table, optionsObj);
 
             const pages = Math.ceil(count / limit);
 
@@ -64,9 +63,11 @@ module.exports = {
                 name,
                 createdBy: req.session.currentUser.id,
             };
-            await refsService.create(req.ref.table, refObj);
+            const resp = await refsService.create(req.ref.table, refObj);
 
-            req.flash("info", `${req.ref.singularName} is created.`);
+            console.log("resp: ", resp);
+
+            req.flash("info", message(locales.ref.created, { name: resp.name }));
             return res.redirect(`/admin/refs/${req.ref.key}`);
         } catch (err) {
             next(err);
@@ -116,7 +117,7 @@ module.exports = {
         const { name } = req.body;
 
         if (!name) {
-            req.flash("error", "Name is required.");
+            req.flash("error", message(locales.ref.nameRequired));
             return res.redirect(`/admin/refs/${id}/edit`);
         }
 
@@ -132,9 +133,9 @@ module.exports = {
                 name,
                 updatedBy: req.session.currentUser.id,
             };
-            await refsService.update(req.ref.table, refObj);
+            const resp = await refsService.update(req.ref.table, refObj);
 
-            req.flash("info", `${req.ref.singularName} is updated.`);
+            req.flash("info", message(locales.ref.updated, { name: resp.name }));
             return res.redirect(`/admin/refs/${req.ref.key}/${id}`);
         } catch (err) {
             next(err);
@@ -151,9 +152,9 @@ module.exports = {
                 return next(notFound());
             }
 
-            await refsService.destroy(req.ref.table, id);
+            const resp = await refsService.destroy(req.ref.table, id);
 
-            req.flash("info", `${req.ref.singularName} is deleted.`);
+            req.flash("info", message(locales.ref.deleted, { name: resp.name }));
             return res.redirect(`/admin/refs/${req.ref.key}`);
         } catch (err) {
             next(err);
@@ -171,9 +172,9 @@ module.exports = {
             }
 
             const refObj = { id, updatedBy: req.session.currentUser.id };
-            await refsService.archive(req.ref.table, refObj);
+            const resp = await refsService.archive(req.ref.table, refObj);
 
-            req.flash("info", `${req.ref.singularName} is archived.`);
+            req.flash("info", message(locales.ref.archived, { name: resp.name }));
             return res.redirect(`/admin/refs/${req.ref.key}/${id}`);
         } catch (err) {
             next(err);
@@ -191,9 +192,9 @@ module.exports = {
             }
 
             const refObj = { id, updatedBy: req.session.currentUser.id };
-            await refsService.active(req.ref.table, refObj);
+            const resp = await refsService.active(req.ref.table, refObj);
 
-            req.flash("info", `${req.ref.singularName} is activated.`);
+            req.flash("info", message(locales.ref.activated, { name: resp.name }));
             return res.redirect(`/admin/refs/${req.ref.key}/${id}`);
         } catch (err) {
             next(err);

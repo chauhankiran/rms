@@ -1,23 +1,15 @@
 const sql = require("../../db/sql");
 
-const updateStatus = async (tableName, obj) => {
+const updateStatus = async (table, obj) => {
     const { id, updatedBy, isActive } = obj;
 
     // If the table is "contacts", return id, firstName, and lastName.
-    // If the table is one of the known tables, return id and name.
-    // Otherwise, return just id.
-    const returning =
-        tableName === "contacts"
-            ? sql`id, "firstName", "lastName"`
-            : ["companies", "deals", "quotes", "tickets", "tasks"].includes(
-                    tableName
-                )
-              ? sql`id, name`
-              : sql`id`;
+    // Else return id and name.
+    const returning = table === "contacts" ? sql`id, "firstName", "lastName"` : sql`id, name`;
 
     return await sql`
         UPDATE
-            ${sql(tableName)}
+            ${sql(table)}
         SET
             "isActive" = ${isActive},
             "updatedBy" = ${updatedBy},

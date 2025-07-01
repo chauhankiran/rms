@@ -13,8 +13,6 @@ block content
                     input(type="hidden", name="orderDir", value=orderDir)
                     input(type="text", name="search", value=search, autofocus=true, placeholder="Type name and press Enter")
 
-            include ../../partials/flash
-
             table
                 thead 
                     tr  
@@ -55,12 +53,10 @@ block content
                                         a(href=`/admin/labels/${locals.label.key}/${label_.id}`) #{label_.id}
                                     td 
                                         a(href=`/admin/labels/${locals.label.key}/${label_.id}`) #{label_.displayName || "-" }
-
                                         if (!label_.isActive)
                                             span.archive-status (not active)
 
                                     td #{label_.updatedByEmail || "-" }
-
                                     td #{label_.updatedAt || "-" }
                         else
                             tr

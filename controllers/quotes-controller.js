@@ -254,9 +254,9 @@ module.exports = {
                 description,
                 updatedBy: req.session.currentUser.id,
             };
-            await quotesService.update(quoteObj);
+            const resp = await quotesService.update(quoteObj);
 
-            req.flash("info", locales.quote.updated);
+            req.flash("info", message(locales.quote.updated, { name: resp.name }));
             return res.redirect(`/quotes/${id}`);
         } catch (err) {
             next(err);
@@ -281,9 +281,9 @@ module.exports = {
 
         try {
             const quoteObj = { id, updatedBy: req.session.currentUser.id };
-            await quotesService.archive(quoteObj);
+            const resp = await quotesService.archive(quoteObj);
 
-            req.flash("info", locales.quote.archived);
+            req.flash("info", message(locales.quote.archived, { name: resp.name }));
             return res.redirect(`/quotes/${id}`);
         } catch (err) {
             next(err);
@@ -295,9 +295,9 @@ module.exports = {
 
         try {
             const quoteObj = { id, updatedBy: req.session.currentUser.id };
-            await quotesService.active(quoteObj);
+            const resp = await quotesService.active(quoteObj);
 
-            req.flash("info", locales.quote.activated);
+            req.flash("info", message(locales.quote.activated, { name: resp.name }));
             return res.redirect(`/quotes/${id}`);
         } catch (err) {
             next(err);

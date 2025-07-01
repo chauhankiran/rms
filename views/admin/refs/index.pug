@@ -15,8 +15,6 @@ block content
           input(type="hidden", name="orderDir", value=orderDir)
           input(type="text", name="search", value=search, autofocus=true, placeholder="Type name and press Enter")
 
-      include ../../partials/flash
-
       table
         thead 
           tr
@@ -65,7 +63,8 @@ block content
               tr
                 td
                   a(href=`/admin/refs/${locals.ref.key}/${ref.id}`) #{ref.id}
-                td #{ref.name}
+                td 
+                  a(href=`/admin/refs/${locals.ref.key}/${ref.id}`) #{ref.name}
                   if (!ref.isActive)
                     span.archive-status (archived)
                 td #{ref.createdByEmail || "-" }
@@ -74,7 +73,7 @@ block content
                 td #{ref.updatedAt || "-" }
           else
             tr
-              td(colspan=7).text-center No refs found.
+              td(colspan=6).text-center No refs found.
 
     .col-12 
       +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)

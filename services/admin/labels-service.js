@@ -4,9 +4,7 @@ module.exports = {
     find: async (table, optionsObj) => {
         const { skip, limit, search, orderBy, orderDir } = optionsObj;
 
-        const whereClause = search
-            ? sql` WHERE name iLIKE ${"%" + search + "%"}`
-            : sql``;
+        const whereClause = search ? sql` WHERE name iLIKE ${"%" + search + "%"}` : sql``;
 
         return await sql`
             SELECT
@@ -40,9 +38,7 @@ module.exports = {
     count: async (table, optionsObj) => {
         const { search } = optionsObj;
 
-        const whereClause = search
-            ? sql` WHERE name iLIKE ${"%" + search + "%"}`
-            : sql``;
+        const whereClause = search ? sql` WHERE name iLIKE ${"%" + search + "%"}` : sql``;
 
         return await sql`
             SELECT
@@ -89,52 +85,18 @@ module.exports = {
                 "updatedAt" = ${sql`now()`}
             WHERE
                 id = ${id}
-            returning id
+            returning id, name
         `.then(([x]) => x);
     },
 
     archive: async (table, optionsObj) => {
-        const { id, updatedBy } = optionsObj;
-
-        return await sql`
-            UPDATE
-                ${sql(table)}
-            SET
-                "isActive" = false,
-                "updatedBy" = ${updatedBy},
-                "updatedAt" = ${sql`now()`}
-            WHERE
-                id = ${id}
-            returning id
-        `.then(([x]) => x);
+        const obj = { ...optionsObj, isActive: false };
+        return await updateStatus(table, obj);
     },
 
     active: async (table, optionsObj) => {
-        const { id, updatedBy } = optionsObj;
-
-        return await sql`
-            UPDATE
-                ${sql(table)}
-            SET
-                "isActive" = true,
-                "updatedBy" = ${updatedBy},
-                "updatedAt" = ${sql`now()`}
-            WHERE
-                id = ${id}
-            returning id
-        `.then(([x]) => x);
-    },
-
-    findActive: async (table) => {
-        return await sql`
-            SELECT
-                name,
-                "displayName"
-            FROM
-                ${sql(table)}
-            WHERE
-                "isActive" = true
-        `;
+        const obj = { ...optionsObj, isActive: true };
+        return await updateStatus(table, obj);
     },
 
     pluck: async (table, columns) => {

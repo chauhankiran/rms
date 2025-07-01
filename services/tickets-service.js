@@ -39,9 +39,7 @@ module.exports = {
             whereClauses.push(sql`t."isActive" = TRUE`);
         }
 
-        const whereClause = whereClauses.flatMap((x, i) =>
-            i ? [sql`and`, x] : x
-        );
+        const whereClause = whereClauses.flatMap((x, i) => (i ? [sql`and`, x] : x));
 
         return await sql`
             SELECT
@@ -78,9 +76,7 @@ module.exports = {
             whereClauses.push(sql`t."isActive" = TRUE`);
         }
 
-        const whereClause = whereClauses.flatMap((x, i) =>
-            i ? [sql`and`, x] : x
-        );
+        const whereClause = whereClauses.flatMap((x, i) => (i ? [sql`and`, x] : x));
 
         return await sql`
             SELECT
@@ -92,15 +88,8 @@ module.exports = {
     },
 
     create: async (ticketObj) => {
-        const {
-            name,
-            description,
-            ticketTypeId,
-            companyId,
-            contactId,
-            dealId,
-            createdBy,
-        } = ticketObj;
+        const { name, description, ticketTypeId, companyId, contactId, dealId, createdBy } =
+            ticketObj;
 
         return await sql`
             INSERT INTO tickets (
@@ -165,7 +154,7 @@ module.exports = {
                 "updatedAt" = ${sql`now()`}
             WHERE
                 id = ${id}
-            returning id
+            returning id, name
             `.then(([x]) => x);
     },
 

@@ -13,9 +13,6 @@ block content
             a(href=`/admin/users/${user.id}/edit`).dropdown-item.mr-4 Edit user
             button(type="button", onClick="deleteUser()").dropdown-item Delete user
 
-    .col-12
-      include ../../partials/flash
-
       p User is #{user.isActive ? 'active' : 'archived' }. Click the button to #{user.isActive ? 'archived' : 'active' }. 
         button(type="button", onClick="archiveUser()") #{user.isActive ? 'archived' : 'Active' } user
 

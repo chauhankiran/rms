@@ -1,4 +1,5 @@
 extends ../layout
+include ../_components/buttons
 include ../deals/inline-deals
 include ../quotes/inline-quotes
 include ../tickets/inline-tickets
@@ -10,7 +11,7 @@ block content
       h1= title
     .col-6.text-end 
       a(href="/contacts").btn.is-muted.mr-4 &larr; Back 
-      a(href=`/contacts/${contact.id}/edit`, title=`Edit ${singular(downcase(labels.module.contact))}`).btn.mr-4 &#9998; Edit
+      +edit-button(`/contacts/${contact.id}/edit`, `Edit ${singular(downcase(labels.module.contact))}`, "Edit")
       .dropdown
         button.dropdown-trigger Actions
         .dropdown-menu
@@ -20,9 +21,6 @@ block content
             if !contact.isActive && currentUser.type == 'admin'
               button.dropdown-item(onclick="activeContact()") Active #{singular(downcase(labels.module.contact))}
             button.dropdown-item(onclick="deleteContact()") Delete #{singular(downcase(labels.module.contact))}
-
-    .col-12
-      include ../partials/flash
 
     .col-12 
       .row 

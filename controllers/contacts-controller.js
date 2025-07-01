@@ -206,8 +206,7 @@ module.exports = {
             req.flash(
                 "info",
                 message(locales.contact.created, {
-                    firstName: resp.firstName,
-                    lastName: resp.lastName,
+                    name: resp.firstName + " " + resp.lastName,
                 }),
             );
 
@@ -356,9 +355,14 @@ module.exports = {
                 contactIndustryId,
                 updatedBy: req.session.currentUser.id,
             };
-            await contactsService.update(contactObj);
+            const resp = await contactsService.update(contactObj);
 
-            req.flash("info", locales.contact.updated);
+            req.flash(
+                "info",
+                message(locales.contact.updated, {
+                    name: resp.firstName + " " + resp.lastName,
+                }),
+            );
             return res.redirect(`/contacts/${id}`);
         } catch (err) {
             next(err);
@@ -388,9 +392,12 @@ module.exports = {
 
         try {
             const contactObj = { id, updatedBy: req.session.currentUser.id };
-            await contactsService.archive(contactObj);
+            const resp = await contactsService.archive(contactObj);
 
-            req.flash("info", locales.contact.archived);
+            req.flash(
+                "info",
+                message(locales.contact.archived, { name: resp.firstName + " " + resp.lastName }),
+            );
             return res.redirect(`/contacts/${id}`);
         } catch (err) {
             next(err);
@@ -402,9 +409,14 @@ module.exports = {
 
         try {
             const contactObj = { id, updatedBy: req.session.currentUser.id };
-            await contactsService.active(contactObj);
+            const resp = await contactsService.active(contactObj);
 
-            req.flash("info", locales.contact.activated);
+            req.flash(
+                "info",
+                message(locales.contact.activated, {
+                    name: resp.firstName + " " + resp.lastName,
+                }),
+            );
             return res.redirect(`/contacts/${id}`);
         } catch (err) {
             next(err);

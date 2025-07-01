@@ -55,6 +55,15 @@ module.exports = {
         nameRequired: "Name is required.",
     },
 
+    ref: {
+        created: "{{name}} is created.",
+        updated: "{{name}} is updated.",
+        deleted: "{{name}} is deleted.",
+        archived: "{{name}} is archived.",
+        activated: "{{name}} is activated.",
+        nameRequired: "Name is required.",
+    },
+
     view: {
         updated: "View is updated for companies.",
         updatedTasks: "View is updated for tasks.",

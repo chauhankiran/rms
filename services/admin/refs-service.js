@@ -1,12 +1,12 @@
 const sql = require("../../db/sql");
+const destroy = require("../_base/destroy");
+const updateStatus = require("../_base/update-status");
 
 module.exports = {
     find: async (table, optionsObj) => {
         const { skip, limit, search, orderBy, orderDir } = optionsObj;
 
-        const whereClause = search
-            ? sql` WHERE name iLIKE ${"%" + search + "%"}`
-            : sql``;
+        const whereClause = search ? sql` WHERE name iLIKE ${"%" + search + "%"}` : sql``;
 
         return await sql`
             SELECT
@@ -39,9 +39,7 @@ module.exports = {
     count: async (table, optionsObj) => {
         const { search } = optionsObj;
 
-        const whereClause = search
-            ? sql` WHERE name iLIKE ${"%" + search + "%"}`
-            : sql``;
+        const whereClause = search ? sql` WHERE name iLIKE ${"%" + search + "%"}` : sql``;
 
         return await sql`
             SELECT
@@ -62,8 +60,8 @@ module.exports = {
             ) VALUES (
                 ${name},
                 ${createdBy}
-            ) returning id
-        `;
+            ) returning id, name
+        `.then(([x]) => x);
     },
 
     findOne: async (table, id) => {
@@ -101,50 +99,22 @@ module.exports = {
                 "updatedAt" = ${sql`now()`}
             WHERE
                 id = ${id}
-            returning id
+            returning id, name
         `.then(([x]) => x);
     },
 
     destroy: async (table, id) => {
-        return await sql`
-            DELETE FROM
-                ${sql(table)}
-            WHERE
-                id = ${id}
-            returning id
-        `.then(([x]) => x);
+        return await destroy(table, id);
     },
 
     archive: async (table, optionsObj) => {
-        const { id, updatedBy } = optionsObj;
-
-        return await sql`
-            UPDATE
-                ${sql(table)}
-            SET
-                "isActive" = false,
-                "updatedBy" = ${updatedBy},
-                "updatedAt" = ${sql`now()`}
-            WHERE
-                id = ${id}
-            returning id
-        `.then(([x]) => x);
+        const obj = { ...optionsObj, isActive: false };
+        return await updateStatus(table, obj);
     },
 
     active: async (table, optionsObj) => {
-        const { id, updatedBy } = optionsObj;
-
-        return await sql`
-            UPDATE
-                ${sql(table)}
-            SET
-                "isActive" = true,
-                "updatedBy" = ${updatedBy},
-                "updatedAt" = ${sql`now()`}
-            WHERE
-                id = ${id}
-            returning id
-        `.then(([x]) => x);
+        const obj = { ...optionsObj, isActive: true };
+        return await updateStatus(table, obj);
     },
 
     pluck: async (table, columns) => {

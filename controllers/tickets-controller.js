@@ -269,9 +269,9 @@ module.exports = {
                 ticketTypeId,
                 updatedBy: req.session.currentUser.id,
             };
-            await ticketsService.update(ticketObj);
+            const resp = await ticketsService.update(ticketObj);
 
-            req.flash("info", locales.ticket.updated);
+            req.flash("info", message(locales.ticket.updated, { name: resp.name }));
             return res.redirect(`/tickets/${id}`);
         } catch (err) {
             next(err);
@@ -296,9 +296,9 @@ module.exports = {
 
         try {
             const ticketObj = { id, updatedBy: req.session.currentUser.id };
-            await ticketsService.archive(ticketObj);
+            const resp = await ticketsService.archive(ticketObj);
 
-            req.flash("info", locales.ticket.archived);
+            req.flash("info", message(locales.ticket.archived, { name: resp.name }));
             return res.redirect(`/tickets/${id}`);
         } catch (err) {
             next(err);
@@ -310,9 +310,9 @@ module.exports = {
 
         try {
             const ticketObj = { id, updatedBy: req.session.currentUser.id };
-            await ticketsService.active(ticketObj);
+            const resp = await ticketsService.active(ticketObj);
 
-            req.flash("info", locales.ticket.activated);
+            req.flash("info", message(locales.ticket.activated, { name: resp.name }));
             return res.redirect(`/tickets/${id}`);
         } catch (err) {
             next(err);
