@@ -287,8 +287,7 @@ module.exports = {
             const files = await contactFilesService.findOne(id);
 
             return res.render("contacts/show", {
-                title:
-                    "Show " + pluralize.singular(req.session.labels.module.contact.toLowerCase()),
+                title: contact.firstName + " " + contact.lastName,
                 contact,
                 deals,
                 quotes,

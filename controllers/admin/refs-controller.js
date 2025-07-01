@@ -85,7 +85,7 @@ module.exports = {
             }
 
             return res.render(`admin/refs/show`, {
-                title: `Show ${req.ref.singularName}`,
+                title: ref.name,
                 ref_: ref,
             });
         } catch (err) {

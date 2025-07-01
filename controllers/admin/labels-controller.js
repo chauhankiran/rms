@@ -55,7 +55,7 @@ module.exports = {
             }
 
             return res.render("admin/labels/show", {
-                title: `Show ${req.label.singularName}`,
+                title: label.displayName,
                 label_: label,
             });
         } catch (err) {

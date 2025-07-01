@@ -216,7 +216,7 @@ module.exports = {
             const files = await ticketFilesService.findOne(id);
 
             return res.render("tickets/show", {
-                title: "Show " + pluralize.singular(req.session.labels.module.ticket.toLowerCase()),
+                title: ticket.name,
                 ticket,
                 tasks,
                 comments,

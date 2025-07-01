@@ -326,8 +326,7 @@ module.exports = {
             const files = await companyFilesService.findOne(id);
 
             return res.render("companies/show", {
-                title:
-                    "Show " + pluralize.singular(req.session.labels.module.company.toLowerCase()),
+                title: company.name,
                 company,
                 contacts,
                 deals,
