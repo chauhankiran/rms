@@ -2,10 +2,9 @@ const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const authService = require("../services/auth-service");
 const labelsService = require("../services/admin/labels-service");
+const modulesService = require("../services/admin/modules-service");
 
 const { Resend } = require("resend");
-const sql = require("../db/sql");
-const modulesService = require("../services/admin/modules-service");
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const transformLabels = (labels) => {
@@ -48,10 +47,7 @@ module.exports = {
             }
 
             if (!user.isActive) {
-                req.flash(
-                    "error",
-                    "User is de-activated. Please contact administrator."
-                );
+                req.flash("error", "User is de-activated. Please contact administrator.");
                 return res.redirect("/auth/login");
             }
 
@@ -59,6 +55,134 @@ module.exports = {
                 id: user.id,
                 email: user.email,
                 type: user.type,
+            };
+
+            req.session.permission = {
+                canAccessCompany: user.canAccessCompany,
+                canAccessContact: user.canAccessContact,
+                canAccessDeal: user.canAccessDeal,
+                canAccessQuote: user.canAccessQuote,
+                canAccessTicket: user.canAccessTicket,
+                canAccessTask: user.canAccessTask,
+                canAccessReport: user.canAccessReport,
+                canAccessFile: user.canAccessFile,
+                canAccessComment: user.canAccessComment,
+                canAccessCommentOnCompany: user.canAccessCommentOnCompany,
+                canAccessCommentOnContact: user.canAccessCommentOnContact,
+                canAccessCommentOnDeal: user.canAccessCommentOnDeal,
+                canAccessCommentOnQuote: user.canAccessCommentOnQuote,
+                canAccessCommentOnTicket: user.canAccessCommentOnTicket,
+                canAccessCommentOnTask: user.canAccessCommentOnTask,
+                canAccessFileOnCompany: user.canAccessFileOnCompany,
+                canAccessFileOnContact: user.canAccessFileOnContact,
+                canAccessFileOnDeal: user.canAccessFileOnDeal,
+                canAccessFileOnQuote: user.canAccessFileOnQuote,
+                canAccessFileOnTicket: user.canAccessFileOnTicket,
+                canAccessFileOnTask: user.canAccessFileOnTask,
+                showContactOnCompany: user.showContactOnCompany,
+                showDealOnCompany: user.showDealOnCompany,
+                showQuoteOnCompany: user.showQuoteOnCompany,
+                showTicketOnCompany: user.showTicketOnCompany,
+                showTaskOnCompany: user.showTaskOnCompany,
+                showDealOnContact: user.showDealOnContact,
+                showQuoteOnContact: user.showQuoteOnContact,
+                showTicketOnContact: user.showTicketOnContact,
+                showTaskOnContact: user.showTaskOnContact,
+                showQuoteOnDeal: user.showQuoteOnDeal,
+                showTicketOnDeal: user.showTicketOnDeal,
+                showTaskOnDeal: user.showTaskOnDeal,
+                showTaskOnQuote: user.showTaskOnQuote,
+                showTaskOnTicket: user.showTaskOnTicket,
+                canViewCompany: user.canViewCompany,
+                canCreateCompany: user.canCreateCompany,
+                canEditCompany: user.canEditCompany,
+                canArchiveCompany: user.canArchiveCompany,
+                canDeleteCompany: user.canDeleteCompany,
+                canViewCompanyComment: user.canViewCompanyComment,
+                canCreateCompanyComment: user.canCreateCompanyComment,
+                canEditCompanyComment: user.canEditCompanyComment,
+                canArchiveCompanyComment: user.canArchiveCompanyComment,
+                canDeleteCompanyComment: user.canDeleteCompanyComment,
+                canViewCompanyFile: user.canViewCompanyFile,
+                canCreateCompanyFile: user.canCreateCompanyFile,
+                canEditCompanyFile: user.canEditCompanyFile,
+                canArchiveCompanyFile: user.canArchiveCompanyFile,
+                canDeleteCompanyFile: user.canDeleteCompanyFile,
+                canViewContact: user.canViewContact,
+                canCreateContact: user.canCreateContact,
+                canEditContact: user.canEditContact,
+                canArchiveContact: user.canArchiveContact,
+                canDeleteContact: user.canDeleteContact,
+                canViewContactComment: user.canViewContactComment,
+                canCreateContactComment: user.canCreateContactComment,
+                canEditContactComment: user.canEditContactComment,
+                canArchiveContactComment: user.canArchiveContactComment,
+                canDeleteContactComment: user.canDeleteContactComment,
+                canViewContactFile: user.canViewContactFile,
+                canCreateContactFile: user.canCreateContactFile,
+                canEditContactFile: user.canEditContactFile,
+                canArchiveContactFile: user.canArchiveContactFile,
+                canDeleteContactFile: user.canDeleteContactFile,
+                canViewDeal: user.canViewDeal,
+                canCreateDeal: user.canCreateDeal,
+                canEditDeal: user.canEditDeal,
+                canArchiveDeal: user.canArchiveDeal,
+                canDeleteDeal: user.canDeleteDeal,
+                canViewDealComment: user.canViewDealComment,
+                canCreateDealComment: user.canCreateDealComment,
+                canEditDealComment: user.canEditDealComment,
+                canArchiveDealComment: user.canArchiveDealComment,
+                canDeleteDealComment: user.canDeleteDealComment,
+                canViewDealFile: user.canViewDealFile,
+                canCreateDealFile: user.canCreateDealFile,
+                canEditDealFile: user.canEditDealFile,
+                canArchiveDealFile: user.canArchiveDealFile,
+                canDeleteDealFile: user.canDeleteDealFile,
+                canViewQuote: user.canViewQuote,
+                canCreateQuote: user.canCreateQuote,
+                canEditQuote: user.canEditQuote,
+                canArchiveQuote: user.canArchiveQuote,
+                canDeleteQuote: user.canDeleteQuote,
+                canViewQuoteComment: user.canViewQuoteComment,
+                canCreateQuoteComment: user.canCreateQuoteComment,
+                canEditQuoteComment: user.canEditQuoteComment,
+                canArchiveQuoteComment: user.canArchiveQuoteComment,
+                canDeleteQuoteComment: user.canDeleteQuoteComment,
+                canViewQuoteFile: user.canViewQuoteFile,
+                canCreateQuoteFile: user.canCreateQuoteFile,
+                canEditQuoteFile: user.canEditQuoteFile,
+                canArchiveQuoteFile: user.canArchiveQuoteFile,
+                canDeleteQuoteFile: user.canDeleteQuoteFile,
+                canViewTicket: user.canViewTicket,
+                canCreateTicket: user.canCreateTicket,
+                canEditTicket: user.canEditTicket,
+                canArchiveTicket: user.canArchiveTicket,
+                canDeleteTicket: user.canDeleteTicket,
+                canViewTicketComment: user.canViewTicketComment,
+                canCreateTicketComment: user.canCreateTicketComment,
+                canEditTicketComment: user.canEditTicketComment,
+                canArchiveTicketComment: user.canArchiveTicketComment,
+                canDeleteTicketComment: user.canDeleteTicketComment,
+                canViewTicketFile: user.canViewTicketFile,
+                canCreateTicketFile: user.canCreateTicketFile,
+                canEditTicketFile: user.canEditTicketFile,
+                canArchiveTicketFile: user.canArchiveTicketFile,
+                canDeleteTicketFile: user.canDeleteTicketFile,
+                canViewTask: user.canViewTask,
+                canCreateTask: user.canCreateTask,
+                canEditTask: user.canEditTask,
+                canArchiveTask: user.canArchiveTask,
+                canDeleteTask: user.canDeleteTask,
+                canViewTaskComment: user.canViewTaskComment,
+                canCreateTaskComment: user.canCreateTaskComment,
+                canEditTaskComment: user.canEditTaskComment,
+                canArchiveTaskComment: user.canArchiveTaskComment,
+                canDeleteTaskComment: user.canDeleteTaskComment,
+                canViewTaskFile: user.canViewTaskFile,
+                canCreateTaskFile: user.canCreateTaskFile,
+                canEditTaskFile: user.canEditTaskFile,
+                canArchiveTaskFile: user.canArchiveTaskFile,
+                canDeleteTaskFile: user.canDeleteTaskFile,
             };
 
             if (user.isRequiredToChangePassword) {
@@ -82,17 +206,11 @@ module.exports = {
             const columns = ["name", "displayName"];
 
             // Company labels.
-            const companyLabels = await labelsService.pluck(
-                "companyLabels",
-                columns
-            );
+            const companyLabels = await labelsService.pluck("companyLabels", columns);
             req.session.labels.company = transformLabels(companyLabels);
 
             // Contact labels.
-            const contactLabels = await labelsService.pluck(
-                "contactLabels",
-                columns
-            );
+            const contactLabels = await labelsService.pluck("contactLabels", columns);
             req.session.labels.contact = transformLabels(contactLabels);
 
             // Deal labels.
@@ -100,17 +218,11 @@ module.exports = {
             req.session.labels.deal = transformLabels(dealLabels);
 
             // Quote labels.
-            const quoteLabels = await labelsService.pluck(
-                "quoteLabels",
-                columns
-            );
+            const quoteLabels = await labelsService.pluck("quoteLabels", columns);
             req.session.labels.quote = transformLabels(quoteLabels);
 
             // Ticket labels.
-            const ticketLabels = await labelsService.pluck(
-                "ticketLabels",
-                columns
-            );
+            const ticketLabels = await labelsService.pluck("ticketLabels", columns);
             req.session.labels.ticket = transformLabels(ticketLabels);
 
             // Task labels.
@@ -118,10 +230,7 @@ module.exports = {
             req.session.labels.task = transformLabels(taskLabels);
 
             // Module labels.
-            const moduleLabels = await labelsService.pluck(
-                "moduleLabels",
-                columns
-            );
+            const moduleLabels = await labelsService.pluck("moduleLabels", columns);
             req.session.labels.module = transformLabels(moduleLabels);
 
             return res.redirect("/dashboard");
@@ -240,10 +349,7 @@ module.exports = {
             }
 
             if (!user.isActive) {
-                req.flash(
-                    "error",
-                    "User is de-activated. Please contact administrator."
-                );
+                req.flash("error", "User is de-activated. Please contact administrator.");
                 return res.redirect("/auth/forgot-password");
             }
 

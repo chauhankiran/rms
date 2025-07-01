@@ -11,7 +11,157 @@ module.exports = {
                 password,
                 "isRequiredToChangePassword",
                 "isActive",
-                type
+                type,
+
+                "canAccessCompany",
+                "canAccessContact",
+                "canAccessDeal",
+                "canAccessQuote",
+                "canAccessTicket",
+                "canAccessTask",
+                "canAccessReport",
+                "canAccessFile",
+                "canAccessComment",
+
+                "canAccessCommentOnCompany",
+                "canAccessCommentOnContact",
+                "canAccessCommentOnDeal",
+                "canAccessCommentOnQuote",
+                "canAccessCommentOnTicket",
+                "canAccessCommentOnTask",
+
+                "canAccessFileOnCompany",
+                "canAccessFileOnContact",
+                "canAccessFileOnDeal",
+                "canAccessFileOnQuote",
+                "canAccessFileOnTicket",
+                "canAccessFileOnTask",
+
+                "showContactOnCompany",
+                "showDealOnCompany",
+                "showQuoteOnCompany",
+                "showTicketOnCompany",
+                "showTaskOnCompany",
+
+                "showDealOnContact",
+                "showQuoteOnContact",
+                "showTicketOnContact",
+                "showTaskOnContact",
+
+                "showQuoteOnDeal",
+                "showTicketOnDeal",
+                "showTaskOnDeal",
+
+                "showTaskOnQuote",
+                "showTaskOnTicket",
+
+                "canViewCompany",
+                "canCreateCompany",
+                "canEditCompany",
+                "canArchiveCompany",
+                "canDeleteCompany",
+
+                "canViewCompanyComment",
+                "canCreateCompanyComment",
+                "canEditCompanyComment",
+                "canArchiveCompanyComment",
+                "canDeleteCompanyComment",
+
+                "canViewCompanyFile",
+                "canCreateCompanyFile",
+                "canEditCompanyFile",
+                "canArchiveCompanyFile",
+                "canDeleteCompanyFile",
+
+                "canViewContact",
+                "canCreateContact",
+                "canEditContact",
+                "canArchiveContact",
+                "canDeleteContact",
+
+                "canViewContactComment",
+                "canCreateContactComment",
+                "canEditContactComment",
+                "canArchiveContactComment",
+                "canDeleteContactComment",
+
+                "canViewContactFile",
+                "canCreateContactFile",
+                "canEditContactFile",
+                "canArchiveContactFile",
+                "canDeleteContactFile",
+
+                "canViewDeal",
+                "canCreateDeal",
+                "canEditDeal",
+                "canArchiveDeal",
+                "canDeleteDeal",
+
+                "canViewDealComment",
+                "canCreateDealComment",
+                "canEditDealComment",
+                "canArchiveDealComment",
+                "canDeleteDealComment",
+
+                "canViewDealFile",
+                "canCreateDealFile",
+                "canEditDealFile",
+                "canArchiveDealFile",
+                "canDeleteDealFile",
+
+                "canViewQuote",
+                "canCreateQuote",
+                "canEditQuote",
+                "canArchiveQuote",
+                "canDeleteQuote",
+
+                "canViewQuoteComment",
+                "canCreateQuoteComment",
+                "canEditQuoteComment",
+                "canArchiveQuoteComment",
+                "canDeleteQuoteComment",
+
+                "canViewQuoteFile",
+                "canCreateQuoteFile",
+                "canEditQuoteFile",
+                "canArchiveQuoteFile",
+                "canDeleteQuoteFile",
+
+                "canViewTicket",
+                "canCreateTicket",
+                "canEditTicket",
+                "canArchiveTicket",
+                "canDeleteTicket",
+
+                "canViewTicketComment",
+                "canCreateTicketComment",
+                "canEditTicketComment",
+                "canArchiveTicketComment",
+                "canDeleteTicketComment",
+
+                "canViewTicketFile",
+                "canCreateTicketFile",
+                "canEditTicketFile",
+                "canArchiveTicketFile",
+                "canDeleteTicketFile",
+
+                "canViewTask",
+                "canCreateTask",
+                "canEditTask",
+                "canArchiveTask",
+                "canDeleteTask",
+
+                "canViewTaskComment",
+                "canCreateTaskComment",
+                "canEditTaskComment",
+                "canArchiveTaskComment",
+                "canDeleteTaskComment",
+
+                "canViewTaskFile",
+                "canCreateTaskFile",
+                "canEditTaskFile",
+                "canArchiveTaskFile",
+                "canDeleteTaskFile"
             FROM
                 users
             WHERE
