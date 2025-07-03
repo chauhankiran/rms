@@ -35,6 +35,12 @@ const labels = {
         singularName: "task label",
         pluralName: "Task labels",
     },
+    modules: {
+        key: "modules",
+        table: "moduleLabels",
+        singularName: "module label",
+        pluralName: "Module labels",
+    },
 };
 
 module.exports = labels;
