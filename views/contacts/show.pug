@@ -66,11 +66,11 @@ block content
             label(for="updatedAt").field-name #{labels.contact.updatedAt}
             span.field-value #{contact.updatedAt || "-"}
 
-        if labels.contact.updatedAt
+        if labels.contact.createdBy
           .col-6.mb-4
-            label(for="createdBy").field-name #{labels.contact.updatedAt}
+            label(for="createdBy").field-name #{labels.contact.createdBy}
             span.field-value #{contact.createdByEmail || "-"}
-        
+
         if labels.contact.updatedBy
           .col-6.mb-4
             label(for="updatedBy").field-name #{labels.contact.updatedBy}
@@ -149,7 +149,7 @@ block content
                   a(href=`/contacts/${contact.id}/files/${file.id}`) #{file.id}
                 td 
                   a(href=`/contacts/${contact.id}/files/${file.id}`) #{file.displayName}
-                td #{file.cretedAt || "-"}
+                td #{file.createdAt || "-"}
                 td #{file.createdByEmail || "-"}
                 td 
                   //- show delete button if the user is the creator of the comment
