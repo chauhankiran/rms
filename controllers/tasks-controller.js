@@ -10,6 +10,7 @@ const capitalize = require("../helpers/capitalize");
 const pluralize = require("pluralize");
 const locales = require("../locales/en");
 const message = require("../helpers/message");
+const { PER_PAGE } = require("../constants/app");
 
 // columnsObj contains list of field companies can have.
 // key in object is name of the field (used to fetch label).
@@ -58,7 +59,7 @@ module.exports = {
     index: async (req, res, next) => {
         const search = req.query.search || null;
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+        const limit = parseInt(req.query.limit) || PER_PAGE;
         const skip = (page - 1) * limit;
         const orderBy = req.query.orderBy || "t.id";
         const orderDir = req.query.orderDir || "DESC";

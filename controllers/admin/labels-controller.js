@@ -3,12 +3,13 @@ const labelsService = require("../../services/admin/labels-service");
 const generatePaginationLinks = require("../../helpers/generate-pagination-links");
 const message = require("../../helpers/message");
 const locales = require("../../locales/en");
+const { PER_PAGE } = require("../../constants/app");
 
 module.exports = {
     index: async (req, res, next) => {
         const search = req.query.search || null;
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+        const limit = parseInt(req.query.limit) || PER_PAGE;
         const skip = (page - 1) * limit;
         const orderBy = req.query.orderBy || "id";
         const orderDir = req.query.orderDir || "DESC";
