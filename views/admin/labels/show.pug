@@ -20,8 +20,8 @@ block content
                 .col-12.mb-4
                     label(for="name").field-name Name 
                     span.field-value #{label_.name}
-                    if !label_.isActive 
-                        span.archive-status (archived)
+                        if !label_.isActive 
+                            span.archive-status (archived)
 
                 .col-12.mb-4
                     label(for="displayName").field-name Display name 
@@ -43,9 +43,19 @@ block content
                     label(for="updatedBy").field-name Updated by
                     span.field-value #{label_.updatedByEmail || "-"}
 
-
-        form(action=`/admin/labels/${locals.label.key}/${label_.id}?_method=DELETE`, name="deleteLabelForm", method="post") 
-
         form(action=`/admin/labels/${locals.label.key}/${label_.id}/active?_method=PUT`, name="activeLabelForm", method="post") 
 
         form(action=`/admin/labels/${locals.label.key}/${label_.id}/archive?_method=PUT`, name="archiveLabelForm", method="post") 
+
+        script.
+            function activeLabel() {
+                if (confirm("Are you sure you want to activate this label?")) {
+                    document.activeLabelForm.submit();
+                }
+            }
+
+            function archiveLabel() {
+                if (confirm("Are you sure you want to archive this label?")) {
+                    document.archiveLabelForm.submit();
+                }
+            }
