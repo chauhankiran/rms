@@ -88,14 +88,37 @@ module.exports = {
     },
 
     create: async (ticketObj) => {
-        const { name, description, ticketTypeId, companyId, contactId, dealId, createdBy } =
-            ticketObj;
+        const {
+            name,
+            description,
+            ticketTypeId,
+            priorityId,
+            sourceId,
+            typeId,
+            assignId,
+            statusId,
+            dueDate,
+            closeDate,
+            closeReason,
+            companyId,
+            contactId,
+            dealId,
+            createdBy,
+        } = ticketObj;
 
         return await sql`
             INSERT INTO tickets (
                 name,
                 description,
                 "ticketTypeId",
+                "priorityId",
+                "sourceId",
+                "typeId",
+                "assignId",
+                "statusId",
+                "dueDate",
+                "closeDate",
+                "closeReason",
                 "companyId",
                 "contactId",
                 "dealId",
@@ -104,6 +127,14 @@ module.exports = {
                 ${name},
                 ${description},
                 ${ticketTypeId},
+                ${priorityId},
+                ${sourceId},
+                ${typeId},
+                ${assignId},
+                ${statusId},
+                ${dueDate},
+                ${closeDate},
+                ${closeReason},
                 ${companyId},
                 ${contactId},
                 ${dealId},
@@ -141,7 +172,21 @@ module.exports = {
     },
 
     update: async (ticketObj) => {
-        const { id, name, description, ticketTypeId, updatedBy } = ticketObj;
+        const {
+            id,
+            name,
+            description,
+            ticketTypeId,
+            priorityId,
+            sourceId,
+            typeId,
+            assignId,
+            statusId,
+            dueDate,
+            closeDate,
+            closeReason,
+            updatedBy,
+        } = ticketObj;
 
         return await sql`
             UPDATE
@@ -150,6 +195,14 @@ module.exports = {
                 name = ${name},
                 description = ${description},
                 "ticketTypeId" = ${ticketTypeId},
+                "priorityId" = ${priorityId},
+                "sourceId" = ${sourceId},
+                "typeId" = ${typeId},
+                "assignId" = ${assignId},
+                "statusId" = ${statusId},
+                "dueDate" = ${dueDate},
+                "closeDate" = ${closeDate},
+                "closeReason" = ${closeReason},
                 "updatedBy" = ${updatedBy},
                 "updatedAt" = ${sql`now()`}
             WHERE

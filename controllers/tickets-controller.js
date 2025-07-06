@@ -155,7 +155,24 @@ module.exports = {
     },
 
     create: async (req, res, next) => {
-        const { name, description, ticketTypeId, companyId, contactId, dealId } = req.body;
+        const {
+            name,
+            description,
+            ticketTypeId,
+
+            priorityId,
+            sourceId,
+            typeId,
+            assignId,
+            statusId,
+            dueDate,
+            closeDate,
+            closeReason,
+
+            companyId,
+            contactId,
+            dealId,
+        } = req.body;
 
         if (!name) {
             req.flash("error", locales.ticket.nameRequired);
@@ -166,6 +183,14 @@ module.exports = {
                 name,
                 description,
                 ticketTypeId,
+                priorityId: priorityId || null,
+                sourceId: sourceId || null,
+                typeId: typeId || null,
+                assignId: assignId || null,
+                statusId: statusId || null,
+                dueDate: dueDate || null,
+                closeDate: closeDate || null,
+                closeReason: closeReason || null,
                 companyId: companyId || null,
                 contactId: contactId || null,
                 dealId: dealId || null,
@@ -248,7 +273,19 @@ module.exports = {
 
     update: async (req, res, next) => {
         const id = req.params.id;
-        const { name, description, ticketTypeId } = req.body;
+        const {
+            name,
+            description,
+            ticketTypeId,
+            priorityId,
+            sourceId,
+            typeId,
+            assignId,
+            statusId,
+            dueDate,
+            closeDate,
+            closeReason,
+        } = req.body;
 
         if (!name) {
             req.flash("error", locales.ticket.nameRequired);
@@ -260,6 +297,14 @@ module.exports = {
                 name,
                 description,
                 ticketTypeId,
+                priorityId: priorityId || null,
+                sourceId: sourceId || null,
+                typeId: typeId || null,
+                assignId: assignId || null,
+                statusId: statusId || null,
+                dueDate: dueDate || null,
+                closeDate: closeDate || null,
+                closeReason: closeReason || null,
                 updatedBy: req.session.currentUser.id,
             };
             const resp = await ticketsService.update(ticketObj);

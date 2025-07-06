@@ -142,7 +142,25 @@ module.exports = {
     },
 
     create: async (req, res, next) => {
-        const { name, total, description, companyId, contactId, dealId } = req.body;
+        const {
+            name,
+            total,
+            description,
+
+            sourceId,
+            stageId,
+            statusId,
+            discount,
+            tax,
+            probabilityId,
+            assigneeId,
+            templateId,
+            expireOn,
+
+            companyId,
+            contactId,
+            dealId,
+        } = req.body;
 
         if (!name) {
             req.flash("error", locales.quote.nameRequired);
@@ -154,6 +172,15 @@ module.exports = {
                 name,
                 total,
                 description,
+                sourceId: sourceId || null,
+                stageId: stageId || null,
+                statusId: statusId || null,
+                discount: discount || null,
+                tax: tax || null,
+                probabilityId: probabilityId || null,
+                assigneeId: assigneeId || null,
+                templateId: templateId || null,
+                expireOn: expireOn || null,
                 companyId: companyId || null,
                 contactId: contactId || null,
                 dealId: dealId || null,
@@ -233,7 +260,20 @@ module.exports = {
 
     update: async (req, res, next) => {
         const id = req.params.id;
-        const { name, total, description } = req.body;
+        const {
+            name,
+            total,
+            description,
+            sourceId,
+            stageId,
+            statusId,
+            discount,
+            tax,
+            probabilityId,
+            assigneeId,
+            templateId,
+            expireOn,
+        } = req.body;
 
         if (!name) {
             req.flash("error", locales.quote.nameRequired);
@@ -245,6 +285,15 @@ module.exports = {
                 name,
                 total,
                 description,
+                sourceId: sourceId || null,
+                stageId: stageId || null,
+                statusId: statusId || null,
+                discount: discount || null,
+                tax: tax || null,
+                probabilityId: probabilityId || null,
+                assigneeId: assigneeId || null,
+                templateId: templateId || null,
+                expireOn: expireOn || null,
                 updatedBy: req.session.currentUser.id,
             };
             const resp = await quotesService.update(quoteObj);

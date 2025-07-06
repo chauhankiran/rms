@@ -49,9 +49,7 @@ module.exports = {
             whereClauses.push(sql`t."isActive" = TRUE`);
         }
 
-        const whereClause = whereClauses.flatMap((x, i) =>
-            i ? [sql`and`, x] : x
-        );
+        const whereClause = whereClauses.flatMap((x, i) => (i ? [sql`and`, x] : x));
 
         return await sql`
             SELECT
@@ -88,9 +86,7 @@ module.exports = {
             whereClauses.push(sql`t."isActive" = TRUE`);
         }
 
-        const whereClause = whereClauses.flatMap((x, i) =>
-            i ? [sql`and`, x] : x
-        );
+        const whereClause = whereClauses.flatMap((x, i) => (i ? [sql`and`, x] : x));
 
         return await sql`
             SELECT
@@ -108,6 +104,10 @@ module.exports = {
             location,
             description,
             taskTypeId,
+            typeId,
+            when,
+            duration,
+            isCompleted,
             companyId,
             contactId,
             dealId,
@@ -123,6 +123,10 @@ module.exports = {
                 location,
                 description,
                 "taskTypeId",
+                "typeId",
+                "when",
+                "duration",
+                "isCompleted",
                 "companyId",
                 "contactId",
                 "dealId",
@@ -135,6 +139,10 @@ module.exports = {
                 ${location},
                 ${description},
                 ${taskTypeId},
+                ${typeId},
+                ${when},
+                ${duration},
+                ${isCompleted},
                 ${companyId},
                 ${contactId},
                 ${dealId},
@@ -183,6 +191,10 @@ module.exports = {
             location,
             description,
             taskTypeId,
+            typeId,
+            when,
+            duration,
+            isCompleted,
             updatedBy,
         } = taskObj;
 
@@ -195,6 +207,10 @@ module.exports = {
                 location = ${location},
                 description = ${description},
                 "taskTypeId" = ${taskTypeId},
+                "typeId" = ${typeId},
+                "when" = ${when},
+                "duration" = ${duration},
+                "isCompleted" = ${isCompleted},
                 "updatedBy" = ${updatedBy},
                 "updatedAt" = ${sql`now()`}
             WHERE

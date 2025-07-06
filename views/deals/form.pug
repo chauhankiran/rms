@@ -6,20 +6,92 @@ if labels.deal.name
 
 //- total
 if labels.deal.total
-  .form-group 
-    label(for="total") #{labels.deal.total}
-    input(type="text", name="total", id="total" value=deal ? deal.total : 0, placeholder="1200")
+    .form-group 
+        label(for="total") #{labels.deal.total}
+        input(type="text", name="total", id="total" value=deal ? deal.total : 0, placeholder="1200")
 
 //- dealSourceId
 if labels.deal.dealSourceId
-  .form-group 
-    label(for="dealSourceId") #{labels.deal.dealSourceId}
-    select(name="dealSourceId", id="dealSourceId")
-      for dealSource in dealSources
-        option(value=dealSource.id, selected=deal && dealSource.id == deal.dealSourceId) #{dealSource.name}
+    .form-group 
+        label(for="dealSourceId") #{labels.deal.dealSourceId}
+        select(name="dealSourceId", id="dealSourceId")
+            for dealSource in dealSources
+                option(value=dealSource.id, selected=deal && dealSource.id == deal.dealSourceId) #{dealSource.name}
 
 //- description
 if labels.deal.description
-  .form-group 
-    label(for="description") #{labels.deal.description}
-    textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{deal ? deal.description : ""}
+    .form-group 
+        label(for="description") #{labels.deal.description}
+        textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{deal ? deal.description : ""}
+
+//- sourceId
+if labels.deal.sourceId
+    .form-group 
+        label(for="sourceId") #{labels.deal.sourceId}
+        input(type="text", name="sourceId", id="sourceId" value=deal ? deal.sourceId : 0, placeholder="")
+
+//- stageId
+if labels.deal.stageId
+    .form-group 
+        label(for="stageId") #{labels.deal.stageId}
+        input(type="text", name="stageId", id="stageId" value=deal ? deal.stageId : 0, placeholder="")
+
+//- statusId
+if labels.deal.statusId
+    .form-group 
+        label(for="statusId") #{labels.deal.statusId}
+        input(type="text", name="statusId", id="statusId" value=deal ? deal.statusId : 0, placeholder="")
+
+//- discount
+if labels.deal.discount
+    .form-group 
+        label(for="discount") #{labels.deal.discount}
+        input(type="text", name="discount", id="discount" value=deal ? deal.discount : 0, placeholder="")
+
+//- tax
+if labels.deal.tax
+    .form-group 
+        label(for="tax") #{labels.deal.tax}
+        input(type="text", name="tax", id="tax" value=deal ? deal.tax : 0, placeholder="")
+
+//- probabilityId
+if labels.deal.probabilityId
+    .form-group 
+        label(for="probabilityId") #{labels.deal.probabilityId}
+        input(type="text", name="probabilityId", id="probabilityId" value=deal ? deal.probabilityId : 0, placeholder="")
+
+//- assigneeId
+if labels.deal.assigneeId
+    .form-group 
+        label(for="assigneeId") #{labels.deal.assigneeId}
+        input(type="text", name="assigneeId", id="assigneeId" value=deal ? deal.assigneeId : 0, placeholder="")
+
+//- typeId
+if labels.deal.typeId
+    .form-group 
+        label(for="typeId") #{labels.deal.typeId}
+        input(type="text", name="typeId", id="typeId" value=deal ? deal.typeId : 0, placeholder="")
+
+//- closeDate
+if labels.deal.closeDate
+    .form-group 
+        label(for="closeDate") #{labels.deal.closeDate}
+        input(type="text", name="closeDate", id="closeDate" value=deal ? deal.closeDate : 0, placeholder="")
+
+//- closeReason
+if labels.deal.closeReason
+    .form-group 
+        label(for="closeReason") #{labels.deal.closeReason}
+        input(type="text", name="closeReason", id="closeReason" value=deal ? deal.closeReason : 0, placeholder="")
+
+//- wonDate
+if labels.deal.wonDate
+    .form-group 
+        label(for="wonDate") #{labels.deal.wonDate}
+        input(type="text", name="wonDate", id="wonDate" value=deal ? deal.wonDate : 0, placeholder="")
+
+//- wonReason
+if labels.deal.wonReason
+    .form-group 
+        label(for="wonReason") #{labels.deal.wonReason}
+        input(type="text", name="wonReason", id="wonReason" value=deal ? deal.wonReason : 0, placeholder="")

@@ -1,17 +1,71 @@
 //- name
 if labels.quote.name
-  .form-group 
-    label(for="name") #{labels.quote.name}
-    input(type="text", name="name", id="name", value=quote ? quote.name : "", placeholder="42 New LED Monitors", autofocus=true)
+    .form-group 
+        label(for="name") #{labels.quote.name}
+        input(type="text", name="name", id="name", value=quote ? quote.name : "", placeholder="42 New LED Monitors", autofocus=true)
 
 //- total
 if labels.quote.total
-  .form-group 
-    label(for="total") #{labels.quote.total}
-    input(type="text", name="total", id="total", value=quote ? quote.total : 0, placeholder="1200")
+    .form-group 
+        label(for="total") #{labels.quote.total}
+        input(type="text", name="total", id="total", value=quote ? quote.total : 0, placeholder="1200")
 
 //- description
 if labels.quote.description
-  .form-group 
-    label(for="description") #{labels.quote.description}
-    textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{quote ? quote.description : ""}
+    .form-group 
+        label(for="description") #{labels.quote.description}
+        textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{quote ? quote.description : ""}
+
+//- sourceId
+if labels.quote.sourceId
+    .form-group 
+        label(for="sourceId") #{labels.quote.sourceId}
+        input(type="text", name="sourceId", id="sourceId", value=quote ? quote.sourceId : 0, placeholder="")
+
+//- stageId
+if labels.quote.stageId
+    .form-group 
+        label(for="stageId") #{labels.quote.stageId}
+        input(type="text", name="stageId", id="stageId", value=quote ? quote.stageId : 0, placeholder="")
+
+//- stageId
+if labels.quote.stageId
+    .form-group 
+        label(for="stageId") #{labels.quote.stageId}
+        input(type="text", name="stageId", id="stageId", value=quote ? quote.stageId : 0, placeholder="")
+
+//- discount
+if labels.quote.discount
+    .form-group 
+        label(for="discount") #{labels.quote.discount}
+        input(type="text", name="discount", id="discount", value=quote ? quote.discount : 0, placeholder="")
+
+//- tax
+if labels.quote.tax
+    .form-group 
+        label(for="tax") #{labels.quote.tax}
+        input(type="text", name="tax", id="tax", value=quote ? quote.tax : 0, placeholder="")
+
+//- probabilityId
+if labels.quote.probabilityId
+    .form-group 
+        label(for="probabilityId") #{labels.quote.probabilityId}
+        input(type="text", name="probabilityId", id="probabilityId", value=quote ? quote.probabilityId : 0, placeholder="")
+
+//- assigneeId
+if labels.quote.assigneeId
+    .form-group 
+        label(for="assigneeId") #{labels.quote.assigneeId}
+        input(type="text", name="assigneeId", id="assigneeId", value=quote ? quote.assigneeId : 0, placeholder="")
+
+//- templateId
+if labels.quote.templateId
+    .form-group 
+        label(for="templateId") #{labels.quote.templateId}
+        input(type="text", name="templateId", id="templateId", value=quote ? quote.templateId : 0, placeholder="")
+
+//- expireOn
+if labels.quote.expireOn
+    .form-group 
+        label(for="expireOn") #{labels.quote.expireOn}
+        input(type="text", name="expireOn", id="expireOn", value=quote ? quote.expireOn : 0, placeholder="")

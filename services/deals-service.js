@@ -34,9 +34,7 @@ module.exports = {
             whereClauses.push(sql`d."isActive" = TRUE`);
         }
 
-        const whereClause = whereClauses.flatMap((x, i) =>
-            i ? [sql`and`, x] : x
-        );
+        const whereClause = whereClauses.flatMap((x, i) => (i ? [sql`and`, x] : x));
 
         return await sql`
             SELECT
@@ -73,9 +71,7 @@ module.exports = {
             whereClauses.push(sql`d."isActive" = TRUE`);
         }
 
-        const whereClause = whereClauses.flatMap((x, i) =>
-            i ? [sql`and`, x] : x
-        );
+        const whereClause = whereClauses.flatMap((x, i) => (i ? [sql`and`, x] : x));
 
         return await sql`
             SELECT
@@ -92,6 +88,18 @@ module.exports = {
             total,
             description,
             dealSourceId,
+            sourceId,
+            stageId,
+            statusId,
+            discount,
+            tax,
+            probabilityId,
+            assigneeId,
+            typeId,
+            closeDate,
+            closeReason,
+            wonDate,
+            wonReason,
             companyId,
             contactId,
             createdBy,
@@ -103,6 +111,18 @@ module.exports = {
                 total,
                 description,
                 "dealSourceId",
+                "sourceId",
+                "stageId",
+                "statusId",
+                discount,
+                tax,
+                "probabilityId",
+                "assigneeId",
+                "typeId",
+                "closeDate",
+                "closeReason",
+                "wonDate",
+                "wonReason",
                 "companyId",
                 "contactId",
                 "createdBy"
@@ -111,6 +131,18 @@ module.exports = {
                 ${total},
                 ${description},
                 ${dealSourceId},
+                ${sourceId},
+                ${stageId},
+                ${statusId},
+                ${discount},
+                ${tax},
+                ${probabilityId},
+                ${assigneeId},
+                ${typeId},
+                ${closeDate},
+                ${closeReason},
+                ${wonDate},
+                ${wonReason},
                 ${companyId},
                 ${contactId},
                 ${createdBy}
@@ -148,8 +180,26 @@ module.exports = {
     },
 
     update: async (dealObj) => {
-        const { id, name, total, description, dealSourceId, updatedBy } =
-            dealObj;
+        const {
+            id,
+            name,
+            total,
+            description,
+            dealSourceId,
+            sourceId,
+            stageId,
+            statusId,
+            discount,
+            tax,
+            probabilityId,
+            assigneeId,
+            typeId,
+            closeDate,
+            closeReason,
+            wonDate,
+            wonReason,
+            updatedBy,
+        } = dealObj;
 
         return await sql`
             UPDATE
@@ -159,6 +209,18 @@ module.exports = {
                 total = ${total},
                 description = ${description},
                 "dealSourceId" = ${dealSourceId},
+                "sourceId" = ${sourceId},
+                "stageId" = ${stageId},
+                "statusId" = ${statusId},
+                discount = ${discount},
+                tax = ${tax},
+                "probabilityId" = ${probabilityId},
+                "assigneeId" = ${assigneeId},
+                "typeId" = ${typeId},
+                "closeDate" = ${closeDate},
+                "closeReason" = ${closeReason},
+                "wonDate" = ${wonDate},
+                "wonReason" = ${wonReason},
                 "updatedBy" = ${updatedBy},
                 "updatedAt" = ${sql`now()`}
             WHERE

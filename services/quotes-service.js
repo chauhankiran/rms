@@ -4,29 +4,14 @@ const destroy = require("./_base/destroy");
 
 module.exports = {
     find: async (optionsObj) => {
-        const {
-            skip,
-            limit,
-            search,
-            orderBy,
-            orderDir,
-            query,
-            companyId,
-            contactId,
-            dealId,
-        } = optionsObj;
+        const { skip, limit, search, orderBy, orderDir, query, companyId, contactId, dealId } =
+            optionsObj;
 
-        const whereClause = search
-            ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
-            : sql``;
+        const whereClause = search ? sql` WHERE "name" iLIKE ${"%" + search + "%"}` : sql``;
 
-        const whereClause2 = companyId
-            ? sql` WHERE "companyId" = ${companyId}`
-            : sql``;
+        const whereClause2 = companyId ? sql` WHERE "companyId" = ${companyId}` : sql``;
 
-        const whereClause3 = contactId
-            ? sql` WHERE "contactId" = ${contactId}`
-            : sql``;
+        const whereClause3 = contactId ? sql` WHERE "contactId" = ${contactId}` : sql``;
 
         const whereClause4 = dealId ? sql` WHERE "dealId" = ${dealId}` : sql``;
 
@@ -56,9 +41,7 @@ module.exports = {
     count: async (optionsObj) => {
         const { search } = optionsObj;
 
-        const whereClause = search
-            ? sql` WHERE "name" iLIKE ${"%" + search + "%"}`
-            : sql``;
+        const whereClause = search ? sql` WHERE "name" iLIKE ${"%" + search + "%"}` : sql``;
 
         return await sql`
             SELECT
@@ -77,6 +60,15 @@ module.exports = {
             companyId,
             contactId,
             dealId,
+            sourceId,
+            stageId,
+            statusId,
+            discount,
+            tax,
+            probabilityId,
+            assigneeId,
+            templateId,
+            expireOn,
             createdBy,
         } = quoteObj;
 
@@ -85,6 +77,15 @@ module.exports = {
                 name,
                 total,
                 description,
+                "sourceId",
+                "stageId",
+                "statusId",
+                discount,
+                tax,
+                "probabilityId",
+                "assigneeId",
+                "templateId",
+                "expireOn",
                 "companyId",
                 "contactId",
                 "dealId",
@@ -93,6 +94,15 @@ module.exports = {
                 ${name},
                 ${total},
                 ${description},
+                ${sourceId},
+                ${stageId},
+                ${statusId},
+                ${discount},
+                ${tax},
+                ${probabilityId},
+                ${assigneeId},
+                ${templateId},
+                ${expireOn},
                 ${companyId},
                 ${contactId},
                 ${dealId},
@@ -127,7 +137,22 @@ module.exports = {
     },
 
     update: async (quoteObj) => {
-        const { id, name, total, description, updatedBy } = quoteObj;
+        const {
+            id,
+            name,
+            total,
+            description,
+            sourceId,
+            stageId,
+            statusId,
+            discount,
+            tax,
+            probabilityId,
+            assigneeId,
+            templateId,
+            expireOn,
+            updatedBy,
+        } = quoteObj;
 
         return await sql`
             UPDATE
@@ -136,6 +161,15 @@ module.exports = {
                 name = ${name},
                 total = ${total},
                 description = ${description},
+                "sourceId" = ${sourceId},
+                "stageId" = ${stageId},
+                "statusId" = ${statusId},
+                discount = ${discount},
+                tax = ${tax},
+                "probabilityId" = ${probabilityId},
+                "assigneeId" = ${assigneeId},
+                "templateId" = ${templateId},
+                "expireOn" = ${expireOn},
                 "updatedBy" = ${updatedBy},
                 "updatedAt" = ${sql`now()`}
             WHERE

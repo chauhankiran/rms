@@ -1,37 +1,175 @@
 //- prefix
 if labels.contact.prefix
-  .form-group 
-    label(for="prefix") #{labels.contact.prefix}
-    input(type="text", name="prefix", id="prefix", value=contact ? contact.prefix : "", placeholder="Mr.", autofocus=true)
+    .form-group 
+        label(for="prefix") #{labels.contact.prefix}
+        input(type="text", name="prefix", id="prefix", value=contact ? contact.prefix : "", placeholder="Mr.", autofocus=true)
 
 //- firstName
 if labels.contact.firstName
-  .form-group 
-    label(for="firstName") #{labels.contact.firstName}
-    input(type="text", name="firstName", id="firstName", value=contact ? contact.firstName : "", placeholder="Kai")
+    .form-group 
+        label(for="firstName") #{labels.contact.firstName}
+        input(type="text", name="firstName", id="firstName", value=contact ? contact.firstName : "", placeholder="Kai")
 
 //- lastName
 if labels.contact.lastName
-  .form-group 
-    label(for="lastName") #{labels.contact.lastName}
-    input(type="text", name="lastName", id="lastName", value=contact ? contact.lastName : "", placeholder="Doe")
+    .form-group 
+        label(for="lastName") #{labels.contact.lastName}
+        input(type="text", name="lastName", id="lastName", value=contact ? contact.lastName : "", placeholder="Doe")
 
 //- annualRevenue
 if labels.contact.annualRevenue
-  .form-group 
-    label(for="annualRevenue") #{labels.contact.annualRevenue}
-    input(type="text", name="annualRevenue", id="annualRevenue", value=contact ? contact.annualRevenue : "", placeholder="600000")
+    .form-group 
+        label(for="annualRevenue") #{labels.contact.annualRevenue}
+        input(type="text", name="annualRevenue", id="annualRevenue", value=contact ? contact.annualRevenue : "", placeholder="600000")
 
 //- contactIndustryId
 if labels.contact.contactIndustryId
-  .form-group 
-    label(for="contactIndustryId") #{labels.contact.contactIndustryId}
-    select(name="contactIndustryId", id="contactIndustryId")
-      for contactIndustry in contactIndustries
-        option(value=contactIndustry.id, selected=contact && contactIndustry.id == contact.contactIndustryId) #{contactIndustry.name}
+    .form-group 
+        label(for="contactIndustryId") #{labels.contact.contactIndustryId}
+        select(name="contactIndustryId", id="contactIndustryId")
+            for contactIndustry in contactIndustries
+                option(value=contactIndustry.id, selected=contact && contactIndustry.id == contact.contactIndustryId) #{contactIndustry.name}
 
 //- description
 if labels.contact.description
-  .form-group 
-    label(for="description") #{labels.contact.description}
-    textarea(name="description", id="description" cols="30", rows="10", placeholder="Add informative optional description") #{contact ? contact.description : ""}
+    .form-group 
+        label(for="description") #{labels.contact.description}
+        textarea(name="description", id="description" cols="30", rows="10", placeholder="Add informative optional description") #{contact ? contact.description : ""}
+
+//- titleId
+if labels.contact.titleId
+    .form-group 
+        label(for="titleId") #{labels.contact.titleId}
+        input(type="text", name="titleId", id="titleId", value=contact ? contact.titleId : "", placeholder="")
+
+//- website
+if labels.contact.website
+    .form-group 
+        label(for="website") #{labels.contact.website}
+        input(type="text", name="website", id="website", value=contact ? contact.website : "", placeholder="")
+
+//- email
+if labels.contact.email
+    .form-group 
+        label(for="email") #{labels.contact.email}
+        input(type="text", name="email", id="email", value=contact ? contact.email : "", placeholder="")
+
+//- phone
+if labels.contact.phone
+    .form-group 
+        label(for="phone") #{labels.contact.phone}
+        input(type="text", name="phone", id="phone", value=contact ? contact.phone : "", placeholder="")
+
+//- mobile
+if labels.contact.mobile
+    .form-group 
+        label(for="mobile") #{labels.contact.mobile}
+        input(type="text", name="mobile", id="mobile", value=contact ? contact.mobile : "", placeholder="")
+
+//- fax
+if labels.contact.fax
+    .form-group 
+        label(for="fax") #{labels.contact.fax}
+        input(type="text", name="fax", id="fax", value=contact ? contact.fax : "", placeholder="")
+
+//- address1
+if labels.contact.address1
+    .form-group 
+        label(for="address1") #{labels.contact.address1}
+        input(type="text", name="address1", id="address1", value=contact ? contact.address1 : "", placeholder="")
+
+//- address2
+if labels.contact.address2
+    .form-group 
+        label(for="address2") #{labels.contact.address2}
+        input(type="text", name="address2", id="address2", value=contact ? contact.address2 : "", placeholder="")
+
+//- city
+if labels.contact.city
+    .form-group 
+        label(for="city") #{labels.contact.city}
+        input(type="text", name="city", id="city", value=contact ? contact.city : "", placeholder="")
+
+//- stateId
+if labels.contact.stateId
+    .form-group 
+        label(for="stateId") #{labels.contact.stateId}
+        input(type="text", name="stateId", id="stateId", value=contact ? contact.stateId : "", placeholder="")
+
+//- zip
+if labels.contact.zip
+    .form-group 
+        label(for="zip") #{labels.contact.zip}
+        input(type="text", name="zip", id="zip", value=contact ? contact.zip : "", placeholder="")
+
+//- countryId
+if labels.contact.countryId
+    .form-group 
+        label(for="countryId") #{labels.contact.countryId}
+        input(type="text", name="countryId", id="countryId", value=contact ? contact.countryId : "", placeholder="")
+
+//- sourceId
+if labels.contact.sourceId
+    .form-group 
+        label(for="sourceId") #{labels.contact.sourceId}
+        input(type="text", name="sourceId", id="sourceId", value=contact ? contact.sourceId : "", placeholder="")
+
+//- statusId
+if labels.contact.statusId
+    .form-group 
+        label(for="statusId") #{labels.contact.statusId}
+        input(type="text", name="statusId", id="statusId", value=contact ? contact.statusId : "", placeholder="")
+
+//- stageId
+if labels.contact.stageId
+    .form-group 
+        label(for="stageId") #{labels.contact.stageId}
+        input(type="text", name="stageId", id="stageId", value=contact ? contact.stageId : "", placeholder="")
+
+//- stageId
+if labels.contact.stageId
+    .form-group 
+        label(for="stageId") #{labels.contact.stageId}
+        input(type="text", name="stageId", id="stageId", value=contact ? contact.stageId : "", placeholder="")
+
+//- employeeSize
+if labels.contact.employeeSize
+    .form-group 
+        label(for="employeeSize") #{labels.contact.employeeSize}
+        input(type="text", name="employeeSize", id="employeeSize", value=contact ? contact.employeeSize : "", placeholder="")
+
+//- closeDate
+if labels.contact.closeDate
+    .form-group 
+        label(for="closeDate") #{labels.contact.closeDate}
+        input(type="text", name="closeDate", id="closeDate", value=contact ? contact.closeDate : "", placeholder="")
+
+//- closeReason
+if labels.contact.closeReason
+    .form-group 
+        label(for="closeReason") #{labels.contact.closeReason}
+        input(type="text", name="closeReason", id="closeReason", value=contact ? contact.closeReason : "", placeholder="")
+
+//- assigneeId
+if labels.contact.assigneeId
+    .form-group 
+        label(for="assigneeId") #{labels.contact.assigneeId}
+        input(type="text", name="assigneeId", id="assigneeId", value=contact ? contact.assigneeId : "", placeholder="")
+
+//- revenue
+if labels.contact.revenue
+    .form-group 
+        label(for="revenue") #{labels.contact.revenue}
+        input(type="text", name="revenue", id="revenue", value=contact ? contact.revenue : "", placeholder="")
+
+//- typeId
+if labels.contact.typeId
+    .form-group 
+        label(for="typeId") #{labels.contact.typeId}
+        input(type="text", name="typeId", id="typeId", value=contact ? contact.typeId : "", placeholder="")
+
+//- isKey
+if labels.contact.isKey
+    .form-group 
+        label(for="isKey") #{labels.contact.isKey}
+        input(type="text", name="isKey", id="isKey", value=contact ? contact.isKey : "", placeholder="")

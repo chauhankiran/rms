@@ -1,19 +1,67 @@
 //- name
 if labels.ticket.name
-  .form-group 
-    label(for="name") #{labels.ticket.name}
-    input(type="text", name="name", id="name" value=ticket ? ticket.name : "", placeholder="Website is not loading", autofocus=true)
+    .form-group 
+        label(for="name") #{labels.ticket.name}
+        input(type="text", name="name", id="name" value=ticket ? ticket.name : "", placeholder="Website is not loading", autofocus=true)
         
 //- ticketTypeId
 if labels.ticket.ticketTypeId
-  .form-group 
-    label(for="ticketTypeId") #{labels.ticket.ticketTypeId}
-    select(name="ticketTypeId", id="ticketTypeId")
-      for ticketType in ticketTypes
-        option(value=ticketType.id, selected=ticket && ticketType.id == ticket.ticketTypeId) #{ticketType.name}
+    .form-group 
+        label(for="ticketTypeId") #{labels.ticket.ticketTypeId}
+        select(name="ticketTypeId", id="ticketTypeId")
+            for ticketType in ticketTypes
+                option(value=ticketType.id, selected=ticket && ticketType.id == ticket.ticketTypeId) #{ticketType.name}
 
 //- description
 if labels.ticket.description
-  .form-group 
-    label(for="description") #{labels.ticket.description}
-    textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{ticket ? ticket.description : ""}
+    .form-group 
+        label(for="description") #{labels.ticket.description}
+        textarea(name="description", id="description", cols="30", rows="10", placeholder="Add informative optional description") #{ticket ? ticket.description : ""}
+
+//- priorityId
+if labels.ticket.priorityId
+    .form-group 
+        label(for="priorityId") #{labels.ticket.priorityId}
+        input(type="text", name="priorityId", id="priorityId", value=ticket ? ticket.priorityId : "", placeholder="", autofocus=true)
+
+//- sourceId
+if labels.ticket.sourceId
+    .form-group 
+        label(for="sourceId") #{labels.ticket.sourceId}
+        input(type="text", name="sourceId", id="sourceId", value=ticket ? ticket.sourceId : "", placeholder="", autofocus=true)
+
+//- typeId
+if labels.ticket.typeId
+    .form-group 
+        label(for="typeId") #{labels.ticket.typeId}
+        input(type="text", name="typeId", id="typeId", value=ticket ? ticket.typeId : "", placeholder="", autofocus=true)
+
+//- assignId
+if labels.ticket.assignId
+    .form-group 
+        label(for="assignId") #{labels.ticket.assignId}
+        input(type="text", name="assignId", id="assignId", value=ticket ? ticket.assignId : "", placeholder="", autofocus=true)
+
+//- statusId
+if labels.ticket.statusId
+    .form-group 
+        label(for="statusId") #{labels.ticket.statusId}
+        input(type="text", name="statusId", id="statusId", value=ticket ? ticket.statusId : "", placeholder="", autofocus=true)
+
+//- dueDate
+if labels.ticket.dueDate
+    .form-group 
+        label(for="dueDate") #{labels.ticket.dueDate}
+        input(type="text", name="dueDate", id="dueDate", value=ticket ? ticket.dueDate : "", placeholder="", autofocus=true)
+
+//- closeDate
+if labels.ticket.closeDate
+    .form-group 
+        label(for="closeDate") #{labels.ticket.closeDate}
+        input(type="text", name="closeDate", id="closeDate", value=ticket ? ticket.closeDate : "", placeholder="", autofocus=true)
+
+//- closeReason
+if labels.ticket.closeReason
+    .form-group 
+        label(for="closeReason") #{labels.ticket.closeReason}
+        input(type="text", name="closeReason", id="closeReason", value=ticket ? ticket.closeReason : "", placeholder="", autofocus=true)

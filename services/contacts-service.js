@@ -4,22 +4,14 @@ const destroy = require("./_base/destroy");
 
 module.exports = {
     find: async (optionsObj) => {
-        const {
-            skip,
-            limit,
-            search,
-            orderBy,
-            orderDir,
-            query,
-            companyId,
-            isActiveOnly,
-        } = optionsObj;
+        const { skip, limit, search, orderBy, orderDir, query, companyId, isActiveOnly } =
+            optionsObj;
 
         const whereClauses = [];
 
         if (search) {
             whereClauses.push(
-                sql`"firstName" iLIKE ${"%" + search + "%"} OR "lastName" iLIKE ${"%" + search + "%"}`
+                sql`"firstName" iLIKE ${"%" + search + "%"} OR "lastName" iLIKE ${"%" + search + "%"}`,
             );
         }
 
@@ -31,9 +23,7 @@ module.exports = {
             whereClauses.push(sql`c."isActive" = TRUE`);
         }
 
-        const whereClause = whereClauses.flatMap((x, i) =>
-            i ? [sql`and`, x] : x
-        );
+        const whereClause = whereClauses.flatMap((x, i) => (i ? [sql`and`, x] : x));
 
         return await sql`
             SELECT
@@ -64,7 +54,7 @@ module.exports = {
 
         if (search) {
             whereClauses.push(
-                sql`"firstName" iLIKE ${"%" + search + "%"} OR "lastName" iLIKE ${"%" + search + "%"}`
+                sql`"firstName" iLIKE ${"%" + search + "%"} OR "lastName" iLIKE ${"%" + search + "%"}`,
             );
         }
 
@@ -72,9 +62,7 @@ module.exports = {
             whereClauses.push(sql`c."isActive" = TRUE`);
         }
 
-        const whereClause = whereClauses.flatMap((x, i) =>
-            i ? [sql`and`, x] : x
-        );
+        const whereClause = whereClauses.flatMap((x, i) => (i ? [sql`and`, x] : x));
 
         return await sql`
             SELECT
@@ -93,6 +81,29 @@ module.exports = {
             annualRevenue,
             description,
             contactIndustryId,
+            titleId,
+            website,
+            email,
+            phone,
+            mobile,
+            fax,
+            address1,
+            address2,
+            city,
+            stateId,
+            zip,
+            countryId,
+            sourceId,
+            statusId,
+            stageId,
+            industryId,
+            employeeSize,
+            closeDate,
+            closeReason,
+            assigneeId,
+            revenue,
+            typeId,
+            isKey,
             companyId,
             createdBy,
         } = contactObj;
@@ -105,6 +116,29 @@ module.exports = {
                 "annualRevenue",
                 description,
                 "contactIndustryId",
+                "titleId",
+                website,
+                email,
+                phone,
+                mobile,
+                fax,
+                address1,
+                address2,
+                city,
+                "stateId",
+                zip,
+                "countryId",
+                "sourceId",
+                "statusId",
+                "stageId",
+                "industryId",
+                "employeeSize",
+                "closeDate",
+                "closeReason",
+                "assigneeId",
+                revenue,
+                "typeId",
+                "isKey",
                 "companyId",
                 "createdBy"
             ) VALUES (
@@ -114,6 +148,29 @@ module.exports = {
                 ${annualRevenue},
                 ${description},
                 ${contactIndustryId},
+                ${titleId},
+                ${website},
+                ${email},
+                ${phone},
+                ${mobile},
+                ${fax},
+                ${address1},
+                ${address2},
+                ${city},
+                ${stateId},
+                ${zip},
+                ${countryId},
+                ${sourceId},
+                ${statusId},
+                ${stageId},
+                ${industryId},
+                ${employeeSize},
+                ${closeDate},
+                ${closeReason},
+                ${assigneeId},
+                ${revenue},
+                ${typeId},
+                ${isKey},
                 ${companyId},
                 ${createdBy}
             ) returning id, "firstName", "lastName"
@@ -160,6 +217,29 @@ module.exports = {
             annualRevenue,
             description,
             contactIndustryId,
+            titleId,
+            website,
+            email,
+            phone,
+            mobile,
+            fax,
+            address1,
+            address2,
+            city,
+            stateId,
+            zip,
+            countryId,
+            sourceId,
+            statusId,
+            stageId,
+            industryId,
+            employeeSize,
+            closeDate,
+            closeReason,
+            assigneeId,
+            revenue,
+            typeId,
+            isKey,
             updatedBy,
         } = contactObj;
 
@@ -173,6 +253,29 @@ module.exports = {
                 "annualRevenue" = ${annualRevenue},
                 description = ${description},
                 "contactIndustryId" = ${contactIndustryId},
+                "titleId" = ${titleId},
+                website = ${website},
+                email = ${email},
+                phone = ${phone},
+                mobile = ${mobile},
+                fax = ${fax},
+                address1 = ${address1},
+                address2 = ${address2},
+                city = ${city},
+                "stateId" = ${stateId},
+                zip = ${zip},
+                "countryId" = ${countryId},
+                "sourceId" = ${sourceId},
+                "statusId" = ${statusId},
+                "stageId" = ${stageId},
+                "industryId" = ${industryId},
+                "employeeSize" = ${employeeSize},
+                "closeDate" = ${closeDate},
+                "closeReason" = ${closeReason},
+                "assigneeId" = ${assigneeId},
+                revenue = ${revenue},
+                "typeId" = ${typeId},
+                "isKey" = ${isKey},
                 "updatedBy" = ${updatedBy},
                 "updatedAt" = ${sql`now()`}
             WHERE

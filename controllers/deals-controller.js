@@ -159,7 +159,26 @@ module.exports = {
     },
 
     create: async (req, res, next) => {
-        const { name, total, description, dealSourceId, companyId, contactId } = req.body;
+        const {
+            name,
+            total,
+            description,
+            dealSourceId,
+            sourceId,
+            stageId,
+            statusId,
+            discount,
+            tax,
+            probabilityId,
+            assigneeId,
+            typeId,
+            closeDate,
+            closeReason,
+            wonDate,
+            wonReason,
+            companyId,
+            contactId,
+        } = req.body;
 
         if (!name) {
             req.flash("error", locales.deal.nameRequired);
@@ -171,6 +190,18 @@ module.exports = {
                 total,
                 description,
                 dealSourceId,
+                sourceId: sourceId || null,
+                stageId: stageId || null,
+                statusId: statusId || null,
+                discount: discount || null,
+                tax: tax || null,
+                probabilityId: probabilityId || null,
+                assigneeId: assigneeId || null,
+                typeId: typeId || null,
+                closeDate: closeDate || null,
+                closeReason: closeReason || null,
+                wonDate: wonDate || null,
+                wonReason: wonReason || null,
                 companyId: companyId || null,
                 contactId: contactId || null,
                 createdBy: req.session.currentUser.id,
@@ -278,7 +309,24 @@ module.exports = {
 
     update: async (req, res, next) => {
         const id = req.params.id;
-        const { name, total, description, dealSourceId } = req.body;
+        const {
+            name,
+            total,
+            description,
+            dealSourceId,
+            sourceId,
+            stageId,
+            statusId,
+            discount,
+            tax,
+            probabilityId,
+            assigneeId,
+            typeId,
+            closeDate,
+            closeReason,
+            wonDate,
+            wonReason,
+        } = req.body;
 
         if (!name) {
             req.flash("error", locales.deal.nameRequired);
@@ -291,6 +339,18 @@ module.exports = {
                 total,
                 description,
                 dealSourceId,
+                sourceId: sourceId || null,
+                stageId: stageId || null,
+                statusId: statusId || null,
+                discount: discount || null,
+                tax: tax || null,
+                probabilityId: probabilityId || null,
+                assigneeId: assigneeId || null,
+                typeId: typeId || null,
+                closeDate: closeDate || null,
+                closeReason: closeReason || null,
+                wonDate: wonDate || null,
+                wonReason: wonReason || null,
                 updatedBy: req.session.currentUser.id,
             };
             const resp = await dealsService.update(dealObj);

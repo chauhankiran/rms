@@ -1,31 +1,55 @@
 //- name
 if labels.task.name
-  .form-group 
-    label(for="name") #{labels.task.name}
-    input(type="text", name="name", id="name", value=task ? task.name : "", placeholder="Kick-off Meeting", autofocus=true)
+    .form-group 
+        label(for="name") #{labels.task.name}
+        input(type="text", name="name", id="name", value=task ? task.name : "", placeholder="Kick-off Meeting", autofocus=true)
 
 //- taskTypeId
 if labels.task.taskTypeId
-  .form-group 
-    label(for="taskTypeId") #{labels.task.taskTypeId}
-    select(name="taskTypeId", id="taskTypeId")
-      for taskType in taskTypes
-        option(value=taskType.id, selected=task && taskType.id == task.taskTypeId) #{taskType.name}
+    .form-group 
+        label(for="taskTypeId") #{labels.task.taskTypeId}
+        select(name="taskTypeId", id="taskTypeId")
+            for taskType in taskTypes
+                option(value=taskType.id, selected=task && taskType.id == task.taskTypeId) #{taskType.name}
 
 //- phone
 if labels.task.phone 
-  .form-group 
-    label(for="phone") #{labels.task.phone}
-    input(type="text", name="phone", id="phone", value=task ? task.phone : "", placeholder="+91 9876543210", autofocus=true)
+    .form-group 
+        label(for="phone") #{labels.task.phone}
+        input(type="text", name="phone", id="phone", value=task ? task.phone : "", placeholder="+91 9876543210", autofocus=true)
 
 //- location
 if labels.task.location 
-  .form-group 
-    label(for="location") #{labels.task.location}
-    input(type="text", name="location", id="location", value=task ? task.location : "", placeholder="Saturn Conf. Room", autofocus=true)
+    .form-group 
+        label(for="location") #{labels.task.location}
+        input(type="text", name="location", id="location", value=task ? task.location : "", placeholder="Saturn Conf. Room", autofocus=true)
 
 //- description
 if labels.task.description
-  .form-group 
-    label(for="description") #{labels.task.description}
-    textarea(name="description", id="description" cols="30", rows="10", placeholder="Add informative optional description") #{task ? task.description : ""}
+    .form-group 
+        label(for="description") #{labels.task.description}
+        textarea(name="description", id="description" cols="30", rows="10", placeholder="Add informative optional description") #{task ? task.description : ""}
+
+//- typeId
+if labels.task.typeId 
+    .form-group 
+        label(for="typeId") #{labels.task.typeId}
+        input(type="text", name="typeId", id="typeId", value=task ? task.typeId : "", placeholder="", autofocus=true)
+
+//- when
+if labels.task.when 
+    .form-group 
+        label(for="when") #{labels.task.when}
+        input(type="text", name="when", id="when", value=task ? task.when : "", placeholder="", autofocus=true)
+
+//- duration
+if labels.task.duration 
+    .form-group 
+        label(for="duration") #{labels.task.duration}
+        input(type="text", name="duration", id="duration", value=task ? task.duration : "", placeholder="", autofocus=true)
+
+//- isCompleted
+if labels.task.isCompleted 
+    .form-group 
+        label(for="isCompleted") #{labels.task.isCompleted}
+        input(type="text", name="isCompleted", id="isCompleted", value=task ? task.isCompleted : "", placeholder="", autofocus=true)

@@ -172,6 +172,10 @@ module.exports = {
             location,
             description,
             taskTypeId,
+            typeId,
+            when,
+            duration,
+            isCompleted,
             companyId,
             contactId,
             dealId,
@@ -190,6 +194,10 @@ module.exports = {
                 location,
                 description,
                 taskTypeId,
+                typeId: typeId || null,
+                when: when || null,
+                duration: duration || 30,
+                isCompleted: isCompleted || false,
                 companyId: companyId || null,
                 contactId: contactId || null,
                 dealId: dealId || null,
@@ -262,7 +270,17 @@ module.exports = {
 
     update: async (req, res, next) => {
         const id = req.params.id;
-        const { name, phone, location, description, taskTypeId } = req.body;
+        const {
+            name,
+            phone,
+            location,
+            description,
+            typeId,
+            when,
+            duration,
+            isCompleted,
+            taskTypeId,
+        } = req.body;
 
         if (!name) {
             req.flash("error", locales.task.nameRequired);
@@ -276,6 +294,10 @@ module.exports = {
                 location,
                 description,
                 taskTypeId,
+                typeId: typeId || null,
+                when: when || null,
+                duration: duration || 30,
+                isCompleted: isCompleted || false,
                 updatedBy: req.session.currentUser.id,
             };
             const resp = await tasksService.update(taskObj);
