@@ -13,6 +13,7 @@ const methodOverride = require("method-override");
 const pluralize = require("pluralize");
 
 const checkAuth = require("./middleware/check-auth");
+const checkAdmin = require("./middleware/check-admin");
 const checkModule = require("./middleware/check-module");
 
 const homeRoutes = require("./routes/home");
@@ -61,7 +62,7 @@ app.use(
         resave: false,
         saveUninitialized: true,
         cookie: { secure: false },
-    })
+    }),
 );
 app.use(flash());
 
@@ -99,7 +100,7 @@ app.use("/deals", checkAuth, checkModule("deal"), dealsRoutes);
 app.use("/quotes", checkAuth, checkModule("quote"), quotesRoutes);
 app.use("/tickets", checkAuth, checkModule("ticket"), ticketsRoutes);
 app.use("/tasks", checkAuth, checkModule("task"), tasksRoutes);
-app.use("/admin", checkAuth, adminRoutes);
+app.use("/admin", checkAuth, checkAdmin, adminRoutes);
 
 // 404 Error
 app.use((req, res, next) => {
