@@ -30,13 +30,12 @@ body {
 body {
     background-color: #fff;
     color: #333;
-    font-family: "Nebula Sans", "Lucida Grande", "Helvetica Neue", Helvetica,
-        Arial, sans-serif;
+    font-family: "Nebula Sans", "Lucida Grande", "Helvetica Neue", Helvetica, Arial, sans-serif;
     /* font-family: "skolar", "Hoefler Text",
                   Constantia, "Lucida Bright", Lucidabright,
                   "Lucida Serif", Lucida, "Bitstream Vera Serif",
                   "Liberation Serif", "Georgia", serif; */
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1.42857143;
 }
 h1,

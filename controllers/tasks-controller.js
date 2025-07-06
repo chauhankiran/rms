@@ -154,6 +154,7 @@ module.exports = {
             return res.render("tasks/new", {
                 title: "New " + pluralize.singular(req.session.labels.module.task.toLowerCase()),
                 taskTypes,
+                types: taskTypes,
                 companyId,
                 contactId,
                 dealId,

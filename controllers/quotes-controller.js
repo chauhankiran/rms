@@ -11,6 +11,7 @@ const pluralize = require("pluralize");
 const locales = require("../locales/en");
 const message = require("../helpers/message");
 const { PER_PAGE } = require("../constants/app");
+const refsService = require("../services/admin/refs-service");
 
 // columnsObj contains list of field companies can have.
 // key in object is name of the field (used to fetch label).
@@ -133,12 +134,29 @@ module.exports = {
         const contactId = req.query.contactId;
         const dealId = req.query.dealId;
 
-        return res.render("quotes/new", {
-            title: "New " + pluralize.singular(req.session.labels.module.quote.toLowerCase()),
-            companyId,
-            contactId,
-            dealId,
-        });
+        try {
+            const sources = await refsService.pluck("sources", ["id", "name"]);
+            const stages = await refsService.pluck("stages", ["id", "name"]);
+            const statuses = await refsService.pluck("statuses", ["id", "name"]);
+            const discounts = await refsService.pluck("discounts", ["id", "name"]);
+            const taxes = await refsService.pluck("taxes", ["id", "name"]);
+            const probabilities = await refsService.pluck("probabilities", ["id", "name"]);
+
+            return res.render("quotes/new", {
+                title: "New " + pluralize.singular(req.session.labels.module.quote.toLowerCase()),
+                companyId,
+                contactId,
+                dealId,
+                sources,
+                stages,
+                statuses,
+                discounts,
+                taxes,
+                probabilities,
+            });
+        } catch (err) {
+            next(err);
+        }
     },
 
     create: async (req, res, next) => {

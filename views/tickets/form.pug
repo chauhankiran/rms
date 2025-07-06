@@ -22,19 +22,25 @@ if labels.ticket.description
 if labels.ticket.priorityId
     .form-group 
         label(for="priorityId") #{labels.ticket.priorityId}
-        input(type="text", name="priorityId", id="priorityId", value=ticket ? ticket.priorityId : "", placeholder="", autofocus=true)
+        select(name="priorityId", id="priorityId")
+            for priority in priorities
+                option(value=priority.id, selected=ticket && priority.id == ticket.priorityId) #{priority.name}
 
 //- sourceId
 if labels.ticket.sourceId
     .form-group 
         label(for="sourceId") #{labels.ticket.sourceId}
-        input(type="text", name="sourceId", id="sourceId", value=ticket ? ticket.sourceId : "", placeholder="", autofocus=true)
+        select(name="sourceId", id="sourceId")
+            for source in sources
+                option(value=source.id, selected=ticket && source.id == ticket.sourceId) #{source.name}
 
 //- typeId
 if labels.ticket.typeId
     .form-group 
         label(for="typeId") #{labels.ticket.typeId}
-        input(type="text", name="typeId", id="typeId", value=ticket ? ticket.typeId : "", placeholder="", autofocus=true)
+        select(name="typeId", id="typeId")
+            for type in types
+                option(value=type.id, selected=ticket && type.id == ticket.typeId) #{type.name}
 
 //- assignId
 if labels.ticket.assignId
@@ -46,7 +52,9 @@ if labels.ticket.assignId
 if labels.ticket.statusId
     .form-group 
         label(for="statusId") #{labels.ticket.statusId}
-        input(type="text", name="statusId", id="statusId", value=ticket ? ticket.statusId : "", placeholder="", autofocus=true)
+        select(name="statusId", id="statusId")
+            for status in statuses
+                option(value=status.id, selected=ticket && status.id == ticket.statusId) #{status.name}
 
 //- dueDate
 if labels.ticket.dueDate

@@ -20,37 +20,50 @@ if labels.quote.description
 if labels.quote.sourceId
     .form-group 
         label(for="sourceId") #{labels.quote.sourceId}
-        input(type="text", name="sourceId", id="sourceId", value=quote ? quote.sourceId : 0, placeholder="")
+        select(name="sourceId", id="sourceId")
+            for source in sources
+                option(value=source.id, selected=ticket && source.id == ticket.sourceId) #{source.name}
 
 //- stageId
 if labels.quote.stageId
     .form-group 
         label(for="stageId") #{labels.quote.stageId}
-        input(type="text", name="stageId", id="stageId", value=quote ? quote.stageId : 0, placeholder="")
+        select(name="stageId", id="stageId")
+            for stage in stages
+                option(value=stage.id, selected=ticket && stage.id == ticket.stageId) #{stage.name}
 
-//- stageId
-if labels.quote.stageId
+//- statusId
+if labels.quote.statusId
     .form-group 
-        label(for="stageId") #{labels.quote.stageId}
-        input(type="text", name="stageId", id="stageId", value=quote ? quote.stageId : 0, placeholder="")
+        label(for="statusId") #{labels.quote.statusId}
+        select(name="statusId", id="statusId")
+            for status in statuses
+                option(value=status.id, selected=ticket && status.id == ticket.statusId) #{status.name}
+
 
 //- discount
 if labels.quote.discount
     .form-group 
         label(for="discount") #{labels.quote.discount}
-        input(type="text", name="discount", id="discount", value=quote ? quote.discount : 0, placeholder="")
+        select(name="discountId", id="discountId")
+            for discount in discounts
+                option(value=discount.id, selected=ticket && discount.id == ticket.discountId) #{discount.name}
 
 //- tax
 if labels.quote.tax
     .form-group 
         label(for="tax") #{labels.quote.tax}
-        input(type="text", name="tax", id="tax", value=quote ? quote.tax : 0, placeholder="")
+        select(name="taxId", id="taxId")
+            for tax in taxes
+                option(value=tax.id, selected=ticket && tax.id == ticket.taxId) #{tax.name}
 
 //- probabilityId
 if labels.quote.probabilityId
     .form-group 
         label(for="probabilityId") #{labels.quote.probabilityId}
-        input(type="text", name="probabilityId", id="probabilityId", value=quote ? quote.probabilityId : 0, placeholder="")
+        select(name="probabilityId", id="probabilityId")
+            for probability in probabilities
+                option(value=probability.id, selected=ticket && probability.id == ticket.probabilityId) #{probability.name}
 
 //- assigneeId
 if labels.quote.assigneeId

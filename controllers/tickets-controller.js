@@ -141,10 +141,19 @@ module.exports = {
 
         try {
             const ticketTypes = await refsService.pluck("ticketTypes", ["id", "name"]);
+            const priorities = await refsService.pluck("priorities", ["id", "name"]);
+            const sources = await refsService.pluck("sources", ["id", "name"]);
+            const types = await refsService.pluck("ticketTypes", ["id", "name"]);
+            const statuses = await refsService.pluck("statuses", ["id", "name"]);
 
             return res.render("tickets/new", {
                 title: "New " + pluralize.singular(req.session.labels.module.ticket.toLowerCase()),
                 ticketTypes,
+                priorities,
+                sources,
+                types,
+                ticketTypes,
+                statuses,
                 companyId,
                 contactId,
                 dealId,
