@@ -4,13 +4,13 @@ if labels.task.name
         label(for="name")= labels.task.name
         input(type="text", name="name", id="name", value=task ? task.name : "", placeholder="", autofocus=true)
 
-//- taskTypeId
-if labels.task.taskTypeId
+//- typeId
+if labels.task.typeId 
     .form-group 
-        label(for="taskTypeId")= labels.task.taskTypeId
-        select(name="taskTypeId", id="taskTypeId")
-            for taskType in taskTypes
-                option(value=taskType.id, selected=task && taskType.id == task.taskTypeId) #{taskType.name}
+        label(for="typeId")= labels.task.typeId
+        select(name="typeId", id="typeId")
+            for type in types
+                option(value=type.id, selected=task && type.id == task.typeId) #{type.name}
 
 //- phone
 if labels.task.phone 
@@ -24,19 +24,11 @@ if labels.task.location
         label(for="location")= labels.task.location
         input(type="text", name="location", id="location", value=task ? task.location : "", placeholder="", autofocus=true)
 
-//- typeId
-if labels.task.typeId 
-    .form-group 
-        label(for="typeId")= labels.task.typeId
-        select(name="typeId", id="typeId")
-            for type in types
-                option(value=type.id, selected=task && type.id == task.typeId) #{type.name}
-
 //- when
 if labels.task.when 
     .form-group 
         label(for="when")= labels.task.when
-        input(type="text", name="when", id="when", value=task ? task.when : "", placeholder="", autofocus=true)
+        input(type="date", name="when", id="when", value=task ? new Date(task.when) : "", placeholder="", autofocus=true)
 
 //- duration
 if labels.task.duration 

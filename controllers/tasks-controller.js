@@ -37,6 +37,22 @@ const columnsObj = {
         as: 'tt.name AS "taskType"',
         alias: "taskType",
     },
+    typeId: {
+        as: 'tt.name AS "type"',
+        alias: "type",
+    },
+    when: {
+        as: 't."when"',
+        alias: "when",
+    },
+    duration: {
+        as: "t.duration",
+        alias: "duration",
+    },
+    isCompleted: {
+        as: "CASE WHEN t.\"isCompleted\" THEN 'Yes' ELSE 'No' END AS \"isCompleted\"",
+        alias: "isCompleted",
+    },
     createdBy: {
         as: 'creator.email AS "createdByEmail"',
         alias: "createdByEmail",
@@ -149,12 +165,11 @@ module.exports = {
         const ticketId = req.query.ticketId;
 
         try {
-            const taskTypes = await refsService.pluck("taskTypes", ["id", "name"]);
+            const types = await refsService.pluck("taskTypes", ["id", "name"]);
 
             return res.render("tasks/new", {
                 title: "New " + pluralize.singular(req.session.labels.module.task.toLowerCase()),
-                taskTypes,
-                types: taskTypes,
+                types,
                 companyId,
                 contactId,
                 dealId,
@@ -256,13 +271,14 @@ module.exports = {
 
         try {
             const task = await tasksService.findOne(id);
+            console.log("task", task);
 
-            const taskTypes = await refsService.pluck("taskTypes", ["id", "name"]);
+            const types = await refsService.pluck("taskTypes", ["id", "name"]);
 
             return res.render("tasks/edit", {
-                title: "Edit " + pluralize.singular(req.session.labels.module.task.toLowerCase()),
+                title: `#${task.id}. ${task.name}`,
                 task,
-                taskTypes,
+                types,
             });
         } catch (err) {
             next(err);

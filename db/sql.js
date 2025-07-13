@@ -15,11 +15,7 @@ const sql = postgres({
             parse: (x) => {
                 if (x) {
                     const d = new Date(x);
-                    return d.toLocaleDateString(undefined, {
-                        year: "numeric",
-                        month: "short",
-                        day: "2-digit",
-                    });
+                    return d.toLocaleDateString("en-CA");
                 }
                 return x;
             },

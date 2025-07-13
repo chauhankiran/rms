@@ -34,6 +34,82 @@ const columnsObj = {
         as: 'cs.name AS "companySource"',
         alias: "companySource",
     },
+    website: {
+        as: "c.website",
+        alias: "website",
+    },
+    email: {
+        as: "c.email",
+        alias: "email",
+    },
+    phone: {
+        as: "c.phone",
+        alias: "phone",
+    },
+    mobile: {
+        as: "c.mobile",
+        alias: "mobile",
+    },
+    fax: {
+        as: "c.fax",
+        alias: "fax",
+    },
+    address1: {
+        as: "c.address1",
+        alias: "address1",
+    },
+    address2: {
+        as: "c.address2",
+        alias: "address2",
+    },
+    city: {
+        as: "c.city",
+        alias: "city",
+    },
+    stateId: {
+        as: "s.stateName as state",
+        alias: "state",
+    },
+    zip: {
+        as: "c.zip",
+        alias: "zip",
+    },
+    countryId: {
+        as: "cntry.name AS country",
+        alias: "country",
+    },
+    sourceId: {
+        as: "source.name as source",
+        alias: "source",
+    },
+    statusId: {
+        as: "status.name as status",
+        alias: "status",
+    },
+    stageId: {
+        as: "stage.name as stage",
+        alias: "stage",
+    },
+    industryId: {
+        as: "i.name AS industry",
+        alias: "industry",
+    },
+    closeDate: {
+        as: "c.closeDate",
+        alias: "closeDate",
+    },
+    closeReason: {
+        as: "c.closeReason",
+        alias: "closeReason",
+    },
+    revenue: {
+        as: "c.revenue",
+        alias: "revenue",
+    },
+    typeId: {
+        as: "t.name AS type",
+        alias: "type",
+    },
     createdBy: {
         as: 'creator.email AS "createdByEmail"',
         alias: "createdByEmail",

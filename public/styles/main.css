@@ -270,6 +270,7 @@ label {
 }
 
 input[type="text"],
+input[type="date"],
 input[type="password"],
 textarea,
 select {
@@ -288,6 +289,9 @@ select {
 input[type="text"]:hover,
 input[type="text"]:active,
 input[type="text"]:focus-visible,
+input[type="date"]:hover,
+input[type="date"]:active,
+input[type="date"]:focus-visible,
 input[type="password"]:hover,
 input[type="password"]:active,
 input[type="password"]:focus-visible,
