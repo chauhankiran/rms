@@ -5,14 +5,21 @@ block content
         .col-6 
             h1= title
 
+            - console.log("label_", label_)
+
             form(action=`/admin/labels/${locals.label.key}/${label_.id}?_method=PUT`, method="post") 
                 .form-group 
                     label(for="displayName") Display name
                     input(type="text", name="displayName", id="displayName", value=label_.displayName, placeholder="Visitor", autofocus=true)
 
                 .form-group 
+                    label(for="isActive") Use this label?
+                    p Type Y to use and N to not.
+                    input(type="text", name="isActive", id="isActive", value=label_.isActive, placeholder="Y/N")
+
+                .form-group 
                     .row.align-items-center 
                         .col-6 
-                            button(type="submit") Update #{locals.label.singularName}
+                            button(type="submit") Update
                         .col-6.text-end
                             a(href=`/admin/labels/${locals.label.key}/${label_.id}`).btn.is-muted Cancel

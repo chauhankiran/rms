@@ -75,8 +75,8 @@ module.exports = {
             }
 
             return res.render("admin/labels/edit", {
-                title: `Edit ${req.label.singularName}`,
-                label_: label,
+                title: `Edit ${label.displayName} label`,
+                label_: {...label, isActive: label.isActive ? 'Y' : 'N'},
             });
         } catch (err) {
             next(err);
@@ -85,7 +85,7 @@ module.exports = {
 
     update: async (req, res, next) => {
         const id = req.params.id;
-        const { displayName } = req.body;
+        const { displayName, isActive } = req.body;
 
         if (!displayName) {
             req.flash("error", message(locales.label.displayNameRequired));
@@ -103,6 +103,7 @@ module.exports = {
                 id,
                 displayName,
                 updatedBy: req.session.currentUser.id,
+                isActive: isActive === 'Y' ? true : false
             };
             const resp = await labelsService.update(req.label.table, labelObj);
 

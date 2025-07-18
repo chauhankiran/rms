@@ -75,7 +75,7 @@ module.exports = {
     },
 
     update: async (table, optionsObj) => {
-        const { id, displayName, updatedBy } = optionsObj;
+        const { id, displayName, isActive, updatedBy } = optionsObj;
 
         return await sql`
             UPDATE
@@ -83,6 +83,7 @@ module.exports = {
             SET
                 "displayName" = ${displayName},
                 "updatedBy" = ${updatedBy},
+                "isActive" = ${isActive},
                 "updatedAt" = ${sql`now()`}
             WHERE
                 id = ${id}

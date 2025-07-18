@@ -265,6 +265,12 @@ hr {
 label {
     cursor: pointer;
 }
+label + p {
+    padding: 0;
+    margin: 0;
+    font-size: 80%;
+    color: #666;
+}
 .form-group {
     margin-bottom: 12px;
 }
@@ -672,10 +678,11 @@ button.dropdown-item {
     line-height: 1.1;
 }
 .field-name {
+    font-size: 16px;
     font-weight: 700;
 }
 .field-value {
-    font-size: 1.4rem;
+    font-size: 18px;
 }
 
 /*
