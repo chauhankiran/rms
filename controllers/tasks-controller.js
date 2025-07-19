@@ -213,7 +213,7 @@ module.exports = {
                 typeId: typeId || null,
                 when: when || null,
                 duration: duration || 30,
-                isCompleted: isCompleted || false,
+                isCompleted: isCompleted === 'Y' ? true : false,
                 companyId: companyId || null,
                 contactId: contactId || null,
                 dealId: dealId || null,
@@ -271,13 +271,12 @@ module.exports = {
 
         try {
             const task = await tasksService.findOne(id);
-            console.log("task", task);
 
             const types = await refsService.pluck("taskTypes", ["id", "name"]);
 
             return res.render("tasks/edit", {
                 title: `#${task.id}. ${task.name}`,
-                task,
+                task: {...task, isCompleted: task.isCompleted ? 'Y' : 'N'},
                 types,
             });
         } catch (err) {
@@ -314,7 +313,7 @@ module.exports = {
                 typeId: typeId || null,
                 when: when || null,
                 duration: duration || 30,
-                isCompleted: isCompleted || false,
+                isCompleted: isCompleted === 'Y' ? true : false,
                 updatedBy: req.session.currentUser.id,
             };
             const resp = await tasksService.update(taskObj);

@@ -54,7 +54,7 @@ block content
                                     td 
                                         a(href=`/admin/labels/${locals.label.key}/${label_.id}`) #{label_.displayName || "-" }
                                         if (!label_.isActive)
-                                            span.archive-status (not active)
+                                            span.archive-status (not used)
 
                                     td #{label_.updatedByEmail || "-" }
                                     td #{label_.updatedAt || "-" }

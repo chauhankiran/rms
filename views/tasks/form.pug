@@ -40,6 +40,7 @@ if labels.task.duration
 if labels.task.isCompleted 
     .form-group 
         label(for="isCompleted")= labels.task.isCompleted
+        p Type Y to mark as completed and N to not.
         input(type="text", name="isCompleted", id="isCompleted", value=task ? task.isCompleted : "", placeholder="", autofocus=true)
 
 //- description
