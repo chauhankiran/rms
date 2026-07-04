@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+    .col-6 
+        h1= title
+
+        form(action="/auth/register", method="post") 
+            .form-group 
+                label(for="firstName") First name
+                input(type="text", name="firstName", placeholder="Kai", autofocus=true)#firstName
+            
+            .form-group 
+                label(for="lastName") Last name
+                input(type="text", name="lastName", placeholder="Doe")#lastName
+
+            .form-group 
+                label(for="email") Email
+                input(type="text", name="email", placeholder="kai@doe.com")#email
+        
+            .form-group 
+                label(for="password") Password
+                input(type="password", name="password", placeholder="******")#password
+            
+            .form-group 
+                label(for="repeatPassword") Repeat password
+                input(type="password", name="repeatPassword", placeholder="Repeat ******")#repeatPassword
+        
+            .form-group.mt-4 
+                button(type="submit") Register
+        
+            .form-group
+                p 
+                    a(href="/auth/login") Already have an account?
