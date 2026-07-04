@@ -1,0 +1,23 @@
+extends ../layout
+
+block content
+    .col-6 
+        h1= title
+
+        form(action="/auth/login", method="post") 
+            .form-group 
+                label(for="email") Email
+                input(type="text", name="email", placeholder="kai@doe.com", autofocus=true)#email
+        
+            .form-group 
+                label(for="password") Password
+                input(type="password", name="password", placeholder="******")#password
+        
+            .form-group 
+                button(type="submit") Login
+        
+            .form-group
+                p 
+                    a(href="/auth/register") Don't have an account?
+                p 
+                    a(href="/auth/forgot-password") Forgot password?

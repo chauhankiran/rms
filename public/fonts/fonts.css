@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "DejaVuSerifCondensed";
+    src: url("./DejaVuSerifCondensed.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "DejaVuSerifCondensed";
+    src: url("./DejaVuSerifCondensed-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "DejaVuSerifCondensed";
+    src: url("./DejaVuSerifCondensed-Italic.ttf") format("truetype");
+    font-weight: normal;
+    font-style: italic;
+}

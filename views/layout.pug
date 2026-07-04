@@ -1,0 +1,18 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        link(rel="shortcut icon", href="/favicon.ico")
+        title= title
+
+        link(rel="stylesheet", href="/styles/main.css")
+    body 
+        include ./partials/nav
+
+        .container.mt-4.mb-4
+            .row
+                .col-12
+                    include ./partials/flash
+
+            .row
+                block content

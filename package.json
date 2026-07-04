@@ -1,0 +1,33 @@
+{
+    "name": "rms",
+    "version": "1.0.0",
+    "description": "RMS is a light-weight CRM system that is fast, customizable, and easy-to-use.",
+    "main": "app.js",
+    "scripts": {
+        "dev": "nodemon app.js",
+        "start": "node app.js",
+        "migrate": "node ./scripts/migrate.js"
+    },
+    "author": "Kiran Chauhan <kc@marichi.dev>",
+    "license": "GPL-3.0-only",
+    "type": "commonjs",
+    "dependencies": {
+        "connect-flash": "0.1.1",
+        "connect-redis": "9.0.0",
+        "cookie-parser": "1.4.7",
+        "dotenv": "17.4.2",
+        "express": "5.2.1",
+        "express-session": "1.19.0",
+        "helmet": "8.2.0",
+        "http-errors": "2.0.1",
+        "method-override": "3.0.0",
+        "morgan": "1.11.0",
+        "postgres": "3.4.9",
+        "pug": "3.0.4",
+        "redis": "6.0.1",
+        "serve-favicon": "2.5.1"
+    },
+    "devDependencies": {
+        "nodemon": "3.1.14"
+    }
+}
