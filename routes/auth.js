@@ -35,7 +35,46 @@ router.post("/login", async (req, res, next) => {
             return res.redirect("/auth/login");
         }
 
+        const relation = await sql`
+            SELECT
+                "orgId",
+                "userId",
+                "role"
+            FROM
+                "orgUsers"
+            WHERE
+                "userId" = ${user.id} and
+                life = 1
+        `.then(([x]) => x);
+
+        if (!relation) {
+            req.flash("error", "Unable to login. Contact admin.");
+            return res.redirect("/auth/login");
+        }
+
+        const org = await sql`
+            SELECT
+                id,
+                name,
+                description
+            FROM
+                orgs
+            WHERE
+                "id" = ${relation.orgId} and
+                life = 1
+        `.then(([x]) => x);
+
+        if (!org) {
+            req.flash("error", "Unable to login. Contact admin.");
+            return res.redirect("/auth/login");
+        }
+
         req.session.userId = user.id;
+        req.session.userFirstName = user.firstName;
+        req.session.userLastName = user.lastName;
+        req.session.userRole = relation.role;
+        req.session.orgId = org.id;
+        req.session.orgName = org.name;
 
         res.redirect("/dashboard");
     } catch (err) {
@@ -83,6 +122,39 @@ router.post("/register", async (req, res, next) => {
         `.then(([x]) => x);
 
         if (!user) {
+            req.flash("error", "Unable to create account. Contact admin.");
+            return res.redirect("/auth/login");
+        }
+
+        // TODO: Make it correct.
+        const org = await sql`
+            INSERT INTO orgs (
+                "name",
+                "description"
+            ) VALUES (
+                'Beautiful, Inc.',
+                'Welcome to the Beautiful house!'
+            ) returning id;
+        `.then(([x]) => x);
+
+        if (!org) {
+            req.flash("error", "Unable to create account. Contact admin.");
+            return res.redirect("/auth/login");
+        }
+
+        const relation = await sql`
+            INSERT INTO "orgUsers" (
+                "orgId",
+                "userId",
+                "role"
+            ) VALUES (
+                ${org.id},
+                ${user.id},
+                2
+            ) returning id;
+        `.then(([x]) => x);
+
+        if (!relation) {
             req.flash("error", "Unable to create account. Contact admin.");
             return res.redirect("/auth/login");
         }
