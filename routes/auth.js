@@ -26,7 +26,8 @@ router.post("/login", async (req, res, next) => {
                 users
             WHERE
                 email = ${email} and
-                password = ${password}
+                password = ${password} and
+                life = 1
         `.then(([x]) => x);
 
         if (!user) {
@@ -36,7 +37,7 @@ router.post("/login", async (req, res, next) => {
 
         req.session.userId = user.id;
 
-        res.redirect("/");
+        res.redirect("/dashboard");
     } catch (err) {
         next(err);
     }
@@ -91,6 +92,16 @@ router.post("/register", async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-})
+});
+
+router.get('/logout', (req, res, next) => {
+    req.session.destroy((err) => {
+        if (err) {
+            next(err);
+        }
+
+        return res.redirect("/");
+    })
+});
 
 module.exports = router;

@@ -39,6 +39,9 @@ app.use((req, res, next) => {
     res.locals.info = req.flash("info") || [];
     res.locals.error = req.flash("error") || [];
 
+    // User locals
+    res.locals.userId = req.session.userId || null;
+
     next();
 });
 

@@ -1,6 +1,21 @@
 nav.nav
     .nav-start
-        a(href="/").nav-brand RMS
+        if userId
+            a(href="/dashboard").nav-brand RMS
+            a(href="/companies").nav-brand Companies
+            a(href="/contacts").nav-brand Contacts
+            a(href="/deals").nav-brand Deals
+            a(href="/quotes").nav-brand Quotes
+            a(href="/tickets").nav-brand Tickets
+            a(href="/tasks").nav-brand Tasks
+            a(href="/reports").nav-brand Reports
+        else
+            a(href="/").nav-brand RMS
     .nav-end
-        a(href="/auth/login").nav-item Login
-        a(href="/auth/register").nav-item Register
+        if userId 
+            a(href="/admin").nav-brand Admin
+            a(href="/settings").nav-brand Settings
+            a(href="/auth/logout").nav-brand Logout
+        else
+            a(href="/auth/login").nav-item Login
+            a(href="/auth/register").nav-item Register
