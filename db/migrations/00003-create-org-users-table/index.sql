@@ -4,6 +4,9 @@ CREATE TABLE "orgUsers" (
     "orgId" UUID NOT NULL,
     "userId" UUID NOT NULL,
 
+    -- 1 = user.
+    -- 2 = admin.
+    -- 3 = su
     "role" SMALLINT NOT NULL DEFAULT 1,
 
     "createdBy" UUID,

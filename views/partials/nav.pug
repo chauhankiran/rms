@@ -1,19 +1,44 @@
 nav.nav
     .nav-start
         if userId
+            //- Org name.
             a(href="/dashboard").nav-brand= orgName
-            a(href="/companies").nav-brand Companies
-            a(href="/contacts").nav-brand Contacts
-            a(href="/deals").nav-brand Deals
-            a(href="/quotes").nav-brand Quotes
-            a(href="/tickets").nav-brand Tickets
-            a(href="/tasks").nav-brand Tasks
-            a(href="/reports").nav-brand Reports
+
+            //- Companies.
+            if orgPermission.companies.enable && userPermission.companies.enable
+                a(href="/companies").nav-brand Companies
+            
+            //- Contacts
+            if orgPermission.contacts.enable && userPermission.contacts.enable
+                a(href="/contacts").nav-brand Contacts
+            
+            //- Deals
+            if orgPermission.deals.enable && userPermission.deals.enable
+                a(href="/deals").nav-brand Deals
+            
+            //- Quotes
+            if orgPermission.quotes.enable && userPermission.quotes.enable
+                a(href="/quotes").nav-brand Quotes
+            
+            //- Tickets
+            if orgPermission.tickets.enable && userPermission.tickets.enable
+                a(href="/tickets").nav-brand Tickets
+            
+            //- Tasks
+            if orgPermission.tasks.enable && userPermission.tasks.enable
+                a(href="/tasks").nav-brand Tasks
+            
+            //- Reports
+            if orgPermission.reports.enable && userPermission.reports.enable
+                a(href="/reports").nav-brand Reports
         else
+            //- Guest: Home
             a(href="/").nav-brand RMS
     .nav-end
-        if userId 
-            a(href="/admin").nav-brand Admin
+        if userId
+            //- Admin 
+            if userRole == 2
+                a(href="/admin").nav-brand Admin
             a(href="/settings").nav-brand Settings
             a(href="/auth/logout").nav-brand Logout
         else

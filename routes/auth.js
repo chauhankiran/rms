@@ -69,12 +69,35 @@ router.post("/login", async (req, res, next) => {
             return res.redirect("/auth/login");
         }
 
+        const orgLand = await sql`
+            SELECT
+                permission
+            FROM
+                "orgLand"
+            WHERE
+                "orgId" = ${org.id} and
+                life = 1
+        `.then(([x]) => x);
+
+        const userLand = await sql`
+            SELECT
+                permission
+            FROM
+                "userLand"
+            WHERE
+                "orgId" = ${org.id} and
+                "userId" = ${user.id} and
+                life = 1
+        `.then(([x]) => x);
+
         req.session.userId = user.id;
         req.session.userFirstName = user.firstName;
         req.session.userLastName = user.lastName;
         req.session.userRole = relation.role;
+        req.session.userPermission = userLand.permission;
         req.session.orgId = org.id;
         req.session.orgName = org.name;
+        req.session.orgPermission = orgLand.permission;
 
         res.redirect("/dashboard");
     } catch (err) {
@@ -107,57 +130,172 @@ router.post("/register", async (req, res, next) => {
     }
 
     try {
-        const user = await sql`
-            INSERT INTO users (
-                "firstName",
-                "lastName",
-                "email",
-                "password"
-            ) VALUES (
-                ${firstName},
-                ${lastName},
-                ${email},
-                ${password}
-            ) returning id; 
-        `.then(([x]) => x);
+        await sql.begin(async (tx) => {
+            // TODO: Make it correct.
+            const user = await tx`
+                INSERT INTO users (
+                    "firstName",
+                    "lastName",
+                    "email",
+                    "password"
+                ) VALUES (
+                    ${firstName},
+                    ${lastName},
+                    ${email},
+                    ${password}
+                ) returning id; 
+            `.then(([x]) => x);
 
-        if (!user) {
-            req.flash("error", "Unable to create account. Contact admin.");
-            return res.redirect("/auth/login");
-        }
+            // TODO: Make it correct.
+            const org = await tx`
+                INSERT INTO orgs (
+                    "name",
+                    "description"
+                ) VALUES (
+                    'Beautiful, Inc.',
+                    'Welcome to the Beautiful house!'
+                ) returning id;
+            `.then(([x]) => x);
 
-        // TODO: Make it correct.
-        const org = await sql`
-            INSERT INTO orgs (
-                "name",
-                "description"
-            ) VALUES (
-                'Beautiful, Inc.',
-                'Welcome to the Beautiful house!'
-            ) returning id;
-        `.then(([x]) => x);
+            // TODO: Make it correct.
+            await tx`
+                INSERT INTO "orgLand" (
+                    "orgId",
+                    permission
+                ) VALUES (
+                    ${org.id},
+                    '{
+                        "companies": {
+                            "enable": true,
+                            "read": true,
+                            "create": true,
+                            "update": true,
+                            "delete": true
+                        },
 
-        if (!org) {
-            req.flash("error", "Unable to create account. Contact admin.");
-            return res.redirect("/auth/login");
-        }
+                        "contacts": {
+                            "enable": true,
+                            "read": true,
+                            "create": true,
+                            "update": true,
+                            "delete": true
+                        },
 
-        const relation = await sql`
-            INSERT INTO "orgUsers" (
-                "orgId",
-                "userId",
-                "role"
-            ) VALUES (
-                ${org.id},
-                ${user.id},
-                2
-            ) returning id;
-        `.then(([x]) => x);
+                        "deals": {
+                            "enable": true,
+                            "read": true,
+                            "create": true,
+                            "update": true,
+                            "delete": true
+                        },
 
-        if (!relation) {
-            req.flash("error", "Unable to create account. Contact admin.");
-            return res.redirect("/auth/login");
-        }
+                        "quotes": {
+                            "enable": true,
+                            "read": true,
+                            "create": true,
+                            "update": true,
+                            "delete": true
+                        },
+
+                        "tickets": {
+                            "enable": true,
+                            "read": true,
+                            "create": true,
+                            "update": true,
+                            "delete": true
+                        },
+
+                        "tasks": {
+                            "enable": true,
+                            "read": true,
+                            "create": true,
+                            "update": true,
+                            "delete": true
+                        },
+
+                        "reports": {
+                            "enable": true
+                        }
+                    }'::jsonb
+                )`;
+
+            // TODO: Make it correct.
+            await tx`
+                INSERT INTO "userLand" (
+                    "orgId",
+                    "userId",
+                    permission
+                ) VALUES (
+                    ${org.id},
+                    ${user.id},
+                    '{
+                        "companies": {
+                            "enable": true,
+                            "read": true,
+                            "create": true,
+                            "update": true,
+                            "delete": true
+                        },
+
+                        "contacts": {
+                            "enable": true,
+                            "read": true,
+                            "create": true,
+                            "update": true,
+                            "delete": true
+                        },
+
+                        "deals": {
+                            "enable": true,
+                            "read": true,
+                            "create": true,
+                            "update": true,
+                            "delete": true
+                        },
+
+                        "quotes": {
+                            "enable": true,
+                            "read": true,
+                            "create": true,
+                            "update": true,
+                            "delete": true
+                        },
+
+                        "tickets": {
+                            "enable": true,
+                            "read": true,
+                            "create": true,
+                            "update": true,
+                            "delete": true
+                        },
+
+                        "tasks": {
+                            "enable": true,
+                            "read": true,
+                            "create": true,
+                            "update": true,
+                            "delete": true
+                        },
+
+                        "reports": {
+                            "enable": true
+                        }
+                    }'::jsonb
+                )`;
+
+            // TODO: Make it correct.
+            await tx`
+                INSERT INTO "orgUsers" (
+                    "orgId",
+                    "userId",
+                    "role"
+                ) VALUES (
+                    ${org.id},
+                    ${user.id},
+                    2
+                ) returning id;
+            `.then(([x]) => x);
+        });
 
         req.flash("info", "User created. Continue with login.");
         return res.redirect("/auth/login");

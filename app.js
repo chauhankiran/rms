@@ -44,8 +44,10 @@ app.use((req, res, next) => {
     res.locals.userFirstName = req.session.userFirstName || null;
     res.locals.userLastName = req.session.userLastName || null;
     res.locals.userRole = req.session.userRole || null;
+    res.locals.userPermission = req.session.userPermission || null;
     res.locals.orgId = req.session.orgId || null;
     res.locals.orgName = req.session.orgName || null;
+    res.locals.orgPermission = req.session.orgPermission || null;
 
     next();
 });
