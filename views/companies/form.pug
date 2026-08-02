@@ -1,0 +1,187 @@
+.col-12
+    h3 #{fields.system.company} details 
+
+.col-6
+    //-- Name
+    if fields.companies.name
+        .form-group 
+            label(for="name")= fields.companies.name
+            if page == 'show'
+                p= company.name
+            else
+                input(type="text", name="name", placeholder="Kai", value=company ? company.name : '', autofocus=true)#name
+
+    //-- Email
+    if fields.companies.email
+        .form-group 
+            label(for="email")= fields.companies.email
+            if page == 'show'
+                p= company.email
+            else
+                input(type="text", name="email", placeholder="kai@doe.com", value=company ? company.email : '')#email
+
+    //-- Website
+    if fields.companies.website
+        .form-group
+            label(for="website")= fields.companies.website
+            if page == 'show'
+                p= company.website
+            else
+                input(type="text", name="website", placeholder="doe.com", value=company ? company.website : null)#website
+
+    //-- Phone
+    if fields.companies.phone
+        .form-group 
+            label(for="phone")= fields.companies.phone
+            if page == 'show'
+                p= company.phone
+            else
+                input(type="text", name="phone", placeholder="9876543210", value=company ? company.phone : null)#phone
+
+    //-- Mobile
+    if fields.companies.mobile
+        .form-group 
+            label(for="mobile")= fields.companies.mobile
+            if page == 'show'
+                p= company.mobile
+            else
+                input(type="text", name="mobile", placeholder="9123456780", value=company ? company.mobile : null)#mobile
+
+    //-- Telephone                
+    if fields.companies.telephone
+        .form-group 
+            label(for="telephone")= fields.companies.telephone
+            if page == 'show'
+                p= company.telephone
+            else
+                input(type="text", name="telephone", placeholder="9876512340", value=company ? company.telephone : null)#telephone 
+
+    //-- Fax
+    if fields.companies.fax
+        .form-group 
+            label(for="fax")= fields.companies.fax
+            if page == 'show'
+                p= company.fax
+            else
+                input(type="text", name="fax", placeholder="9876543210", value=company ? company.fax : null)#fax
+
+.col-6
+    if fields.companies.address1
+        //-- Address 1
+        .form-group 
+            label(for="address1")= fields.companies.address1
+            if page == 'show'
+                p= company.address1
+            else
+                input(type="text", name="address1", placeholder="A-101 Main Building", value=company ? company.address1 : null)#address1
+
+
+    //-- Address 2
+    if fields.companies.address2
+        .form-group 
+            label(for="address2")= fields.companies.address2
+            if page == 'show'
+                p= company.address2
+            else
+                input(type="text", name="address2", placeholder="Gandhi road", value=company ? company.address2 : null)#address2
+
+    //-- City
+    if fields.companies.city
+        .form-group 
+            label(for="city")= fields.companies.city
+            if page == 'show'
+                p= company.city
+            else
+                input(type="text", name="city", placeholder="Remote", value=company ? company.city : null)#city
+
+    //-- Zip                
+    if fields.companies.zip
+        .form-group 
+            label(for="zip")= fields.companies.zip
+            if page == 'show'
+                p= company.zip
+            else
+                input(type="text", name="zip", placeholder="123456", value=company ? company.zip : null)#zip
+
+    //-- State (R)
+    if fields.companies.stateId
+        .form-group 
+            label(for="stateId")= fields.companies.stateId
+            if page == 'show'
+                p= company.stateId
+            else
+                input(type="text", name="stateId", placeholder="Old state", value=company ? company.stateId : null)#stateId
+
+    //-- Country (R)
+    if fields.companies.countryId
+        .form-group 
+            label(for="countryId")= fields.companies.countryId
+            if page == 'show'
+                p= company.countryId
+            else
+                input(type="text", name="countryId", placeholder="India", value=company ? company.countryId : null)#countryId
+
+.col-12 
+    h3 Additional details
+
+.col-6
+    //-- Industry (R)
+    if fields.companies.industryId
+        .form-group 
+            label(for="industryId")= fields.companies.industryId
+            if page == 'show'
+                p= company.industryId
+            else
+                input(type="text", name="industryId", placeholder="Education", value=company ? company.industryId : null)#industryId
+
+    //-- Revenue
+    if fields.companies.revenue
+        .form-group 
+            label(for="revenue")= fields.companies.revenue
+            if page == 'show'
+                p= company.revenue
+            else
+                input(type="text", name="revenue", placeholder="1000000", value=company ? company.revenue : null)#revenue
+
+.col-6
+    //-- Employee size
+    if fields.companies.employeeSize
+        .form-group 
+            label(for="employeeSize")= fields.companies.employeeSize
+            if page == 'show'
+                p= company.employeeSize
+            else
+                input(type="text", name="employeeSize", placeholder="120", value=company ? company.employeeSize : null)#employeeSize
+
+
+.col-12 
+    h3 Sales details 
+
+.col-6
+    if fields.companies.sourceId
+        //-- Source (R)
+        .form-group 
+            label(for="sourceId")= fields.companies.sourceId
+            if page == 'show'
+                p= company.sourceId
+            else
+                input(type="text", name="sourceId", placeholder="Facebook", value=company ? company.sourceId : null)#sourceId
+
+    if fields.companies.statusId
+        //-- Status (R)
+        .form-group 
+            label(for="statusId")= fields.companies.statusId
+            if page == 'show'
+                p= company.statusId
+            else
+                input(type="text", name="statusId", placeholder="Lead", value=company ? company.statusId : null)#statusId
+
+.col-6
+    if fields.companies.stageId
+        //-- Stage (R)
+        .form-group 
+            label(for="stageId")= fields.companies.stageId
+            if page == 'show'
+                p= company.stageId
+            else
+                input(type="text", name="stageId", placeholder="New", value=company ? company.stageId : null)#stageId

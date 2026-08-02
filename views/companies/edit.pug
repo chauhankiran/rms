@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+    .row.align-items-center
+        .col-8
+            h1= title
+        .col-4.text-end
+            a.btn(href="/companies") Back to #{helpers.downcase(helpers.plural(fields.system.company))}
+        
+        .col-12 
+            form(action=`/companies/${company.id}/update?_method=PUT`, method="post").row 
+                - const page = 'edit'
+                include ./form
+
+                .col-12
+                    .form-group.mt-4 
+                        button(type="submit") Update #{helpers.downcase(fields.system.company)}
+                        

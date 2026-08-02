@@ -101,7 +101,6 @@ router.post("/login", async (req, res, next) => {
                 "orgId" = ${org.id} and
                 life = 1
         `;
-        console.log(fields)
 
         req.session.userId = user.id;
         req.session.userFirstName = user.firstName;
@@ -216,6 +215,133 @@ router.post("/register", async (req, res, next) => {
                     'task',
                     'Task',
                     'system'
+                ), (
+                    ${org.id},
+                    'report',
+                    'Report',
+                    'system'
+                ),
+
+                (
+                    ${org.id},
+                    'id',
+                    'Id',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'name',
+                    'Name',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'email',
+                    'Email',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'website',
+                    'Website',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'phone',
+                    'Phone',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'mobile',
+                    'Mobile',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'telephone',
+                    'Telephone',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'fax',
+                    'Fax',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'address1',
+                    'Address 1',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'address2',
+                    'Address 2',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'city',
+                    'City',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'zip',
+                    'Zip',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'stateId',
+                    'State',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'countryId',
+                    'Country',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'industryId',
+                    'Industry',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'revenue',
+                    'Revenue',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'employeeSize',
+                    'Employee size',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'sourceId',
+                    'Source',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'statusId',
+                    'Status',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'stageId',
+                    'Stage',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'createdBy',
+                    'Created by',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'createdAt',
+                    'Created at',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'updatedBy',
+                    'Updated by',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'updatedAt',
+                    'Updated at',
+                    'companies'
                 )`;
 
             // TODO: Make it correct.

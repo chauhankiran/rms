@@ -1,0 +1,8 @@
+extends ../layout
+
+block content
+    .row
+        .col-8
+            h1= title
+        .col-4.text-end.align-items-center.justify-content-center
+            a.btn(href="/companies/new") Add #{helpers.downcase(fields.system.company)}

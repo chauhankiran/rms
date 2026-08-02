@@ -9,6 +9,7 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const favicon = require("serve-favicon");
 const methodOverride = require("method-override");
+const pluralize = require("pluralize");
 const { RedisStore } = require("connect-redis");
 const redisClient = require("./db/redis-client");
 const app = express();
@@ -33,6 +34,10 @@ app.use(
 app.use(flash());
 
 app.set("view engine", "pug");
+
+app.locals.helpers = app.locals.helpers || {};
+app.locals.helpers.plural = pluralize.plural;
+app.locals.helpers.downcase = (str) => str.toLowerCase();
 
 app.use((req, res, next) => {
     // Flash locals

@@ -21,6 +21,9 @@ const sql = postgres({
             },
         },
     },
+    transform: {
+        undefined: null
+    }
 });
 
 module.exports = sql;

@@ -6,31 +6,31 @@ nav.nav
 
             //- Companies.
             if orgPermission.companies.enable && userPermission.companies.enable
-                a(href="/companies").nav-brand= fields.system.company
+                a(href="/companies").nav-brand= helpers.plural(fields.system.company)
             
             //- Contacts
             if orgPermission.contacts.enable && userPermission.contacts.enable
-                a(href="/contacts").nav-brand= fields.system.contact
+                a(href="/contacts").nav-brand= helpers.plural(fields.system.contact)
             
             //- Deals
             if orgPermission.deals.enable && userPermission.deals.enable
-                a(href="/deals").nav-brand= fields.system.deal
+                a(href="/deals").nav-brand= helpers.plural(fields.system.deal)
             
             //- Quotes
             if orgPermission.quotes.enable && userPermission.quotes.enable
-                a(href="/quotes").nav-brand= fields.system.quote
+                a(href="/quotes").nav-brand= helpers.plural(fields.system.quote)
             
             //- Tickets
             if orgPermission.tickets.enable && userPermission.tickets.enable
-                a(href="/tickets").nav-brand= fields.system.ticket
+                a(href="/tickets").nav-brand= helpers.plural(fields.system.ticket)
             
             //- Tasks
             if orgPermission.tasks.enable && userPermission.tasks.enable
-                a(href="/tasks").nav-brand= fields.system.task
+                a(href="/tasks").nav-brand= helpers.plural(fields.system.task)
             
             //- Reports
             if orgPermission.reports.enable && userPermission.reports.enable
-                a(href="/reports").nav-brand= fields.system.report
+                a(href="/reports").nav-brand= helpers.plural(fields.system.report)
         else
             //- Guest: Home
             a(href="/").nav-brand RMS

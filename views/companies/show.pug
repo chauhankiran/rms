@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+    .row
+        .col-8
+            h1= title
+        
+        .col-4.text-end
+            a.btn(href="/companies") Back to #{helpers.plural(fields.system.company)}
+        
+        .col-12 
+            .row
+                - const page = 'show' 
+                include ./form
