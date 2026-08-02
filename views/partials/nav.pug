@@ -6,31 +6,31 @@ nav.nav
 
             //- Companies.
             if orgPermission.companies.enable && userPermission.companies.enable
-                a(href="/companies").nav-brand Companies
+                a(href="/companies").nav-brand= fields.system.company
             
             //- Contacts
             if orgPermission.contacts.enable && userPermission.contacts.enable
-                a(href="/contacts").nav-brand Contacts
+                a(href="/contacts").nav-brand= fields.system.contact
             
             //- Deals
             if orgPermission.deals.enable && userPermission.deals.enable
-                a(href="/deals").nav-brand Deals
+                a(href="/deals").nav-brand= fields.system.deal
             
             //- Quotes
             if orgPermission.quotes.enable && userPermission.quotes.enable
-                a(href="/quotes").nav-brand Quotes
+                a(href="/quotes").nav-brand= fields.system.quote
             
             //- Tickets
             if orgPermission.tickets.enable && userPermission.tickets.enable
-                a(href="/tickets").nav-brand Tickets
+                a(href="/tickets").nav-brand= fields.system.ticket
             
             //- Tasks
             if orgPermission.tasks.enable && userPermission.tasks.enable
-                a(href="/tasks").nav-brand Tasks
+                a(href="/tasks").nav-brand= fields.system.task
             
             //- Reports
             if orgPermission.reports.enable && userPermission.reports.enable
-                a(href="/reports").nav-brand Reports
+                a(href="/reports").nav-brand= fields.system.report
         else
             //- Guest: Home
             a(href="/").nav-brand RMS

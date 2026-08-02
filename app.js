@@ -48,6 +48,7 @@ app.use((req, res, next) => {
     res.locals.orgId = req.session.orgId || null;
     res.locals.orgName = req.session.orgName || null;
     res.locals.orgPermission = req.session.orgPermission || null;
+    res.locals.fields = req.session.fields || {};
 
     next();
 });

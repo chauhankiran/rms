@@ -90,6 +90,19 @@ router.post("/login", async (req, res, next) => {
                 life = 1
         `.then(([x]) => x);
 
+        const fields = await sql`
+            SELECT
+                name,
+                "displayName",
+                category
+            FROM
+                fields
+            WHERE
+                "orgId" = ${org.id} and
+                life = 1
+        `;
+        console.log(fields)
+
         req.session.userId = user.id;
         req.session.userFirstName = user.firstName;
         req.session.userLastName = user.lastName;
@@ -98,6 +111,15 @@ router.post("/login", async (req, res, next) => {
         req.session.orgId = org.id;
         req.session.orgName = org.name;
         req.session.orgPermission = orgLand.permission;
+
+        req.session.fields = {};
+        for (const field of fields) {
+            if (!req.session.fields[field.category]) {
+                req.session.fields[field.category] = {};
+            }
+
+            req.session.fields[field.category][field.name] = field.displayName;
+        }
 
         res.redirect("/dashboard");
     } catch (err) {
@@ -156,6 +178,45 @@ router.post("/register", async (req, res, next) => {
                     'Welcome to the Beautiful house!'
                 ) returning id;
             `.then(([x]) => x);
+
+            // TODO: Make it correct.
+            await tx`
+                INSERT INTO "fields" (
+                    "orgId",
+                    name,
+                    "displayName",
+                    category
+                ) VALUES (
+                    ${org.id},
+                    'company',
+                    'Company',
+                    'system'
+                ), (
+                    ${org.id},
+                    'contact',
+                    'Contact',
+                    'system'
+                ), (
+                    ${org.id},
+                    'deal',
+                    'Deal',
+                    'system'
+                ), (
+                    ${org.id},
+                    'quote',
+                    'Quote',
+                    'system'
+                ), (
+                    ${org.id},
+                    'ticket',
+                    'Ticket',
+                    'system'
+                ), (
+                    ${org.id},
+                    'task',
+                    'Task',
+                    'system'
+                )`;
 
             // TODO: Make it correct.
             await tx`
