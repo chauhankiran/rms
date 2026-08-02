@@ -108,18 +108,30 @@
         .form-group 
             label(for="stateId")= fields.companies.stateId
             if page == 'show'
-                p= company.stateId
+                p= company.state
             else
-                input(type="text", name="stateId", placeholder="Old state", value=company ? company.stateId : null)#stateId
+                select(name="stateId")#stateId
+                    option(value="") None
+                    each state in states
+                        if company && company.stateId == state.id
+                            option(value=state.id, selected)= state.name
+                        else
+                            option(value=state.id)= state.name
 
     //-- Country (R)
     if fields.companies.countryId
         .form-group 
             label(for="countryId")= fields.companies.countryId
             if page == 'show'
-                p= company.countryId
+                p= company.country
             else
-                input(type="text", name="countryId", placeholder="India", value=company ? company.countryId : null)#countryId
+                select(name="countryId")#countryId
+                    option(value="") None
+                    each country in countries
+                        if company && company.countryId == country.id
+                            option(value=country.id, selected)= country.name
+                        else
+                            option(value=country.id)= country.name
 
 .col-12 
     h3 Additional details
@@ -130,9 +142,15 @@
         .form-group 
             label(for="industryId")= fields.companies.industryId
             if page == 'show'
-                p= company.industryId
+                p= company.industry
             else
-                input(type="text", name="industryId", placeholder="Education", value=company ? company.industryId : null)#industryId
+                select(name="industryId")#industryId
+                    option(value="") None
+                    each industry in industries
+                        if company && company.industryId == industry.id
+                            option(value=industry.id, selected)= industry.name
+                        else
+                            option(value=industry.id)= industry.name
 
     //-- Revenue
     if fields.companies.revenue
@@ -163,18 +181,30 @@
         .form-group 
             label(for="sourceId")= fields.companies.sourceId
             if page == 'show'
-                p= company.sourceId
+                p= company.source
             else
-                input(type="text", name="sourceId", placeholder="Facebook", value=company ? company.sourceId : null)#sourceId
+                select(name="sourceId")#sourceId
+                    option(value="") None
+                    each source in sources
+                        if company && company.sourceId == source.id
+                            option(value=source.id, selected)= source.name
+                        else
+                            option(value=source.id)= source.name
 
     if fields.companies.statusId
         //-- Status (R)
         .form-group 
             label(for="statusId")= fields.companies.statusId
             if page == 'show'
-                p= company.statusId
+                p= company.status
             else
-                input(type="text", name="statusId", placeholder="Lead", value=company ? company.statusId : null)#statusId
+                select(name="statusId")#statusId
+                    option(value="") None
+                    each status in statuses
+                        if company && company.statusId == status.id
+                            option(value=status.id, selected)= status.name
+                        else
+                            option(value=status.id)= status.name
 
 .col-6
     if fields.companies.stageId
@@ -182,6 +212,31 @@
         .form-group 
             label(for="stageId")= fields.companies.stageId
             if page == 'show'
-                p= company.stageId
+                p= company.stage
             else
-                input(type="text", name="stageId", placeholder="New", value=company ? company.stageId : null)#stageId
+                select(name="stageId")#stageId
+                    option(value="") None
+                    each stage in stages
+                        if company && company.stageId == stage.id
+                            option(value=stage.id, selected)= stage.name
+                        else
+                            option(value=stage.id)= stage.name
+
+if page == 'show'
+    .col-12 
+        h3 Metadata
+    
+    .col-6 
+        .form-group 
+            label(for="createdBy")= fields.companies.createdBy
+            p= company.createdByName || "-"
+        .form-group 
+            label(for="createdAt")= fields.companies.createdAt
+            p= company.createdAt || "-"
+    .col-6
+        .form-group 
+            label(for="updatedBy")= fields.companies.updatedBy
+            p= company.updatedByName || "-"
+        .form-group 
+            label(for="updatedAt")= fields.companies.updatedAt
+            p= company.updatedAt || "-"

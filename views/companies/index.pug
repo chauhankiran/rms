@@ -6,3 +6,23 @@ block content
             h1= title
         .col-4.text-end.align-items-center.justify-content-center
             a.btn(href="/companies/new") Add #{helpers.downcase(fields.system.company)}
+
+    .row
+        .col-12 
+            table
+                thead 
+                    tr
+                        th Id
+                        th Name
+                tbody 
+                    if companies.length > 0
+                        each company in companies 
+                            tr
+                                td
+                                    a(href=`/companies/${company.id}`)= company.id
+
+                                td 
+                                    a(href=`/companies/${company.id}`)= company.name || '-'
+                    else 
+                        tr 
+                            td(colspan=2).text-center No #{helpers.downcase(fields.system.company)} found.

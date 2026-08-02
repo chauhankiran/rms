@@ -12,3 +12,7 @@ block content
             .row
                 - const page = 'show' 
                 include ./form
+
+            .row 
+                .col-12
+                    a.btn.mt-4(href=`/companies/${company.id}/edit`) Edit #{helpers.downcase(fields.system.company)}

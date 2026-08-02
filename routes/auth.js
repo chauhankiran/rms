@@ -153,6 +153,7 @@ router.post("/register", async (req, res, next) => {
     try {
         await sql.begin(async (tx) => {
             // TODO: Make it correct.
+            // This creates a new user.
             const user = await tx`
                 INSERT INTO users (
                     "firstName",
@@ -168,6 +169,7 @@ router.post("/register", async (req, res, next) => {
             `.then(([x]) => x);
 
             // TODO: Make it correct.
+            // This creates a new organization.
             const org = await tx`
                 INSERT INTO orgs (
                     "name",
@@ -179,6 +181,7 @@ router.post("/register", async (req, res, next) => {
             `.then(([x]) => x);
 
             // TODO: Make it correct.
+            // This creates fields for the organization.
             await tx`
                 INSERT INTO "fields" (
                     "orgId",
@@ -345,6 +348,7 @@ router.post("/register", async (req, res, next) => {
                 )`;
 
             // TODO: Make it correct.
+            // This creates permissions for the organization.
             await tx`
                 INSERT INTO "orgLand" (
                     "orgId",
@@ -407,6 +411,7 @@ router.post("/register", async (req, res, next) => {
                 )`;
 
             // TODO: Make it correct.
+            // This creates permissions for the user.
             await tx`
                 INSERT INTO "userLand" (
                     "orgId",
@@ -471,6 +476,112 @@ router.post("/register", async (req, res, next) => {
                 )`;
 
             // TODO: Make it correct.
+            // This create values for the dropdown fields.
+            await tx`
+                INSERT INTO "states" (
+                    "orgId",
+                    name
+                ) VALUES (
+                    ${org.id},
+                    'California'
+                ), (
+                    ${org.id},
+                    'Texas'
+                ), (
+                    ${org.id},
+                    'New York'
+                )
+            `;
+            await tx`
+                INSERT INTO "countries" (
+                    "orgId",
+                    name
+                ) VALUES (
+                    ${org.id},
+                    'India'
+                ), (
+                    ${org.id},
+                    'United States'
+                ), (
+                    ${org.id},
+                    'Canada'
+                ), (
+                    ${org.id},
+                    'Mexico'
+                )
+            `;
+            await tx`
+                INSERT INTO "industries" (
+                    "orgId",
+                    name
+                ) VALUES (
+                    ${org.id},
+                    'Technology'
+                ), (
+                    ${org.id},
+                    'Finance'
+                ), (
+                    ${org.id},
+                    'Healthcare'
+                )
+            `;
+            await tx`
+                INSERT INTO "sources" (
+                    "orgId",
+                    name
+                ) VALUES (
+                    ${org.id},
+                    'Website'
+                ), (
+                    ${org.id},
+                    'Referral'
+                ), (
+                    ${org.id},
+                    'Advertisement'
+                )
+            `;
+            await tx`
+                INSERT INTO "statuses" (
+                    "orgId",
+                    name
+                ) VALUES (
+                    ${org.id},
+                    'New'
+                ), (
+                    ${org.id},
+                    'In Progress'
+                ), (
+                    ${org.id},
+                    'Closed'
+                )
+            `;
+            await tx`
+                INSERT INTO "stages" (
+                    "orgId",
+                    name
+                ) VALUES (
+                    ${org.id},
+                    'Prospecting'
+                ), (
+                    ${org.id},
+                    'Qualification'
+                ), (
+                    ${org.id},
+                    'Proposal'
+                ), (
+                    ${org.id},
+                    'Negotiation'
+                ), (
+                    ${org.id},
+                    'Closed Won'
+                ), (
+                    ${org.id},
+                    'Closed Lost'
+                )
+            `;
+
+            // TODO: Make it correct.
+            // This creates a relation between the organization and the user.
             await tx`
                 INSERT INTO "orgUsers" (
                     "orgId",

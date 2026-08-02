@@ -243,6 +243,35 @@ hr {
 }
 
 /*
+ * Table.
+ * ============================================================================
+ */
+table {
+  background-color: transparent;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+tbody tr:hover {
+  background-color: #efefef;
+}
+th,
+td {
+  border: 2px solid #767676;
+  padding: 8px;
+}
+th {
+  text-align: left;
+  vertical-align: bottom;
+}
+td {
+  vertical-align: top;
+}
+
+
+/*
  * Form.
  * ============================================================================
  */
@@ -260,7 +289,7 @@ label + p {
     margin-bottom: 12px;
 }
 
-
+select,
 input[type="text"],
 input[type="password"] {
     font-family: inherit;
@@ -275,6 +304,7 @@ input[type="password"] {
     padding: 8px 12px;
 }
 
+select:hover,
 
 input[type="text"]:hover,
 input[type="text"]:active,

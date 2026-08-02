@@ -5,7 +5,7 @@ block content
         .col-8
             h1= title
         .col-4.text-end
-            a.btn(href="/companies") Back to #{helpers.downcase(helpers.plural(fields.system.company))}
+            a.btn(href=`/companies/${company.id}`) Cancel
         
         .col-12 
             form(action=`/companies/${company.id}/update?_method=PUT`, method="post").row 
