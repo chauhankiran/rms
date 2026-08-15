@@ -1,4 +1,4 @@
-@import url('../fonts/fonts.css');
+@import url("../fonts/fonts.css");
 
 *,
 *::before,
@@ -15,7 +15,7 @@ body {
 body {
     background-color: #fff;
     color: #222;
-    font-family: 'DejaVuSerifCondensed', 'DejaVu Serif', serif;
+    font-family: "DejaVuSerifCondensed", "DejaVu Serif", serif;
     font-size: 1rem;
     line-height: 1.42;
 }
@@ -236,6 +236,7 @@ hr {
 }
 .nav-brand {
     color: darkred;
+    white-space: nowrap;
 }
 .nav-brand:hover {
     color: darkred;
@@ -247,29 +248,27 @@ hr {
  * ============================================================================
  */
 table {
-  background-color: transparent;
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
-  max-width: 100%;
-  margin-bottom: 20px;
+    background-color: transparent;
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    max-width: 100%;
 }
 tbody tr:hover {
-  background-color: #efefef;
+    background-color: #efefef;
 }
 th,
 td {
-  border: 2px solid #767676;
-  padding: 8px;
+    border: 2px solid #767676;
+    padding: 8px;
 }
 th {
-  text-align: left;
-  vertical-align: bottom;
+    text-align: left;
+    vertical-align: bottom;
 }
 td {
-  vertical-align: top;
+    vertical-align: top;
 }
-
 
 /*
  * Form.
@@ -305,11 +304,9 @@ input[type="password"] {
 }
 
 select:hover,
-
 input[type="text"]:hover,
 input[type="text"]:active,
 input[type="text"]:focus-visible,
-
 input[type="password"]:hover,
 input[type="password"]:active,
 input[type="password"]:focus-visible {
@@ -345,6 +342,20 @@ button:hover {
     color: inherit;
 
     background-color: #dbdbdb;
+}
+.btn:disabled,
+button:disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.5;
+}
+.btn.is-muted,
+button.is-muted {
+    background-color: transparent;
+}
+.btn.is-muted:hover,
+button.is-muted:hover {
+    background-color: #efefef;
 }
 
 /*

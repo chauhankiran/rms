@@ -4,8 +4,8 @@ const router = express.Router();
 
 router.get("/login", (req, res) => {
     return res.render("auth/login", {
-        title: "Login"
-    })
+        title: "Login",
+    });
 });
 
 router.post("/login", async (req, res, next) => {
@@ -128,8 +128,8 @@ router.post("/login", async (req, res, next) => {
 
 router.get("/register", (req, res) => {
     return res.render("auth/register", {
-        title: "Register"
-    })
+        title: "Register",
+    });
 });
 
 router.post("/register", async (req, res, next) => {
@@ -312,6 +312,11 @@ router.post("/register", async (req, res, next) => {
                     'companies'
                 ), (
                     ${org.id},
+                    'typeId',
+                    'Type',
+                    'companies'
+                ), (
+                    ${org.id},
                     'sourceId',
                     'Source',
                     'companies'
@@ -324,6 +329,11 @@ router.post("/register", async (req, res, next) => {
                     ${org.id},
                     'stageId',
                     'Stage',
+                    'companies'
+                ), (
+                    ${org.id},
+                    'description',
+                    'Description',
                     'companies'
                 ), (
                     ${org.id},
@@ -579,6 +589,27 @@ router.post("/register", async (req, res, next) => {
                     'Closed Lost'
                 )
             `;
+            await tx`
+                INSERT INTO "types" (
+                    "orgId",
+                    name
+                ) VALUES (
+                    ${org.id},
+                    'Lead'
+                ), (
+                    ${org.id},
+                    'Account'
+                ), (
+                    ${org.id},
+                    'Govt.'
+                ), (
+                    ${org.id},
+                    'High risk'
+                ), (
+                    ${org.id},
+                    'Top'
+                )
+            `;
 
             // TODO: Make it correct.
             // This creates a relation between the organization and the user.
@@ -602,14 +633,14 @@ router.post("/register", async (req, res, next) => {
     }
 });
 
-router.get('/logout', (req, res, next) => {
+router.get("/logout", (req, res, next) => {
     req.session.destroy((err) => {
         if (err) {
             next(err);
         }
 
         return res.redirect("/");
-    })
+    });
 });
 
 module.exports = router;

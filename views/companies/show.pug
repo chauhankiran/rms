@@ -1,18 +1,27 @@
 extends ../layout
 
 block content
-    .row
-        .col-8
+    .row.justify-content-between.align-items-center
+        .col-4
             h1= title
         
-        .col-4.text-end
-            a.btn(href="/companies") Back to #{helpers.plural(fields.system.company)}
+        .col-8.text-end
+            a.btn.mr-2(href="/companies") Back to #{helpers.plural(fields.system.company)}
+            a.btn.mr-2(href=`/companies/${company.id}/edit`) Edit
+            if company.life == 1
+                button.btn.mr-2(type="button", data-company-action="archive") Archive
+            if company.life == 0
+                button.btn.mr-2(type="button", data-company-action="active") Active
+            if userRole == 2
+                button.btn.mr-2(type="button", data-company-action="delete") Delete
         
         .col-12 
             .row
                 - const page = 'show' 
                 include ./form
 
-            .row 
-                .col-12
-                    a.btn.mt-4(href=`/companies/${company.id}/edit`) Edit #{helpers.downcase(fields.system.company)}
+    form(action=`/companies/${company.id}?_method=DELETE`, name="deleteCompanyForm", method="post")
+
+    form(action=`/companies/${company.id}/active?_method=PUT`, name="activeCompanyForm", method="post")
+
+    form(action=`/companies/${company.id}/archive?_method=PUT`, name="archiveCompanyForm", method="post")

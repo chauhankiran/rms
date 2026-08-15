@@ -1,28 +1,88 @@
 extends ../layout
+include ../mixins/index
+include ../mixins/pagination
 
 block content
-    .row
-        .col-8
-            h1= title
-        .col-4.text-end.align-items-center.justify-content-center
-            a.btn(href="/companies/new") Add #{helpers.downcase(fields.system.company)}
+    .row.align-items-center 
+        +title("companies")
+        
+        .col-12
+            +search("companies", "Type name and press Enter")
 
-    .row
-        .col-12 
-            table
+            table 
                 thead 
-                    tr
-                        th Id
-                        th Name
+                    tr 
+                        each column in columns 
+                            if column.field === "id" && fields.companies[column.field]
+                                th 
+                                    if orderDir === 'ASC'
+                                        a(href=`/companies?orderBy=id&orderDir=DESC${search ? `&search=${search}` : ''}`)= fields.companies[column.field]
+                                    else 
+                                        a(href=`/companies?orderBy=id&orderDir=ASC${search ? `&search=${search}` : ''}`)= fields.companies[column.field]
+                        
+                                    if orderBy === 'id'
+                                        span.order-wrapper= orderDir
+                            else if column.field === "name" && fields.companies[column.field]
+                                th
+                                    if orderDir === 'ASC'
+                                        a(href=`/companies?orderBy=name&orderDir=DESC${search ? `&search=${search}` : ''}`)= fields.companies[column.field]
+                                    else 
+                                        a(href=`/companies?orderBy=name&orderDir=ASC${search ? `&search=${search}` : ''}`)= fields.companies[column.field]
+                                            
+                                    if orderBy === 'name'
+                                        span.order-wrapper= orderDir
+                            else if column.field === "createdAt" && fields.companies[column.field]
+                                th
+                                    if orderDir === 'ASC'
+                                        a(href=`/companies?orderBy=createdAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= fields.companies[column.field]
+                                    else 
+                                        a(href=`/companies?orderBy=createdAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= fields.companies[column.field]
+                                            
+                                    if orderBy === 'createdAt'
+                                        span.order-wrapper= orderDir
+                            else if column.field === "updatedAt" && fields.companies[column.field]
+                                th
+                                    if orderDir === 'ASC'
+                                        a(href=`/companies?orderBy=updatedAt&orderDir=DESC${search ? `&search=${search}` : ''}`)= fields.companies[column.field]
+                                    else 
+                                        a(href=`/companies?orderBy=updatedAt&orderDir=ASC${search ? `&search=${search}` : ''}`)= fields.companies[column.field]
+                                            
+                                    if orderBy === 'updatedAt'
+                                        span.order-wrapper= orderDir
+                            else if column.field === "employeeSize" && fields.companies[column.field]
+                                th
+                                    if orderDir === 'ASC'
+                                        a(href=`/companies?orderBy=employeeSize&orderDir=DESC${search ? `&search=${search}` : ''}`)= fields.companies[column.field]
+                                    else 
+                                        a(href=`/companies?orderBy=employeeSize&orderDir=ASC${search ? `&search=${search}` : ''}`)= fields.companies[column.field]
+                                            
+                                    if orderBy === 'employeeSize'
+                                        span.order-wrapper= orderDir
+                            else
+                                if fields.companies[column.field]
+                                    th= fields.companies[column.field] 
+                    
                 tbody 
                     if companies.length > 0
                         each company in companies 
-                            tr
-                                td
-                                    a(href=`/companies/${company.id}`)= company.id
+                            tr 
+                                each column in columns 
+                                    if column.field === "id" && fields.companies[column.field]
+                                        td 
+                                            a(href=`/companies/${company.id}`)= company[column.alias]
+                                    else if column.field === "name" && fields.companies[column.field]
+                                        td 
+                                            a(href=`/companies/${company.id}`)= company[column.alias]
 
-                                td 
-                                    a(href=`/companies/${company.id}`)= company.name || '-'
+                                            if (!company.life)
+                                                span.archive-status (archived)
+                                    else
+                                        if fields.companies[column.field]
+                                            td= company[column.alias] || "-"
                     else 
                         tr 
-                            td(colspan=2).text-center No #{helpers.downcase(fields.system.company)} found.
+                            td(colspan=`${columns.length}`).text-center No #{helpers.downcase(fields.companies.module.company)} found. 
+
+        .col-12.mt-3 
+            +pagination(paginationLinks.first, paginationLinks.prev, paginationLinks.next, paginationLinks.last)
+        

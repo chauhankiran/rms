@@ -23,11 +23,15 @@ CREATE TABLE "companies" (
     "industryId" BIGINT,
     revenue TEXT,
     "employeeSize" TEXT,
+    "typeId" BIGINT,
 
     -- Sales details fields.
     "sourceId" BIGINT,
     "statusId" BIGINT,
     "stageId" BIGINT,
+
+    -- Description
+    "description" TEXT,
 
     "createdBy" UUID,
     "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
